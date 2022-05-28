@@ -9,7 +9,7 @@ module.exports = {
     ["@babel/plugin-proposal-class-properties", { loose: false }],
     [
       "module-resolver", { alias: { 
-        "@NAMEHERE": "./src/NAMEHERE"
+        "@helpers": "./src/helpers",
       }}
     ],
   ],
