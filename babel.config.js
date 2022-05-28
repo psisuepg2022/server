@@ -11,6 +11,7 @@ module.exports = {
       "module-resolver", { alias: { 
         "@helpers": "./src/helpers",
         "@infra": "./src/infra",
+        "@handlers": "./src/handlers",
       }}
     ],
   ],
