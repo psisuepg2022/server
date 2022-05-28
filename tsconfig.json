@@ -26,6 +26,7 @@
     "baseUrl": ".",
     "paths": {
       "@helpers/*": ["./src/helpers/*"],
+      "@infra/*": ["./src/infra/*"],
     }
   }
 }

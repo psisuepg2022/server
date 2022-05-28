@@ -10,6 +10,7 @@ module.exports = {
     [
       "module-resolver", { alias: { 
         "@helpers": "./src/helpers",
+        "@infra": "./src/infra",
       }}
     ],
   ],
