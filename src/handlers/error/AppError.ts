@@ -1,3 +1,5 @@
+import { i18n } from "@config/i18n";
+
 class AppError extends Error {
   public readonly message: string;
 
@@ -14,9 +16,7 @@ class AppError extends Error {
   }
 
   public static getErrorMessage(error: any): string {
-    return error instanceof AppError
-      ? error.message
-      : "Ocorreu um erro interno.";
+    return error instanceof AppError ? error.message : i18n.__("ErrorGeneric");
   }
 }
 

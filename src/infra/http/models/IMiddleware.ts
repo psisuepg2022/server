@@ -4,7 +4,6 @@ import { IResponseMessage } from "./IResponseMessage";
 
 interface IMiddleware<T = any> {
   (
-    error: Error,
     req: Request,
     res: Response<IResponseMessage<T>>,
     next: NextFunction

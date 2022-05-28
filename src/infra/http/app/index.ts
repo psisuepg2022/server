@@ -4,13 +4,17 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 
-import { errorHandlerMiddleware } from "@middlewares/errorHandlerMiddleware";
+import {
+  errorHandlerMiddleware,
+  internationalizationMiddleware,
+} from "@middlewares/index";
 
 const app = express();
 
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(internationalizationMiddleware);
 app.use(errorHandlerMiddleware);
 
 process.on("SIGTERM", () => {

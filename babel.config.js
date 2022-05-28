@@ -12,6 +12,8 @@ module.exports = {
         "@helpers": "./src/helpers",
         "@infra": "./src/infra",
         "@handlers": "./src/handlers",
+        "@middlewares": "./src/middlewares",
+        "@config": "./src/config",
       }}
     ],
   ],

@@ -1,7 +1,15 @@
-import { AppError } from "@handlers/error/AppError";
-import { IMiddleware } from "@infra/http";
+import { NextFunction, Request, Response } from "express";
 
-const errorHandlerMiddleware: IMiddleware = async (err, _, res, __) => {
+import { i18n } from "@config/i18n";
+import { AppError } from "@handlers/error/AppError";
+import { IResponseMessage } from "@infra/http";
+
+const errorHandlerMiddleware = async (
+  err: Error,
+  _: Request,
+  res: Response<IResponseMessage>,
+  __: NextFunction
+): Promise<void | Response> => {
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       success: false,
@@ -11,7 +19,7 @@ const errorHandlerMiddleware: IMiddleware = async (err, _, res, __) => {
 
   return res.status(500).json({
     success: false,
-    message: "Ocorreu um erro interno no servidor.",
+    message: i18n.__("ErrorGeneric"),
   });
 };
 
