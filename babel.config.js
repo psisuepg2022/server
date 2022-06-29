@@ -14,6 +14,7 @@ module.exports = {
         "@handlers": "./src/handlers",
         "@middlewares": "./src/middlewares",
         "@config": "./src/config",
+        "@providers": "./src/providers",
       }}
     ],
   ],
