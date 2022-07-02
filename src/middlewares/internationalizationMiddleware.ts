@@ -25,7 +25,7 @@ const internationalizationMiddleware: IMiddleware = async (req, _, next) => {
         Languages.PORTUGUESE
     );
   } catch (e) {
-    throw new AppError(500, "Ocorreu um erro interno.");
+    throw new AppError("INTERNAL_SERVER_ERROR", "Ocorreu um erro interno.");
   }
 
   next();

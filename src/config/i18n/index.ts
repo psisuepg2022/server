@@ -37,7 +37,7 @@ i18n.configure({
 
     console.log(`Missing key: ${value} for ${locale} language`);
 
-    throw new AppError(500, message);
+    throw new AppError("INTERNAL_SERVER_ERROR", message);
   },
 });
 
