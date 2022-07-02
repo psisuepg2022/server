@@ -30,7 +30,8 @@
       "@handlers/*": ["./src/handlers/*"],
       "@middlewares/*": ["./src/middlewares/*"],
       "@config/*": ["./src/config/*"],
-      "@providers/*": ["./src/providers/*"]
+      "@providers/*": ["./src/providers/*"],
+      "@models/*": ["./src/models/*"]
     }
   }
 }

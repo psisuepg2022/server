@@ -15,6 +15,7 @@ module.exports = {
         "@middlewares": "./src/middlewares",
         "@config": "./src/config",
         "@providers": "./src/providers",
+        "@models": "./src/models",
       }}
     ],
   ],
