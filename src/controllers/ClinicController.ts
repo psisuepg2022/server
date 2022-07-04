@@ -1,17 +1,31 @@
 import { Request, Response } from "express";
 import i18n from "i18n";
+import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
+import { ClinicModel } from "@models/domain/ClinicModel";
+import { CreateClinicService } from "@services/clinic/CreateClinicService";
 
 class ClinicController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<Omit<ClinicModel, "password">>>
   ): Promise<Response> {
     try {
-      return res.status(HttpStatus.OK).json({
+      const { name, email, password } = req.body;
+
+      const createClinicService = container.resolve(CreateClinicService);
+
+      const result = await createClinicService.execute({
+        email,
+        name,
+        password,
+      });
+
+      return res.status(HttpStatus.CREATED).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

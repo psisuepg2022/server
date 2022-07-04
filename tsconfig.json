@@ -35,7 +35,8 @@
       "@routes/*": ["./src/routes/*"],
       "@containers/*": ["./src/containers/*"],
       "@common/*": ["./src/common/*"],
-      "@controllers/*": ["./src/controllers/*"]
+      "@controllers/*": ["./src/controllers/*"],
+      "@services/*": ["./src/services/*"]
     }
   }
 }
