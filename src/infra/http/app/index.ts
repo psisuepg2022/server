@@ -6,6 +6,7 @@ import helmet from "helmet";
 
 import "@containers/index";
 
+import { RoutesPrefix } from "@common/RoutesPrefix";
 import {
   errorHandlerMiddleware,
   internationalizationMiddleware,
@@ -18,7 +19,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(internationalizationMiddleware);
-app.use(routes);
+app.use(RoutesPrefix.API, routes);
 app.use(errorHandlerMiddleware);
 
 process.on("SIGTERM", () => {

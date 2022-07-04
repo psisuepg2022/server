@@ -18,6 +18,7 @@ module.exports = {
         "@models": "./src/models",
         "@routes": "./src/routes",
         "@containers": "./src/containers",
+        "@common": "./src/common",
       }}
     ],
   ],
