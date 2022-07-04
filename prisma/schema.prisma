@@ -32,5 +32,19 @@ model Person {
   clinicId String @map("clinic_id") @db.Uuid
   clinic   Clinic @relation(fields: [clinicId], references: [id])
 
+  address Address?
+
   @@map("person")
+}
+
+model Address {
+  id         String @id @db.Uuid
+  city       String @db.VarChar(100)
+  district   String @db.VarChar(100)
+  publicArea String @map("public_area") @db.VarChar(255)
+
+  personId String @unique @map("person_id") @db.Uuid
+  person   Person @relation(fields: [personId], references: [id])
+
+  @@map("address")
 }
