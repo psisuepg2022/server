@@ -19,6 +19,7 @@ module.exports = {
         "@routes": "./src/routes",
         "@containers": "./src/containers",
         "@common": "./src/common",
+        "@controllers": "./src/controllers",
       }}
     ],
   ],
