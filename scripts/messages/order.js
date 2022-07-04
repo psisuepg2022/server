@@ -21,7 +21,7 @@ process.stdin.on('end', () => {
 const exec = async () => {
   try {
     
-    const filepath = path.join(__dirname, "..", "..", "src", "handlers", "error", "i18n_translations", `${locale}.json`);
+    const filepath = path.join(__dirname, "..", "..", "i18n_translations", `${locale}.json`);
     
     const buffer = await fs.readFile(filepath, "utf8");
     const jsonData = JSON.parse(buffer);

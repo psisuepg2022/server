@@ -9,7 +9,7 @@ if ((!key || !key.startsWith("Error") && !key.startsWith("Success") && !key.star
   process.exit(0);
 }
 
-const filepath = path.join(__dirname, "..", "..", "src", "handlers", "error","i18n_translations", `${locale}.json`);
+const filepath = path.join(__dirname, "..", "..", "i18n_translations", `${locale}.json`);
 
 const exec = async () => {
   try {

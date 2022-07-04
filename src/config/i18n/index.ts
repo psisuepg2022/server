@@ -11,14 +11,7 @@ i18n.configure({
   header: "language",
   queryParameter: "lang",
   extension: ".json",
-  directory: path.join(
-    __dirname,
-    "..",
-    "..",
-    "handlers",
-    "error",
-    "i18n_translations"
-  ),
+  directory: path.join(__dirname, "..", "..", "..", "i18n_translations"),
   api: {
     __: "translate",
     __n: "translateN",
