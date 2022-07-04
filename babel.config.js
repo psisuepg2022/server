@@ -21,6 +21,7 @@ module.exports = {
         "@common": "./src/common",
         "@controllers": "./src/controllers",
         "@services": "./src/services",
+        "@repositories": "./src/repositories",
       }}
     ],
   ],
