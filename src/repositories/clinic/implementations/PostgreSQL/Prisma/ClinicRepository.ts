@@ -6,6 +6,18 @@ import { IClinicRepository } from "@repositories/clinic/models/IClinicRepository
 class ClinicRepository implements IClinicRepository {
   constructor(private prisma = prismaClient) {}
 
+  public delete = (id: string): PrismaPromise<ClinicModel> =>
+    this.prisma.clinic.delete({
+      where: {
+        id,
+      },
+    });
+
+  public getById = (id: string): PrismaPromise<Omit<ClinicModel, "password">> =>
+    this.prisma.clinic.findFirst({
+      where: { id },
+    }) as PrismaPromise<Omit<ClinicModel, "password">>;
+
   public count = (): PrismaPromise<number> => this.prisma.clinic.count();
 
   public get = ([take, skip]: [number, number]): PrismaPromise<

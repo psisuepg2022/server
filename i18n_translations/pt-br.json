@@ -1,14 +1,17 @@
 {
   "ErrorClinicEmailAlreadyExists": "O e-mail informado já existe.",
+  "ErrorClinicNotFound": "Nenhuma clínica foi encontrada para o identificador informado.",
   "ErrorEmailInvalid": "O e-mail informado é inválido.",
   "ErrorEmailIsRequired": "É necessário informar o e-mail para cadastro.",
   "ErrorEnvPageSizeDefault": "Ocorreu um erro ao recuperar as informações para realizar a busca paginada. Por favor, entre em contato com um administrador.",
   "ErrorEnvPasswordHashSalt": "Não foi possível recuperar as informações necessárias. Por favor, entre em contato com um administrador.",
   "ErrorGeneric": "Ocorreu um erro. Por favor, entre em contato com um administrador.",
+  "ErrorIdIsRequired": "É necessário informar um identificado único para realizar a operação.",
   "ErrorInternal": "Ocorreu um erro interno no servidor.",
   "ErrorNameIsRequired": "É necessário informar o nome para cadastro.",
   "ErrorPasswordIsRequired": "É necessário informar a senha para cadastro.",
   "ErrorPasswordToWeak": "A senha é muito fraca. Mínimo de 8 caracteres, letras maiúsculas e minúsculas e pelo menos 1 número.",
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
+  "ErrorUUIDInvalid": "O identificador único informado é inválido.",
   "SuccessGeneric": "Operação realizada com sucesso."
 }

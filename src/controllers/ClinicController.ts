@@ -5,7 +5,11 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ClinicModel } from "@models/domain/ClinicModel";
-import { CreateClinicService, ListClinicsService } from "@services/clinic";
+import {
+  CreateClinicService,
+  DeleteClinicService,
+  ListClinicsService,
+} from "@services/clinic";
 
 class ClinicController {
   public async create(
@@ -64,11 +68,18 @@ class ClinicController {
 
   public async delete(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<boolean>>
   ): Promise<Response> {
     try {
+      const { id } = req.params;
+
+      const deleteClinicService = container.resolve(DeleteClinicService);
+
+      const result = await deleteClinicService.execute(id);
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

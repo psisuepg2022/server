@@ -8,6 +8,8 @@ interface IClinicRepository {
     Omit<ClinicModel, "password">[]
   >;
   count(): PrismaPromise<number>;
+  getById(id: string): PrismaPromise<Omit<ClinicModel, "password">>;
+  delete(id: string): PrismaPromise<ClinicModel>;
 }
 
 export { IClinicRepository };
