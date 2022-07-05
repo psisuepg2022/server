@@ -7,15 +7,13 @@ class ClinicRepository implements IClinicRepository {
   constructor(private prisma = prismaClient) {}
 
   public save = ({
-    code,
     email,
     id,
     name,
     password,
-  }: ClinicModel): PrismaPromise<ClinicModel> =>
+  }: Omit<ClinicModel, "code">): PrismaPromise<ClinicModel> =>
     this.prisma.clinic.create({
       data: {
-        code,
         id,
         name,
         password,
