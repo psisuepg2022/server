@@ -3,9 +3,9 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
-import { HttpStatus, IResponseMessage } from "@infra/http";
+import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ClinicModel } from "@models/domain/ClinicModel";
-import { CreateClinicService } from "@services/clinic/CreateClinicService";
+import { CreateClinicService, ListClinicsService } from "@services/clinic";
 
 class ClinicController {
   public async create(
@@ -38,11 +38,20 @@ class ClinicController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<
+      IResponseMessage<IPaginationResponse<Omit<ClinicModel, "password">>>
+    >
   ): Promise<Response> {
     try {
+      const { page, size } = req.query;
+
+      const listClinicsService = container.resolve(ListClinicsService);
+
+      const result = await listClinicsService.execute({ page, size });
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
