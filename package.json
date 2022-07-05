@@ -66,6 +66,7 @@
     "check-password-strength": "^2.0.5",
     "cors": "^2.8.5",
     "dotenv-cli": "^4.1.1",
+    "email-validator": "^2.0.4",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "helmet": "^5.1.0",

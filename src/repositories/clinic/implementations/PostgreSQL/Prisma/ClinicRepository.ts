@@ -6,6 +6,11 @@ import { IClinicRepository } from "@repositories/clinic/models/IClinicRepository
 class ClinicRepository implements IClinicRepository {
   constructor(private prisma = prismaClient) {}
 
+  public hasEmail = (email: string): PrismaPromise<ClinicModel> =>
+    this.prisma.clinic.findFirst({
+      where: { email },
+    }) as PrismaPromise<ClinicModel>;
+
   public save = ({
     email,
     id,
