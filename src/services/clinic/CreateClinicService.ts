@@ -48,7 +48,10 @@ class CreateClinicService {
 
     const salt = toNumber({
       value: env("PASSWORD_HASH_SALT"),
-      error: new AppError("BAD_REQUEST", i18n.__("ErrorEnvPasswordHashSalt")),
+      error: new AppError(
+        "INTERNAL_SERVER_ERROR",
+        i18n.__("ErrorMissingEnvVar")
+      ),
     });
 
     const [hasClinic] = await transaction([

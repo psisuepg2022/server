@@ -13,7 +13,15 @@ const pagination = ({ size, page }: IPaginationOptions): [number, number] => {
         error: new AppError("BAD_REQUEST", i18n.__("ErrorQueryTypecasting")),
       });
 
-      return converted;
+      const maxPageSize = toNumber({
+        value: env("MAX_PAGE_SIZE"),
+        error: new AppError(
+          "INTERNAL_SERVER_ERROR",
+          i18n.__("ErrorMissingEnvVar")
+        ),
+      });
+
+      return converted > maxPageSize ? maxPageSize : converted;
     }
 
     const sizeDefault = toNumber({
