@@ -61,5 +61,28 @@ model User {
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
 
+  roleId String @map("role_id") @db.Uuid
+  role   Role   @relation(fields: [roleId], references: [id])
+
   @@map("user")
+}
+
+model Role {
+  id   String @id @db.Uuid
+  name String @unique @db.VarChar(36)
+
+  users       User[]
+  permissions Permission[]
+
+  @@map("role")
+}
+
+model Permission {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(36)
+
+  roleId String @map("role_id") @db.Uuid
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  @@map("permission")
 }
