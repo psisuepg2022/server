@@ -33,6 +33,7 @@ model Person {
   clinic   Clinic @relation(fields: [clinicId], references: [id])
 
   address Address?
+  user    User?
 
   @@map("person")
 }
@@ -47,4 +48,18 @@ model Address {
   person   Person @relation(fields: [personId], references: [id])
 
   @@map("address")
+}
+
+model User {
+  userName      String  @map("user_name") @db.VarChar(100)
+  active        Boolean @default(true)
+  blocked       Boolean @default(false)
+  loginAttempts Int     @default(0) @map("login_attempts")
+  password      String  @db.VarChar(255)
+  accessCode    Int     @map("access_code")
+
+  id     String @id @unique @db.Uuid
+  person Person @relation(fields: [id], references: [id])
+
+  @@map("user")
 }
