@@ -12,6 +12,7 @@
   "ErrorNameIsRequired": "É necessário informar o nome para cadastro.",
   "ErrorOnlySupport": "Apenas pessoas credenciadas podem realizar esta operação.",
   "ErrorPasswordIsRequired": "É necessário informar a senha para cadastro.",
+  "ErrorPasswordOutOfBounds": "A senha deve possuir de {0} à {1} caracteres.",
   "ErrorPasswordToWeak": "A senha é muito fraca. Mínimo de 8 caracteres, letras maiúsculas e minúsculas e pelo menos 1 número.",
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",

@@ -43,6 +43,15 @@ class CreateClinicService {
     if (!password)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordIsRequired"));
 
+    if (this.passwordProvider.outOfBounds(password))
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorPasswordOutOfBounds", [
+          this.passwordProvider.MIN_LENGTH,
+          this.passwordProvider.MAX_LENGTH,
+        ])
+      );
+
     if (!this.passwordProvider.hasStrength(password))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordToWeak"));
 
