@@ -1,6 +1,13 @@
 {
+  "ErrorBirthDateInvalid": "A data de nascimento informada é inválida.",
+  "ErrorBirthDateRequired": "É necessário informar a data de nascimento para cadastro.",
+  "ErrorCPFInvalid": "O CPF informado é inválido.",
+  "ErrorCPFIsRequired": "É necessário informar o CPF para cadastro.",
+  "ErrorCityRequired": "É necessário informar a cidade para registro do endereço.",
   "ErrorClinicEmailAlreadyExists": "O e-mail informado já existe.",
   "ErrorClinicNotFound": "Nenhuma clínica foi encontrada para o identificador informado.",
+  "ErrorContactNumberInvalid": "O número para contato informado é inválido.",
+  "ErrorDistrictRequired": "É necessário informar o Estado para registro do endereço.",
   "ErrorEmailInvalid": "O e-mail informado é inválido.",
   "ErrorEmailIsRequired": "É necessário informar o e-mail para cadastro.",
   "ErrorEnvPageSizeDefault": "Ocorreu um erro ao recuperar as informações para realizar a busca paginada. Por favor, entre em contato com um administrador.",
@@ -14,6 +21,7 @@
   "ErrorPasswordIsRequired": "É necessário informar a senha para cadastro.",
   "ErrorPasswordOutOfBounds": "A senha deve possuir de {0} à {1} caracteres.",
   "ErrorPasswordToWeak": "A senha é muito fraca. Mínimo de 8 caracteres, letras maiúsculas e minúsculas e pelo menos 1 número.",
+  "ErrorPublicAreaRequired": "É necessário informar o logradouro para registro do endereço.",
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",
   "SuccessGeneric": "Operação realizada com sucesso."

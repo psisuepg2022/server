@@ -1,5 +1,5 @@
 import { PersonModel } from "@models/domain/PersonModel";
-import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
+import { CreateUserRequestModel } from "@models/dto/user/CreateUserRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { CreatePersonService } from "@services/person";
@@ -9,10 +9,22 @@ class CreateUserService extends CreatePersonService {
     super(uniqueIdentifierProvider);
   }
 
-  protected async createOperation(
-    _: CreatePersonRequestModel
-  ): Promise<PersonModel> {
-    console.log("CreateUserService", this.uniqueIdentifierProvider.generate());
+  protected async createOperation({
+    CPF,
+    birthDate,
+    name,
+    address,
+    contactNumber,
+    email,
+  }: CreateUserRequestModel): Promise<PersonModel> {
+    await super.createOperation({
+      birthDate,
+      CPF,
+      name,
+      address,
+      contactNumber,
+      email,
+    });
     return {} as PrismaPromise<PersonModel>;
   }
 }

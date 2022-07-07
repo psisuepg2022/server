@@ -12,35 +12,31 @@ class EmployeeController {
     req: Request,
     res: Response<IResponseMessage<Omit<EmployeeModel, "password">>>
   ): Promise<Response> {
-    const {
-      user_name: userName,
-      password,
-      email,
-      name,
-      CPF,
-      birth_date: birthDate,
-      contact_number: contactNumber,
-      address: { city, district, public_area: publicArea },
-    } = req.body;
-
-    const createEmployeeService = container.resolve(CreateEmployeeService);
-
-    const result = await createEmployeeService.execute({
-      userName,
-      birthDate,
-      contactNumber,
-      name,
-      CPF,
-      email,
-      password,
-      address: {
-        city,
-        district,
-        publicArea,
-      },
-    });
-
     try {
+      const {
+        user_name: userName,
+        password,
+        email,
+        name,
+        CPF,
+        birth_date: birthDate,
+        contact_number: contactNumber,
+        address,
+      } = req.body;
+
+      const createEmployeeService = container.resolve(CreateEmployeeService);
+
+      const result = await createEmployeeService.execute({
+        userName,
+        birthDate: new Date(birthDate),
+        contactNumber,
+        name,
+        CPF,
+        email,
+        password,
+        address,
+      });
+
       return res.status(HttpStatus.CREATED).json({
         success: true,
         content: result,

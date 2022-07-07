@@ -1,19 +1,64 @@
+import { cpf as cpfValidator } from "cpf-cnpj-validator";
+import { validate } from "email-validator";
+import i18n from "i18n";
+
+import { AppError } from "@handlers/error/AppError";
 import { PersonModel } from "@models/domain/PersonModel";
 import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
-import { PrismaPromise } from "@prisma/client";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 
 class CreatePersonService {
   constructor(protected uniqueIdentifierProvider: IUniqueIdentifierProvider) {}
 
-  protected async createOperation(
-    _: CreatePersonRequestModel
-  ): Promise<PersonModel> {
-    console.log(
-      "CreatePersonService",
-      this.uniqueIdentifierProvider.generate()
-    );
-    return {} as PrismaPromise<PersonModel>;
+  protected async createOperation({
+    CPF,
+    name,
+    birthDate,
+    contactNumber,
+    email,
+    address,
+  }: CreatePersonRequestModel): Promise<PersonModel> {
+    if (!CPF || CPF === "")
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFIsRequired"));
+
+    if (!cpfValidator.isValid(CPF))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFInvalid"));
+
+    console.log("sem mascara", CPF.replace(/[^0-9]+/g, ""));
+
+    if (!name)
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorNameIsRequired"));
+
+    if (!birthDate)
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorBirthDateRequired"));
+
+    if (new Date().getTime() < birthDate.getTime())
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorBirthDateInvalid"));
+
+    if (email && !validate(email))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));
+
+    if (
+      contactNumber &&
+      (contactNumber.length !== 15 ||
+        "/^(?:()[0-9]{2}(?:))s?[0-9]{4,5}(?:-)[0-9]{4}$/".match(contactNumber))
+    )
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorContactNumberInvalid"));
+
+    console.log("sem mascara", contactNumber?.replace(/[^0-9]+/g, ""));
+
+    if (address) {
+      if (!address.city || address.city === "")
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorCityRequired"));
+
+      if (!address.district || address.district === "")
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorDistrictRequired"));
+
+      if (!address.publicArea || address.publicArea === "")
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorPublicAreaRequired"));
+    }
+
+    return {} as Promise<PersonModel>;
   }
 }
 

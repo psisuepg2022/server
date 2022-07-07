@@ -14,9 +14,27 @@ class CreateEmployeeService extends CreateUserService {
     super(uniqueIdentifierProvider);
   }
 
-  public async execute(
-    _: CreateEmployeeRequestModel
-  ): Promise<Omit<EmployeeModel, "password">> {
+  public async execute({
+    CPF,
+    birthDate,
+    name,
+    address,
+    password,
+    userName,
+    contactNumber,
+    email,
+  }: CreateEmployeeRequestModel): Promise<Omit<EmployeeModel, "password">> {
+    await super.createOperation({
+      birthDate,
+      CPF,
+      name,
+      address,
+      contactNumber,
+      email,
+      password,
+      userName,
+    });
+
     return {
       id: this.uniqueIdentifierProvider.generate(),
     } as Omit<EmployeeModel, "password">;
