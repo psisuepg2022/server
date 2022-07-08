@@ -1,6 +1,7 @@
 import { container } from "tsyringe";
 
 import { HashProvider, IHashProvider } from "@providers/hash";
+import { IMaskProvider, MaskProvider } from "@providers/mask";
 import { IPasswordProvider, PasswordProvider } from "@providers/password";
 import {
   IUniqueIdentifierProvider,
@@ -24,3 +25,5 @@ container.registerSingleton<IValidatorsProvider>(
   "ValidatorsProvider",
   ValidatorsProvider
 );
+
+container.registerSingleton<IMaskProvider>("MaskProvider", MaskProvider);
