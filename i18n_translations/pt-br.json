@@ -1,4 +1,5 @@
 {
+  "ErrorBaseCreateOperationFailed": "Não foi possível realizar a operação. Por favor, entre em contato com um administrador.",
   "ErrorBirthDateInvalid": "A data de nascimento informada é inválida.",
   "ErrorBirthDateRequired": "É necessário informar a data de nascimento para cadastro.",
   "ErrorCPFInvalid": "O CPF informado é inválido.",
@@ -6,6 +7,7 @@
   "ErrorCityRequired": "É necessário informar a cidade para registro do endereço.",
   "ErrorClinicEmailAlreadyExists": "O e-mail informado já existe.",
   "ErrorClinicNotFound": "Nenhuma clínica foi encontrada para o identificador informado.",
+  "ErrorClinicRequired": "É necessário informar a clínica para registro.",
   "ErrorContactNumberInvalid": "O número para contato informado é inválido.",
   "ErrorDistrictRequired": "É necessário informar o Estado para registro do endereço.",
   "ErrorEmailInvalid": "O e-mail informado é inválido.",
@@ -24,5 +26,7 @@
   "ErrorPublicAreaRequired": "É necessário informar o logradouro para registro do endereço.",
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",
+  "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe.",
+  "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
   "SuccessGeneric": "Operação realizada com sucesso."
 }
