@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { ClinicModel } from "@models/domain/ClinicModel";
@@ -31,16 +32,16 @@ class CreateClinicService {
     name,
     password,
   }: CreateClinicRequestModel): Promise<Omit<ClinicModel, "password">> {
-    if (!name || name === "")
+    if (stringIsNullOrEmpty(name))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorNameIsRequired"));
 
-    if (!email)
+    if (stringIsNullOrEmpty(email))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailIsRequired"));
 
     if (!validate(email))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));
 
-    if (!password)
+    if (stringIsNullOrEmpty(password))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordIsRequired"));
 
     if (this.passwordProvider.outOfBounds(password))

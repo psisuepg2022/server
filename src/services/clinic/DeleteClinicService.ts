@@ -2,6 +2,7 @@ import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IClinicRepository } from "@repositories/clinic";
@@ -16,7 +17,7 @@ class DeleteClinicService {
   ) {}
 
   public async execute(id: string): Promise<boolean> {
-    if (!id || id === "")
+    if (stringIsNullOrEmpty(id))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorIdIsRequired"));
 
     if (!this.uniqueIdentifierProvider.isValid(id))

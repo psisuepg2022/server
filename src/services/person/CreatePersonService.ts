@@ -1,6 +1,7 @@
 import i18n from "i18n";
 
 import { AppError } from "@handlers/error/AppError";
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { PersonModel } from "@models/domain/PersonModel";
 import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
@@ -20,7 +21,7 @@ class CreatePersonService {
     email,
     address,
   }: CreatePersonRequestModel): Promise<PersonModel> {
-    if (!CPF || CPF === "")
+    if (stringIsNullOrEmpty(CPF))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFIsRequired"));
 
     if (!this.validatorsProvider.cpf(CPF))
@@ -28,7 +29,7 @@ class CreatePersonService {
 
     console.log("sem mascara", CPF.replace(/[^0-9]+/g, ""));
 
-    if (!name)
+    if (stringIsNullOrEmpty(name))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorNameIsRequired"));
 
     if (!birthDate)
