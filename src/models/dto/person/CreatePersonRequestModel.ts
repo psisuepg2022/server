@@ -6,6 +6,7 @@ type CreatePersonRequestModel = {
   CPF: string;
   contactNumber?: string;
   birthDate: Date;
+  clinicId: string;
   address?: CreateAddressRequestModel;
 };
 

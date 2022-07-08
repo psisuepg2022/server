@@ -1,8 +1,7 @@
 import { container } from "tsyringe";
 
 import { ClinicRepository, IClinicRepository } from "@repositories/clinic";
-import { IPersonRepository } from "@repositories/person";
-import { PersonRepository } from "@repositories/person/implementations/PostgreSQL/Prisma/PersonRepository";
+import { IPersonRepository, PersonRepository } from "@repositories/person";
 
 container.registerSingleton<IClinicRepository>(
   "ClinicRepository",

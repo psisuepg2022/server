@@ -15,22 +15,30 @@ class CreateUserService extends CreatePersonService {
     super(uniqueIdentifierProvider, validatorsProvider, personRepository);
   }
 
-  protected async createOperation({
-    CPF,
-    birthDate,
-    name,
-    address,
-    contactNumber,
-    email,
-  }: CreateUserRequestModel): Promise<PersonModel> {
-    await super.createOperation({
-      birthDate,
+  protected async createOperation(
+    {
       CPF,
+      birthDate,
       name,
       address,
       contactNumber,
       email,
-    });
+      clinicId,
+    }: CreateUserRequestModel,
+    domainClass: string
+  ): Promise<PersonModel> {
+    await super.createOperation(
+      {
+        birthDate,
+        CPF,
+        name,
+        address,
+        contactNumber,
+        email,
+        clinicId,
+      },
+      domainClass
+    );
     return {} as PrismaPromise<PersonModel>;
   }
 }

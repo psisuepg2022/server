@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { CreateEmployeeRequestModel } from "@models/dto/employee/CreateEmployeeRequestModel";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
@@ -29,17 +30,22 @@ class CreateEmployeeService extends CreateUserService {
     userName,
     contactNumber,
     email,
+    clinicId,
   }: CreateEmployeeRequestModel): Promise<Omit<EmployeeModel, "password">> {
-    await super.createOperation({
-      birthDate,
-      CPF,
-      name,
-      address,
-      contactNumber,
-      email,
-      password,
-      userName,
-    });
+    await super.createOperation(
+      {
+        birthDate,
+        CPF,
+        name,
+        address,
+        contactNumber,
+        email,
+        password,
+        userName,
+        clinicId,
+      },
+      UserDomainClasses.EMPLOYEE
+    );
 
     return {
       id: this.uniqueIdentifierProvider.generate(),

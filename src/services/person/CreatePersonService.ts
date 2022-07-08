@@ -16,14 +16,18 @@ class CreatePersonService {
     protected personRepository: IPersonRepository
   ) {}
 
-  protected async createOperation({
-    CPF,
-    name,
-    birthDate,
-    contactNumber,
-    email,
-    address,
-  }: CreatePersonRequestModel): Promise<PersonModel> {
+  protected async createOperation(
+    {
+      CPF,
+      name,
+      birthDate,
+      contactNumber,
+      email,
+      clinicId,
+      address,
+    }: CreatePersonRequestModel,
+    domainClass: string
+  ): Promise<PersonModel> {
     if (stringIsNullOrEmpty(CPF))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFIsRequired"));
 
@@ -72,7 +76,16 @@ class CreatePersonService {
         throw new AppError("BAD_REQUEST", i18n.__("ErrorPublicAreaRequired"));
     }
 
-    return {} as Promise<PersonModel>;
+    return this.personRepository.save({
+      birthDate,
+      contactNumber,
+      CPF,
+      email,
+      id: this.uniqueIdentifierProvider.generate(),
+      name,
+      domainClass,
+      clinicId,
+    });
   }
 }
 

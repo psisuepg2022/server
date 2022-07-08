@@ -22,6 +22,7 @@ class EmployeeController {
         birth_date: birthDate,
         contact_number: contactNumber,
         address,
+        clinicId,
       } = req.body;
 
       const createEmployeeService = container.resolve(CreateEmployeeService);
@@ -34,6 +35,7 @@ class EmployeeController {
         CPF,
         email,
         password,
+        clinicId,
         address,
       });
 
