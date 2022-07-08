@@ -6,6 +6,7 @@ import {
   IUniqueIdentifierProvider,
   UniqueIdentifierProvider,
 } from "@providers/uniqueIdentifier";
+import { IValidatorsProvider, ValidatorsProvider } from "@providers/validators";
 
 container.registerSingleton<IUniqueIdentifierProvider>(
   "UniqueIdentifierProvider",
@@ -18,3 +19,8 @@ container.registerSingleton<IPasswordProvider>(
 );
 
 container.registerSingleton<IHashProvider>("HashProvider", HashProvider);
+
+container.registerSingleton<IValidatorsProvider>(
+  "ValidatorsProvider",
+  ValidatorsProvider
+);

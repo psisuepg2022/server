@@ -3,15 +3,18 @@ import { inject, injectable } from "tsyringe";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { CreateEmployeeRequestModel } from "@models/dto/employee/CreateEmployeeRequestModel";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
+import { IValidatorsProvider } from "@providers/validators";
 import { CreateUserService } from "@services/user";
 
 @injectable()
 class CreateEmployeeService extends CreateUserService {
   constructor(
     @inject("UniqueIdentifierProvider")
-    uniqueIdentifierProvider: IUniqueIdentifierProvider
+    uniqueIdentifierProvider: IUniqueIdentifierProvider,
+    @inject("ValidatorsProvider")
+    validatorsProvider: IValidatorsProvider
   ) {
-    super(uniqueIdentifierProvider);
+    super(uniqueIdentifierProvider, validatorsProvider);
   }
 
   public async execute({
