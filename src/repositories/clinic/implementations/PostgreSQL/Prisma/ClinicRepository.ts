@@ -30,10 +30,10 @@ class ClinicRepository implements IClinicRepository {
       skip,
     });
 
-  public hasEmail = (email: string): PrismaPromise<ClinicModel> =>
+  public hasEmail = (email: string): PrismaPromise<ClinicModel | null> =>
     this.prisma.clinic.findFirst({
       where: { email },
-    }) as PrismaPromise<ClinicModel>;
+    }) as PrismaPromise<ClinicModel | null>;
 
   public save = ({
     email,

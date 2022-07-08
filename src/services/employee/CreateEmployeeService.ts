@@ -4,6 +4,7 @@ import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { CreateEmployeeRequestModel } from "@models/dto/employee/CreateEmployeeRequestModel";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IPersonRepository } from "@repositories/person";
 import { CreateUserService } from "@services/user";
 
 @injectable()
@@ -12,9 +13,11 @@ class CreateEmployeeService extends CreateUserService {
     @inject("UniqueIdentifierProvider")
     uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
-    validatorsProvider: IValidatorsProvider
+    validatorsProvider: IValidatorsProvider,
+    @inject("PersonRepository")
+    personRepository: IPersonRepository
   ) {
-    super(uniqueIdentifierProvider, validatorsProvider);
+    super(uniqueIdentifierProvider, validatorsProvider, personRepository);
   }
 
   public async execute({

@@ -2,15 +2,18 @@ import i18n from "i18n";
 
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
+import { transaction } from "@infra/database/transaction";
 import { PersonModel } from "@models/domain/PersonModel";
 import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IPersonRepository } from "@repositories/person";
 
 class CreatePersonService {
   constructor(
     protected uniqueIdentifierProvider: IUniqueIdentifierProvider,
-    protected validatorsProvider: IValidatorsProvider
+    protected validatorsProvider: IValidatorsProvider,
+    protected personRepository: IPersonRepository
   ) {}
 
   protected async createOperation({
@@ -38,8 +41,20 @@ class CreatePersonService {
     if (new Date().getTime() < birthDate.getTime())
       throw new AppError("BAD_REQUEST", i18n.__("ErrorBirthDateInvalid"));
 
-    if (email && !this.validatorsProvider.email(email))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));
+    if (email) {
+      if (!this.validatorsProvider.email(email))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));
+
+      const [hasEmail] = await transaction([
+        this.personRepository.hasEmail(email),
+      ]);
+
+      if (hasEmail)
+        throw new AppError(
+          "BAD_REQUEST",
+          i18n.__("ErrorClinicEmailAlreadyExists")
+        );
+    }
 
     if (contactNumber && !this.validatorsProvider.contactNumber(contactNumber))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorContactNumberInvalid"));
