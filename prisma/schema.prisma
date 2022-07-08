@@ -24,7 +24,7 @@ model Person {
   id            String   @id @db.Uuid
   email         String?  @unique @db.VarChar(100)
   name          String   @db.VarChar(100)
-  class         String   @db.VarChar(32)
+  domainClass   String   @db.VarChar(32)
   CPF           String   @map("cpf") @db.VarChar(16)
   birthDate     DateTime @map("birth_date")
   contactNumber String?  @map("contact_number") @db.VarChar(32)
