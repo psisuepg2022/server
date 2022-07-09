@@ -18,6 +18,11 @@ class UserRepository implements IUserRepository {
         roleId,
         accessCode: 1,
       },
+      select: {
+        accessCode: true,
+        id: true,
+        userName: true,
+      },
     }) as PrismaPromise<Partial<UserModel>>;
 
   public hasUserName = (userName: string): PrismaPromise<UserModel | null> =>

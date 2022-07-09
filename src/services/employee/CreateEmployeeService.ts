@@ -65,7 +65,7 @@ class CreateEmployeeService extends CreateUserService {
     contactNumber,
     email,
     clinicId,
-  }: CreateEmployeeRequestModel): Promise<Omit<EmployeeModel, "password">> {
+  }: CreateEmployeeRequestModel): Promise<Partial<EmployeeModel>> {
     const id = this.uniqueIdentifierProvider.generate();
 
     await super.createUserOperation(
@@ -84,7 +84,7 @@ class CreateEmployeeService extends CreateUserService {
       UserDomainClasses.EMPLOYEE
     );
 
-    const [_, { password: __, ...user }] = await transaction(
+    const [person, { password: __, ...user }, addressSaved] = await transaction(
       ((): PrismaPromise<any>[] =>
         address
           ? [
@@ -95,7 +95,14 @@ class CreateEmployeeService extends CreateUserService {
           : [this.getCreatePersonOperation(), this.getCreateUserOperation()])()
     );
 
-    return user as Omit<EmployeeModel, "password">;
+    return {
+      ...user,
+      ...person,
+      address: addressSaved,
+      CPF: this.maskProvider.cpf(person.CPF),
+      birthDate: this.maskProvider.date(person.birthDate),
+      contactNumber: this.maskProvider.contactNumber(person.contactNumber),
+    } as Partial<EmployeeModel>;
   }
 }
 

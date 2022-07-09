@@ -15,9 +15,9 @@ import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
 
 class CreatePersonService {
-  private personOperation?: PrismaPromise<PersonModel>;
+  private personOperation?: PrismaPromise<Partial<PersonModel>>;
 
-  private addressOperation?: PrismaPromise<AddressModel>;
+  private addressOperation?: PrismaPromise<Partial<AddressModel>>;
 
   constructor(
     protected validatorsProvider: IValidatorsProvider,
@@ -28,7 +28,9 @@ class CreatePersonService {
     protected addressRepository: IAddressRepository
   ) {}
 
-  protected getCreatePersonOperation = (): PrismaPromise<PersonModel> => {
+  protected getCreatePersonOperation = (): PrismaPromise<
+    Partial<PersonModel>
+  > => {
     if (this.personOperation) return this.personOperation;
 
     throw new AppError(
@@ -37,7 +39,7 @@ class CreatePersonService {
     );
   };
 
-  protected getAddressOperation = (): PrismaPromise<AddressModel> => {
+  protected getAddressOperation = (): PrismaPromise<Partial<AddressModel>> => {
     if (this.addressOperation) return this.addressOperation;
 
     throw new AppError(

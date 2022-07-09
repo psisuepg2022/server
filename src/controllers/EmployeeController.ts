@@ -10,7 +10,7 @@ import { CreateEmployeeService } from "@services/employee";
 class EmployeeController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage<Omit<EmployeeModel, "password">>>
+    res: Response<IResponseMessage<Partial<EmployeeModel>>>
   ): Promise<Response> {
     try {
       const {

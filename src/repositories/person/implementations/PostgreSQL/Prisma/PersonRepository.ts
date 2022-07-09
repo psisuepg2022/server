@@ -9,7 +9,7 @@ class PersonRepository implements IPersonRepository {
   public save = (
     clinicId: string,
     { CPF, birthDate, contactNumber, email, domainClass, id, name }: PersonModel
-  ): PrismaPromise<PersonModel> =>
+  ): PrismaPromise<Partial<PersonModel>> =>
     this.prisma.person.create({
       data: {
         birthDate,
@@ -21,7 +21,14 @@ class PersonRepository implements IPersonRepository {
         email,
         clinicId,
       },
-    }) as PrismaPromise<PersonModel>;
+      select: {
+        birthDate: true,
+        CPF: true,
+        contactNumber: true,
+        email: true,
+        name: true,
+      },
+    }) as PrismaPromise<Partial<PersonModel>>;
 
   public hasEmail = (email: string): PrismaPromise<PersonModel | null> =>
     this.prisma.person.findFirst({
