@@ -1,5 +1,6 @@
 import { container } from "tsyringe";
 
+import { AddressRepository, IAddressRepository } from "@repositories/address";
 import {
   AuthenticationRepository,
   IAuthenticationRepository,
@@ -23,4 +24,9 @@ container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
 container.registerSingleton<IAuthenticationRepository>(
   "AuthenticationRepository",
   AuthenticationRepository
+);
+
+container.registerSingleton<IAddressRepository>(
+  "AddressRepository",
+  AddressRepository
 );
