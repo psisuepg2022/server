@@ -11,7 +11,6 @@ type PersonModel = {
   birthDate: Date;
   contactNumber?: string;
   clinic?: Clinic;
-  clinicId: string;
   address?: AddresModel;
 };
 

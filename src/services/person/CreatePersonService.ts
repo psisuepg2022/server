@@ -102,7 +102,7 @@ class CreatePersonService {
         throw new AppError("BAD_REQUEST", i18n.__("ErrorPublicAreaRequired"));
     }
 
-    this.personOperation = this.personRepository.save({
+    this.personOperation = this.personRepository.save(clinicId, {
       birthDate,
       contactNumber: this.maskProvider.remove(contactNumber || ""),
       CPF: this.maskProvider.remove(CPF),
@@ -110,7 +110,6 @@ class CreatePersonService {
       id,
       name,
       domainClass,
-      clinicId,
     });
   }
 }

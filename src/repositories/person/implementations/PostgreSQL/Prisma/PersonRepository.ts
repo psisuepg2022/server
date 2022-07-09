@@ -6,16 +6,10 @@ import { IPersonRepository } from "@repositories/person/models/IPersonRepository
 class PersonRepository implements IPersonRepository {
   constructor(private prisma = prismaClient) {}
 
-  public save = ({
-    CPF,
-    birthDate,
-    contactNumber,
-    email,
-    domainClass,
-    id,
-    name,
-    clinicId,
-  }: PersonModel): PrismaPromise<PersonModel> =>
+  public save = (
+    clinicId: string,
+    { CPF, birthDate, contactNumber, email, domainClass, id, name }: PersonModel
+  ): PrismaPromise<PersonModel> =>
     this.prisma.person.create({
       data: {
         birthDate,
