@@ -114,20 +114,6 @@ class CreateUserService extends CreatePersonService {
     if (!this.passwordProvider.hasStrength(password))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordToWeak"));
 
-    await super.createPersonOperation(
-      {
-        birthDate,
-        CPF,
-        name,
-        address,
-        contactNumber,
-        email,
-        clinicId,
-      },
-      id,
-      domainClass
-    );
-
     const salt = toNumber({
       value: env("PASSWORD_HASH_SALT"),
       error: new AppError(
@@ -144,6 +130,20 @@ class CreateUserService extends CreatePersonService {
 
     if (!hasRole)
       throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorRoleNotFound"));
+
+    await super.createPersonOperation(
+      {
+        birthDate,
+        CPF,
+        name,
+        address,
+        contactNumber,
+        email,
+        clinicId,
+      },
+      id,
+      domainClass
+    );
 
     this.userOperation = this.userRepository.save(hasRole.id, {
       id,
