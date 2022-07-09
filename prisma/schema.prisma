@@ -26,7 +26,7 @@ model Person {
   name          String   @db.VarChar(100)
   domainClass   String   @db.VarChar(32)
   CPF           String   @map("cpf") @db.VarChar(16)
-  birthDate     DateTime @map("birth_date")
+  birthDate     DateTime @map("birth_date") @db.Date
   contactNumber String?  @map("contact_number") @db.VarChar(32)
 
   clinicId String @map("clinic_id") @db.Uuid
