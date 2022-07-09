@@ -36,7 +36,13 @@ class EmployeeController {
         email,
         password,
         clinicId,
-        address,
+        address: address
+          ? {
+              city: address.city,
+              district: address.district,
+              publicArea: address.public_area,
+            }
+          : undefined,
       });
 
       return res.status(HttpStatus.CREATED).json({

@@ -3,28 +3,42 @@ import i18n from "i18n";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
+import { AddressModel } from "@models/domain/AddressModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAddressRepository } from "@repositories/address";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
 
 class CreatePersonService {
   private personOperation?: PrismaPromise<PersonModel>;
 
+  private addressOperation?: PrismaPromise<AddressModel>;
+
   constructor(
     protected validatorsProvider: IValidatorsProvider,
     protected personRepository: IPersonRepository,
     protected clinicRepository: IClinicRepository,
     protected maskProvider: IMaskProvider,
-    protected uniqueIdentifierProvider: IUniqueIdentifierProvider
+    protected uniqueIdentifierProvider: IUniqueIdentifierProvider,
+    protected addressRepository: IAddressRepository
   ) {}
 
   protected getCreatePersonOperation = (): PrismaPromise<PersonModel> => {
     if (this.personOperation) return this.personOperation;
+
+    throw new AppError(
+      "INTERNAL_SERVER_ERROR",
+      i18n.__("ErrorBaseCreateOperationFailed")
+    );
+  };
+
+  protected getAddressOperation = (): PrismaPromise<AddressModel> => {
+    if (this.addressOperation) return this.addressOperation;
 
     throw new AppError(
       "INTERNAL_SERVER_ERROR",
@@ -100,6 +114,11 @@ class CreatePersonService {
 
       if (!address.publicArea || address.publicArea === "")
         throw new AppError("BAD_REQUEST", i18n.__("ErrorPublicAreaRequired"));
+
+      this.addressOperation = this.addressRepository.save(id, {
+        id: this.uniqueIdentifierProvider.generate(),
+        ...address,
+      });
     }
 
     this.personOperation = this.personRepository.save(clinicId, {

@@ -15,6 +15,7 @@ import { IMaskProvider } from "@providers/mask";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAddressRepository } from "@repositories/address";
 import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
@@ -30,6 +31,7 @@ class CreateUserService extends CreatePersonService {
     clinicRepository: IClinicRepository,
     maskProvider: IMaskProvider,
     uniqueIdentifierProvider: IUniqueIdentifierProvider,
+    addressRepository: IAddressRepository,
     protected userRepository: IUserRepository,
     protected passwordProvider: IPasswordProvider,
     protected hashProvider: IHashProvider,
@@ -40,7 +42,8 @@ class CreateUserService extends CreatePersonService {
       personRepository,
       clinicRepository,
       maskProvider,
-      uniqueIdentifierProvider
+      uniqueIdentifierProvider,
+      addressRepository
     );
   }
 

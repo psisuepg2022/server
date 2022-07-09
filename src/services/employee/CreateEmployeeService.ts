@@ -4,11 +4,13 @@ import { UserDomainClasses } from "@common/UserDomainClasses";
 import { transaction } from "@infra/database/transaction";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { CreateEmployeeRequestModel } from "@models/dto/employee/CreateEmployeeRequestModel";
+import { PrismaPromise } from "@prisma/client";
 import { IHashProvider } from "@providers/hash";
 import { IMaskProvider } from "@providers/mask";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAddressRepository } from "@repositories/address";
 import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
@@ -35,7 +37,9 @@ class CreateEmployeeService extends CreateUserService {
     @inject("HashProvider")
     haskProvider: IHashProvider,
     @inject("AuthenticationRepository")
-    authenticationRepository: IAuthenticationRepository
+    authenticationRepository: IAuthenticationRepository,
+    @inject("AddressRepository")
+    addressRepository: IAddressRepository
   ) {
     super(
       validatorsProvider,
@@ -43,6 +47,7 @@ class CreateEmployeeService extends CreateUserService {
       clinicRepository,
       maskProvider,
       uniqueIdentifierProvider,
+      addressRepository,
       userRepository,
       passwordProvider,
       haskProvider,
@@ -79,10 +84,16 @@ class CreateEmployeeService extends CreateUserService {
       UserDomainClasses.EMPLOYEE
     );
 
-    const [_, { password: __, ...user }] = await transaction([
-      this.getCreatePersonOperation(),
-      this.getCreateUserOperation(),
-    ]);
+    const [_, { password: __, ...user }] = await transaction(
+      ((): PrismaPromise<any>[] =>
+        address
+          ? [
+              this.getCreatePersonOperation(),
+              this.getCreateUserOperation(),
+              this.getAddressOperation(),
+            ]
+          : [this.getCreatePersonOperation(), this.getCreateUserOperation()])()
+    );
 
     return user as Omit<EmployeeModel, "password">;
   }
