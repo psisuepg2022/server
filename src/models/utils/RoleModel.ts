@@ -1,5 +1,5 @@
 type RoleModel = {
-  id: string;
+  id: number;
   name: string;
 };
 

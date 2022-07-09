@@ -25,6 +25,7 @@
   "ErrorPasswordToWeak": "A senha é muito fraca. Mínimo de 8 caracteres, letras maiúsculas e minúsculas e pelo menos 1 número.",
   "ErrorPublicAreaRequired": "É necessário informar o logradouro para registro do endereço.",
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
+  "ErrorRoleNotFound": "Não foi possível recuperar as informações de permissão. Por favor, entre em contato com um administrador.",
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",
   "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe.",
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",

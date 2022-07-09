@@ -6,17 +6,16 @@ import { IUserRepository } from "@repositories/user/models/IUserRepository";
 class UserRepository implements IUserRepository {
   constructor(private prisma = prismaClient) {}
 
-  public save = ({
-    password,
-    userName,
-    id,
-  }: UserModel): PrismaPromise<Partial<UserModel>> =>
+  public save = (
+    roleId: number,
+    { password, userName, id }: UserModel
+  ): PrismaPromise<Partial<UserModel>> =>
     this.prisma.user.create({
       data: {
         password,
         userName,
         id,
-        roleId: "1e2ee182-ff07-11ec-b939-0242ac120002",
+        roleId,
         accessCode: 1,
       },
     }) as PrismaPromise<Partial<UserModel>>;

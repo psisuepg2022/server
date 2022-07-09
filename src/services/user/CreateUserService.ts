@@ -1,5 +1,7 @@
 import i18n from "i18n";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
+import { UserRoles } from "@common/UserRoles";
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
@@ -13,6 +15,7 @@ import { IMaskProvider } from "@providers/mask";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
 import { IUserRepository } from "@repositories/user";
@@ -29,7 +32,8 @@ class CreateUserService extends CreatePersonService {
     uniqueIdentifierProvider: IUniqueIdentifierProvider,
     protected userRepository: IUserRepository,
     protected passwordProvider: IPasswordProvider,
-    protected hashProvider: IHashProvider
+    protected hashProvider: IHashProvider,
+    protected authenticationRepository: IAuthenticationRepository
   ) {
     super(
       validatorsProvider,
@@ -47,6 +51,24 @@ class CreateUserService extends CreatePersonService {
       "INTERNAL_SERVER_ERROR",
       i18n.__("ErrorBaseCreateOperationFailed")
     );
+  };
+
+  private getRoleName = (domainClass: string): string => {
+    switch (domainClass) {
+      case UserDomainClasses.EMPLOYEE:
+        return UserRoles.EMPLOYEE;
+      case UserDomainClasses.OWNER:
+        return UserRoles.OWNER;
+      case UserDomainClasses.PATIENT:
+        return UserRoles.PATIENT;
+      case UserDomainClasses.PROFESSIONAL:
+        return UserRoles.PROFESSIONAL;
+      default:
+        throw new AppError(
+          "INTERNAL_SERVER_ERROR",
+          i18n.__("ErrorRoleNotFound")
+        );
+    }
   };
 
   protected async createUserOperation(
@@ -111,7 +133,16 @@ class CreateUserService extends CreatePersonService {
       ),
     });
 
-    this.userOperation = this.userRepository.save({
+    const [hasRole] = await transaction([
+      this.authenticationRepository.getRoleByName(
+        this.getRoleName(domainClass)
+      ),
+    ]);
+
+    if (!hasRole)
+      throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorRoleNotFound"));
+
+    this.userOperation = this.userRepository.save(hasRole.id, {
       id,
       password: await this.hashProvider.hash(password, salt),
       userName,

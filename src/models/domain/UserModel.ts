@@ -1,3 +1,5 @@
+import { RoleModel } from "@models/utils/RoleModel";
+
 import { PersonModel } from "./PersonModel";
 
 type UserModel = PersonModel & {
@@ -7,6 +9,7 @@ type UserModel = PersonModel & {
   loginAttempts?: number;
   password: string;
   accessCode?: number;
+  role?: RoleModel;
 };
 
 export { UserModel };

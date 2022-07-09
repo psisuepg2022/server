@@ -9,6 +9,7 @@ import { IMaskProvider } from "@providers/mask";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
 import { IUserRepository } from "@repositories/user";
@@ -32,7 +33,9 @@ class CreateEmployeeService extends CreateUserService {
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
     @inject("HashProvider")
-    haskProvider: IHashProvider
+    haskProvider: IHashProvider,
+    @inject("AuthenticationRepository")
+    authenticationRepository: IAuthenticationRepository
   ) {
     super(
       validatorsProvider,
@@ -42,7 +45,8 @@ class CreateEmployeeService extends CreateUserService {
       uniqueIdentifierProvider,
       userRepository,
       passwordProvider,
-      haskProvider
+      haskProvider,
+      authenticationRepository
     );
   }
 
