@@ -1,5 +1,9 @@
 import { container } from "tsyringe";
 
+import {
+  AuthenticationRepository,
+  IAuthenticationRepository,
+} from "@repositories/authentication";
 import { ClinicRepository, IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository, PersonRepository } from "@repositories/person";
 import { IUserRepository, UserRepository } from "@repositories/user";
@@ -15,3 +19,8 @@ container.registerSingleton<IPersonRepository>(
 );
 
 container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
+
+container.registerSingleton<IAuthenticationRepository>(
+  "AuthenticationRepository",
+  AuthenticationRepository
+);
