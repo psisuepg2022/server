@@ -1,6 +1,6 @@
 import { Clinic } from "@prisma/client";
 
-import { AddresModel } from "./AddressModel";
+import { AddressModel } from "./AddressModel";
 
 type PersonModel = {
   id: string;
@@ -11,7 +11,7 @@ type PersonModel = {
   birthDate: Date;
   contactNumber?: string;
   clinic?: Clinic;
-  address?: AddresModel;
+  address?: AddressModel;
 };
 
 export { PersonModel };

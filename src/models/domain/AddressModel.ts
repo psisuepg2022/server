@@ -1,8 +1,8 @@
-type AddresModel = {
+type AddressModel = {
   id: string;
   city: string;
   district: string;
   publicArea: string;
 };
 
-export { AddresModel };
+export { AddressModel };
