@@ -10,7 +10,6 @@ datasource db {
 
 model Clinic {
   id       String @id @db.Uuid
-  password String @db.VarChar(255)
   email    String @unique @db.VarChar(100)
   name     String @db.VarChar(100)
   code     Int    @default(autoincrement())
