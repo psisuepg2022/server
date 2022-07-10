@@ -84,7 +84,7 @@ class CreateEmployeeService extends CreateUserService {
       UserDomainClasses.EMPLOYEE
     );
 
-    const [person, { password: __, ...user }, addressSaved] = await transaction(
+    const [person, user, addressSaved] = await transaction(
       ((): PrismaPromise<any>[] =>
         address
           ? [

@@ -16,7 +16,6 @@ class UserRepository implements IUserRepository {
         userName,
         id,
         roleId,
-        accessCode: 1,
       },
       select: {
         accessCode: true,
