@@ -56,7 +56,7 @@ model User {
   blocked       Boolean @default(false)
   loginAttempts Int     @default(0) @map("login_attempts")
   password      String  @db.VarChar(255)
-  accessCode    Int     @map("access_code")
+  accessCode    Int     @default(autoincrement()) @map("access_code")
 
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
