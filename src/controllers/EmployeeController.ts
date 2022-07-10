@@ -5,7 +5,10 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
-import { CreateEmployeeService } from "@services/employee";
+import {
+  CreateEmployeeService,
+  ListEmployeesService,
+} from "@services/employee";
 
 class EmployeeController {
   public async create(
@@ -60,11 +63,18 @@ class EmployeeController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse>>
+    res: Response<IResponseMessage<IPaginationResponse<Partial<EmployeeModel>>>>
   ): Promise<Response> {
     try {
+      const { page, size } = req.query;
+
+      const listEmployeesService = container.resolve(ListEmployeesService);
+
+      const result = await listEmployeesService.execute({ page, size });
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

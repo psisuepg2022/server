@@ -8,7 +8,7 @@ type PersonModel = {
   name: string;
   domainClass: string;
   CPF: string;
-  birthDate: Date;
+  birthDate: Date | string;
   contactNumber?: string;
   clinic?: Clinic;
   address?: AddressModel;
