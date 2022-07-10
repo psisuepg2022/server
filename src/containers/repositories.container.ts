@@ -6,6 +6,10 @@ import {
   IAuthenticationRepository,
 } from "@repositories/authentication";
 import { ClinicRepository, IClinicRepository } from "@repositories/clinic";
+import {
+  EmployeeRepository,
+  IEmployeeRepository,
+} from "@repositories/employee";
 import { IPersonRepository, PersonRepository } from "@repositories/person";
 import { IUserRepository, UserRepository } from "@repositories/user";
 
@@ -29,4 +33,9 @@ container.registerSingleton<IAuthenticationRepository>(
 container.registerSingleton<IAddressRepository>(
   "AddressRepository",
   AddressRepository
+);
+
+container.registerSingleton<IEmployeeRepository>(
+  "EmployeeRepository",
+  EmployeeRepository
 );
