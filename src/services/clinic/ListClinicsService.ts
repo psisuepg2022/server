@@ -15,7 +15,7 @@ class ListClinicsService {
 
   public async execute(
     options?: IPaginationOptions
-  ): Promise<IPaginationResponse<Omit<ClinicModel, "password">>> {
+  ): Promise<IPaginationResponse<ClinicModel>> {
     const countOperation = this.clinicRepository.count();
     const getOperation = this.clinicRepository.get(pagination(options || {}));
 

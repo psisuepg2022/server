@@ -13,16 +13,14 @@ class ClinicRepository implements IClinicRepository {
       },
     });
 
-  public getById = (id: string): PrismaPromise<Omit<ClinicModel, "password">> =>
+  public getById = (id: string): PrismaPromise<ClinicModel> =>
     this.prisma.clinic.findFirst({
       where: { id },
-    }) as PrismaPromise<Omit<ClinicModel, "password">>;
+    }) as PrismaPromise<ClinicModel>;
 
   public count = (): PrismaPromise<number> => this.prisma.clinic.count();
 
-  public get = ([take, skip]: [number, number]): PrismaPromise<
-    Omit<ClinicModel, "password">[]
-  > =>
+  public get = ([take, skip]: [number, number]): PrismaPromise<ClinicModel[]> =>
     this.prisma.clinic.findMany({
       select: { code: true, email: true, id: true, name: true },
       orderBy: { name: "asc" },
@@ -39,13 +37,11 @@ class ClinicRepository implements IClinicRepository {
     email,
     id,
     name,
-    password,
   }: Omit<ClinicModel, "code">): PrismaPromise<ClinicModel> =>
     this.prisma.clinic.create({
       data: {
         id,
         name,
-        password,
         email,
       },
     }) as PrismaPromise<ClinicModel>;

@@ -14,17 +14,16 @@ import {
 class ClinicController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage<Omit<ClinicModel, "password">>>
+    res: Response<IResponseMessage<ClinicModel>>
   ): Promise<Response> {
     try {
-      const { name, email, password } = req.body;
+      const { name, email } = req.body;
 
       const createClinicService = container.resolve(CreateClinicService);
 
       const result = await createClinicService.execute({
         email,
         name,
-        password,
       });
 
       return res.status(HttpStatus.CREATED).json({
@@ -42,9 +41,7 @@ class ClinicController {
 
   public async read(
     req: Request,
-    res: Response<
-      IResponseMessage<IPaginationResponse<Omit<ClinicModel, "password">>>
-    >
+    res: Response<IResponseMessage<IPaginationResponse<ClinicModel>>>
   ): Promise<Response> {
     try {
       const { page, size } = req.query;
