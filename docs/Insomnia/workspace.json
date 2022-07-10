@@ -1,9 +1,86 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-07-06T12:03:37.394Z",
+  "__export_date": "2022-07-10T17:09:29.368Z",
   "__export_source": "insomnia.desktop.app:v2022.4.2",
   "resources": [
+    {
+      "_id": "req_803168cfaab9400a95969ce92480fb14",
+      "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
+      "modified": 1657472952533,
+      "created": 1657151453642,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "create",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"user_name\": \"marcos.krul\",\n\t\"password\": \"Marcos123\",\n\t\"email\": \"marcos@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"696.399.870-18\",\n\t\"birth_date\": \"2000-06-02\",\n\t\"contact_number\": \"(47) 99090-9090\",\n\t\"clinicId\": \"\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"public_area\": \"Avenida General Carlos Cavalcanti\"\n\t}\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_26e21673bae04009a3deb3972bc6a641"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1657151453642,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8bde367d58d470d99959c29472f6b61",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657143642068,
+      "created": 1657142212136,
+      "name": "employee",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657142212136,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "parentId": null,
+      "modified": 1654723859605,
+      "created": 1654723859605,
+      "name": "psis",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_355e0702f3c449aa9973c5457b984dc6",
+      "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
+      "modified": 1657472182647,
+      "created": 1657142214249,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "read",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1657142214249,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
     {
       "_id": "req_ac7f0c3686c343e09cc355ca0d30d693",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
@@ -40,19 +117,9 @@
       "_type": "request_group"
     },
     {
-      "_id": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "parentId": null,
-      "modified": 1654723859605,
-      "created": 1654723859605,
-      "name": "psis",
-      "description": "",
-      "scope": "collection",
-      "_type": "workspace"
-    },
-    {
       "_id": "req_a3eb30f42fc742889681d6b0bddd1dc1",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1657108706423,
+      "modified": 1657110407282,
       "created": 1656965676597,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "read",
@@ -75,7 +142,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1657109002553,
+      "modified": 1657472834539,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -83,7 +150,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"NAME\",\n\t\"password\": \"PASSWORD\",\n\t\"email\": \"EMAIL\"\n}"
+        "text": "{\n\t\"name\": \"PSIS\",\n\t\"email\": \"psis@email.com\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -139,7 +206,7 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1657108972729,
+      "modified": 1657472533307,
       "created": 1654723872664,
       "name": "dev",
       "data": {
@@ -160,12 +227,12 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1657108962905,
+      "modified": 1657472533734,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
         "base_url": "https://psis-api.herokuapp.com/api",
-        "support": ""
+        "support": "e1cab50c402d99685c069ab7e997ca657e78a518"
       },
       "dataPropertyOrder": {
         "&": [
