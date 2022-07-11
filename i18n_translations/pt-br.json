@@ -29,5 +29,7 @@
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",
   "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe.",
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
+  "ErrorValueOutOfGenderDomain": "A informação do Sexo não é reconhecida.",
+  "ErrorValueOutOfMaritalStatusDomain": "A informação do estado civil não é reconhecida.",
   "SuccessGeneric": "Operação realizada com sucesso."
 }
