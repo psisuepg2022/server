@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
+import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
 import {
   CreateEmployeeService,
   ListEmployeesService,
@@ -63,7 +64,9 @@ class EmployeeController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse<Partial<EmployeeModel>>>>
+    res: Response<
+      IResponseMessage<IPaginationResponse<ListEmployeesResponseModel>>
+    >
   ): Promise<Response> {
     try {
       const { page, size } = req.query;

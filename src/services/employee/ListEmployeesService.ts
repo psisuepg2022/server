@@ -5,6 +5,7 @@ import { transaction } from "@infra/database/transaction";
 import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { PersonModel } from "@models/domain/PersonModel";
+import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
 import { IMaskProvider } from "@providers/mask";
 import { IEmployeeRepository } from "@repositories/employee";
 
@@ -19,7 +20,7 @@ class ListEmployeesService {
 
   public async execute(
     options?: IPaginationOptions
-  ): Promise<IPaginationResponse<Partial<EmployeeModel>>> {
+  ): Promise<IPaginationResponse<ListEmployeesResponseModel>> {
     const countOperation = this.employeeRepository.count();
     const getOperation = this.employeeRepository.get(pagination(options || {}));
 
@@ -35,16 +36,19 @@ class ListEmployeesService {
           ...item
         }: Partial<
           EmployeeModel & { person: PersonModel }
-        >): Partial<EmployeeModel> => ({
-          ...item,
-          CPF: this.maskProvider.cpf(person?.CPF || ""),
-          contactNumber: this.maskProvider.contactNumber(
-            person?.contactNumber || ""
-          ),
-          email: person?.email,
-          name: person?.name,
-          birthDate: this.maskProvider.date(new Date(person?.birthDate || "")),
-        })
+        >): ListEmployeesResponseModel =>
+          ({
+            ...item,
+            CPF: this.maskProvider.cpf(person?.CPF || ""),
+            contactNumber: this.maskProvider.contactNumber(
+              person?.contactNumber || ""
+            ),
+            email: person?.email,
+            name: person?.name || "",
+            birthDate: this.maskProvider.date(
+              new Date(person?.birthDate || "")
+            ),
+          } as ListEmployeesResponseModel)
       ),
       totalItens,
     };

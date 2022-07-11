@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { PatientModel } from "@models/domain/PatientModel";
+import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import { CreatePatientService, ListPatientsService } from "@services/patient";
 
 class PatientController {
@@ -60,7 +61,9 @@ class PatientController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse<Partial<PatientModel>>>>
+    res: Response<
+      IResponseMessage<IPaginationResponse<ListPatientsResponseModel>>
+    >
   ): Promise<Response> {
     try {
       const { page, size } = req.query;
