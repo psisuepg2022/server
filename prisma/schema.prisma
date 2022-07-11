@@ -33,6 +33,7 @@ model Person {
 
   address Address?
   user    User?
+  patient Patient?
 
   @@map("person")
 }
@@ -84,4 +85,14 @@ model Permission {
   role   Role @relation(fields: [roleId], references: [id])
 
   @@map("permission")
+}
+
+model Patient {
+  gender        Int @db.SmallInt
+  maritalStatus Int @map("marital_status") @db.SmallInt
+
+  id     String @id @unique @db.Uuid
+  person Person @relation(fields: [id], references: [id])
+
+  @@map("patient")
 }
