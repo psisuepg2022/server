@@ -6,6 +6,8 @@ class RoutesPrefix {
   public static readonly EMPLOYEE: string = "/employee";
 
   public static readonly PATIENT: string = "/patient";
+
+  public static readonly PROFESSIONAL: string = "/professional";
 }
 
 export { RoutesPrefix };
