@@ -1,17 +1,53 @@
 import { Request, Response } from "express";
 import i18n from "i18n";
+import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
+import { PatientModel } from "@models/domain/PatientModel";
+import { CreatePatientService } from "@services/patient";
 
 class PatientController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<Partial<PatientModel>>>
   ): Promise<Response> {
     try {
+      const {
+        email,
+        name,
+        CPF,
+        birth_date: birthDate,
+        contact_number: contactNumber,
+        address,
+        clinicId,
+        gender,
+        marital_status: maritalStatus,
+      } = req.body;
+
+      const createPatientService = container.resolve(CreatePatientService);
+
+      const result = await createPatientService.execute({
+        email,
+        name,
+        birthDate,
+        CPF,
+        contactNumber,
+        gender,
+        maritalStatus,
+        clinicId,
+        address: address
+          ? {
+              city: address.city,
+              district: address.district,
+              publicArea: address.public_area,
+            }
+          : undefined,
+      });
+
       return res.status(HttpStatus.CREATED).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
