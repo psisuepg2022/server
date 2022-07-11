@@ -1,6 +1,6 @@
 interface IPaginationResponse<T = any> {
-  itens: T[];
-  totalItens: number;
+  items: T[];
+  totalItems: number;
 }
 
 export { IPaginationResponse };

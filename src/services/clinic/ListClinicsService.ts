@@ -19,12 +19,12 @@ class ListClinicsService {
     const countOperation = this.clinicRepository.count();
     const getOperation = this.clinicRepository.get(pagination(options || {}));
 
-    const [totalItens, itens] = await transaction([
+    const [totalItems, items] = await transaction([
       countOperation,
       getOperation,
     ]);
 
-    return { itens, totalItens };
+    return { items, totalItems };
   }
 }
 

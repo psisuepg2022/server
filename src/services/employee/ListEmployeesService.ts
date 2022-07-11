@@ -24,13 +24,13 @@ class ListEmployeesService {
     const countOperation = this.employeeRepository.count();
     const getOperation = this.employeeRepository.get(pagination(options || {}));
 
-    const [totalItens, itens] = await transaction([
+    const [totalItems, items] = await transaction([
       countOperation,
       getOperation,
     ]);
 
     return {
-      itens: itens.map(
+      items: items.map(
         ({
           person,
           ...item
@@ -50,7 +50,7 @@ class ListEmployeesService {
             ),
           } as ListEmployeesResponseModel)
       ),
-      totalItens,
+      totalItems,
     };
   }
 }

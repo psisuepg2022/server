@@ -27,13 +27,13 @@ class ListPatientsService {
     const countOperation = this.patientRepository.count();
     const getOperation = this.patientRepository.get(pagination(options || {}));
 
-    const [totalItens, itens] = await transaction([
+    const [totalItems, items] = await transaction([
       countOperation,
       getOperation,
     ]);
 
     return {
-      itens: itens.map(
+      items: items.map(
         ({
           patient,
           ...item
@@ -57,7 +57,7 @@ class ListPatientsService {
             ),
           } as ListPatientsResponseModel)
       ),
-      totalItens,
+      totalItems,
     };
   }
 }
