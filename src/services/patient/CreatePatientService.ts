@@ -14,6 +14,7 @@ import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IAddressRepository } from "@repositories/address";
 import { IClinicRepository } from "@repositories/clinic";
+import { IPatientRepository } from "@repositories/patient";
 import { IPersonRepository } from "@repositories/person";
 import { CreatePersonService } from "@services/person";
 
@@ -31,7 +32,9 @@ class CreatePatientService extends CreatePersonService {
     @inject("AddressRepository")
     addressRepository: IAddressRepository,
     @inject("MaskProvider")
-    maskProvider: IMaskProvider
+    maskProvider: IMaskProvider,
+    @inject("PatientRepository")
+    private patientRepository: IPatientRepository
   ) {
     super(
       validatorsProvider,
@@ -79,14 +82,30 @@ class CreatePatientService extends CreatePersonService {
       UserDomainClasses.PATIENT
     );
 
-    const [person, addressSaved] = await transaction(
+    const createPatientOperation = this.patientRepository.save(id, {
+      gender,
+      maritalStatus,
+    } as PatientModel);
+
+    const [person, patient, addressSaved] = await transaction(
       ((): PrismaPromise<any>[] =>
         address
-          ? [this.getCreatePersonOperation(), this.getAddressOperation()]
-          : [this.getCreatePersonOperation()])()
+          ? [
+              this.getCreatePersonOperation(),
+              createPatientOperation,
+              this.getAddressOperation(),
+            ]
+          : [this.getCreatePersonOperation(), createPatientOperation])()
     );
 
-    return {};
+    return {
+      ...patient,
+      ...person,
+      address: addressSaved,
+      CPF: this.maskProvider.cpf(person.CPF),
+      birthDate: this.maskProvider.date(person.birthDate),
+      contactNumber: this.maskProvider.contactNumber(person.contactNumber),
+    } as Partial<PatientModel>;
   }
 }
 

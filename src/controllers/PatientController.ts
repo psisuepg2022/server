@@ -30,7 +30,7 @@ class PatientController {
       const result = await createPatientService.execute({
         email,
         name,
-        birthDate,
+        birthDate: new Date(birthDate),
         CPF,
         contactNumber,
         gender,
