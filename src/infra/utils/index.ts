@@ -1,3 +1,4 @@
+import { Domains } from "./Domains";
 import { Languages } from "./Languages";
 
-export { Languages };
+export { Languages, Domains };
