@@ -5,7 +5,7 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { PatientModel } from "@models/domain/PatientModel";
-import { CreatePatientService } from "@services/patient";
+import { CreatePatientService, ListPatientsService } from "@services/patient";
 
 class PatientController {
   public async create(
@@ -60,11 +60,18 @@ class PatientController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse>>
+    res: Response<IResponseMessage<IPaginationResponse<Partial<PatientModel>>>>
   ): Promise<Response> {
     try {
+      const { page, size } = req.query;
+
+      const listPatientsService = container.resolve(ListPatientsService);
+
+      const result = await listPatientsService.execute({ page, size });
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
