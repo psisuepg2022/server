@@ -64,6 +64,8 @@ model User {
   roleId Int  @map("role_id")
   role   Role @relation(fields: [roleId], references: [id])
 
+  professional Professional?
+
   @@map("user")
 }
 
@@ -95,4 +97,16 @@ model Patient {
   person Person @relation(fields: [id], references: [id])
 
   @@map("patient")
+}
+
+model Professional {
+  profession     String  @db.VarChar(255)
+  specialization String? @db.VarChar(255)
+  baseDuration   Int     @default(60) @map("base_duration") @db.Integer
+  registry       String  @db.VarChar(255)
+
+  id     String @id @unique @db.Uuid
+  person User   @relation(fields: [id], references: [id])
+
+  @@map("professional")
 }
