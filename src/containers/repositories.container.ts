@@ -10,6 +10,7 @@ import {
   EmployeeRepository,
   IEmployeeRepository,
 } from "@repositories/employee";
+import { IOwnerRepository, OwnerRepository } from "@repositories/owner";
 import { IPatientRepository, PatientRepository } from "@repositories/patient";
 import { IPersonRepository, PersonRepository } from "@repositories/person";
 import { IUserRepository, UserRepository } from "@repositories/user";
@@ -44,4 +45,9 @@ container.registerSingleton<IEmployeeRepository>(
 container.registerSingleton<IPatientRepository>(
   "PatientRepository",
   PatientRepository
+);
+
+container.registerSingleton<IOwnerRepository>(
+  "OwnerRepository",
+  OwnerRepository
 );
