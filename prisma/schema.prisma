@@ -67,6 +67,7 @@ model User {
   role   Role @relation(fields: [roleId], references: [id])
 
   professional Professional?
+  Appointment  Appointment[]
 
   @@map("user")
 }
@@ -98,7 +99,8 @@ model Patient {
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
 
-  liables Liable[]
+  liables     Liable[]
+  Appointment Appointment[]
 
   @@map("patient")
 }
@@ -114,6 +116,7 @@ model Professional {
 
   WeeklySchedule WeeklySchedule[]
   ScheduleLock   ScheduleLock[]
+  Appointment    Appointment[]
 
   @@map("professional")
 }
@@ -163,4 +166,24 @@ model ScheduleLock {
   professional   Professional @relation(fields: [professionalId], references: [id])
 
   @@map("schedule_lock")
+}
+
+model Appointment {
+  id              String   @id @db.Uuid
+  status          Int      @db.SmallInt
+  appointmentDate DateTime @map("appointment_date") @db.Timestamp()
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamp()
+  createdAt       DateTime @map("created_at") @db.Timestamp()
+  comments        String   @db.Text
+
+  patientId String  @map("patient_id") @db.Uuid
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  professionalId String       @map("professional_id") @db.Uuid
+  professional   Professional @relation(fields: [professionalId], references: [id])
+
+  employeeId String @map("employee_id") @db.Uuid
+  employee   User   @relation(fields: [employeeId], references: [id])
+
+  @@map("appointment")
 }
