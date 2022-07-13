@@ -112,6 +112,7 @@ model Professional {
   user User   @relation(fields: [id], references: [id])
 
   WeeklySchedule WeeklySchedule[]
+  ScheduleLock   ScheduleLock[]
 
   @@map("professional")
 }
@@ -149,4 +150,16 @@ model WeeklyScheduleLock {
   weeklySchedule   WeeklySchedule @relation(fields: [weeklyScheduleId], references: [id])
 
   @@map("weekly_schedule_lock")
+}
+
+model ScheduleLock {
+  id        String   @id @db.Uuid
+  startTime DateTime @map("start_time") @db.Time()
+  endTime   DateTime @map("end_time") @db.Time()
+  date      DateTime @db.Date
+
+  professionalId String       @map("professional_id") @db.Uuid
+  professional   Professional @relation(fields: [professionalId], references: [id])
+
+  @@map("schedule_lock")
 }
