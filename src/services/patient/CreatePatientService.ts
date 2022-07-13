@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
+import { getEnumDescription } from "@helpers/getEnumDescription";
 import { transaction } from "@infra/database/transaction";
 import { GenderDomain } from "@infra/domains/GenderDomain";
 import { MaritalStatusDomain } from "@infra/domains/MaritalStatusDomain";
@@ -105,6 +106,11 @@ class CreatePatientService extends CreatePersonService {
       CPF: this.maskProvider.cpf(person.CPF),
       birthDate: this.maskProvider.date(person.birthDate),
       contactNumber: this.maskProvider.contactNumber(person.contactNumber),
+      gender: getEnumDescription("GENDER", GenderDomain[patient.gender]),
+      maritalStatus: getEnumDescription(
+        "MARITAL_STATUS",
+        MaritalStatusDomain[patient.maritalStatus]
+      ),
     } as Partial<PatientModel>;
   }
 }
