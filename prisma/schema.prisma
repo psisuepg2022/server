@@ -27,6 +27,7 @@ model Person {
   CPF           String   @map("cpf") @db.VarChar(16)
   birthDate     DateTime @map("birth_date") @db.Date
   contactNumber String?  @map("contact_number") @db.VarChar(32)
+  createdAt     DateTime @default(now()) @map("created_at")
 
   clinicId String @map("clinic_id") @db.Uuid
   clinic   Clinic @relation(fields: [clinicId], references: [id])
