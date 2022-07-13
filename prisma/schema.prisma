@@ -105,8 +105,8 @@ model Professional {
   baseDuration   Int     @default(60) @map("base_duration") @db.Integer
   registry       String  @db.VarChar(255)
 
-  id     String @id @unique @db.Uuid
-  person User   @relation(fields: [id], references: [id])
+  id   String @id @unique @db.Uuid
+  user User   @relation(fields: [id], references: [id])
 
   @@map("professional")
 }
