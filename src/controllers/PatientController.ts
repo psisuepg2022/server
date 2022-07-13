@@ -84,23 +84,6 @@ class PatientController {
       });
     }
   }
-
-  public async delete(
-    req: Request,
-    res: Response<IResponseMessage<boolean>>
-  ): Promise<Response> {
-    try {
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
-  }
 }
 
 export { PatientController };

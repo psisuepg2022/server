@@ -7,6 +7,5 @@ const controller = new EmployeeController();
 
 routes.get("/", controller.read);
 routes.post("/", controller.create);
-routes.delete("/:id", controller.delete);
 
 export { routes };
