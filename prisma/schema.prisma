@@ -135,5 +135,18 @@ model WeeklySchedule {
   professionalId String       @map("professional_id") @db.Uuid
   professional   Professional @relation(fields: [professionalId], references: [id])
 
+  WeeklyScheduleLocks WeeklyScheduleLock[]
+
   @@map("weekly_schedule")
+}
+
+model WeeklyScheduleLock {
+  id        String   @id @db.Uuid
+  startTime DateTime @map("start_time") @db.Time()
+  endTime   DateTime @map("end_time") @db.Time()
+
+  weeklyScheduleId String         @map("weekly_schedule_id") @db.Uuid
+  weeklySchedule   WeeklySchedule @relation(fields: [weeklyScheduleId], references: [id])
+
+  @@map("weekly_schedule_lock")
 }
