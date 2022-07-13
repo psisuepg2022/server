@@ -34,6 +34,7 @@ model Person {
   address Address?
   user    User?
   patient Patient?
+  liable  Liable?
 
   @@map("person")
 }
@@ -96,6 +97,8 @@ model Patient {
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
 
+  liables Liable[]
+
   @@map("patient")
 }
 
@@ -109,4 +112,14 @@ model Professional {
   user User   @relation(fields: [id], references: [id])
 
   @@map("professional")
+}
+
+model Liable {
+  personId String @id @unique @map("person_id") @db.Uuid
+  person   Person @relation(fields: [personId], references: [id])
+
+  patientId String  @map("patient_id") @db.Uuid
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  @@map("liable")
 }
