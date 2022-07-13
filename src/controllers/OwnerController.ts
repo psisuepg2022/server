@@ -5,7 +5,8 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { OwnerModel } from "@models/domain/OwnerModel";
-import { CreateOwnerService } from "@services/owner";
+import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
+import { CreateOwnerService, ListOwnersService } from "@services/owner";
 
 class OwnerController {
   public async create(
@@ -60,11 +61,20 @@ class OwnerController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse>>
+    res: Response<
+      IResponseMessage<IPaginationResponse<ListOwnersResponseModel>>
+    >
   ): Promise<Response> {
     try {
+      const { page, size } = req.query;
+
+      const listOwnersService = container.resolve(ListOwnersService);
+
+      const result = await listOwnersService.execute({ page, size });
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

@@ -1,3 +1,4 @@
 import { CreateOwnerService } from "./CreateOwnerService";
+import { ListOwnersService } from "./ListOwnersService";
 
-export { CreateOwnerService };
+export { CreateOwnerService, ListOwnersService };
