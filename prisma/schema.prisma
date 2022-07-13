@@ -111,6 +111,8 @@ model Professional {
   id   String @id @unique @db.Uuid
   user User   @relation(fields: [id], references: [id])
 
+  WeeklySchedule WeeklySchedule[]
+
   @@map("professional")
 }
 
@@ -122,4 +124,16 @@ model Liable {
   patient   Patient @relation(fields: [patientId], references: [id])
 
   @@map("liable")
+}
+
+model WeeklySchedule {
+  id           String   @id @db.Uuid
+  startTime    DateTime @map("start_time") @db.Time()
+  endTime      DateTime @map("end_time") @db.Time()
+  dayOfTheWeek Int      @map("day_of_the_week") @db.SmallInt
+
+  professionalId String       @map("professional_id") @db.Uuid
+  professional   Professional @relation(fields: [professionalId], references: [id])
+
+  @@map("weekly_schedule")
 }
