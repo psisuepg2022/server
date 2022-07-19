@@ -164,7 +164,7 @@ model ScheduleLock {
   endTime   DateTime @map("horario_fim") @db.Time()
   date      DateTime @map("data") @db.Date
 
-  professionalId String       @map("professional_id") @db.Uuid
+  professionalId String       @map("id_profissional") @db.Uuid
   professional   Professional @relation(fields: [professionalId], references: [id])
 
   @@map("restricoes_horario")

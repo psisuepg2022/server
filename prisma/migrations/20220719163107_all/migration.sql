@@ -125,7 +125,7 @@ CREATE TABLE "restricoes_horario" (
     "horario_inicio" TIME NOT NULL,
     "horario_fim" TIME NOT NULL,
     "data" DATE NOT NULL,
-    "professional_id" UUID NOT NULL,
+    "id_profissional" UUID NOT NULL,
 
     CONSTRAINT "restricoes_horario_pkey" PRIMARY KEY ("id")
 );
@@ -209,7 +209,7 @@ ALTER TABLE "agenda_semanal" ADD CONSTRAINT "agenda_semanal_id_profissional_fkey
 ALTER TABLE "restricoes_agenda_semanal" ADD CONSTRAINT "restricoes_agenda_semanal_id_agenda_semanal_fkey" FOREIGN KEY ("id_agenda_semanal") REFERENCES "agenda_semanal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "restricoes_horario" ADD CONSTRAINT "restricoes_horario_professional_id_fkey" FOREIGN KEY ("professional_id") REFERENCES "profissional"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "restricoes_horario" ADD CONSTRAINT "restricoes_horario_id_profissional_fkey" FOREIGN KEY ("id_profissional") REFERENCES "profissional"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "consulta" ADD CONSTRAINT "consulta_id_funcionario_fkey" FOREIGN KEY ("id_funcionario") REFERENCES "usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
