@@ -17,6 +17,7 @@ class AddressRepository implements IAddressRepository {
         id,
         personId,
         publicArea,
+        zipCode: "00000-000",
       },
       select: {
         city: true,

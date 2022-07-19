@@ -1,9 +1,12 @@
+-- CreateSequence
+CREATE SEQUENCE gerar_codigo_base_clinica INCREMENT 1000 START 1000;
+
 -- CreateTable
 CREATE TABLE "clinica" (
     "id" UUID NOT NULL,
     "email" VARCHAR(100) NOT NULL,
     "nome" VARCHAR(100) NOT NULL,
-    "codigo_base" SERIAL NOT NULL,
+    "codigo_base" INTEGER NOT NULL DEFAULT NEXTVAL('gerar_codigo_base_clinica'),
 
     CONSTRAINT "clinica_pkey" PRIMARY KEY ("id")
 );
@@ -212,3 +215,24 @@ ALTER TABLE "consulta" ADD CONSTRAINT "consulta_id_paciente_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "consulta" ADD CONSTRAINT "consulta_id_profissional_fkey" FOREIGN KEY ("id_profissional") REFERENCES "profissional"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- CreateTrigger
+CREATE FUNCTION gerar_codigo_usuario() RETURNS TRIGGER
+AS $$
+DECLARE CODIGO_CLINICA BIGINT;
+BEGIN
+  SELECT c.codigo_base INTO CODIGO_CLINICA
+  FROM clinica c
+  WHERE c.id = (SELECT p.id_clinica FROM pessoa p WHERE p.id = NEW.id);
+
+  NEW.codigo_acesso := NEW.codigo_acesso + CODIGO_CLINICA;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_gerar_codigo_usuario
+BEFORE INSERT ON "usuario"
+FOR EACH ROW
+EXECUTE PROCEDURE gerar_codigo_usuario();
