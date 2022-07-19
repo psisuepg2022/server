@@ -35,7 +35,7 @@ model Person {
   address Address?
   user    User?
   patient Patient?
-  liable  Liable?
+  liables Liable[]
 
   @@map("pessoa")
 }
@@ -101,7 +101,7 @@ model Patient {
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
 
-  liables     Liable[]
+  liable      Liable?
   Appointment Appointment[]
 
   @@map("paciente")
@@ -124,10 +124,10 @@ model Professional {
 }
 
 model Liable {
-  personId String @id @unique @map("id_pessoa") @db.Uuid
+  personId String @map("id_pessoa") @db.Uuid
   person   Person @relation(fields: [personId], references: [id])
 
-  patientId String  @map("id_paciente") @db.Uuid
+  patientId String  @id @map("id_paciente") @db.Uuid
   patient   Patient @relation(fields: [patientId], references: [id])
 
   @@map("responsavel")

@@ -95,7 +95,7 @@ CREATE TABLE "responsavel" (
     "id_pessoa" UUID NOT NULL,
     "id_paciente" UUID NOT NULL,
 
-    CONSTRAINT "responsavel_pkey" PRIMARY KEY ("id_pessoa")
+    CONSTRAINT "responsavel_pkey" PRIMARY KEY ("id_paciente")
 );
 
 -- CreateTable
@@ -174,9 +174,6 @@ CREATE UNIQUE INDEX "paciente_id_key" ON "paciente"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "profissional_id_key" ON "profissional"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "responsavel_id_pessoa_key" ON "responsavel"("id_pessoa");
 
 -- AddForeignKey
 ALTER TABLE "pessoa" ADD CONSTRAINT "pessoa_id_clinica_fkey" FOREIGN KEY ("id_clinica") REFERENCES "clinica"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
