@@ -24,7 +24,7 @@ model Person {
   email         String?  @unique @db.VarChar(100)
   name          String   @map("nome") @db.VarChar(100)
   domainClass   String   @map("classe_dominio") @db.VarChar(32)
-  CPF           String?  @map("cpf") @db.VarChar(16) @unique
+  CPF           String?  @unique @map("cpf") @db.VarChar(16)
   birthDate     DateTime @map("data_nascimento") @db.Date
   contactNumber String?  @map("telefone") @db.VarChar(32)
   createdAt     DateTime @default(now()) @map("data_criacao") @db.Timestamp()
@@ -41,11 +41,12 @@ model Person {
 }
 
 model Address {
-  id         String @id @db.Uuid
-  city       String @map("cidade") @db.VarChar(100)
-  district   String @map("estado") @db.VarChar(100)
-  publicArea String @map("logradouro") @db.VarChar(255)
-  zipCode    String @map("CEP") @db.VarChar(12)
+  id         String  @id @db.Uuid
+  city       String  @map("cidade") @db.VarChar(100)
+  district   String? @map("bairro") @db.VarChar(100)
+  state      String  @map("estado") @db.VarChar(100)
+  publicArea String  @map("logradouro") @db.VarChar(255)
+  zipCode    String  @map("CEP") @db.VarChar(12)
 
   personId String @unique @map("id_pessoa") @db.Uuid
   person   Person @relation(fields: [personId], references: [id])
@@ -54,7 +55,7 @@ model Address {
 }
 
 model User {
-  userName      String  @map("nome_usuario") @db.VarChar(100)
+  userName      String  @unique @map("nome_usuario") @db.VarChar(100)
   active        Boolean @default(true) @map("ativo")
   blocked       Boolean @default(false) @map("bloqueado")
   loginAttempts Int     @default(0) @map("tentativas")

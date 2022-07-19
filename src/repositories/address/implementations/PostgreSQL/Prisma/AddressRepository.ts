@@ -12,6 +12,7 @@ class AddressRepository implements IAddressRepository {
   ): PrismaPromise<Partial<AddressModel>> =>
     this.prisma.address.create({
       data: {
+        state: "SC",
         city,
         district,
         id,

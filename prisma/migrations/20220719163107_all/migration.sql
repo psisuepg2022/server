@@ -30,6 +30,7 @@ CREATE TABLE "pessoa" (
 CREATE TABLE "endereco" (
     "id" UUID NOT NULL,
     "cidade" VARCHAR(100) NOT NULL,
+    "bairro" VARCHAR(100),
     "estado" VARCHAR(100) NOT NULL,
     "logradouro" VARCHAR(255) NOT NULL,
     "CEP" VARCHAR(12) NOT NULL,
@@ -160,6 +161,9 @@ CREATE UNIQUE INDEX "endereco_id_pessoa_key" ON "endereco"("id_pessoa");
 CREATE UNIQUE INDEX "usuario_id_key" ON "usuario"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "usuario_nome_usuario_key" ON "usuario"("nome_usuario");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "role_nome_key" ON "role"("nome");
 
 -- CreateIndex
@@ -218,24 +222,3 @@ ALTER TABLE "consulta" ADD CONSTRAINT "consulta_id_paciente_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "consulta" ADD CONSTRAINT "consulta_id_profissional_fkey" FOREIGN KEY ("id_profissional") REFERENCES "profissional"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- CreateTrigger
-CREATE FUNCTION gerar_codigo_usuario() RETURNS TRIGGER
-AS $$
-DECLARE CODIGO_CLINICA BIGINT;
-BEGIN
-  SELECT c.codigo_base INTO CODIGO_CLINICA
-  FROM clinica c
-  WHERE c.id = (SELECT p.id_clinica FROM pessoa p WHERE p.id = NEW.id);
-
-  NEW.codigo_acesso := NEW.codigo_acesso + CODIGO_CLINICA;
-
-  RETURN NEW;
-END;
-$$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_gerar_codigo_usuario
-BEFORE INSERT ON "usuario"
-FOR EACH ROW
-EXECUTE PROCEDURE gerar_codigo_usuario();
