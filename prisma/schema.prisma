@@ -24,10 +24,10 @@ model Person {
   email         String?  @unique @db.VarChar(100)
   name          String   @map("nome") @db.VarChar(100)
   domainClass   String   @map("classe_dominio") @db.VarChar(32)
-  CPF           String   @map("cpf") @db.VarChar(16)
+  CPF           String?  @map("cpf") @db.VarChar(16) @unique
   birthDate     DateTime @map("data_nascimento") @db.Date
   contactNumber String?  @map("telefone") @db.VarChar(32)
-  createdAt     DateTime @default(now()) @map("data_criacao")
+  createdAt     DateTime @default(now()) @map("data_criacao") @db.Timestamp()
 
   clinicId String @map("id_clinica") @db.Uuid
   clinic   Clinic @relation(fields: [clinicId], references: [id])

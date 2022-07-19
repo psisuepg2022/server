@@ -17,10 +17,10 @@ CREATE TABLE "pessoa" (
     "email" VARCHAR(100),
     "nome" VARCHAR(100) NOT NULL,
     "classe_dominio" VARCHAR(32) NOT NULL,
-    "cpf" VARCHAR(16) NOT NULL,
+    "cpf" VARCHAR(16),
     "data_nascimento" DATE NOT NULL,
     "telefone" VARCHAR(32),
-    "data_criacao" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "data_criacao" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "id_clinica" UUID NOT NULL,
 
     CONSTRAINT "pessoa_pkey" PRIMARY KEY ("id")
@@ -149,6 +149,9 @@ CREATE UNIQUE INDEX "clinica_email_key" ON "clinica"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "pessoa_email_key" ON "pessoa"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "pessoa_cpf_key" ON "pessoa"("cpf");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "endereco_id_pessoa_key" ON "endereco"("id_pessoa");
