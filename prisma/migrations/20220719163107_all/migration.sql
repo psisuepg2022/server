@@ -136,7 +136,7 @@ CREATE TABLE "consulta" (
     "situacao" SMALLINT NOT NULL,
     "data_agendamento" TIMESTAMP NOT NULL,
     "data_ultima_atualizacao" TIMESTAMP NOT NULL,
-    "data_criacao" TIMESTAMP NOT NULL,
+    "data_criacao" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "observacoes" TEXT,
     "id_paciente" UUID NOT NULL,
     "id_profissional" UUID NOT NULL,
