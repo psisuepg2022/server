@@ -33,7 +33,7 @@ ALTER TABLE "restricoes_horario"
 -- CreateCheck
 ALTER TABLE "restricoes_horario" 
   ADD CONSTRAINT restricoes_horario_check_data 
-  CHECK ("data" < CURRENT_TIMESTAMP);
+  CHECK ("data" > CURRENT_TIMESTAMP);
 
 -- CreateCheck
 ALTER TABLE "restricoes_agenda_semanal" 
