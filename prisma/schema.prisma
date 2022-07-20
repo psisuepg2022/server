@@ -24,10 +24,10 @@ model Person {
   email         String?  @unique @db.VarChar(100)
   name          String   @db.VarChar(100)
   domainClass   String   @map("domain_class") @db.VarChar(32)
-  CPF           String   @map("cpf") @db.VarChar(16)
+  CPF           String?  @unique @map("cpf") @db.VarChar(16)
   birthDate     DateTime @map("birth_date") @db.Date
   contactNumber String?  @map("contact_number") @db.VarChar(32)
-  createdAt     DateTime @default(now()) @map("created_at")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp()
 
   clinicId String @map("clinic_id") @db.Uuid
   clinic   Clinic @relation(fields: [clinicId], references: [id])
@@ -35,16 +35,18 @@ model Person {
   address Address?
   user    User?
   patient Patient?
-  liable  Liable?
+  liables Liable[]
 
   @@map("person")
 }
 
 model Address {
-  id         String @id @db.Uuid
-  city       String @db.VarChar(100)
-  district   String @db.VarChar(100)
-  publicArea String @map("public_area") @db.VarChar(255)
+  id         String  @id @db.Uuid
+  city       String  @db.VarChar(100)
+  district   String? @db.VarChar(100)
+  state      String  @db.VarChar(100)
+  publicArea String  @map("public_area") @db.VarChar(255)
+  zipCode    String  @map("zip_code") @db.VarChar(12)
 
   personId String @unique @map("person_id") @db.Uuid
   person   Person @relation(fields: [personId], references: [id])
@@ -53,7 +55,7 @@ model Address {
 }
 
 model User {
-  userName      String  @map("user_name") @db.VarChar(100)
+  userName      String  @unique @map("user_name") @db.VarChar(100)
   active        Boolean @default(true)
   blocked       Boolean @default(false)
   loginAttempts Int     @default(0) @map("login_attempts")
@@ -99,7 +101,7 @@ model Patient {
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
 
-  liables     Liable[]
+  liable      Liable?
   Appointment Appointment[]
 
   @@map("patient")
@@ -122,10 +124,10 @@ model Professional {
 }
 
 model Liable {
-  personId String @id @unique @map("person_id") @db.Uuid
+  personId String @map("person_id") @db.Uuid
   person   Person @relation(fields: [personId], references: [id])
 
-  patientId String  @map("patient_id") @db.Uuid
+  patientId String  @id @map("patient_id") @db.Uuid
   patient   Patient @relation(fields: [patientId], references: [id])
 
   @@map("liable")
