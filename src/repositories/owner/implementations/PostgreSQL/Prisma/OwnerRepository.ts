@@ -25,7 +25,7 @@ class OwnerRepository implements IOwnerRepository {
         accessCode: true,
         id: true,
         userName: true,
-        active: true,
+        // active: true,
         person: {
           select: {
             birthDate: true,

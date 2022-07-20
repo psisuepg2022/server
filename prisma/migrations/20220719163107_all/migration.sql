@@ -20,6 +20,7 @@ CREATE TABLE "pessoa" (
     "cpf" VARCHAR(16),
     "data_nascimento" DATE NOT NULL,
     "telefone" VARCHAR(32),
+    "ativo" BOOLEAN NOT NULL DEFAULT true,
     "data_criacao" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "id_clinica" UUID NOT NULL,
 
@@ -42,7 +43,6 @@ CREATE TABLE "endereco" (
 -- CreateTable
 CREATE TABLE "usuario" (
     "nome_usuario" VARCHAR(100) NOT NULL,
-    "ativo" BOOLEAN NOT NULL DEFAULT true,
     "bloqueado" BOOLEAN NOT NULL DEFAULT false,
     "tentativas" INTEGER NOT NULL DEFAULT 0,
     "senha" VARCHAR(255) NOT NULL,
