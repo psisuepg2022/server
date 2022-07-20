@@ -94,3 +94,31 @@ CREATE TRIGGER trg_bloquear_consulta_fora_da_agenda_semanal
 BEFORE INSERT ON "consulta"
 FOR EACH ROW
 EXECUTE PROCEDURE bloquear_consulta_fora_da_agenda_semanal();
+
+-- CreateTrigger
+CREATE FUNCTION verificar_restricoes_horario_profissional() RETURNS TRIGGER
+AS $$
+  DECLARE 
+    ID_RESTRICAO_HORARIO_EXISTENTE CHARACTER VARYING(36) := NULL;
+BEGIN
+  SELECT r.id INTO ID_RESTRICAO_HORARIO_EXISTENTE 
+  FROM restricoes_horario r
+  WHERE 
+    r.id_profissional = NEW.id_profissional
+    AND r.data = (NEW.data_agendamento::DATE)
+    AND (NEW.data_agendamento::TIME) < r.horario_fim
+    AND (NEW.data_agendamento::TIME) > r.horario_inicio;
+
+  IF (coalesce(ID_RESTRICAO_HORARIO_EXISTENTE, '') <> '') THEN
+    raise exception 'Existe uma restrição de horário do profissional conflitando com a data de agendamento.';
+  END IF;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_verificar_restricoes_horario_profissional
+BEFORE INSERT ON "consulta"
+FOR EACH ROW
+EXECUTE PROCEDURE verificar_restricoes_horario_profissional();
