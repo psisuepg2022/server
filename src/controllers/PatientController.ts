@@ -39,6 +39,8 @@ class PatientController {
         clinicId,
         address: address
           ? {
+              state: address.state,
+              zipCode: address.zip_code,
               city: address.city,
               district: address.district,
               publicArea: address.public_area,

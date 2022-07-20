@@ -108,18 +108,25 @@ class CreatePersonService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorContactNumberInvalid"));
 
     if (address) {
-      if (!address.city || address.city === "")
+      if (stringIsNullOrEmpty(address.city))
         throw new AppError("BAD_REQUEST", i18n.__("ErrorCityRequired"));
 
-      if (!address.district || address.district === "")
-        throw new AppError("BAD_REQUEST", i18n.__("ErrorDistrictRequired"));
-
-      if (!address.publicArea || address.publicArea === "")
+      if (stringIsNullOrEmpty(address.publicArea))
         throw new AppError("BAD_REQUEST", i18n.__("ErrorPublicAreaRequired"));
+
+      if (stringIsNullOrEmpty(address.state))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorStateRequired"));
+
+      if (stringIsNullOrEmpty(address.zipCode))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorZipCodeRequired"));
+
+      if (!this.validatorsProvider.zipCode(address.zipCode))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorZipCodeInvalid"));
 
       this.addressOperation = this.addressRepository.save(id, {
         id: this.uniqueIdentifierProvider.generate(),
         ...address,
+        zipCode: this.maskProvider.remove(address.zipCode),
       });
     }
 

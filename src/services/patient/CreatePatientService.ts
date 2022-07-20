@@ -102,7 +102,10 @@ class CreatePatientService extends CreatePersonService {
     return {
       ...patient,
       ...person,
-      address: addressSaved,
+      address: {
+        ...addressSaved,
+        zipCode: this.maskProvider.zipCode(address?.zipCode || ""),
+      },
       CPF: this.maskProvider.cpf(person.CPF),
       birthDate: this.maskProvider.date(person.birthDate),
       contactNumber: this.maskProvider.contactNumber(person.contactNumber),

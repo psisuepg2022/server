@@ -8,10 +8,12 @@ class AddressRepository implements IAddressRepository {
 
   public save = (
     personId: string,
-    { city, district, id, publicArea }: AddressModel
+    { city, district, id, publicArea, state, zipCode }: AddressModel
   ): PrismaPromise<Partial<AddressModel>> =>
     this.prisma.address.create({
       data: {
+        state,
+        zipCode,
         city,
         district,
         id,
@@ -22,6 +24,8 @@ class AddressRepository implements IAddressRepository {
         city: true,
         district: true,
         publicArea: true,
+        state: true,
+        zipCode: true,
       },
     }) as PrismaPromise<Partial<AddressModel>>;
 }

@@ -1,6 +1,9 @@
 import { IMaskProvider } from "../models/IMaskProvider";
 
 class MaskProvider implements IMaskProvider {
+  zipCode = (zipCode: string): string =>
+    zipCode.replace(/[^\d]/g, "").replace(/(\d{5})(\d{3})/, "$1-$2");
+
   cpf = (cpf: string): string =>
     cpf
       .replace(/[^\d]/g, "")
