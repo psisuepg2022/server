@@ -14,3 +14,12 @@ ALTER TABLE "agenda_semanal" ADD CONSTRAINT agenda_semanal_check_dia_semana CHEC
 
 -- CreateCheck
 ALTER TABLE "agenda_semanal" ADD CONSTRAINT agenda_semanal_check_horario CHECK ("horario_inicio" < "horario_fim");
+
+-- CreateCheck
+ALTER TABLE "restricoes_horario" ADD CONSTRAINT restricoes_horario_check_horario CHECK ("horario_inicio" < "horario_fim");
+
+-- CreateCheck
+ALTER TABLE "restricoes_horario" ADD CONSTRAINT restricoes_horario_check_data CHECK ("data" < CURRENT_TIMESTAMP);
+
+-- CreateCheck
+ALTER TABLE "restricoes_agenda_semanal" ADD CONSTRAINT restricoes_agenda_semanal_check_horario CHECK ("horario_inicio" < "horario_fim");
