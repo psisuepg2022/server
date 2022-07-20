@@ -137,7 +137,7 @@ CREATE TABLE "consulta" (
     "data_agendamento" TIMESTAMP NOT NULL,
     "data_ultima_atualizacao" TIMESTAMP NOT NULL,
     "data_criacao" TIMESTAMP NOT NULL,
-    "observacoes" TEXT NOT NULL,
+    "observacoes" TEXT,
     "id_paciente" UUID NOT NULL,
     "id_profissional" UUID NOT NULL,
     "id_funcionario" UUID NOT NULL,
