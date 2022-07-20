@@ -13,8 +13,8 @@ class EmployeeRepository implements IEmployeeRepository {
       where: {
         person: {
           domainClass: UserDomainClasses.EMPLOYEE,
+          active: true,
         },
-        active: true,
       },
     });
 
@@ -37,8 +37,7 @@ class EmployeeRepository implements IEmployeeRepository {
         },
       },
       where: {
-        active: true,
-        person: { domainClass: UserDomainClasses.EMPLOYEE },
+        person: { domainClass: UserDomainClasses.EMPLOYEE, active: true },
       },
       orderBy: { person: { name: "asc" } },
       take,

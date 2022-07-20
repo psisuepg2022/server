@@ -25,7 +25,6 @@ class OwnerRepository implements IOwnerRepository {
         accessCode: true,
         id: true,
         userName: true,
-        active: true,
         person: {
           select: {
             birthDate: true,
@@ -37,7 +36,7 @@ class OwnerRepository implements IOwnerRepository {
         },
       },
       where: {
-        person: { domainClass: UserDomainClasses.OWNER },
+        person: { domainClass: UserDomainClasses.OWNER, active: true },
       },
       orderBy: { person: { name: "asc" } },
       take,
