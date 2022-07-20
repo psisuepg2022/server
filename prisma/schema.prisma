@@ -175,8 +175,8 @@ model Appointment {
   status          Int      @db.SmallInt
   appointmentDate DateTime @map("appointment_date") @db.Timestamp()
   updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamp()
-  createdAt       DateTime @map("created_at") @db.Timestamp()
-  comments        String   @db.Text
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamp()
+  comments        String?  @db.Text
 
   patientId String  @map("patient_id") @db.Uuid
   patient   Patient @relation(fields: [patientId], references: [id])

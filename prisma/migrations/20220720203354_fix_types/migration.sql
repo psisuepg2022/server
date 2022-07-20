@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "appointment" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "comments" DROP NOT NULL;
