@@ -37,8 +37,8 @@ BEGIN
   WHERE 
     c.id_profissional = NEW.id_profissional 
     AND c.situacao <> 4
-    AND new.data_agendamento > c.data_agendamento
-    AND new.data_agendamento < (c.data_agendamento + (DURACAO_CONSULTA* interval '1 minute'))
+    AND NEW.data_agendamento > c.data_agendamento
+    AND NEW.data_agendamento < (c.data_agendamento + (DURACAO_CONSULTA* interval '1 minute'))
   LIMIT 1;
 
   IF (coalesce(ID_CONSULTA_EXISTENTE, '') <> '') THEN
@@ -54,3 +54,43 @@ CREATE TRIGGER trg_previnir_consultas_mesmo_horario
 BEFORE INSERT ON "consulta"
 FOR EACH ROW
 EXECUTE PROCEDURE previnir_consultas_mesmo_horario();
+
+-- CreateTrigger
+CREATE FUNCTION bloquear_consulta_fora_da_agenda_semanal() RETURNS TRIGGER
+AS $$
+  DECLARE 
+    ID_AGENDA_SEMANAL_EXISTENTE CHARACTER VARYING(36) := NULL;
+    ID_RESTRICAO_AGENDA_SEMANAL_EXISTENTE CHARACTER VARYING(36) := NULL;
+BEGIN
+  SELECT ag.id INTO ID_AGENDA_SEMANAL_EXISTENTE 
+  FROM agenda_semanal ag
+  WHERE 
+    ag.id_profissional = NEW.id_profissional
+    AND ag.dia_semana = ((extract(DOW FROM NEW.data_agendamento::TIMESTAMP)) + 1)
+    AND (NEW.data_agendamento::TIME) < ag.horario_fim
+    AND (NEW.data_agendamento::TIME) > ag.horario_inicio;
+
+  IF (coalesce(ID_AGENDA_SEMANAL_EXISTENTE, '') = '') THEN
+    raise exception 'Não existe um horário na agenda semanal do profissional que compreende a data de agendamento.';
+  END IF;
+
+  SELECT rag.id INTO ID_RESTRICAO_AGENDA_SEMANAL_EXISTENTE
+  FROM restricoes_agenda_semanal rag
+  WHERE
+    rag.id_agenda_semanal = (ID_AGENDA_SEMANAL_EXISTENTE::UUID)
+    AND (NEW.data_agendamento::TIME) < rag.horario_fim
+    AND (NEW.data_agendamento::TIME) > rag.horario_inicio; 
+
+  IF (coalesce(ID_RESTRICAO_AGENDA_SEMANAL_EXISTENTE, '') <> '') THEN
+    raise exception 'Existe uma restrição de horário na agenda semanal do profissional para a data de agendamento.';
+  END IF;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_bloquear_consulta_fora_da_agenda_semanal
+BEFORE INSERT ON "consulta"
+FOR EACH ROW
+EXECUTE PROCEDURE bloquear_consulta_fora_da_agenda_semanal();
