@@ -89,6 +89,13 @@ class CreatePersonService {
     if (!hasClinic)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicNotFound"));
 
+    const [hasCPF] = await transaction([
+      this.personRepository.hasCPF(this.maskProvider.remove(CPF)),
+    ]);
+
+    if (hasCPF)
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFAlreadyExists"));
+
     if (email) {
       if (!this.validatorsProvider.email(email))
         throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));

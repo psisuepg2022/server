@@ -11,6 +11,7 @@
   "ErrorBaseCreateOperationFailed": "Não foi possível realizar a operação. Por favor, entre em contato com um administrador.",
   "ErrorBirthDateInvalid": "A data de nascimento informada é inválida.",
   "ErrorBirthDateRequired": "É necessário informar a data de nascimento para cadastro.",
+  "ErrorCPFAlreadyExists": "O CPF informado já está cadastrado.",
   "ErrorCPFInvalid": "O CPF informado é inválido.",
   "ErrorCPFIsRequired": "É necessário informar o CPF para cadastro.",
   "ErrorCityRequired": "É necessário informar a cidade para registro do endereço.",

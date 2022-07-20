@@ -34,6 +34,11 @@ class PersonRepository implements IPersonRepository {
     this.prisma.person.findFirst({
       where: { email },
     }) as PrismaPromise<PersonModel | null>;
+
+  public hasCPF = (CPF: string): PrismaPromise<PersonModel | null> =>
+    this.prisma.person.findFirst({
+      where: { CPF },
+    }) as PrismaPromise<PersonModel | null>;
 }
 
 export { PersonRepository };
