@@ -143,7 +143,7 @@ class CreatePersonService {
     this.personOperation = this.personRepository.save(clinicId, {
       birthDate,
       contactNumber: this.maskProvider.remove(contactNumber || ""),
-      CPF: this.maskProvider.remove(CPF),
+      CPF: this.maskProvider.remove(CPF || ""),
       email,
       id,
       name,

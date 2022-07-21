@@ -24,29 +24,43 @@ class PatientController {
         clinicId,
         gender,
         marital_status: maritalStatus,
+        liable_required: liableRequired,
+        liable,
       } = req.body;
 
       const createPatientService = container.resolve(CreatePatientService);
 
-      const result = await createPatientService.execute({
-        email,
-        name,
-        birthDate: new Date(birthDate),
-        CPF,
-        contactNumber,
-        gender,
-        maritalStatus,
-        clinicId,
-        address: address
+      const result = await createPatientService.execute(
+        {
+          email,
+          name,
+          birthDate: new Date(birthDate),
+          CPF,
+          contactNumber,
+          gender,
+          maritalStatus,
+          clinicId,
+          address: address
+            ? {
+                state: address.state,
+                zipCode: address.zip_code,
+                city: address.city,
+                district: address.district,
+                publicArea: address.public_area,
+              }
+            : undefined,
+        },
+        liableRequired === true
           ? {
-              state: address.state,
-              zipCode: address.zip_code,
-              city: address.city,
-              district: address.district,
-              publicArea: address.public_area,
+              birthDate: new Date(liable.birth_date),
+              CPF: liable.CPF,
+              contactNumber: liable.contact_number,
+              name: liable.name,
+              email: liable.email,
+              clinicId,
             }
-          : undefined,
-      });
+          : null
+      );
 
       return res.status(HttpStatus.CREATED).json({
         success: true,
