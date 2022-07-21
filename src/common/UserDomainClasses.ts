@@ -1,6 +1,8 @@
 class UserDomainClasses {
   public static readonly PATIENT: string = "Object.Person.Patient";
 
+  public static readonly LIABLE: string = "Object.Person.Liable";
+
   public static readonly EMPLOYEE: string = "Object.Person.User.Employee";
 
   public static readonly OWNER: string = "Object.Person.User.Owner";
