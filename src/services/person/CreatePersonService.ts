@@ -59,13 +59,23 @@ class CreatePersonService {
       address,
     }: CreatePersonRequestModel,
     id: string,
-    domainClass: string
+    domainClass: string,
+    CPFRequired = true
   ): Promise<void> {
-    if (stringIsNullOrEmpty(CPF))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFIsRequired"));
+    if (CPFRequired) {
+      if (stringIsNullOrEmpty(CPF))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFIsRequired"));
 
-    if (!this.validatorsProvider.cpf(CPF))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFInvalid"));
+      if (!this.validatorsProvider.cpf(CPF))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFInvalid"));
+
+      const [hasCPF] = await transaction([
+        this.personRepository.hasCPF(this.maskProvider.remove(CPF)),
+      ]);
+
+      if (hasCPF)
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFAlreadyExists"));
+    }
 
     if (stringIsNullOrEmpty(name))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorNameIsRequired"));
@@ -88,13 +98,6 @@ class CreatePersonService {
 
     if (!hasClinic)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicNotFound"));
-
-    const [hasCPF] = await transaction([
-      this.personRepository.hasCPF(this.maskProvider.remove(CPF)),
-    ]);
-
-    if (hasCPF)
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFAlreadyExists"));
 
     if (email) {
       if (!this.validatorsProvider.email(email))
