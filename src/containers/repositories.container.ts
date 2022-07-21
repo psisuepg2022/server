@@ -10,6 +10,8 @@ import {
   EmployeeRepository,
   IEmployeeRepository,
 } from "@repositories/employee";
+import { ILiableRepository } from "@repositories/liable";
+import { LiableRepository } from "@repositories/liable/implementations/PostgreSQL/Prisma/LiableRepository";
 import { IOwnerRepository, OwnerRepository } from "@repositories/owner";
 import { IPatientRepository, PatientRepository } from "@repositories/patient";
 import { IPersonRepository, PersonRepository } from "@repositories/person";
@@ -50,4 +52,9 @@ container.registerSingleton<IPatientRepository>(
 container.registerSingleton<IOwnerRepository>(
   "OwnerRepository",
   OwnerRepository
+);
+
+container.registerSingleton<ILiableRepository>(
+  "LiableRepository",
+  LiableRepository
 );
