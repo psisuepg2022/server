@@ -1,5 +1,4 @@
-import { GenderDomain } from "@infra/domains/GenderDomain";
-import { MaritalStatusDomain } from "@infra/domains/MaritalStatusDomain";
+import { GenderDomain, MaritalStatusDomain } from "@infra/domains";
 
 import { LiableModel } from "./LiableModel";
 import { PersonModel } from "./PersonModel";
