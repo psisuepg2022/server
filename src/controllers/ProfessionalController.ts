@@ -1,17 +1,65 @@
 import { Request, Response } from "express";
 import i18n from "i18n";
+import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
+import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { CreateProfessionalService } from "@services/professional";
 
 class ProfessionalController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<Partial<ProfessionalModel>>>
   ): Promise<Response> {
     try {
+      const {
+        user_name: userName,
+        password,
+        email,
+        name,
+        CPF,
+        birth_date: birthDate,
+        contact_number: contactNumber,
+        address,
+        clinicId,
+        base_duration: baseDuration,
+        profession,
+        registry,
+        specialization,
+      } = req.body;
+
+      const createProfessionalService = container.resolve(
+        CreateProfessionalService
+      );
+
+      const result = await createProfessionalService.execute({
+        userName,
+        birthDate: new Date(birthDate),
+        contactNumber,
+        name,
+        CPF,
+        email,
+        password,
+        clinicId,
+        baseDuration,
+        profession,
+        registry,
+        specialization,
+        address: address
+          ? {
+              state: address.state,
+              zipCode: address.zip_code,
+              city: address.city,
+              district: address.district,
+              publicArea: address.public_area,
+            }
+          : undefined,
+      });
+
       return res.status(HttpStatus.CREATED).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
