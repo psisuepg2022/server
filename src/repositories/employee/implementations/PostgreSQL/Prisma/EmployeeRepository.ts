@@ -8,16 +8,6 @@ import { IEmployeeRepository } from "@repositories/employee/models/IEmployeeRepo
 class EmployeeRepository implements IEmployeeRepository {
   constructor(private prisma = prismaClient) {}
 
-  public count = (): PrismaPromise<number> =>
-    this.prisma.user.count({
-      where: {
-        person: {
-          domainClass: UserDomainClasses.EMPLOYEE,
-          active: true,
-        },
-      },
-    });
-
   public get = ([take, skip]: [number, number]): PrismaPromise<
     Partial<EmployeeModel & { person: PersonModel }>[]
   > =>

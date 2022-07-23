@@ -6,7 +6,6 @@ interface IOwnerRepository {
   get([take, skip]: [number, number]): PrismaPromise<
     Partial<OwnerModel & { person: PersonModel }>[]
   >;
-  count(): PrismaPromise<number>;
 }
 
 export { IOwnerRepository };

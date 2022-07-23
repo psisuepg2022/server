@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { pagination } from "@helpers/pagination";
 import { transaction } from "@infra/database/transaction";
 import { IPaginationOptions, IPaginationResponse } from "@infra/http";
@@ -8,12 +9,15 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
 import { IMaskProvider } from "@providers/mask";
 import { IEmployeeRepository } from "@repositories/employee";
+import { IUserRepository } from "@repositories/user";
 
 @injectable()
 class ListEmployeesService {
   constructor(
     @inject("EmployeeRepository")
     private employeeRepository: IEmployeeRepository,
+    @inject("UserRepository")
+    private userRepository: IUserRepository,
     @inject("MaskProvider")
     private maskProvider: IMaskProvider
   ) {}
@@ -21,7 +25,9 @@ class ListEmployeesService {
   public async execute(
     options?: IPaginationOptions
   ): Promise<IPaginationResponse<ListEmployeesResponseModel>> {
-    const countOperation = this.employeeRepository.count();
+    const countOperation = this.userRepository.count(
+      UserDomainClasses.EMPLOYEE
+    );
     const getOperation = this.employeeRepository.get(pagination(options || {}));
 
     const [totalItems, items] = await transaction([

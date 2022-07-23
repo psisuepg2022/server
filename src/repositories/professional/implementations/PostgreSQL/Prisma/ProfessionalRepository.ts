@@ -29,16 +29,6 @@ class ProfessionalRepository implements IProfessionalRepository {
       },
     }) as PrismaPromise<Partial<ProfessionalModel>>;
 
-  public count = (): PrismaPromise<number> =>
-    this.prisma.user.count({
-      where: {
-        person: {
-          domainClass: UserDomainClasses.PROFESSIONAL,
-          active: true,
-        },
-      },
-    });
-
   public get = ([take, skip]: [number, number]): PrismaPromise<
     Partial<
       UserModel & { person: PersonModel; professional: ProfessionalModel }

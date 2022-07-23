@@ -13,7 +13,6 @@ interface IProfessionalRepository {
       UserModel & { person: PersonModel; professional: ProfessionalModel }
     >[]
   >;
-  count(): PrismaPromise<number>;
 }
 
 export { IProfessionalRepository };
