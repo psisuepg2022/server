@@ -15,6 +15,10 @@ import { LiableRepository } from "@repositories/liable/implementations/PostgreSQ
 import { IOwnerRepository, OwnerRepository } from "@repositories/owner";
 import { IPatientRepository, PatientRepository } from "@repositories/patient";
 import { IPersonRepository, PersonRepository } from "@repositories/person";
+import {
+  IProfessionalRepository,
+  ProfessionalRepository,
+} from "@repositories/professional";
 import { IUserRepository, UserRepository } from "@repositories/user";
 
 container.registerSingleton<IClinicRepository>(
@@ -57,4 +61,9 @@ container.registerSingleton<IOwnerRepository>(
 container.registerSingleton<ILiableRepository>(
   "LiableRepository",
   LiableRepository
+);
+
+container.registerSingleton<IProfessionalRepository>(
+  "ProfessionalRepository",
+  ProfessionalRepository
 );
