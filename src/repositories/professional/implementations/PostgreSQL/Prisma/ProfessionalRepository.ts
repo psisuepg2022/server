@@ -1,5 +1,8 @@
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
+import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { UserModel } from "@models/domain/UserModel";
 import { PrismaPromise } from "@prisma/client";
 import { IProfessionalRepository } from "@repositories/professional/models/IProfessionalRepository";
 
@@ -25,6 +28,56 @@ class ProfessionalRepository implements IProfessionalRepository {
         specialization: true,
       },
     }) as PrismaPromise<Partial<ProfessionalModel>>;
+
+  public count = (): PrismaPromise<number> =>
+    this.prisma.user.count({
+      where: {
+        person: {
+          domainClass: UserDomainClasses.PROFESSIONAL,
+          active: true,
+        },
+      },
+    });
+
+  public get = ([take, skip]: [number, number]): PrismaPromise<
+    Partial<
+      UserModel & { person: PersonModel; professional: ProfessionalModel }
+    >[]
+  > =>
+    this.prisma.user.findMany({
+      select: {
+        accessCode: true,
+        id: true,
+        userName: true,
+        person: {
+          select: {
+            birthDate: true,
+            CPF: true,
+            contactNumber: true,
+            email: true,
+            name: true,
+          },
+        },
+        professional: {
+          select: {
+            baseDuration: true,
+            profession: true,
+            specialization: true,
+            registry: true,
+          },
+        },
+      },
+      where: {
+        person: { domainClass: UserDomainClasses.PROFESSIONAL, active: true },
+      },
+      orderBy: { person: { name: "asc" } },
+      take,
+      skip,
+    }) as PrismaPromise<
+      Partial<
+        UserModel & { person: PersonModel; professional: ProfessionalModel }
+      >[]
+    >;
 }
 
 export { ProfessionalRepository };
