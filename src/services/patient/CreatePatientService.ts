@@ -4,6 +4,8 @@ import { inject, injectable } from "tsyringe";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
+import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { GenderDomain } from "@infra/domains/GenderDomain";
 import { MaritalStatusDomain } from "@infra/domains/MaritalStatusDomain";
@@ -68,10 +70,26 @@ class CreatePatientService extends CreatePersonService {
     const id = this.uniqueIdentifierProvider.generate();
     const liableId = liable ? this.uniqueIdentifierProvider.generate() : "";
 
-    if (!(gender in GenderDomain))
+    if (stringIsNullOrEmpty(gender))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorGenderRequired"));
+
+    if (stringIsNullOrEmpty(maritalStatus))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorMaritalStatusRequired"));
+
+    const genderConverted = toNumber({
+      value: gender,
+      error: new AppError("BAD_REQUEST", i18n.__("ErrorGenderInvalid")),
+    });
+
+    const maritalStatusConverted = toNumber({
+      value: maritalStatus,
+      error: new AppError("BAD_REQUEST", i18n.__("ErrorMaritalStatusInvalid")),
+    });
+
+    if (!(genderConverted in GenderDomain))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorValueOutOfGenderDomain"));
 
-    if (!(maritalStatus in MaritalStatusDomain))
+    if (!(maritalStatusConverted in MaritalStatusDomain))
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorValueOutOfMaritalStatusDomain")
@@ -102,8 +120,8 @@ class CreatePatientService extends CreatePersonService {
       );
 
     const createPatientOperation = this.patientRepository.save(id, {
-      gender,
-      maritalStatus,
+      gender: genderConverted,
+      maritalStatus: maritalStatusConverted,
     } as PatientModel);
 
     const [person, patient, ...optional] = await transaction(
