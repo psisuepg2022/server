@@ -5,7 +5,9 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import { CreateProfessionalService } from "@services/professional";
+import { ListProfessionalsService } from "@services/professional/ListProfessionalsService";
 
 class ProfessionalController {
   public async create(
@@ -72,11 +74,22 @@ class ProfessionalController {
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse>>
+    res: Response<
+      IResponseMessage<IPaginationResponse<ListProfessionalsResponseModel>>
+    >
   ): Promise<Response> {
     try {
+      const { page, size } = req.query;
+
+      const listProfessionalsService = container.resolve(
+        ListProfessionalsService
+      );
+
+      const result = await listProfessionalsService.execute({ page, size });
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

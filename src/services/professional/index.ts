@@ -1,3 +1,5 @@
+import { ListEmployeesService } from "@services/employee";
+
 import { CreateProfessionalService } from "./CreateProfessionalService";
 
-export { CreateProfessionalService };
+export { ListEmployeesService, CreateProfessionalService };
