@@ -18,6 +18,7 @@ import { IAddressRepository } from "@repositories/address";
 import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
+import { IProfessionalRepository } from "@repositories/professional";
 import { IUserRepository } from "@repositories/user";
 import { CreateUserService } from "@services/user";
 
@@ -43,7 +44,9 @@ class CreateProfessionalService extends CreateUserService {
     @inject("AuthenticationRepository")
     authenticationRepository: IAuthenticationRepository,
     @inject("AddressRepository")
-    addressRepository: IAddressRepository
+    addressRepository: IAddressRepository,
+    @inject("ProfessionalRepository")
+    private professionalRepository: IProfessionalRepository
   ) {
     super(
       validatorsProvider,
@@ -106,20 +109,33 @@ class CreateProfessionalService extends CreateUserService {
       UserDomainClasses.PROFESSIONAL
     );
 
-    const [person, user, addressSaved] = await transaction(
+    const createProfessionalOperation = this.professionalRepository.save(id, {
+      baseDuration: baseDurationConverted,
+      profession,
+      registry,
+      specialization,
+    } as ProfessionalModel);
+
+    const [person, user, professional, addressSaved] = await transaction(
       ((): PrismaPromise<any>[] =>
         address
           ? [
               this.getCreatePersonOperation(),
               this.getCreateUserOperation(),
+              createProfessionalOperation,
               this.getAddressOperation(),
             ]
-          : [this.getCreatePersonOperation(), this.getCreateUserOperation()])()
+          : [
+              this.getCreatePersonOperation(),
+              this.getCreateUserOperation(),
+              createProfessionalOperation,
+            ])()
     );
 
     return {
       ...user,
       ...person,
+      ...professional,
       address: {
         ...addressSaved,
         zipCode: this.maskProvider.zipCode(address?.zipCode || ""),
