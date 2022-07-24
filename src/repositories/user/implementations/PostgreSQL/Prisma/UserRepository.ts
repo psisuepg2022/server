@@ -1,4 +1,6 @@
 import { prismaClient } from "@infra/database/client";
+import { ClinicModel } from "@models/domain/ClinicModel";
+import { PersonModel } from "@models/domain/PersonModel";
 import { UserModel } from "@models/domain/UserModel";
 import { PrismaPromise } from "@prisma/client";
 import { IUserRepository } from "@repositories/user/models/IUserRepository";
@@ -32,10 +34,34 @@ class UserRepository implements IUserRepository {
   public hasUser = (
     userName: string,
     accessCode: number
-  ): PrismaPromise<UserModel | null> =>
+  ): PrismaPromise<
+    (UserModel & { person: PersonModel & { clinic: ClinicModel } }) | null
+  > =>
     this.prisma.user.findFirst({
       where: { userName, accessCode },
-    }) as PrismaPromise<UserModel | null>;
+      select: {
+        password: true,
+        blocked: true,
+        loginAttempts: true,
+        accessCode: true,
+        userName: true,
+        id: true,
+        person: {
+          select: {
+            name: true,
+            email: true,
+            clinic: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    }) as PrismaPromise<
+      (UserModel & { person: PersonModel & { clinic: ClinicModel } }) | null
+    >;
 
   public count = (domainClass: string): PrismaPromise<number> =>
     this.prisma.user.count({

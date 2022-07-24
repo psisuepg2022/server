@@ -1,3 +1,5 @@
+import { ClinicModel } from "@models/domain/ClinicModel";
+import { PersonModel } from "@models/domain/PersonModel";
 import { UserModel } from "@models/domain/UserModel";
 import { PrismaPromise } from "@prisma/client";
 
@@ -6,7 +8,9 @@ interface IUserRepository {
   hasUser(
     userName: string,
     accessCode: number
-  ): PrismaPromise<UserModel | null>;
+  ): PrismaPromise<
+    (UserModel & { person: PersonModel & { clinic: ClinicModel } }) | null
+  >;
   save(roleId: number, user: UserModel): PrismaPromise<Partial<UserModel>>;
   count(domainClass: string): PrismaPromise<number>;
 }
