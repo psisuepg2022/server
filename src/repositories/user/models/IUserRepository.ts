@@ -13,6 +13,11 @@ interface IUserRepository {
   >;
   save(roleId: number, user: UserModel): PrismaPromise<Partial<UserModel>>;
   count(domainClass: string): PrismaPromise<number>;
+  updateLoginControlProps(
+    userId: string,
+    attempts: number,
+    blocked: boolean
+  ): PrismaPromise<Partial<UserModel>>;
 }
 
 export { IUserRepository };

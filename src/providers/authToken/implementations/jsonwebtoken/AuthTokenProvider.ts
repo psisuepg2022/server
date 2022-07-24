@@ -3,6 +3,7 @@ import { sign, decode as jwtDecode, verify as jwtVerify } from "jsonwebtoken";
 
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
+import { AuthTokenPayloadModel } from "@models/utils/AuthTokenPayloadModel";
 import { IAuthTokenProvider } from "@providers/authToken/models/IAuthTokenProvider";
 
 class AuthTokenProvider implements IAuthTokenProvider {
@@ -20,12 +21,13 @@ class AuthTokenProvider implements IAuthTokenProvider {
     this.secret = key;
   }
 
-  public generate = (payload: any): string =>
-    sign(payload, this.secret, {
-      expiresIn: "",
+  public generate = ({ type, ...rest }: AuthTokenPayloadModel): string =>
+    sign({ type, ...rest }, this.secret, {
+      expiresIn: type === "access_token" ? "3d" : "15d",
     });
 
-  public decode = (token: string): any => jwtDecode(token);
+  public decode = (token: string): AuthTokenPayloadModel =>
+    jwtDecode(token) as AuthTokenPayloadModel;
 
   public verify = (token: string): boolean => !!jwtVerify(token, this.secret);
 }

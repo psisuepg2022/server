@@ -26,6 +26,24 @@ class UserRepository implements IUserRepository {
       },
     }) as PrismaPromise<Partial<UserModel>>;
 
+  public updateLoginControlProps = (
+    userId: string,
+    attempts: number,
+    blocked: boolean
+  ): PrismaPromise<Partial<UserModel>> =>
+    this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        blocked,
+        loginAttempts: attempts,
+      },
+      select: {
+        blocked: true,
+        loginAttempts: true,
+        id: true,
+      },
+    });
+
   public hasUserName = (userName: string): PrismaPromise<UserModel | null> =>
     this.prisma.user.findFirst({
       where: { userName },
