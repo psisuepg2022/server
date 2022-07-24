@@ -36,7 +36,7 @@
   "ErrorMissingEnvVar": "Não foi possível recuperar as informações necessárias. Por favor, entre em contato com um administrador.",
   "ErrorNameIsRequired": "É necessário informar o nome para cadastro.",
   "ErrorOnlySupport": "Apenas pessoas credenciadas podem realizar esta operação.",
-  "ErrorPasswordIsRequired": "É necessário informar a senha para cadastro.",
+  "ErrorPasswordRequired": "É necessário informar a senha.",
   "ErrorPasswordOutOfBounds": "A senha deve possuir de {0} à {1} caracteres.",
   "ErrorPasswordToWeak": "A senha é muito fraca. Mínimo de 8 caracteres, letras maiúsculas e minúsculas e pelo menos 1 número.",
   "ErrorProfessionRequired": "É necessário informar a profissão.",

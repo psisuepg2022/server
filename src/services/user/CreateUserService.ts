@@ -100,7 +100,7 @@ class CreateUserService extends CreatePersonService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameAlreadyExists"));
 
     if (stringIsNullOrEmpty(password))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordIsRequired"));
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordRequired"));
 
     if (this.passwordProvider.outOfBounds(password))
       throw new AppError(
