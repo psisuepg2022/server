@@ -29,6 +29,14 @@ class UserRepository implements IUserRepository {
       where: { userName },
     }) as PrismaPromise<UserModel | null>;
 
+  public hasUser = (
+    userName: string,
+    accessCode: number
+  ): PrismaPromise<UserModel | null> =>
+    this.prisma.user.findFirst({
+      where: { userName, accessCode },
+    }) as PrismaPromise<UserModel | null>;
+
   public count = (domainClass: string): PrismaPromise<number> =>
     this.prisma.user.count({
       where: {
