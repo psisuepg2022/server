@@ -2,6 +2,7 @@ import { prismaClient } from "@infra/database/client";
 import { ClinicModel } from "@models/domain/ClinicModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { UserModel } from "@models/domain/UserModel";
+import { PermissionModel } from "@models/utils/PermissionModel";
 import { PrismaPromise } from "@prisma/client";
 import { IUserRepository } from "@repositories/user/models/IUserRepository";
 
@@ -53,7 +54,11 @@ class UserRepository implements IUserRepository {
     userName: string,
     accessCode: number
   ): PrismaPromise<
-    (UserModel & { person: PersonModel & { clinic: ClinicModel } }) | null
+    | (UserModel & {
+        person: PersonModel & { clinic: ClinicModel };
+        role: { permissions: Partial<PermissionModel>[] };
+      })
+    | null
   > =>
     this.prisma.user.findFirst({
       where: { userName, accessCode },
@@ -64,6 +69,11 @@ class UserRepository implements IUserRepository {
         accessCode: true,
         userName: true,
         id: true,
+        role: {
+          select: {
+            permissions: { select: { name: true } },
+          },
+        },
         person: {
           select: {
             name: true,
@@ -78,7 +88,11 @@ class UserRepository implements IUserRepository {
         },
       },
     }) as PrismaPromise<
-      (UserModel & { person: PersonModel & { clinic: ClinicModel } }) | null
+      | (UserModel & {
+          person: PersonModel & { clinic: ClinicModel };
+          role: { permissions: Partial<PermissionModel>[] };
+        })
+      | null
     >;
 
   public count = (domainClass: string): PrismaPromise<number> =>

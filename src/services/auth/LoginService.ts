@@ -9,6 +9,7 @@ import { transaction } from "@infra/database/transaction";
 import { LoginRequestModel } from "@models/dto/auth/LoginRequestModel";
 import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
 import { AuthTokenPayloadModel } from "@models/utils/AuthTokenPayloadModel";
+import { PermissionModel } from "@models/utils/PermissionModel";
 import { IAuthTokenProvider } from "@providers/authToken";
 import { IHashProvider } from "@providers/hash";
 import { IUserRepository } from "@repositories/user";
@@ -87,7 +88,7 @@ class LoginService {
       throw new AppError("UNAUTHORIZED", i18n.__("ErrorLoginUserUnauthorized"));
     }
 
-    const payload: Partial<AuthTokenPayloadModel> = {
+    const accessToken = this.authTokenProvider.generate({
       id: hasUser.id,
       name: hasUser.person.name,
       email: hasUser.person.email,
@@ -97,15 +98,14 @@ class LoginService {
         id: hasUser.person.clinic.id,
         name: hasUser.person.clinic.name,
       },
-    };
-
-    const accessToken = this.authTokenProvider.generate({
-      ...payload,
+      permissions: hasUser.role.permissions?.map(
+        ({ name }: Partial<PermissionModel>): string => name || "ERROR"
+      ),
       type: "access_token",
     } as AuthTokenPayloadModel);
 
     const refreshToken = this.authTokenProvider.generate({
-      ...payload,
+      id: hasUser.id,
       type: "refresh_token",
     } as AuthTokenPayloadModel);
 
