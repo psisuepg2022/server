@@ -1,4 +1,4 @@
-class UserRoles {
+class RolesKeys {
   public static readonly PATIENT: string = "PATIENT";
 
   public static readonly LIABLE: string = "LIABLE";
@@ -10,4 +10,4 @@ class UserRoles {
   public static readonly PROFESSIONAL: string = "PROFESSIONAL";
 }
 
-export { UserRoles };
+export { RolesKeys };
