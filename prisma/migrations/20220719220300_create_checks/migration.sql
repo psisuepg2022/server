@@ -49,3 +49,8 @@ ALTER TABLE "consulta"
 ALTER TABLE "consulta" 
   ADD CONSTRAINT consulta_check_data_agendamento 
   CHECK ("data_agendamento" > CURRENT_TIMESTAMP);
+
+-- CreateCheck
+ALTER TABLE "profissional" 
+  ADD CONSTRAINT profissional_duracao_base_check 
+  CHECK ("duracao_base" > 0);
