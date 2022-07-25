@@ -9,6 +9,8 @@ type AuthTokenPayloadModel = {
     name: string;
   };
   type: "access_token" | "refresh_token";
+  iat: number;
+  exp: number;
 };
 
 export { AuthTokenPayloadModel };
