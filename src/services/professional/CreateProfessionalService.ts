@@ -4,7 +4,6 @@ import { inject, injectable } from "tsyringe";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { CreateProfessionalRequestModel } from "@models/dto/professional/CreateProfessionalRequestModel";
@@ -72,7 +71,6 @@ class CreateProfessionalService extends CreateUserService {
     contactNumber,
     email,
     clinicId,
-    baseDuration,
     profession,
     registry,
     specialization,
@@ -84,14 +82,6 @@ class CreateProfessionalService extends CreateUserService {
 
     if (stringIsNullOrEmpty(registry))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorRegistryRequired"));
-
-    if (stringIsNullOrEmpty(baseDuration))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationRequired"));
-
-    const baseDurationConverted = toNumber({
-      value: baseDuration,
-      error: new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationInvalid")),
-    });
 
     await super.createUserOperation(
       {
@@ -110,7 +100,6 @@ class CreateProfessionalService extends CreateUserService {
     );
 
     const createProfessionalOperation = this.professionalRepository.save(id, {
-      baseDuration: baseDurationConverted,
       profession,
       registry,
       specialization,
