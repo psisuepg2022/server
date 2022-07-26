@@ -6,7 +6,6 @@ interface IEmployeeRepository {
   get([take, skip]: [number, number]): PrismaPromise<
     Partial<EmployeeModel & { person: PersonModel }>[]
   >;
-  count(): PrismaPromise<number>;
 }
 
 export { IEmployeeRepository };

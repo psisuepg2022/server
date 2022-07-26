@@ -1,7 +1,7 @@
 import i18n from "i18n";
 
+import { RolesKeys } from "@common/RolesKeys";
 import { UserDomainClasses } from "@common/UserDomainClasses";
-import { UserRoles } from "@common/UserRoles";
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
@@ -59,13 +59,13 @@ class CreateUserService extends CreatePersonService {
   private getRoleName = (domainClass: string): string => {
     switch (domainClass) {
       case UserDomainClasses.EMPLOYEE:
-        return UserRoles.EMPLOYEE;
+        return RolesKeys.EMPLOYEE;
       case UserDomainClasses.OWNER:
-        return UserRoles.OWNER;
+        return RolesKeys.OWNER;
       case UserDomainClasses.PATIENT:
-        return UserRoles.PATIENT;
+        return RolesKeys.PATIENT;
       case UserDomainClasses.PROFESSIONAL:
-        return UserRoles.PROFESSIONAL;
+        return RolesKeys.PROFESSIONAL;
       default:
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
@@ -100,7 +100,7 @@ class CreateUserService extends CreatePersonService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameAlreadyExists"));
 
     if (stringIsNullOrEmpty(password))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordIsRequired"));
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordRequired"));
 
     if (this.passwordProvider.outOfBounds(password))
       throw new AppError(

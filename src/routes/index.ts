@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { RoutesPrefix } from "@common/RoutesPrefix";
 
+import { routes as authRoutes } from "./auth.routes";
 import { routes as clinicRoutes } from "./clinic.routes";
 import { routes as employeeRoutes } from "./employee.routes";
 import { routes as ownerRoutes } from "./owner.routes";
@@ -10,6 +11,7 @@ import { routes as professionalRoutes } from "./professional.routes";
 
 const routes = Router();
 
+routes.use(RoutesPrefix.AUTH, authRoutes);
 routes.use(RoutesPrefix.CLINIC, clinicRoutes);
 routes.use(RoutesPrefix.EMPLOYEE, employeeRoutes);
 routes.use(RoutesPrefix.PATIENT, patientRoutes);

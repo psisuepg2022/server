@@ -8,15 +8,6 @@ import { IOwnerRepository } from "@repositories/owner/models/IOwnerRepository";
 class OwnerRepository implements IOwnerRepository {
   constructor(private prisma = prismaClient) {}
 
-  public count = (): PrismaPromise<number> =>
-    this.prisma.user.count({
-      where: {
-        person: {
-          domainClass: UserDomainClasses.OWNER,
-        },
-      },
-    });
-
   public get = ([take, skip]: [number, number]): PrismaPromise<
     Partial<OwnerModel & { person: PersonModel }>[]
   > =>

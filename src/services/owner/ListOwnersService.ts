@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { pagination } from "@helpers/pagination";
 import { transaction } from "@infra/database/transaction";
 import { IPaginationOptions, IPaginationResponse } from "@infra/http";
@@ -8,12 +9,15 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
 import { IMaskProvider } from "@providers/mask";
 import { IOwnerRepository } from "@repositories/owner";
+import { IUserRepository } from "@repositories/user";
 
 @injectable()
 class ListOwnersService {
   constructor(
     @inject("OwnerRepository")
     private ownerRepository: IOwnerRepository,
+    @inject("UserRepository")
+    private userRepository: IUserRepository,
     @inject("MaskProvider")
     private maskProvider: IMaskProvider
   ) {}
@@ -21,7 +25,7 @@ class ListOwnersService {
   public async execute(
     options?: IPaginationOptions
   ): Promise<IPaginationResponse<ListOwnersResponseModel>> {
-    const countOperation = this.ownerRepository.count();
+    const countOperation = this.userRepository.count(UserDomainClasses.OWNER);
     const getOperation = this.ownerRepository.get(pagination(options || {}));
 
     const [totalItems, items] = await transaction([
