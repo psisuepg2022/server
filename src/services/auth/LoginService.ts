@@ -88,6 +88,10 @@ class LoginService {
       throw new AppError("UNAUTHORIZED", i18n.__("ErrorLoginUserUnauthorized"));
     }
 
+    await transaction([
+      this.userRepository.updateLoginControlProps(hasUser.id, 0, false),
+    ]);
+
     const accessToken = this.authTokenProvider.generate({
       id: hasUser.id,
       name: hasUser.person.name,
