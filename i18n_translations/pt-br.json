@@ -1,4 +1,9 @@
 {
+  "DomainAppointmentStatus_ABSENCE": "Ausência",
+  "DomainAppointmentStatus_CANCELED": "Cancelado",
+  "DomainAppointmentStatus_CONFIRMED": "Confirmado",
+  "DomainAppointmentStatus_COMPLETED": "Concluído",
+  "DomainAppointmentStatus_SCHEDULED": "Agendado",
   "DomainGender_FEMALE": "Feminino",
   "DomainGender_MALE": "Masculino",
   "DomainGender_NON_BINARY": "Não binário",
