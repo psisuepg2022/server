@@ -3,6 +3,7 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { PatientModel } from "@models/domain/PatientModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
@@ -51,14 +52,16 @@ class PatientController {
             : undefined,
         },
         liableRequired === true
-          ? {
-              birthDate: new Date(liable.birth_date),
-              CPF: liable.CPF,
-              contactNumber: liable.contact_number,
-              name: liable.name,
-              email: liable.email,
-              clinicId,
-            }
+          ? stringIsNullOrEmpty(liable.id)
+            ? {
+                birthDate: new Date(liable.birth_date),
+                CPF: liable.CPF,
+                contactNumber: liable.contact_number,
+                name: liable.name,
+                email: liable.email,
+                clinicId,
+              }
+            : liable.id
           : null
       );
 
@@ -68,6 +71,7 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      console.log(error);
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),

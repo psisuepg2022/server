@@ -35,6 +35,7 @@
   "ErrorGeneric": "Ocorreu um erro. Por favor, entre em contato com um administrador.",
   "ErrorIdIsRequired": "É necessário informar um identificado único para realizar a operação.",
   "ErrorInternal": "Ocorreu um erro interno no servidor.",
+  "ErrorLiableNotFound": "Não foi possível encontrar o responsável informado.",
   "ErrorLoginUserUnauthorized": "Não foi possível autenticar o usuário com as credenciais informadas.",
   "ErrorLoginUserWillBeBlocked": "Não foi possível realizar o login. Devido à excessivas tentativas, sua conta será bloqueada. Para recuperá-la, entre em contato com um administrador.",
   "ErrorMaritalStatusInvalid": "A informação do estado civil é inválida.",

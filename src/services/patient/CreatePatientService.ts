@@ -9,6 +9,7 @@ import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { GenderDomain, MaritalStatusDomain } from "@infra/domains";
 import { PatientModel } from "@models/domain/PatientModel";
+import { PersonModel } from "@models/domain/PersonModel";
 import { CreatePatientRequestModel } from "@models/dto/patient/CreatePatientRequestModel";
 import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
@@ -64,10 +65,36 @@ class CreatePatientService extends CreatePersonService {
       gender,
       maritalStatus,
     }: CreatePatientRequestModel,
-    liable: CreatePersonRequestModel | null = null
+    liable: CreatePersonRequestModel | string | null = null
   ): Promise<Partial<PatientModel>> {
+    const liableExisting = liable && typeof liable === "string";
+
     const id = this.uniqueIdentifierProvider.generate();
-    const liableId = liable ? this.uniqueIdentifierProvider.generate() : "";
+    const liableId = !liableExisting
+      ? this.uniqueIdentifierProvider.generate()
+      : "";
+
+    const hasLiable = await (async (): Promise<
+      (Partial<PersonModel> & { person: PersonModel }) | null
+    > => {
+      if (liableExisting) {
+        if (stringIsNullOrEmpty(liable))
+          throw new AppError("BAD_REQUEST", i18n.__("ErrorLiableRequired"));
+
+        if (!this.uniqueIdentifierProvider.isValid(liable))
+          throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
+
+        const [_hasLiable] = await transaction([
+          this.liableRepository.hasLiablePersonSaved(liable),
+        ]);
+
+        if (!_hasLiable)
+          throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
+
+        return _hasLiable;
+      }
+      return null;
+    })();
 
     if (stringIsNullOrEmpty(gender))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorGenderRequired"));
@@ -111,7 +138,7 @@ class CreatePatientService extends CreatePersonService {
 
     const createPatientPersonOperation = this.getCreatePersonOperation();
 
-    if (liable !== null)
+    if (liable !== null && typeof liable !== "string")
       await this.createPersonOperation(
         liable,
         liableId,
@@ -132,10 +159,10 @@ class CreatePatientService extends CreatePersonService {
         if (liable) {
           const createLiableRelationOperation = this.liableRepository.save(
             id,
-            liableId
+            liableExisting ? liable : liableId
           );
 
-          list.push(this.getCreatePersonOperation());
+          if (!liableExisting) list.push(this.getCreatePersonOperation());
           list.push(createLiableRelationOperation);
         }
 
@@ -149,10 +176,14 @@ class CreatePatientService extends CreatePersonService {
       address ? 0 : -1,
     ])();
 
+    const liableToSend = liableExisting
+      ? hasLiable?.person
+      : optional[liableIndex];
+
     return {
       ...patient,
       ...person,
-      CPF: this.maskProvider.cpf(person.CPF),
+      CPF: CPF ? this.maskProvider.cpf(person.CPF) : "",
       birthDate: this.maskProvider.date(person.birthDate),
       contactNumber: this.maskProvider.contactNumber(person.contactNumber),
       gender: getEnumDescription("GENDER", GenderDomain[patient.gender]),
@@ -172,13 +203,11 @@ class CreatePatientService extends CreatePersonService {
       liable:
         liableIndex !== -1
           ? {
-              ...optional[liableIndex],
-              CPF: this.maskProvider.cpf(optional[liableIndex].CPF),
-              birthDate: this.maskProvider.date(
-                optional[liableIndex].birthDate
-              ),
+              ...liableToSend,
+              CPF: this.maskProvider.cpf(liableToSend.CPF),
+              birthDate: this.maskProvider.date(liableToSend.birthDate),
               contactNumber: this.maskProvider.contactNumber(
-                optional[liableIndex].contactNumber
+                liableToSend.contactNumber
               ),
             }
           : null,

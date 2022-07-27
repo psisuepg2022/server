@@ -4,12 +4,12 @@ import { AddressModel } from "./AddressModel";
 
 type PersonModel = {
   id: string;
-  email?: string;
+  email: string | null;
   name: string;
   domainClass: string;
-  CPF: string;
+  CPF: string | null;
   birthDate: Date;
-  contactNumber?: string;
+  contactNumber: string | null;
   clinic?: Clinic;
   address?: AddressModel;
 };

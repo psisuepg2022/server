@@ -25,6 +25,7 @@
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "no-nested-ternary": "off",
     "no-new": "off",
     "no-prototype-builtins": "off",
     "no-restricted-syntax": "off",
