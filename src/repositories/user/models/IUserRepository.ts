@@ -17,7 +17,7 @@ interface IUserRepository {
     | null
   >;
   save(roleId: number, user: UserModel): PrismaPromise<Partial<UserModel>>;
-  count(domainClass: string): PrismaPromise<number>;
+  count(clinicId: string, domainClass: string): PrismaPromise<number>;
   updateLoginControlProps(
     userId: string,
     attempts: number,

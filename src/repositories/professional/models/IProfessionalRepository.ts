@@ -8,7 +8,10 @@ interface IProfessionalRepository {
     userId: string,
     professional: ProfessionalModel
   ): PrismaPromise<Partial<ProfessionalModel>>;
-  get([take, skip]: [number, number]): PrismaPromise<
+  get(
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<
     Partial<
       UserModel & { person: PersonModel; professional: ProfessionalModel }
     >[]

@@ -29,7 +29,10 @@ class ProfessionalRepository implements IProfessionalRepository {
       },
     }) as PrismaPromise<Partial<ProfessionalModel>>;
 
-  public get = ([take, skip]: [number, number]): PrismaPromise<
+  public get = (
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<
     Partial<
       UserModel & { person: PersonModel; professional: ProfessionalModel }
     >[]
@@ -58,7 +61,11 @@ class ProfessionalRepository implements IProfessionalRepository {
         },
       },
       where: {
-        person: { domainClass: UserDomainClasses.PROFESSIONAL, active: true },
+        person: {
+          domainClass: UserDomainClasses.PROFESSIONAL,
+          active: true,
+          clinicId,
+        },
       },
       orderBy: { person: { name: "asc" } },
       take,

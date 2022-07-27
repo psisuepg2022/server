@@ -3,9 +3,10 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IEmployeeRepository {
-  get([take, skip]: [number, number]): PrismaPromise<
-    Partial<EmployeeModel & { person: PersonModel }>[]
-  >;
+  get(
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<Partial<EmployeeModel & { person: PersonModel }>[]>;
 }
 
 export { IEmployeeRepository };

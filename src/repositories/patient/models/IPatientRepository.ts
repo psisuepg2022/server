@@ -7,10 +7,11 @@ interface IPatientRepository {
     personId: string,
     patient: PatientModel
   ): PrismaPromise<Partial<PatientModel>>;
-  get([take, skip]: [number, number]): PrismaPromise<
-    Partial<PersonModel & { patient: PatientModel }>[]
-  >;
-  count(): PrismaPromise<number>;
+  get(
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]>;
+  count(clinicId: string): PrismaPromise<number>;
 }
 
 export { IPatientRepository };

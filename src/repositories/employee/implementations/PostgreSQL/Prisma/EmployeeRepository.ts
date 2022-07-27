@@ -8,9 +8,10 @@ import { IEmployeeRepository } from "@repositories/employee/models/IEmployeeRepo
 class EmployeeRepository implements IEmployeeRepository {
   constructor(private prisma = prismaClient) {}
 
-  public get = ([take, skip]: [number, number]): PrismaPromise<
-    Partial<EmployeeModel & { person: PersonModel }>[]
-  > =>
+  public get = (
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<Partial<EmployeeModel & { person: PersonModel }>[]> =>
     this.prisma.user.findMany({
       select: {
         accessCode: true,
@@ -27,7 +28,11 @@ class EmployeeRepository implements IEmployeeRepository {
         },
       },
       where: {
-        person: { domainClass: UserDomainClasses.EMPLOYEE, active: true },
+        person: {
+          domainClass: UserDomainClasses.EMPLOYEE,
+          active: true,
+          clinicId,
+        },
       },
       orderBy: { person: { name: "asc" } },
       take,

@@ -24,12 +24,15 @@ class ListProfessionalsService {
   ) {}
 
   public async execute(
+    clinicId: string,
     options?: IPaginationOptions
   ): Promise<IPaginationResponse<ListProfessionalsResponseModel>> {
     const countOperation = this.userRepository.count(
+      clinicId,
       UserDomainClasses.PROFESSIONAL
     );
     const getOperation = this.professionalRepository.get(
+      clinicId,
       pagination(options || {})
     );
 

@@ -87,10 +87,14 @@ class PatientController {
   ): Promise<Response> {
     try {
       const { page, size } = req.query;
+      const { clinic_id: clinicId } = req.params;
 
       const listPatientsService = container.resolve(ListPatientsService);
 
-      const result = await listPatientsService.execute({ page, size });
+      const result = await listPatientsService.execute(clinicId, {
+        page,
+        size,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,

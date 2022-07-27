@@ -8,18 +8,21 @@ import { IPatientRepository } from "@repositories/patient/models/IPatientReposit
 class PatientRepository implements IPatientRepository {
   constructor(private prisma = prismaClient) {}
 
-  public count = (): PrismaPromise<number> =>
+  public count = (clinicId: string): PrismaPromise<number> =>
     this.prisma.person.count({
       where: {
+        clinicId,
         domainClass: UserDomainClasses.PATIENT,
       },
     });
 
-  public get = ([take, skip]: [number, number]): PrismaPromise<
-    Partial<PersonModel & { patient: PatientModel }>[]
-  > =>
+  public get = (
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]> =>
     this.prisma.person.findMany({
       where: {
+        clinicId,
         domainClass: UserDomainClasses.PATIENT,
       },
       select: {

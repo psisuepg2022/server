@@ -8,9 +8,10 @@ import { IOwnerRepository } from "@repositories/owner/models/IOwnerRepository";
 class OwnerRepository implements IOwnerRepository {
   constructor(private prisma = prismaClient) {}
 
-  public get = ([take, skip]: [number, number]): PrismaPromise<
-    Partial<OwnerModel & { person: PersonModel }>[]
-  > =>
+  public get = (
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<Partial<OwnerModel & { person: PersonModel }>[]> =>
     this.prisma.user.findMany({
       select: {
         accessCode: true,
@@ -27,7 +28,11 @@ class OwnerRepository implements IOwnerRepository {
         },
       },
       where: {
-        person: { domainClass: UserDomainClasses.OWNER, active: true },
+        person: {
+          domainClass: UserDomainClasses.OWNER,
+          active: true,
+          clinicId,
+        },
       },
       orderBy: { person: { name: "asc" } },
       take,

@@ -72,10 +72,14 @@ class EmployeeController {
   ): Promise<Response> {
     try {
       const { page, size } = req.query;
+      const { clinic_id: clinicId } = req.params;
 
       const listEmployeesService = container.resolve(ListEmployeesService);
 
-      const result = await listEmployeesService.execute({ page, size });
+      const result = await listEmployeesService.execute(clinicId, {
+        page,
+        size,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,

@@ -3,9 +3,10 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IOwnerRepository {
-  get([take, skip]: [number, number]): PrismaPromise<
-    Partial<OwnerModel & { person: PersonModel }>[]
-  >;
+  get(
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<Partial<OwnerModel & { person: PersonModel }>[]>;
 }
 
 export { IOwnerRepository };

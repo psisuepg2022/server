@@ -21,10 +21,14 @@ class ListPatientsService {
   ) {}
 
   public async execute(
+    clinicId: string,
     options?: IPaginationOptions
   ): Promise<IPaginationResponse<ListPatientsResponseModel>> {
-    const countOperation = this.patientRepository.count();
-    const getOperation = this.patientRepository.get(pagination(options || {}));
+    const countOperation = this.patientRepository.count(clinicId);
+    const getOperation = this.patientRepository.get(
+      clinicId,
+      pagination(options || {})
+    );
 
     const [totalItems, items] = await transaction([
       countOperation,

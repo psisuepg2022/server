@@ -78,12 +78,16 @@ class ProfessionalController {
   ): Promise<Response> {
     try {
       const { page, size } = req.query;
+      const { clinic_id: clinicId } = req.params;
 
       const listProfessionalsService = container.resolve(
         ListProfessionalsService
       );
 
-      const result = await listProfessionalsService.execute({ page, size });
+      const result = await listProfessionalsService.execute(clinicId, {
+        page,
+        size,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,

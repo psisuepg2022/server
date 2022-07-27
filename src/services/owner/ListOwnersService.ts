@@ -23,10 +23,17 @@ class ListOwnersService {
   ) {}
 
   public async execute(
+    clinicId: string,
     options?: IPaginationOptions
   ): Promise<IPaginationResponse<ListOwnersResponseModel>> {
-    const countOperation = this.userRepository.count(UserDomainClasses.OWNER);
-    const getOperation = this.ownerRepository.get(pagination(options || {}));
+    const countOperation = this.userRepository.count(
+      clinicId,
+      UserDomainClasses.OWNER
+    );
+    const getOperation = this.ownerRepository.get(
+      clinicId,
+      pagination(options || {})
+    );
 
     const [totalItems, items] = await transaction([
       countOperation,

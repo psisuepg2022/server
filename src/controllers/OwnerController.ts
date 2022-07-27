@@ -69,10 +69,11 @@ class OwnerController {
   ): Promise<Response> {
     try {
       const { page, size } = req.query;
+      const { clinic_id: clinicId } = req.params;
 
       const listOwnersService = container.resolve(ListOwnersService);
 
-      const result = await listOwnersService.execute({ page, size });
+      const result = await listOwnersService.execute(clinicId, { page, size });
 
       return res.status(HttpStatus.OK).json({
         success: true,
