@@ -5,7 +5,10 @@ import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
+import { DaysOfTheWeek } from "@infra/domains";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
+import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { CreateProfessionalRequestModel } from "@models/dto/professional/CreateProfessionalRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IHashProvider } from "@providers/hash";
@@ -18,6 +21,7 @@ import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
 import { IPersonRepository } from "@repositories/person";
 import { IProfessionalRepository } from "@repositories/professional";
+import { IScheduleRepository } from "@repositories/schedule";
 import { IUserRepository } from "@repositories/user";
 import { CreateUserService } from "@services/user";
 
@@ -45,7 +49,9 @@ class CreateProfessionalService extends CreateUserService {
     @inject("AddressRepository")
     addressRepository: IAddressRepository,
     @inject("ProfessionalRepository")
-    private professionalRepository: IProfessionalRepository
+    private professionalRepository: IProfessionalRepository,
+    @inject("ScheduleRepository")
+    private scheduleRepository: IScheduleRepository
   ) {
     super(
       validatorsProvider,
@@ -105,6 +111,9 @@ class CreateProfessionalService extends CreateUserService {
       specialization,
     } as ProfessionalModel);
 
+    const [createWeeklyScheduleOperation, createWeeklyScheduleLocksOperation] =
+      this.getWeeklyScheduleOperations(id);
+
     const [person, user, professional, addressSaved] = await transaction(
       ((): PrismaPromise<any>[] =>
         address
@@ -113,11 +122,15 @@ class CreateProfessionalService extends CreateUserService {
               this.getCreateUserOperation(),
               createProfessionalOperation,
               this.getAddressOperation(),
+              ...createWeeklyScheduleOperation,
+              ...createWeeklyScheduleLocksOperation,
             ]
           : [
               this.getCreatePersonOperation(),
               this.getCreateUserOperation(),
               createProfessionalOperation,
+              ...createWeeklyScheduleOperation,
+              ...createWeeklyScheduleLocksOperation,
             ])()
     );
 
@@ -134,6 +147,43 @@ class CreateProfessionalService extends CreateUserService {
       contactNumber: this.maskProvider.contactNumber(person.contactNumber),
     } as Partial<ProfessionalModel>;
   }
+
+  private getWeeklyScheduleOperations = (
+    professionalId: string
+  ): [
+    PrismaPromise<WeeklyScheduleModel>[],
+    PrismaPromise<WeeklyScheduleLockModel>[]
+  ] => {
+    const days = Object.values(DaysOfTheWeek).filter(
+      (item: string | number) => typeof item === "number"
+    ) as number[];
+
+    const ids = days.map(() => this.uniqueIdentifierProvider.generate());
+
+    const createWeeklyScheduleOperation = days.map(
+      (item: number, index: number): PrismaPromise<WeeklyScheduleModel> =>
+        this.scheduleRepository.saveWeeklyScheduleItem(professionalId, {
+          id: ids[index],
+          dayOfTheWeek: item,
+          startTime: this.getTime(8),
+          endTime: this.getTime(17),
+        })
+    );
+
+    const createWeeklyScheduleLocksOperation = ids.map(
+      (id: string): PrismaPromise<WeeklyScheduleLockModel> =>
+        this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
+          id: this.uniqueIdentifierProvider.generate(),
+          startTime: this.getTime(12),
+          endTime: this.getTime(13),
+        })
+    );
+
+    return [createWeeklyScheduleOperation, createWeeklyScheduleLocksOperation];
+  };
+
+  private getTime = (hour: number): Date =>
+    new Date(Date.UTC(2022, 6, 27, hour));
 }
 
 export { CreateProfessionalService };
