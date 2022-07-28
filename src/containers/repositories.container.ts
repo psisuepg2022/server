@@ -19,6 +19,10 @@ import {
   IProfessionalRepository,
   ProfessionalRepository,
 } from "@repositories/professional";
+import {
+  IScheduleRepository,
+  ScheduleRepository,
+} from "@repositories/schedule";
 import { IUserRepository, UserRepository } from "@repositories/user";
 
 container.registerSingleton<IClinicRepository>(
@@ -66,4 +70,9 @@ container.registerSingleton<ILiableRepository>(
 container.registerSingleton<IProfessionalRepository>(
   "ProfessionalRepository",
   ProfessionalRepository
+);
+
+container.registerSingleton<IScheduleRepository>(
+  "ScheduleRepository",
+  ScheduleRepository
 );
