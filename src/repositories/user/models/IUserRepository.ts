@@ -23,6 +23,10 @@ interface IUserRepository {
     attempts: number,
     blocked: boolean
   ): PrismaPromise<Partial<UserModel>>;
+  verifyRole(
+    userId: string,
+    role: string
+  ): PrismaPromise<Partial<UserModel> | null>;
 }
 
 export { IUserRepository };

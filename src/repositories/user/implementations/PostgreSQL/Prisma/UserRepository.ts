@@ -104,6 +104,20 @@ class UserRepository implements IUserRepository {
         },
       },
     });
+
+  public verifyRole = (
+    userId: string,
+    role: string
+  ): PrismaPromise<Partial<UserModel> | null> =>
+    this.prisma.user.findFirst({
+      where: {
+        id: userId,
+        role: {
+          name: role,
+        },
+      },
+      select: { id: true },
+    }) as PrismaPromise<Partial<UserModel> | null>;
 }
 
 export { UserRepository };

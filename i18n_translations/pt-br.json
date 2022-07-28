@@ -69,6 +69,7 @@
   "ErrorTokenInvalid": "As credencias de autenticação são inválidas. Por favor, tente realizar a autenticação antes de acessar a este conteúdo.",
   "ErrorTokenRequired": "Para acessar este recurso, é necessário informar as credenciais de autenticação.",
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",
+  "ErrorUnauthorizedUserForThisResource": "O usuário não possui autorização para acessar este recurso.",
   "ErrorUserIsBlocked": "Não foi possível autenticar o usuário pois este está bloqueado. Por favor, entre em contato com um administrador.",
   "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe.",
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
