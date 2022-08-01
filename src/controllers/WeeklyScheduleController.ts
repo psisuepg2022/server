@@ -36,11 +36,20 @@ class WeeklyScheduleController {
 
   public async readByProfessionalId(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<ListWeeklyScheduleModel[]>>
   ): Promise<Response> {
     try {
+      const { professional_id: professionalId } = req.params;
+
+      const listWeeklyScheduleService = container.resolve(
+        ListWeeklyScheduleService
+      );
+
+      const result = await listWeeklyScheduleService.execute(professionalId);
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
