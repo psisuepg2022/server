@@ -8,7 +8,7 @@ import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
-import { ListWeeklyScheduleModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleModel";
+import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleResponseModel";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IScheduleRepository } from "@repositories/schedule";
@@ -26,7 +26,7 @@ class ListWeeklyScheduleService {
 
   public async execute(
     professionalId: string
-  ): Promise<ListWeeklyScheduleModel[]> {
+  ): Promise<ListWeeklyScheduleResponseModel[]> {
     if (stringIsNullOrEmpty(professionalId))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorProfessionalRequired"));
 
@@ -42,7 +42,7 @@ class ListWeeklyScheduleService {
         item: WeeklyScheduleModel & {
           WeeklyScheduleLocks: WeeklyScheduleLockModel[];
         }
-      ): ListWeeklyScheduleModel => ({
+      ): ListWeeklyScheduleResponseModel => ({
         ...item,
         dayOfTheWeek: getEnumDescription(
           "DAYS_OF_THE_WEEK",

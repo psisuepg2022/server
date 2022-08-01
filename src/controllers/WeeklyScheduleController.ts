@@ -4,13 +4,13 @@ import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
-import { ListWeeklyScheduleModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleModel";
+import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleResponseModel";
 import { ListWeeklyScheduleService } from "@services/weeklySchedule";
 
 class WeeklyScheduleController {
   public async read(
     req: Request,
-    res: Response<IResponseMessage<ListWeeklyScheduleModel[]>>
+    res: Response<IResponseMessage<ListWeeklyScheduleResponseModel[]>>
   ): Promise<Response> {
     try {
       const { id: professionalId } = req.user;
@@ -36,7 +36,7 @@ class WeeklyScheduleController {
 
   public async readByProfessionalId(
     req: Request,
-    res: Response<IResponseMessage<ListWeeklyScheduleModel[]>>
+    res: Response<IResponseMessage<ListWeeklyScheduleResponseModel[]>>
   ): Promise<Response> {
     try {
       const { professional_id: professionalId } = req.params;

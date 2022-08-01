@@ -1,6 +1,6 @@
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 
-type ListWeeklyScheduleModel = {
+type ListWeeklyScheduleResponseModel = {
   id: string;
   dayOfTheWeek: string;
   endTime: string;
@@ -8,4 +8,4 @@ type ListWeeklyScheduleModel = {
   WeeklyScheduleLocks: WeeklyScheduleLockModel[];
 };
 
-export { ListWeeklyScheduleModel };
+export { ListWeeklyScheduleResponseModel };
