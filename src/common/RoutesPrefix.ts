@@ -12,6 +12,8 @@ class RoutesPrefix {
   public static readonly PROFESSIONAL: string = "/professional";
 
   public static readonly OWNER: string = "/owner";
+
+  public static readonly WEEKLY_SCHEDULE: string = "/weekly_schedule";
 }
 
 export { RoutesPrefix };
