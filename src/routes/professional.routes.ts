@@ -14,7 +14,7 @@ const ensureAuthenticated = container.resolve(
 );
 
 routes.get(
-  "/:clinic_id",
+  "/",
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.READ_PROFESSIONAL),
   controller.read
