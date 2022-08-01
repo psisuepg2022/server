@@ -4,5 +4,8 @@ declare namespace Express {
     user: {
       id: string;
     };
+    clinic: {
+      id: string;
+    };
   }
 }

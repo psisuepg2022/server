@@ -57,6 +57,7 @@ class EnsureUserAuthenticatedMiddleware {
         });
 
       Object.assign(req, { user: { id: payload.id } });
+      Object.assign(req, { clinic: { id: payload.clinic.id } });
 
       return next();
     } catch (error) {
