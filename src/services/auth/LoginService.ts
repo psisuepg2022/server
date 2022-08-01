@@ -45,7 +45,7 @@ class LoginService {
     });
 
     const [hasUser] = await transaction([
-      this.userRepository.hasUser(userName, accessCodeConverted),
+      this.userRepository.hasActivatedUser(userName, accessCodeConverted),
     ]);
 
     if (!hasUser)

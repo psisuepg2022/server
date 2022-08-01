@@ -6,7 +6,7 @@ import { PrismaPromise } from "@prisma/client";
 
 interface IUserRepository {
   hasUserName(userName: string): PrismaPromise<UserModel | null>;
-  hasUser(
+  hasActivatedUser(
     userName: string,
     accessCode: number
   ): PrismaPromise<

@@ -50,7 +50,7 @@ class UserRepository implements IUserRepository {
       where: { userName },
     }) as PrismaPromise<UserModel | null>;
 
-  public hasUser = (
+  public hasActivatedUser = (
     userName: string,
     accessCode: number
   ): PrismaPromise<
@@ -61,7 +61,7 @@ class UserRepository implements IUserRepository {
     | null
   > =>
     this.prisma.user.findFirst({
-      where: { userName, accessCode },
+      where: { userName, accessCode, person: { active: true } },
       select: {
         password: true,
         blocked: true,
