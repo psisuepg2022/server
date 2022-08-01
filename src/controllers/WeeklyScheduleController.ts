@@ -5,7 +5,10 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleResponseModel";
-import { ListWeeklyScheduleService } from "@services/weeklySchedule";
+import {
+  DeleteWeeklyScheduleLockService,
+  ListWeeklyScheduleService,
+} from "@services/weeklySchedule";
 
 class WeeklyScheduleController {
   public async read(
@@ -65,8 +68,24 @@ class WeeklyScheduleController {
     res: Response<IResponseMessage<boolean>>
   ): Promise<Response> {
     try {
+      const { id: professionalId } = req.user;
+
+      const { schedule_id: weeklyScheduleId, lock_id: weeklyScheduleLockId } =
+        req.params;
+
+      const deleteWeeklyScheduleLockService = container.resolve(
+        DeleteWeeklyScheduleLockService
+      );
+
+      const result = await deleteWeeklyScheduleLockService.execute({
+        professionalId,
+        weeklyScheduleId,
+        weeklyScheduleLockId,
+      });
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

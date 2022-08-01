@@ -76,6 +76,9 @@
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
   "ErrorValueOutOfGenderDomain": "A informação do Sexo não é reconhecida.",
   "ErrorValueOutOfMaritalStatusDomain": "A informação do estado civil não é reconhecida.",
+  "ErrorWeeklyScheduleLockNotFound": "Nenhum intervalo foi encontrado para os parâmetros enviados.",
+  "ErrorWeeklyScheduleLockRequired": "É necessário informar o intevalo da agenda semanal.",
+  "ErrorWeeklyScheduleRequired": "É necessário informar o dia da agenda semanal.",
   "ErrorZipCodeInvalid": "O CEP informado é inválido.",
   "ErrorZipCodeRequired": "É necessário informar o CEP para registro do endereço.",
   "SuccessGeneric": "Operação realizada com sucesso."

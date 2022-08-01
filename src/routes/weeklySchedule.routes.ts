@@ -27,7 +27,7 @@ routes.get(
   controller.readByProfessionalId
 );
 routes.delete(
-  "/:day/:id",
+  "/:schedule_id/:lock_id",
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.deleteLock
