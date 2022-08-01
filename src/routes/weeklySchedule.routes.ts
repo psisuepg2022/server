@@ -32,5 +32,11 @@ routes.delete(
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.deleteLock
 );
+routes.post(
+  "/",
+  ensureAuthenticated.execute,
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.save
+);
 
 export { routes };

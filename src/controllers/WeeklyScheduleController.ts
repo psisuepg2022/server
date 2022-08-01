@@ -4,10 +4,12 @@ import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
+import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
 import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleResponseModel";
 import {
   DeleteWeeklyScheduleLockService,
   ListWeeklyScheduleService,
+  SaveWeeklyScheduleService,
 } from "@services/weeklySchedule";
 
 class WeeklyScheduleController {
@@ -49,6 +51,49 @@ class WeeklyScheduleController {
       );
 
       const result = await listWeeklyScheduleService.execute(professionalId);
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async save(
+    req: Request,
+    res: Response<IResponseMessage>
+  ): Promise<Response> {
+    try {
+      const {
+        id,
+        start_time: startTime,
+        end_time: endTime,
+        base_duration: baseDuration,
+        locks,
+      } = req.body;
+
+      const saveWeeklyScheduleService = container.resolve(
+        SaveWeeklyScheduleService
+      );
+
+      const result = await saveWeeklyScheduleService.execute({
+        id,
+        startTime,
+        endTime,
+        baseDuration,
+        locks: locks?.map(
+          (item: any): CreateWeeklyScheduleLockRequestModel => ({
+            endTime: item.end_time,
+            startTime: item.start_time,
+          })
+        ),
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,

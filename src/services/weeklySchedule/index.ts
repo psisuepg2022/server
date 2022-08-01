@@ -1,4 +1,9 @@
 import { DeleteWeeklyScheduleLockService } from "./DeleteWeeklyScheduleLockService";
 import { ListWeeklyScheduleService } from "./ListWeeklyScheduleService";
+import { SaveWeeklyScheduleService } from "./SaveWeeklyScheduleService";
 
-export { ListWeeklyScheduleService, DeleteWeeklyScheduleLockService };
+export {
+  SaveWeeklyScheduleService,
+  ListWeeklyScheduleService,
+  DeleteWeeklyScheduleLockService,
+};
