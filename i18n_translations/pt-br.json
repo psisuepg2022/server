@@ -59,6 +59,7 @@
   "ErrorPasswordRequired": "É necessário informar a senha.",
   "ErrorPasswordToWeak": "A senha é muito fraca. Mínimo de 8 caracteres, letras maiúsculas e minúsculas e pelo menos 1 número.",
   "ErrorProfessionRequired": "É necessário informar a profissão.",
+  "ErrorProfessionalRequired": "É necessário informar o profissional.",
   "ErrorPublicAreaRequired": "É necessário informar o logradouro para registro do endereço.",
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
   "ErrorRegistryRequired": "É necessário informar o registro.",

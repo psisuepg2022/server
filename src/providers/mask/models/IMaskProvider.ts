@@ -4,6 +4,7 @@ interface IMaskProvider {
   contactNumber(contactNumber: string): string;
   date(date: Date): string;
   zipCode(zipCode: string): string;
+  time(date: Date): string;
 }
 
 export { IMaskProvider };

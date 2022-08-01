@@ -1,17 +1,29 @@
 import { Request, Response } from "express";
 import i18n from "i18n";
+import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
+import { ListWeeklyScheduleModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleModel";
+import { ListWeeklyScheduleService } from "@services/weeklySchedule";
 
 class WeeklyScheduleController {
   public async read(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<ListWeeklyScheduleModel[]>>
   ): Promise<Response> {
     try {
+      const { id: professionalId } = req.user;
+
+      const listWeeklyScheduleService = container.resolve(
+        ListWeeklyScheduleService
+      );
+
+      const result = await listWeeklyScheduleService.execute(professionalId);
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

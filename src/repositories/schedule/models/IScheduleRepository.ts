@@ -7,11 +7,15 @@ interface IScheduleRepository {
     professionalId: string,
     schedule: WeeklyScheduleModel
   ): PrismaPromise<WeeklyScheduleModel>;
-
   saveWeeklyScheduleLockItem(
     weeklyScheduleId: string,
     lock: WeeklyScheduleLockModel
   ): PrismaPromise<WeeklyScheduleLockModel>;
+  getWeeklySchedule(
+    professionalId: string
+  ): PrismaPromise<
+    (WeeklyScheduleModel & { WeeklyScheduleLocks: WeeklyScheduleLockModel[] })[]
+  >;
 }
 
 export { IScheduleRepository };

@@ -17,6 +17,9 @@ class MaskProvider implements IMaskProvider {
   date = (date: Date): string =>
     date.toISOString().split("T")[0].split("-").reverse().join("/");
 
+  time = (date: Date): string =>
+    date.toISOString().split("T")[1].substring(0, 5);
+
   remove = (value: string): string => value.replace(/[^0-9]+/g, "");
 }
 

@@ -7,6 +7,34 @@ import { IScheduleRepository } from "@repositories/schedule/models/IScheduleRepo
 class ScheduleRepository implements IScheduleRepository {
   constructor(private prisma = prismaClient) {}
 
+  public getWeeklySchedule = (
+    professionalId: string
+  ): PrismaPromise<
+    (WeeklyScheduleModel & { WeeklyScheduleLocks: WeeklyScheduleLockModel[] })[]
+  > =>
+    this.prisma.weeklySchedule.findMany({
+      where: {
+        professionalId,
+      },
+      select: {
+        id: true,
+        dayOfTheWeek: true,
+        endTime: true,
+        startTime: true,
+        WeeklyScheduleLocks: {
+          select: {
+            id: true,
+            endTime: true,
+            startTime: true,
+          },
+        },
+      },
+    }) as PrismaPromise<
+      (WeeklyScheduleModel & {
+        WeeklyScheduleLocks: WeeklyScheduleLockModel[];
+      })[]
+    >;
+
   public saveWeeklyScheduleItem = (
     professionalId: string,
     { dayOfTheWeek, endTime, id, startTime }: WeeklyScheduleModel
