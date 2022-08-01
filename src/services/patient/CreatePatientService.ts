@@ -74,28 +74,6 @@ class CreatePatientService extends CreatePersonService {
       ? this.uniqueIdentifierProvider.generate()
       : "";
 
-    const hasLiable = await (async (): Promise<
-      (Partial<PersonModel> & { person: PersonModel }) | null
-    > => {
-      if (liableExisting) {
-        if (stringIsNullOrEmpty(liable))
-          throw new AppError("BAD_REQUEST", i18n.__("ErrorLiableRequired"));
-
-        if (!this.uniqueIdentifierProvider.isValid(liable))
-          throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
-
-        const [_hasLiable] = await transaction([
-          this.liableRepository.hasLiablePersonSaved(liable),
-        ]);
-
-        if (!_hasLiable)
-          throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
-
-        return _hasLiable;
-      }
-      return null;
-    })();
-
     if (stringIsNullOrEmpty(gender))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorGenderRequired"));
 
@@ -120,6 +98,28 @@ class CreatePatientService extends CreatePersonService {
         "BAD_REQUEST",
         i18n.__("ErrorValueOutOfMaritalStatusDomain")
       );
+
+    const hasLiable = await (async (): Promise<
+      (Partial<PersonModel> & { person: PersonModel }) | null
+    > => {
+      if (liableExisting) {
+        if (stringIsNullOrEmpty(liable))
+          throw new AppError("BAD_REQUEST", i18n.__("ErrorLiableRequired"));
+
+        if (!this.uniqueIdentifierProvider.isValid(liable))
+          throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
+
+        const [_hasLiable] = await transaction([
+          this.liableRepository.hasLiablePersonSaved(liable),
+        ]);
+
+        if (!_hasLiable)
+          throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
+
+        return _hasLiable;
+      }
+      return null;
+    })();
 
     await super.createPersonOperation(
       {
@@ -171,7 +171,6 @@ class CreatePatientService extends CreatePersonService {
     );
 
     const [liableIndex, addressIndex] = ((): [number, number] => [
-      // eslint-disable-next-line no-nested-ternary
       liable ? (address ? 1 : 0) : -1,
       address ? 0 : -1,
     ])();
