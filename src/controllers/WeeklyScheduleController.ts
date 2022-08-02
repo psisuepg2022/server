@@ -78,12 +78,15 @@ class WeeklyScheduleController {
         locks,
       } = req.body;
 
+      const { id: professionalId } = req.user;
+
       const saveWeeklyScheduleService = container.resolve(
         SaveWeeklyScheduleService
       );
 
       const result = await saveWeeklyScheduleService.execute({
         id,
+        professionalId,
         startTime,
         endTime,
         baseDuration,

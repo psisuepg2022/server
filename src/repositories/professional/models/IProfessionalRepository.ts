@@ -16,6 +16,10 @@ interface IProfessionalRepository {
       UserModel & { person: PersonModel; professional: ProfessionalModel }
     >[]
   >;
+  updateBaseDuration(
+    professionalId: string,
+    baseDuration: number
+  ): PrismaPromise<Partial<ProfessionalModel>>;
 }
 
 export { IProfessionalRepository };

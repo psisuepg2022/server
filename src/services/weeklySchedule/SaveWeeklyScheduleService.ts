@@ -3,12 +3,18 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
+import { time2date } from "@helpers/time2date";
 import { toNumber } from "@helpers/toNumber";
+import { transaction } from "@infra/database/transaction";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
+import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
 import { SaveWeeklyScheduleRequestModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleRequestModel";
+import { PrismaPromise } from "@prisma/client";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IProfessionalRepository } from "@repositories/professional";
+import { IScheduleRepository } from "@repositories/schedule";
 
 @injectable()
 class SaveWeeklyScheduleService {
@@ -16,11 +22,53 @@ class SaveWeeklyScheduleService {
     @inject("UniqueIdentifierProvider")
     private uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
-    private validatorsProvider: IValidatorsProvider
+    private validatorsProvider: IValidatorsProvider,
+    @inject("ScheduleRepository")
+    private scheduleRepository: IScheduleRepository,
+    @inject("ProfessionalRepository")
+    private professionalRepository: IProfessionalRepository
   ) {}
+
+  private validateInterval = (start: string, end: string, index = -1): void => {
+    if (time2date(start) > time2date(end))
+      throw new AppError(
+        "BAD_REQUEST",
+        index === -1
+          ? i18n.__("ErrorWeeklyScheduleInvalidInterval")
+          : i18n.__mf("ErrorWeeklyScheduleLockInvalidInterval", [index + 1])
+      );
+
+    this.validateTime("Start", start, index);
+    this.validateTime("End", end, index);
+  };
+
+  private validateTime = (
+    label: "Start" | "End",
+    time: string,
+    index: number
+  ): void => {
+    if (stringIsNullOrEmpty(time))
+      throw new AppError(
+        "BAD_REQUEST",
+        index === -1
+          ? i18n.__(`ErrorWeeklySchedule${label}TimeRequired`)
+          : i18n.__mf(`ErrorWeeklyScheduleLock${label}TimeRequired`, [
+              index + 1,
+            ])
+      );
+
+    if (!this.validatorsProvider.time(time))
+      throw new AppError(
+        "BAD_REQUEST",
+        index === -1
+          ? i18n.__(`ErrorWeeklySchedule${label}TimeInvalid`)
+          : i18n.__mf(`ErrorWeeklyScheduleLock${label}TimeInvalid`, [index + 1])
+      );
+  };
 
   public async execute({
     id,
+    professionalId,
     endTime,
     startTime,
     baseDuration,
@@ -32,7 +80,13 @@ class SaveWeeklyScheduleService {
         i18n.__("ErrorWeeklyScheduleIDRequired")
       );
 
-    if (!this.uniqueIdentifierProvider.isValid(id))
+    if (stringIsNullOrEmpty(professionalId))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorProfessionalRequired"));
+
+    if (
+      !this.uniqueIdentifierProvider.isValid(id) ||
+      !this.uniqueIdentifierProvider.isValid(professionalId)
+    )
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
     if (stringIsNullOrEmpty(baseDuration))
@@ -43,67 +97,51 @@ class SaveWeeklyScheduleService {
       error: new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationInvalid")),
     });
 
-    if (stringIsNullOrEmpty(startTime))
-      throw new AppError(
-        "BAD_REQUEST",
-        i18n.__("ErrorWeeklyScheduleStartTimeRequired")
-      );
+    this.validateInterval(startTime, endTime);
 
-    if (!this.validatorsProvider.time(startTime))
-      throw new AppError(
-        "BAD_REQUEST",
-        i18n.__("ErrorWeeklyScheduleStartTimeInvalid")
-      );
+    // to-do: ver se o intervalo já não existe, ou está no meio de outro
 
-    if (stringIsNullOrEmpty(endTime))
-      throw new AppError(
-        "BAD_REQUEST",
-        i18n.__("ErrorWeeklyScheduleEndTimeRequired")
-      );
+    const [hasSchedule] = await transaction([
+      this.scheduleRepository.hasWeeklySchedule(id, professionalId),
+    ]);
 
-    if (!this.validatorsProvider.time(endTime))
-      throw new AppError(
-        "BAD_REQUEST",
-        i18n.__("ErrorWeeklyScheduleEndTimeInvalid")
-      );
+    if (!hasSchedule)
+      throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
 
-    if (locks && Array.isArray(locks) && locks.length > 0)
-      locks.map(
-        (
-          item: CreateWeeklyScheduleLockRequestModel,
-          index: number
-        ): WeeklyScheduleLockModel => {
-          if (stringIsNullOrEmpty(item.startTime))
-            throw new AppError(
-              "BAD_REQUEST",
-              i18n.__mf("ErrorWeeklyScheduleLockStartTimeRequired", [index + 1])
-            );
+    const createLocksOperations =
+      ((): PrismaPromise<WeeklyScheduleLockModel>[] => {
+        if (locks && Array.isArray(locks) && locks.length > 0)
+          return locks.map(
+            (
+              item: CreateWeeklyScheduleLockRequestModel,
+              index: number
+            ): PrismaPromise<WeeklyScheduleLockModel> => {
+              this.validateInterval(item.startTime, item.endTime, index);
 
-          if (!this.validatorsProvider.time(item.startTime))
-            throw new AppError(
-              "BAD_REQUEST",
-              i18n.__mf("ErrorWeeklyScheduleLockStartTimeInvalid", [index + 1])
-            );
+              return this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
+                endTime: time2date(item.endTime),
+                startTime: time2date(item.startTime),
+                id: this.uniqueIdentifierProvider.generate(),
+              });
+            }
+          );
 
-          if (stringIsNullOrEmpty(item.endTime))
-            throw new AppError(
-              "BAD_REQUEST",
-              i18n.__mf("ErrorWeeklyScheduleLockEndTimeRequired", [index + 1])
-            );
+        return [];
+      })();
 
-          if (!this.validatorsProvider.time(item.endTime))
-            throw new AppError(
-              "BAD_REQUEST",
-              i18n.__mf("ErrorWeeklyScheduleLockEndTimeInvalid", [index + 1])
-            );
-
-          return {
-            endTime: item.endTime,
-            startTime: item.startTime,
-            id: this.uniqueIdentifierProvider.generate(),
-          };
-        }
-      );
+    const [weeklyScheduleUpdated, professionalUpdated, insertedLocks] =
+      await transaction([
+        this.scheduleRepository.updateSchedule({
+          id,
+          endTime: time2date(endTime),
+          startTime: time2date(startTime),
+        } as WeeklyScheduleModel),
+        this.professionalRepository.updateBaseDuration(
+          professionalId,
+          baseDurationConverted
+        ),
+        ...createLocksOperations,
+      ]);
 
     return {};
   }

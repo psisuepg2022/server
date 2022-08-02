@@ -21,6 +21,13 @@ interface IScheduleRepository {
     weeklyScheduleId: string,
     weeklyScheduleLockId: string
   ): PrismaPromise<WeeklyScheduleLockModel | null>;
+  hasWeeklySchedule(
+    id: string,
+    professionalId: string
+  ): PrismaPromise<WeeklyScheduleModel | null>;
+  updateSchedule(
+    weeklySchedule: WeeklyScheduleModel
+  ): PrismaPromise<WeeklyScheduleModel>;
   deleteLock(id: string): PrismaPromise<WeeklyScheduleLockModel>;
 }
 
