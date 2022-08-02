@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
+import { time2date } from "@helpers/time2date";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
@@ -165,8 +166,8 @@ class CreateProfessionalService extends CreateUserService {
         this.scheduleRepository.saveWeeklyScheduleItem(professionalId, {
           id: ids[index],
           dayOfTheWeek: item,
-          startTime: this.getTime(8),
-          endTime: this.getTime(17),
+          startTime: time2date("08:00"),
+          endTime: time2date("17:00"),
         })
     );
 
@@ -174,16 +175,13 @@ class CreateProfessionalService extends CreateUserService {
       (id: string): PrismaPromise<WeeklyScheduleLockModel> =>
         this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
           id: this.uniqueIdentifierProvider.generate(),
-          startTime: this.getTime(12),
-          endTime: this.getTime(13),
+          startTime: time2date("12:00"),
+          endTime: time2date("13:00"),
         })
     );
 
     return [createWeeklyScheduleOperation, createWeeklyScheduleLocksOperation];
   };
-
-  private getTime = (hour: number): Date =>
-    new Date(Date.UTC(2022, 6, 27, hour));
 }
 
 export { CreateProfessionalService };
