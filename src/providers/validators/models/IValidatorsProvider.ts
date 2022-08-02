@@ -3,6 +3,7 @@ interface IValidatorsProvider {
   email(email: string): boolean;
   contactNumber(contactNumber: string): boolean;
   zipCode(zipCode: string): boolean;
+  time(time: string): boolean;
 }
 
 export { IValidatorsProvider };

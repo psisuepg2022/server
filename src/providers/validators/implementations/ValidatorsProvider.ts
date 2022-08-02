@@ -8,6 +8,8 @@ class ValidatorsProvider implements IValidatorsProvider {
 
   email = (email: string): boolean => validate(email);
 
+  time = (time: string): boolean => /^[0-9]{2}(?::)[0-9]{2}$/.test(time);
+
   zipCode = (zipCode: string): boolean =>
     !"/^[0-9]{5}(?:-)[0-9]{3}/".match(zipCode);
 
