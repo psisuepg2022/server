@@ -123,13 +123,23 @@ class SaveWeeklyScheduleService {
           ): Promise<void> => {
             this.validateInterval(item.startTime, item.endTime, index);
 
-            // validar base duration
+            const startDate = time2date(item.startTime);
+            const endDate = time2date(item.endTime);
+
+            if (
+              endDate.getTime() - startDate.getTime() !==
+              baseDurationConverted * 60000
+            )
+              throw new AppError(
+                "BAD_REQUEST",
+                i18n.__("ErrorWeeklyScheduleLockIntervalOutOfBaseDuration")
+              );
 
             const [hasLock] = await transaction([
               this.scheduleRepository.hasConflictingLock(
                 id,
-                time2date(item.startTime),
-                time2date(item.endTime)
+                startDate,
+                endDate
               ),
             ]);
 
@@ -149,8 +159,8 @@ class SaveWeeklyScheduleService {
 
             createLocksOperations.push(
               this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
-                endTime: time2date(item.endTime),
-                startTime: time2date(item.startTime),
+                endTime: endDate,
+                startTime: startDate,
                 id: this.uniqueIdentifierProvider.generate(),
               })
             );

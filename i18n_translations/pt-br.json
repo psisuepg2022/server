@@ -83,6 +83,7 @@
   "ErrorWeeklyScheduleLockConflicting": "O {0}º intervalo está conflitando com um intervalo já existente para {1}: das {2} às {3}.",
   "ErrorWeeklyScheduleLockEndTimeInvalid": "O horário de término do {0}º intervalo para a agenda deste dia da semana é inválido.",
   "ErrorWeeklyScheduleLockEndTimeRequired": "É necessário informar o horário de término do {0}º intervalo para a agenda deste dia da semana.",
+  "ErrorWeeklyScheduleLockIntervalOutOfBaseDuration": "A duração do intervalo está fora da duração base informada.",
   "ErrorWeeklyScheduleLockInvalidInterval": "O horário do {0}º intervalo está inválido, o início deve ser anterior ao término.",
   "ErrorWeeklyScheduleLockNotFound": "Nenhum intervalo foi encontrado para os parâmetros enviados.",
   "ErrorWeeklyScheduleLockRequired": "É necessário informar o intevalo da agenda semanal.",
