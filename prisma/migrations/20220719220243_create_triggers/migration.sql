@@ -37,8 +37,9 @@ BEGIN
   WHERE 
     c.id_profissional = NEW.id_profissional 
     AND c.situacao <> 4
-    AND NEW.data_agendamento > c.data_agendamento
-    AND NEW.data_agendamento < (c.data_agendamento + (DURACAO_CONSULTA* interval '1 minute'))
+    AND c.id_paciente <> NEW.id_paciente
+    AND NEW.data_agendamento >= c.data_agendamento
+    AND NEW.data_agendamento <= (c.data_agendamento + (DURACAO_CONSULTA* interval '1 minute'))
   LIMIT 1;
 
   IF (coalesce(ID_CONSULTA_EXISTENTE, '') <> '') THEN
@@ -51,7 +52,7 @@ $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_previnir_consultas_mesmo_horario
-BEFORE INSERT ON "consulta"
+BEFORE INSERT OR UPDATE ON "consulta"
 FOR EACH ROW
 EXECUTE PROCEDURE previnir_consultas_mesmo_horario();
 
