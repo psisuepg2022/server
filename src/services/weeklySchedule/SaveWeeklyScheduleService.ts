@@ -10,7 +10,9 @@ import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel"
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
 import { SaveWeeklyScheduleRequestModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleRequestModel";
+import { SaveWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleResponseModel";
 import { PrismaPromise } from "@prisma/client";
+import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IProfessionalRepository } from "@repositories/professional";
@@ -26,7 +28,9 @@ class SaveWeeklyScheduleService {
     @inject("ScheduleRepository")
     private scheduleRepository: IScheduleRepository,
     @inject("ProfessionalRepository")
-    private professionalRepository: IProfessionalRepository
+    private professionalRepository: IProfessionalRepository,
+    @inject("MaskProvider")
+    private maskProvider: IMaskProvider
   ) {}
 
   private validateInterval = (start: string, end: string, index = -1): void => {
@@ -73,7 +77,7 @@ class SaveWeeklyScheduleService {
     startTime,
     baseDuration,
     locks,
-  }: SaveWeeklyScheduleRequestModel): Promise<any> {
+  }: SaveWeeklyScheduleRequestModel): Promise<SaveWeeklyScheduleResponseModel> {
     if (stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",
@@ -129,7 +133,7 @@ class SaveWeeklyScheduleService {
         return [];
       })();
 
-    const [weeklyScheduleUpdated, professionalUpdated, insertedLocks] =
+    const [weeklyScheduleUpdated, professionalUpdated, ...insertedLocks] =
       await transaction([
         this.scheduleRepository.updateSchedule({
           id,
@@ -143,7 +147,21 @@ class SaveWeeklyScheduleService {
         ...createLocksOperations,
       ]);
 
-    return {};
+    return {
+      baseDuration: professionalUpdated.baseDuration || -1,
+      id: weeklyScheduleUpdated.id,
+      endTime: this.maskProvider.time(new Date(weeklyScheduleUpdated.endTime)),
+      startTime: this.maskProvider.time(
+        new Date(weeklyScheduleUpdated.startTime)
+      ),
+      locks: insertedLocks.map(
+        (item: WeeklyScheduleLockModel): WeeklyScheduleLockModel => ({
+          id: item.id,
+          endTime: this.maskProvider.time(new Date(item.endTime)),
+          startTime: this.maskProvider.time(new Date(item.startTime)),
+        })
+      ),
+    };
   }
 }
 

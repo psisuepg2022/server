@@ -6,6 +6,7 @@ import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
 import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleResponseModel";
+import { SaveWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleResponseModel";
 import {
   DeleteWeeklyScheduleLockService,
   ListWeeklyScheduleService,
@@ -67,7 +68,7 @@ class WeeklyScheduleController {
 
   public async save(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<SaveWeeklyScheduleResponseModel>>
   ): Promise<Response> {
     try {
       const {
