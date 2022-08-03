@@ -80,6 +80,7 @@
   "ErrorWeeklyScheduleEndTimeRequired": "É necessário informar o horário de término do intervalo de trabalho para este dia da semana.",
   "ErrorWeeklyScheduleIDRequired": "É necessário informar o identificar da agenda semanal.",
   "ErrorWeeklyScheduleInvalidInterval": "O intervalo do horário é invalido, o horário de início deve ser inferior ao de término.",
+  "ErrorWeeklyScheduleLockConflicting": "O {0}º intervalo está conflitando com um intervalo já existente para {1}: das {2} às {3}.",
   "ErrorWeeklyScheduleLockEndTimeInvalid": "O horário de término do {0}º intervalo para a agenda deste dia da semana é inválido.",
   "ErrorWeeklyScheduleLockEndTimeRequired": "É necessário informar o horário de término do {0}º intervalo para a agenda deste dia da semana.",
   "ErrorWeeklyScheduleLockInvalidInterval": "O horário do {0}º intervalo está inválido, o início deve ser anterior ao término.",

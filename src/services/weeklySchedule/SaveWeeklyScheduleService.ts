@@ -2,10 +2,12 @@ import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { time2date } from "@helpers/time2date";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
+import { DaysOfTheWeek } from "@infra/domains";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
@@ -103,8 +105,6 @@ class SaveWeeklyScheduleService {
 
     this.validateInterval(startTime, endTime);
 
-    // to-do: ver se o intervalo já não existe, ou está no meio de outro
-
     const [hasSchedule] = await transaction([
       this.scheduleRepository.hasWeeklySchedule(id, professionalId),
     ]);
@@ -112,26 +112,51 @@ class SaveWeeklyScheduleService {
     if (!hasSchedule)
       throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
 
-    const createLocksOperations =
-      ((): PrismaPromise<WeeklyScheduleLockModel>[] => {
-        if (locks && Array.isArray(locks) && locks.length > 0)
-          return locks.map(
-            (
-              item: CreateWeeklyScheduleLockRequestModel,
-              index: number
-            ): PrismaPromise<WeeklyScheduleLockModel> => {
-              this.validateInterval(item.startTime, item.endTime, index);
+    const createLocksOperations: PrismaPromise<WeeklyScheduleLockModel>[] = [];
 
-              return this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
+    if (locks && Array.isArray(locks) && locks.length > 0)
+      await Promise.all(
+        locks.map(
+          async (
+            item: CreateWeeklyScheduleLockRequestModel,
+            index: number
+          ): Promise<void> => {
+            this.validateInterval(item.startTime, item.endTime, index);
+
+            // validar base duration
+
+            const [hasLock] = await transaction([
+              this.scheduleRepository.hasConflictingLock(
+                id,
+                time2date(item.startTime),
+                time2date(item.endTime)
+              ),
+            ]);
+
+            if (hasLock)
+              throw new AppError(
+                "BAD_REQUEST",
+                i18n.__mf("ErrorWeeklyScheduleLockConflicting", [
+                  index + 1,
+                  getEnumDescription(
+                    "DAYS_OF_THE_WEEK",
+                    DaysOfTheWeek[hasLock.weeklySchedule.dayOfTheWeek as number]
+                  ),
+                  this.maskProvider.time(new Date(hasLock.startTime)),
+                  this.maskProvider.time(new Date(hasLock.endTime)),
+                ])
+              );
+
+            createLocksOperations.push(
+              this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
                 endTime: time2date(item.endTime),
                 startTime: time2date(item.startTime),
                 id: this.uniqueIdentifierProvider.generate(),
-              });
-            }
-          );
-
-        return [];
-      })();
+              })
+            );
+          }
+        )
+      );
 
     const [weeklyScheduleUpdated, professionalUpdated, ...insertedLocks] =
       await transaction([

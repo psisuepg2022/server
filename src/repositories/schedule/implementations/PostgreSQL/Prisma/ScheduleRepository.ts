@@ -100,5 +100,49 @@ class ScheduleRepository implements IScheduleRepository {
         endTime,
       },
     });
+
+  public hasConflictingLock = (
+    weeklyScheduleId: string,
+    startTime: Date,
+    endTime: Date
+  ): PrismaPromise<
+    | (WeeklyScheduleLockModel & {
+        weeklySchedule: Partial<WeeklyScheduleModel>;
+      })
+    | null
+  > =>
+    this.prisma.weeklyScheduleLock.findFirst({
+      where: {
+        weeklyScheduleId,
+        OR: [
+          {
+            startTime,
+            endTime,
+          },
+          {
+            endTime: {
+              lt: endTime,
+              gt: startTime,
+            },
+          },
+          {
+            startTime: {
+              lt: endTime,
+              gt: startTime,
+            },
+          },
+        ],
+      },
+      select: {
+        endTime: true,
+        id: true,
+        startTime: true,
+        weeklySchedule: {
+          select: {
+            dayOfTheWeek: true,
+          },
+        },
+      },
+    });
 }
 export { ScheduleRepository };
