@@ -36,7 +36,7 @@ class ProfessionalController {
 
       const result = await createProfessionalService.execute({
         userName,
-        birthDate: new Date(birthDate),
+        birthDate,
         contactNumber,
         name,
         CPF,

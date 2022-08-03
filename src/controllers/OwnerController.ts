@@ -30,7 +30,7 @@ class OwnerController {
 
       const result = await createOwnerService.execute({
         userName,
-        birthDate: new Date(birthDate),
+        birthDate,
         contactNumber,
         name,
         CPF,

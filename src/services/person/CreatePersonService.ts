@@ -83,8 +83,13 @@ class CreatePersonService {
     if (!birthDate)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorBirthDateRequired"));
 
-    if (new Date().getTime() < birthDate.getTime())
+    if (!this.validatorsProvider.date(birthDate))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorBirthDateInvalid"));
+
+    const birthDateConverted = new Date(birthDate);
+
+    if (new Date().getTime() < birthDateConverted.getTime())
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorFutureBirthDate"));
 
     if (stringIsNullOrEmpty(clinicId))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicRequired"));
@@ -141,7 +146,7 @@ class CreatePersonService {
     }
 
     this.personOperation = this.personRepository.save(clinicId, {
-      birthDate,
+      birthDate: birthDateConverted,
       contactNumber: contactNumber
         ? this.maskProvider.remove(contactNumber)
         : null,

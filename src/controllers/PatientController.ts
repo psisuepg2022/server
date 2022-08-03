@@ -35,7 +35,7 @@ class PatientController {
         {
           email,
           name,
-          birthDate: new Date(birthDate),
+          birthDate,
           CPF,
           contactNumber,
           gender,

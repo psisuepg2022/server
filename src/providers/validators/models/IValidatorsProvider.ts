@@ -4,6 +4,7 @@ interface IValidatorsProvider {
   contactNumber(contactNumber: string): boolean;
   zipCode(zipCode: string): boolean;
   time(time: string): boolean;
+  date(date: string): boolean;
 }
 
 export { IValidatorsProvider };

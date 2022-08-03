@@ -33,7 +33,7 @@ class EmployeeController {
 
       const result = await createEmployeeService.execute({
         userName,
-        birthDate: new Date(birthDate),
+        birthDate,
         contactNumber,
         name,
         CPF,
