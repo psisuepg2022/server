@@ -13,11 +13,7 @@ class AuthController {
     res: Response<IResponseMessage<LoginResponseModel>>
   ): Promise<Response> {
     try {
-      const {
-        user_name: userName,
-        password,
-        access_code: accessCode,
-      } = req.body;
+      const { userName, password, accessCode } = req.body;
 
       const loginService = container.resolve(LoginService);
 

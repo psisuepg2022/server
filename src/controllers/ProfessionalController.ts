@@ -16,13 +16,13 @@ class ProfessionalController {
   ): Promise<Response> {
     try {
       const {
-        user_name: userName,
+        userName,
         password,
         email,
         name,
         CPF,
-        birth_date: birthDate,
-        contact_number: contactNumber,
+        birthDate,
+        contactNumber,
         address,
         clinicId,
         profession,
@@ -49,10 +49,10 @@ class ProfessionalController {
         address: address
           ? {
               state: address.state,
-              zipCode: address.zip_code,
+              zipCode: address.zipCode,
               city: address.city,
               district: address.district,
-              publicArea: address.public_area,
+              publicArea: address.publicArea,
             }
           : undefined,
       });

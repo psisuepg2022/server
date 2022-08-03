@@ -19,13 +19,13 @@ class PatientController {
         email,
         name,
         CPF,
-        birth_date: birthDate,
-        contact_number: contactNumber,
+        birthDate,
+        contactNumber,
         address,
         clinicId,
         gender,
-        marital_status: maritalStatus,
-        liable_required: liableRequired,
+        maritalStatus,
+        liableRequired,
         liable,
       } = req.body;
 
@@ -44,19 +44,19 @@ class PatientController {
           address: address
             ? {
                 state: address.state,
-                zipCode: address.zip_code,
+                zipCode: address.zipCode,
                 city: address.city,
                 district: address.district,
-                publicArea: address.public_area,
+                publicArea: address.publicArea,
               }
             : undefined,
         },
         liableRequired === true
           ? stringIsNullOrEmpty(liable.id)
             ? {
-                birthDate: new Date(liable.birth_date),
+                birthDate: liable.birthDate,
                 CPF: liable.CPF,
-                contactNumber: liable.contact_number,
+                contactNumber: liable.contactNumber,
                 name: liable.name,
                 email: liable.email,
                 clinicId,
