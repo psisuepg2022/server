@@ -8,6 +8,7 @@ interface IPersonRepository {
     clinicId: string,
     person: PersonModel
   ): PrismaPromise<Partial<PersonModel>>;
+  safetyDelete(id: string): PrismaPromise<PersonModel>;
 }
 
 export { IPersonRepository };

@@ -39,6 +39,16 @@ class PersonRepository implements IPersonRepository {
     this.prisma.person.findFirst({
       where: { CPF },
     }) as PrismaPromise<PersonModel | null>;
+
+  public safetyDelete = (id: string): PrismaPromise<PersonModel> =>
+    this.prisma.person.update({
+      where: {
+        id,
+      },
+      data: {
+        active: false,
+      },
+    });
 }
 
 export { PersonRepository };

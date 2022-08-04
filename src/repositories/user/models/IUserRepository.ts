@@ -27,6 +27,11 @@ interface IUserRepository {
     userId: string,
     role: string
   ): PrismaPromise<Partial<UserModel> | null>;
+  getToDelete(
+    clinicId: string,
+    id: string,
+    roleName: string
+  ): PrismaPromise<Partial<UserModel> | null>;
 }
 
 export { IUserRepository };

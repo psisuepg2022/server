@@ -122,6 +122,21 @@ class UserRepository implements IUserRepository {
       },
       select: { id: true },
     }) as PrismaPromise<Partial<UserModel> | null>;
+
+  public getToDelete = (
+    clinicId: string,
+    id: string,
+    roleName: string
+  ): PrismaPromise<Partial<UserModel> | null> =>
+    this.prisma.user.findFirst({
+      where: {
+        id,
+        person: { clinicId, active: true },
+        role: {
+          name: roleName,
+        },
+      },
+    });
 }
 
 export { UserRepository };
