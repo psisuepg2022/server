@@ -26,5 +26,11 @@ routes.post(
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
   controller.create
 );
+routes.delete(
+  "/:id",
+  ensureAuthenticated.execute,
+  RBAC.has(PermissionsKeys.DELETE_PATIENT),
+  controller.delete
+);
 
 export { routes };

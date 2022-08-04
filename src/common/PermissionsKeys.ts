@@ -37,6 +37,12 @@ class PermissionsKeys {
 
   public static readonly READ_COMMENTS: string = "READ_COMMENTS";
 
+  public static readonly DELETE_PROFESSIONAL: string = "DELETE_PROFESSIONAL";
+
+  public static readonly DELETE_EMPLOYEE: string = "DELETE_EMPLOYEE";
+
+  public static readonly DELETE_PATIENT: string = "DELETE_PATIENT";
+
   public static readonly UPDATE_APPOINTMENTS: string = "UPDATE_APPOINTMENTS";
 
   public static readonly CREATE_WEEKLY_SCHEDULE: string =
