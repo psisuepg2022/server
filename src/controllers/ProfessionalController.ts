@@ -6,7 +6,10 @@ import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
-import { CreateProfessionalService } from "@services/professional";
+import {
+  CreateProfessionalService,
+  SoftProfessionalDeleteService,
+} from "@services/professional";
 import { ListProfessionalsService } from "@services/professional/ListProfessionalsService";
 
 class ProfessionalController {
@@ -108,12 +111,17 @@ class ProfessionalController {
   ): Promise<Response> {
     try {
       const { id } = req.params;
+      const { id: clinicId } = req.clinic;
 
-      console.log(id);
+      const softDeleteService = container.resolve(
+        SoftProfessionalDeleteService
+      );
+
+      const result = await softDeleteService.execute(clinicId, id);
 
       return res.status(HttpStatus.OK).json({
         success: true,
-        content: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
