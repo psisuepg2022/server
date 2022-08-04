@@ -119,6 +119,8 @@ class UserRepository implements IUserRepository {
         role: {
           name: role,
         },
+        person: { active: true },
+        blocked: false,
       },
       select: { id: true },
     }) as PrismaPromise<Partial<UserModel> | null>;
