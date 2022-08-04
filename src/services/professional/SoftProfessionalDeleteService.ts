@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { RolesKeys } from "@common/RolesKeys";
+import { transaction } from "@infra/database/transaction";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IPersonRepository } from "@repositories/person";
 import { IUserRepository } from "@repositories/user";
@@ -25,6 +26,14 @@ class SoftProfessionalDeleteService extends SoftUserDeleteService {
   }
 
   protected getRole = (): string => RolesKeys.PROFESSIONAL;
+
+  public async execute(clinicId: string, id: string): Promise<boolean> {
+    await super.createOperation(clinicId, id);
+
+    const [deleted] = await transaction([this.getOperation()]);
+
+    return !!deleted;
+  }
 }
 
 export { SoftProfessionalDeleteService };
