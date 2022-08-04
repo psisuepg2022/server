@@ -1,4 +1,9 @@
 import { CreateEmployeeService } from "./CreateEmployeeService";
 import { ListEmployeesService } from "./ListEmployeesService";
+import { SoftEmployeeDeleteService } from "./SoftEmployeeDeleteService";
 
-export { CreateEmployeeService, ListEmployeesService };
+export {
+  SoftEmployeeDeleteService,
+  CreateEmployeeService,
+  ListEmployeesService,
+};

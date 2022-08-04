@@ -9,6 +9,7 @@ import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesRe
 import {
   CreateEmployeeService,
   ListEmployeesService,
+  SoftEmployeeDeleteService,
 } from "@services/employee";
 
 class EmployeeController {
@@ -100,12 +101,15 @@ class EmployeeController {
   ): Promise<Response> {
     try {
       const { id } = req.params;
+      const { id: clinicId } = req.clinic;
 
-      console.log(id);
+      const softDeleteService = container.resolve(SoftEmployeeDeleteService);
+
+      const result = await softDeleteService.execute(clinicId, id);
 
       return res.status(HttpStatus.OK).json({
         success: true,
-        content: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
