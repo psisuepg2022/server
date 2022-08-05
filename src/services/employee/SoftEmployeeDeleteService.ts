@@ -1,32 +1,23 @@
 import { inject, injectable } from "tsyringe";
 
-import { RolesKeys } from "@common/RolesKeys";
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { transaction } from "@infra/database/transaction";
-import { UserModel } from "@models/domain/UserModel";
-import { PrismaPromise } from "@prisma/client";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IPersonRepository } from "@repositories/person";
-import { IUserRepository } from "@repositories/user";
 import { SoftPersonDeleteService } from "@services/person";
 
 @injectable()
-class SoftEmployeeDeleteService extends SoftPersonDeleteService<Partial<UserModel> | null> {
+class SoftEmployeeDeleteService extends SoftPersonDeleteService {
   constructor(
     @inject("UniqueIdentifierProvider")
     uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("PersonRepository")
-    personRepository: IPersonRepository,
-    @inject("UserRepository")
-    private userRepository: IUserRepository
+    personRepository: IPersonRepository
   ) {
-    super("profissional", uniqueIdentifierProvider, personRepository);
+    super("colaborador", uniqueIdentifierProvider, personRepository);
   }
 
-  protected findToDelete = (
-    clinicId: string,
-    id: string
-  ): PrismaPromise<Partial<UserModel> | null> =>
-    this.userRepository.getToDelete(clinicId, id, RolesKeys.EMPLOYEE);
+  protected getDomainClass = (): string => UserDomainClasses.EMPLOYEE;
 
   public async execute(clinicId: string, id: string): Promise<boolean> {
     await super.createOperation(clinicId, id);

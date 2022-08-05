@@ -49,6 +49,20 @@ class PersonRepository implements IPersonRepository {
         active: false,
       },
     });
+
+  public findToDelete = (
+    clinicId: string,
+    id: string,
+    domainClass: string
+  ): PrismaPromise<PersonModel | null> =>
+    this.prisma.person.findFirst({
+      where: {
+        id,
+        clinicId,
+        domainClass,
+        active: true,
+      },
+    });
 }
 
 export { PersonRepository };

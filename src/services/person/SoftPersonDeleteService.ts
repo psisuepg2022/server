@@ -8,7 +8,7 @@ import { PrismaPromise } from "@prisma/client";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IPersonRepository } from "@repositories/person";
 
-class SoftPersonDeleteService<T> {
+class SoftPersonDeleteService {
   private operation?: PrismaPromise<PersonModel>;
 
   constructor(
@@ -26,10 +26,7 @@ class SoftPersonDeleteService<T> {
     );
   };
 
-  protected findToDelete = (
-    _: string, // clinicId
-    __: string // id
-  ): PrismaPromise<T> => {
+  protected getDomainClass = (): string => {
     throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorGeneric"));
   };
 
@@ -49,9 +46,11 @@ class SoftPersonDeleteService<T> {
     )
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
-    const [hasToDelete] = await transaction([this.findToDelete(clinicId, id)]);
+    const [hasPerson] = await transaction([
+      this.personRepository.findToDelete(clinicId, id, this.getDomainClass()),
+    ]);
 
-    if (!hasToDelete)
+    if (!hasPerson)
       throw new AppError(
         "NOT_FOUND",
         i18n.__mf("ErrorUserIDNotFound", [this.labelUserType])

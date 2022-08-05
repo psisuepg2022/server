@@ -9,6 +9,11 @@ interface IPersonRepository {
     person: PersonModel
   ): PrismaPromise<Partial<PersonModel>>;
   safetyDelete(id: string): PrismaPromise<PersonModel>;
+  findToDelete(
+    clinicId: string,
+    id: string,
+    domainClass: string
+  ): PrismaPromise<PersonModel | null>;
 }
 
 export { IPersonRepository };
