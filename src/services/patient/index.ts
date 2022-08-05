@@ -1,4 +1,5 @@
 import { CreatePatientService } from "./CreatePatientService";
 import { ListPatientsService } from "./ListPatientsService";
+import { SoftPatientDeleteService } from "./SoftPatientDeleteService";
 
-export { CreatePatientService, ListPatientsService };
+export { SoftPatientDeleteService, CreatePatientService, ListPatientsService };

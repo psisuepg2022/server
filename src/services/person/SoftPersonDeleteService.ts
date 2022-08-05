@@ -12,9 +12,9 @@ class SoftPersonDeleteService {
   private operation?: PrismaPromise<PersonModel>;
 
   constructor(
-    private labelUserType = "usuário",
-    private uniqueIdentifierProvider: IUniqueIdentifierProvider,
-    private personRepository: IPersonRepository
+    protected labelUserType = "usuário",
+    protected uniqueIdentifierProvider: IUniqueIdentifierProvider,
+    protected personRepository: IPersonRepository
   ) {}
 
   protected getOperation = (): PrismaPromise<PersonModel> => {

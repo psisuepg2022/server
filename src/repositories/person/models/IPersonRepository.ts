@@ -14,6 +14,10 @@ interface IPersonRepository {
     id: string,
     domainClass: string
   ): PrismaPromise<PersonModel | null>;
+  findLiableToDelete(
+    clinicId: string,
+    patientId: string
+  ): PrismaPromise<{ person: Partial<PersonModel> | null }>;
 }
 
 export { IPersonRepository };

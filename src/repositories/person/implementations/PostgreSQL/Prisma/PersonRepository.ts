@@ -1,3 +1,4 @@
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
 import { PersonModel } from "@models/domain/PersonModel";
 import { PrismaPromise } from "@prisma/client";
@@ -63,6 +64,23 @@ class PersonRepository implements IPersonRepository {
         active: true,
       },
     });
+
+  public findLiableToDelete = (
+    clinicId: string,
+    patientId: string
+  ): PrismaPromise<{ person: Partial<PersonModel> | null }> =>
+    this.prisma.liable.findFirst({
+      where: {
+        patientId,
+        person: {
+          clinicId,
+          domainClass: UserDomainClasses.LIABLE,
+        },
+      },
+      select: {
+        person: { select: { id: true } },
+      },
+    }) as PrismaPromise<{ person: Partial<PersonModel> | null }>;
 }
 
 export { PersonRepository };

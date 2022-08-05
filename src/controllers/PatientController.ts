@@ -7,7 +7,11 @@ import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { PatientModel } from "@models/domain/PatientModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
-import { CreatePatientService, ListPatientsService } from "@services/patient";
+import {
+  CreatePatientService,
+  ListPatientsService,
+  SoftPatientDeleteService,
+} from "@services/patient";
 
 class PatientController {
   public async create(
@@ -71,7 +75,6 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
-      console.log(error);
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -115,12 +118,15 @@ class PatientController {
   ): Promise<Response> {
     try {
       const { id } = req.params;
+      const { id: clinicId } = req.clinic;
 
-      console.log(id);
+      const softDeleteService = container.resolve(SoftPatientDeleteService);
+
+      const result = await softDeleteService.execute(clinicId, id);
 
       return res.status(HttpStatus.OK).json({
         success: true,
-        content: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
