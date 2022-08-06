@@ -26,12 +26,13 @@ class PatientController {
         birthDate,
         contactNumber,
         address,
-        clinicId,
         gender,
         maritalStatus,
         liableRequired,
         liable,
       } = req.body;
+
+      const { id: clinicId } = req.clinic;
 
       const createPatientService = container.resolve(CreatePatientService);
 

@@ -27,8 +27,9 @@ class EmployeeController {
         birthDate,
         contactNumber,
         address,
-        clinicId,
       } = req.body;
+
+      const { id: clinicId } = req.clinic;
 
       const createEmployeeService = container.resolve(CreateEmployeeService);
 

@@ -27,11 +27,12 @@ class ProfessionalController {
         birthDate,
         contactNumber,
         address,
-        clinicId,
         profession,
         registry,
         specialization,
       } = req.body;
+
+      const { id: clinicId } = req.clinic;
 
       const createProfessionalService = container.resolve(
         CreateProfessionalService
