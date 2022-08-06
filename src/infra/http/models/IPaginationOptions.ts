@@ -1,7 +1,7 @@
 interface IPaginationOptions<T = any> {
   size?: unknown;
   page?: unknown;
-  filters: T | null;
+  filters?: T;
   sortOrder?: "asc" | "desc";
 }
 

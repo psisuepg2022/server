@@ -92,11 +92,18 @@ class PatientController {
       const { page, size } = req.query;
       const { id: clinicId } = req.clinic;
 
+      const { name, CPF, email } = req.body;
+
       const listPatientsService = container.resolve(ListPatientsService);
 
       const result = await listPatientsService.execute(clinicId, {
         page,
         size,
+        filters: {
+          CPF,
+          email,
+          name,
+        },
       });
 
       return res.status(HttpStatus.OK).json({

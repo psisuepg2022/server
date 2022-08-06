@@ -2,6 +2,7 @@ import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IPatientRepository } from "@repositories/patient/models/IPatientRepository";
 
@@ -18,12 +19,33 @@ class PatientRepository implements IPatientRepository {
 
   public get = (
     clinicId: string,
-    [take, skip]: [number, number]
+    [take, skip]: [number, number],
+    filters: SearchPersonRequestModel | null
   ): PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]> =>
     this.prisma.person.findMany({
       where: {
         clinicId,
         domainClass: UserDomainClasses.PATIENT,
+        AND: [
+          {
+            name: {
+              contains: filters?.name || "%",
+              mode: "insensitive",
+            },
+          },
+          {
+            CPF: {
+              contains: filters?.CPF || "%",
+              mode: "default",
+            },
+          },
+          {
+            email: {
+              contains: filters?.email || "%",
+              mode: "insensitive",
+            },
+          },
+        ],
       },
       select: {
         birthDate: true,

@@ -13,13 +13,12 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 
-routes.get(
-  "/",
+routes.post(
+  "/search",
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.read
 );
-
 routes.post(
   "/",
   ensureAuthenticated.execute,
