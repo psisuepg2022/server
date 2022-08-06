@@ -1,6 +1,7 @@
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IProfessionalRepository {
@@ -10,7 +11,8 @@ interface IProfessionalRepository {
   ): PrismaPromise<Partial<ProfessionalModel>>;
   get(
     clinicId: string,
-    [take, skip]: [number, number]
+    [take, skip]: [number, number],
+    filters: SearchPersonRequestModel | null
   ): PrismaPromise<
     Partial<
       UserModel & { person: PersonModel; professional: ProfessionalModel }

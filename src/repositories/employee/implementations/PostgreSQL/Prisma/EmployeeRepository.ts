@@ -2,6 +2,7 @@ import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { PersonModel } from "@models/domain/PersonModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IEmployeeRepository } from "@repositories/employee/models/IEmployeeRepository";
 
@@ -10,7 +11,8 @@ class EmployeeRepository implements IEmployeeRepository {
 
   public get = (
     clinicId: string,
-    [take, skip]: [number, number]
+    [take, skip]: [number, number],
+    filters: SearchPersonRequestModel | null
   ): PrismaPromise<Partial<EmployeeModel & { person: PersonModel }>[]> =>
     this.prisma.user.findMany({
       select: {
@@ -32,6 +34,26 @@ class EmployeeRepository implements IEmployeeRepository {
           domainClass: UserDomainClasses.EMPLOYEE,
           active: true,
           clinicId,
+          AND: [
+            {
+              name: {
+                contains: filters?.name || "%",
+                mode: "insensitive",
+              },
+            },
+            {
+              CPF: {
+                contains: filters?.CPF || "%",
+                mode: "default",
+              },
+            },
+            {
+              email: {
+                contains: filters?.email || "%",
+                mode: "insensitive",
+              },
+            },
+          ],
         },
       },
       orderBy: { person: { name: "asc" } },

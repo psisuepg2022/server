@@ -3,6 +3,7 @@ import { prismaClient } from "@infra/database/client";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IProfessionalRepository } from "@repositories/professional/models/IProfessionalRepository";
 
@@ -31,7 +32,8 @@ class ProfessionalRepository implements IProfessionalRepository {
 
   public get = (
     clinicId: string,
-    [take, skip]: [number, number]
+    [take, skip]: [number, number],
+    filters: SearchPersonRequestModel | null
   ): PrismaPromise<
     Partial<
       UserModel & { person: PersonModel; professional: ProfessionalModel }
@@ -65,6 +67,26 @@ class ProfessionalRepository implements IProfessionalRepository {
           domainClass: UserDomainClasses.PROFESSIONAL,
           active: true,
           clinicId,
+          AND: [
+            {
+              name: {
+                contains: filters?.name || "%",
+                mode: "insensitive",
+              },
+            },
+            {
+              CPF: {
+                contains: filters?.CPF || "%",
+                mode: "default",
+              },
+            },
+            {
+              email: {
+                contains: filters?.email || "%",
+                mode: "insensitive",
+              },
+            },
+          ],
         },
       },
       orderBy: { person: { name: "asc" } },

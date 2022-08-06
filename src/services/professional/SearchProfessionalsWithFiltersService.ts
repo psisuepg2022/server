@@ -37,7 +37,8 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
 
     const getOperation = this.professionalRepository.get(
       clinicId,
-      pagination({ page, size })
+      pagination({ page, size }),
+      filters || null
     );
 
     const [totalItems, items] = await transaction([

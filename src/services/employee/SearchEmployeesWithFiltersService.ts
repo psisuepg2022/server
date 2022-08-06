@@ -36,7 +36,8 @@ class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService {
 
     const getOperation = this.employeeRepository.get(
       clinicId,
-      pagination({ page, size })
+      pagination({ page, size }),
+      filters || null
     );
 
     const [totalItems, items] = await transaction([

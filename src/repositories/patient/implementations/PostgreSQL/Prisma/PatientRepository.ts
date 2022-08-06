@@ -26,6 +26,7 @@ class PatientRepository implements IPatientRepository {
       where: {
         clinicId,
         domainClass: UserDomainClasses.PATIENT,
+        active: true,
         AND: [
           {
             name: {
