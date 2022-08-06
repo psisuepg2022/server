@@ -7,33 +7,37 @@ import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import { IMaskProvider } from "@providers/mask";
+import { IPersonRepository } from "@repositories/person";
 import { IProfessionalRepository } from "@repositories/professional";
-import { IUserRepository } from "@repositories/user";
+import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class ListProfessionalsService {
+class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersService {
   constructor(
-    @inject("ProfessionalRepository")
-    private professionalRepository: IProfessionalRepository,
-    @inject("UserRepository")
-    private userRepository: IUserRepository,
+    @inject("PersonRepository")
+    personRepository: IPersonRepository,
     @inject("MaskProvider")
-    private maskProvider: IMaskProvider
-  ) {}
+    maskProvider: IMaskProvider,
+    @inject("ProfessionalRepository")
+    private professionalRepository: IProfessionalRepository
+  ) {
+    super(personRepository, maskProvider);
+  }
+
+  protected getDomainClass = (): string => UserDomainClasses.PROFESSIONAL;
 
   public async execute(
     clinicId: string,
-    options?: IPaginationOptions
+    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
   ): Promise<IPaginationResponse<ListProfessionalsResponseModel>> {
-    const countOperation = this.userRepository.count(
-      clinicId,
-      UserDomainClasses.PROFESSIONAL
-    );
+    const countOperation = this.getCountOperation(clinicId, { filters });
+
     const getOperation = this.professionalRepository.get(
       clinicId,
-      pagination(options || {})
+      pagination({ page, size })
     );
 
     const [totalItems, items] = await transaction([
@@ -69,4 +73,4 @@ class ListProfessionalsService {
   }
 }
 
-export { ListProfessionalsService };
+export { SearchProfessionalsWithFiltersService };

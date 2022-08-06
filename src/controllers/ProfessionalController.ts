@@ -8,9 +8,9 @@ import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import {
   CreateProfessionalService,
+  SearchProfessionalsWithFiltersService,
   SoftProfessionalDeleteService,
 } from "@services/professional";
-import { ListProfessionalsService } from "@services/professional/ListProfessionalsService";
 
 class ProfessionalController {
   public async create(
@@ -83,13 +83,20 @@ class ProfessionalController {
       const { page, size } = req.query;
       const { id: clinicId } = req.clinic;
 
+      const { name, CPF, email } = req.body;
+
       const listProfessionalsService = container.resolve(
-        ListProfessionalsService
+        SearchProfessionalsWithFiltersService
       );
 
       const result = await listProfessionalsService.execute(clinicId, {
         page,
         size,
+        filters: {
+          name,
+          CPF,
+          email,
+        },
       });
 
       return res.status(HttpStatus.OK).json({

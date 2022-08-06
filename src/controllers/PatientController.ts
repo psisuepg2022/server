@@ -9,7 +9,7 @@ import { PatientModel } from "@models/domain/PatientModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import {
   CreatePatientService,
-  ListPatientsService,
+  SearchPatientsWithFiltersService,
   SoftPatientDeleteService,
 } from "@services/patient";
 
@@ -94,7 +94,9 @@ class PatientController {
 
       const { name, CPF, email } = req.body;
 
-      const listPatientsService = container.resolve(ListPatientsService);
+      const listPatientsService = container.resolve(
+        SearchPatientsWithFiltersService
+      );
 
       const result = await listPatientsService.execute(clinicId, {
         page,

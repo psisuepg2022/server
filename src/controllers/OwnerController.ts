@@ -6,7 +6,10 @@ import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { OwnerModel } from "@models/domain/OwnerModel";
 import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
-import { CreateOwnerService, ListOwnersService } from "@services/owner";
+import {
+  CreateOwnerService,
+  SearchOwnersWithFiltersService,
+} from "@services/owner";
 
 class OwnerController {
   public async create(
@@ -71,7 +74,9 @@ class OwnerController {
       const { page, size } = req.query;
       const { clinic_id: clinicId } = req.params;
 
-      const listOwnersService = container.resolve(ListOwnersService);
+      const listOwnersService = container.resolve(
+        SearchOwnersWithFiltersService
+      );
 
       const result = await listOwnersService.execute(clinicId, { page, size });
 

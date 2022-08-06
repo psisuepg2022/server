@@ -1,4 +1,4 @@
 import { CreateOwnerService } from "./CreateOwnerService";
-import { ListOwnersService } from "./ListOwnersService";
+import { SearchOwnersWithFiltersService } from "./SearchOwnersWithFiltersService";
 
-export { CreateOwnerService, ListOwnersService };
+export { CreateOwnerService, SearchOwnersWithFiltersService };

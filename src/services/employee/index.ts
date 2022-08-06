@@ -1,9 +1,9 @@
 import { CreateEmployeeService } from "./CreateEmployeeService";
-import { ListEmployeesService } from "./ListEmployeesService";
+import { SearchEmployeesWithFiltersService } from "./SearchEmployeesWithFiltersService";
 import { SoftEmployeeDeleteService } from "./SoftEmployeeDeleteService";
 
 export {
   SoftEmployeeDeleteService,
   CreateEmployeeService,
-  ListEmployeesService,
+  SearchEmployeesWithFiltersService,
 };

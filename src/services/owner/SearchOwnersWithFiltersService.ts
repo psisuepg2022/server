@@ -7,32 +7,36 @@ import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { OwnerModel } from "@models/domain/OwnerModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { IMaskProvider } from "@providers/mask";
 import { IOwnerRepository } from "@repositories/owner";
-import { IUserRepository } from "@repositories/user";
+import { IPersonRepository } from "@repositories/person";
+import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class ListOwnersService {
+class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService {
   constructor(
-    @inject("OwnerRepository")
-    private ownerRepository: IOwnerRepository,
-    @inject("UserRepository")
-    private userRepository: IUserRepository,
+    @inject("PersonRepository")
+    personRepository: IPersonRepository,
     @inject("MaskProvider")
-    private maskProvider: IMaskProvider
-  ) {}
+    maskProvider: IMaskProvider,
+    @inject("OwnerRepository")
+    private ownerRepository: IOwnerRepository
+  ) {
+    super(personRepository, maskProvider);
+  }
+
+  protected getDomainClass = (): string => UserDomainClasses.OWNER;
 
   public async execute(
     clinicId: string,
-    options?: IPaginationOptions
+    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
   ): Promise<IPaginationResponse<ListOwnersResponseModel>> {
-    const countOperation = this.userRepository.count(
-      clinicId,
-      UserDomainClasses.OWNER
-    );
+    const countOperation = this.getCountOperation(clinicId, { filters });
+
     const getOperation = this.ownerRepository.get(
       clinicId,
-      pagination(options || {})
+      pagination({ page, size })
     );
 
     const [totalItems, items] = await transaction([
@@ -66,4 +70,4 @@ class ListOwnersService {
   }
 }
 
-export { ListOwnersService };
+export { SearchOwnersWithFiltersService };

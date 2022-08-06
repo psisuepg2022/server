@@ -14,8 +14,8 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 
-routes.get(
-  "/",
+routes.post(
+  "/search",
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.READ_PROFESSIONAL),
   controller.read

@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { pagination } from "@helpers/pagination";
 import { transaction } from "@infra/database/transaction";
@@ -11,21 +12,30 @@ import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsRespo
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { IMaskProvider } from "@providers/mask";
 import { IPatientRepository } from "@repositories/patient";
+import { IPersonRepository } from "@repositories/person";
+import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class ListPatientsService {
+class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
   constructor(
-    @inject("PatientRepository")
-    private patientRepository: IPatientRepository,
+    @inject("PersonRepository")
+    personRepository: IPersonRepository,
     @inject("MaskProvider")
-    private maskProvider: IMaskProvider
-  ) {}
+    maskProvider: IMaskProvider,
+    @inject("PatientRepository")
+    private patientRepository: IPatientRepository
+  ) {
+    super(personRepository, maskProvider);
+  }
+
+  protected getDomainClass = (): string => UserDomainClasses.PATIENT;
 
   public async execute(
     clinicId: string,
     { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
   ): Promise<IPaginationResponse<ListPatientsResponseModel>> {
-    const countOperation = this.patientRepository.count(clinicId);
+    const countOperation = this.getCountOperation(clinicId, { filters });
+
     const getOperation = this.patientRepository.get(
       clinicId,
       pagination({ page, size }),
@@ -67,4 +77,4 @@ class ListPatientsService {
   }
 }
 
-export { ListPatientsService };
+export { SearchPatientsWithFiltersService };

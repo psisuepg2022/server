@@ -8,7 +8,7 @@ import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
 import {
   CreateEmployeeService,
-  ListEmployeesService,
+  SearchEmployeesWithFiltersService,
   SoftEmployeeDeleteService,
 } from "@services/employee";
 
@@ -75,11 +75,20 @@ class EmployeeController {
       const { page, size } = req.query;
       const { id: clinicId } = req.clinic;
 
-      const listEmployeesService = container.resolve(ListEmployeesService);
+      const { name, CPF, email } = req.body;
+
+      const listEmployeesService = container.resolve(
+        SearchEmployeesWithFiltersService
+      );
 
       const result = await listEmployeesService.execute(clinicId, {
         page,
         size,
+        filters: {
+          name,
+          CPF,
+          email,
+        },
       });
 
       return res.status(HttpStatus.OK).json({
