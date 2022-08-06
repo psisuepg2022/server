@@ -7,6 +7,7 @@ import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { PatientModel } from "@models/domain/PatientModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
+import { ListPeopleResponseModel } from "@models/dto/person/ListPeopleResponseModel";
 import {
   CreatePatientService,
   SearchPatientsWithFiltersService,
@@ -112,6 +113,30 @@ class PatientController {
       return res.status(HttpStatus.OK).json({
         success: true,
         content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async readLiable(
+    req: Request,
+    res: Response<
+      IResponseMessage<IPaginationResponse<ListPeopleResponseModel>>
+    >
+  ): Promise<Response> {
+    try {
+      // const { page, size } = req.query;
+      // const { id: clinicId } = req.clinic;
+
+      // const { name, CPF, email } = req.body;
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

@@ -20,6 +20,12 @@ routes.post(
   controller.read
 );
 routes.post(
+  "/search_liable",
+  ensureAuthenticated.execute,
+  RBAC.has(PermissionsKeys.READ_LIABLE),
+  controller.readLiable
+);
+routes.post(
   "/",
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
