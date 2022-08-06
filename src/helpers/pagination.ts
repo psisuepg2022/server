@@ -5,7 +5,10 @@ import { IPaginationOptions } from "@infra/http";
 import { env } from "./env";
 import { toNumber } from "./toNumber";
 
-const pagination = ({ size, page }: IPaginationOptions): [number, number] => {
+const pagination = ({
+  size,
+  page,
+}: Partial<IPaginationOptions>): [number, number] => {
   const take = ((): number => {
     if (size) {
       const converted = toNumber({
