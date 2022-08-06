@@ -9,6 +9,8 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { IMaskProvider } from "@providers/mask";
+import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
+import { IValidatorsProvider } from "@providers/validators";
 import { IEmployeeRepository } from "@repositories/employee";
 import { IPersonRepository } from "@repositories/person";
 import { SearchPeopleWithFiltersService } from "@services/person";
@@ -20,10 +22,19 @@ class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService {
     personRepository: IPersonRepository,
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
+    @inject("UniqueIdentifierProvider")
+    uniqueIdentifierProvider: IUniqueIdentifierProvider,
+    @inject("ValidatorsProvider")
+    validatorsProvider: IValidatorsProvider,
     @inject("EmployeeRepository")
     private employeeRepository: IEmployeeRepository
   ) {
-    super(personRepository, maskProvider);
+    super(
+      personRepository,
+      maskProvider,
+      uniqueIdentifierProvider,
+      validatorsProvider
+    );
   }
 
   protected getDomainClass = (): string => UserDomainClasses.EMPLOYEE;
