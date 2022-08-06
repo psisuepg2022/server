@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { i18n } from "@config/i18n";
 import { AppError } from "@handlers/error/AppError";
-import { IResponseMessage } from "@infra/http";
+import { HttpStatus, IResponseMessage } from "@infra/http";
 
 const errorHandlerMiddleware = async (
   err: Error,
@@ -17,7 +17,7 @@ const errorHandlerMiddleware = async (
     });
   }
 
-  return res.status(500).json({
+  return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
     success: false,
     message: i18n.__("ErrorGeneric"),
   });
