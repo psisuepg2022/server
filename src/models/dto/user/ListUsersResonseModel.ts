@@ -1,12 +1,8 @@
-type ListUsersResponseModel = {
+import { ListPeopleResponseModel } from "../person/ListPeopleResponseModel";
+
+type ListUsersResponseModel = ListPeopleResponseModel & {
   accessCode: number;
-  id: string;
   userName: string;
-  CPF: string;
-  contactNumber: string;
-  email?: string;
-  name: string;
-  birthDate: string;
 };
 
 export { ListUsersResponseModel };

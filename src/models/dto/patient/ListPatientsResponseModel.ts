@@ -1,10 +1,6 @@
-type ListPatientsResponseModel = {
-  birthDate: string;
-  contactNumber: string;
-  CPF: string;
-  email: string;
-  name: string;
-  id: string;
+import { ListPeopleResponseModel } from "../person/ListPeopleResponseModel";
+
+type ListPatientsResponseModel = ListPeopleResponseModel & {
   gender: string;
   maritalStatus: string;
 };
