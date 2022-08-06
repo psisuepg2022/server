@@ -1,8 +1,8 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-08-04T23:24:07.529Z",
-  "__export_source": "insomnia.desktop.app:v2022.4.2",
+  "__export_date": "2022-08-06T23:15:50.752Z",
+  "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
       "_id": "req_4ba536b111eb44c78083be3a383d04b3",
@@ -146,7 +146,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1659655072456,
+      "modified": 1659825528066,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -154,7 +154,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"accessCode\": \"1001\"\n}"
+        "text": "{\n\t\"userName\": \"user.employee\",\n\t\"password\": \"UserEmployee123\",\n\t\"accessCode\": \"1002\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -230,9 +230,57 @@
       "_type": "request_group"
     },
     {
+      "_id": "req_e9f3b58eb420491597c88eae2487b465",
+      "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
+      "modified": 1659827652374,
+      "created": 1659823934456,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "search_liable",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"\",\n\t\"email\": \"\",\n\t\"CPF\": \"\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_617368a6a2f2487d887e28dc0034ddd1"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "prefix": "Bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1659823934456,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_694a36f697ac4155a5828ad8252e6b10",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657540573755,
+      "created": 1657540573755,
+      "name": "patient",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657540573755,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_4304794bd0e749deb243cc984ec53d31",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1659651929463,
+      "modified": 1659827611449,
       "created": 1657540606624,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -240,7 +288,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"email\": \"marcos@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"clinicId\": \"{{ _.clinicId }}\",\n\t\"gender\": \"1\",\n\t\"maritalStatus\": \"2\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"email\": \"marcos@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": \"1\",\n\t\"maritalStatus\": \"2\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -266,21 +314,9 @@
       "_type": "request"
     },
     {
-      "_id": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657540573755,
-      "created": 1657540573755,
-      "name": "patient",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657540573755,
-      "_type": "request_group"
-    },
-    {
       "_id": "req_9dd74821a81445cf8c20f3f625fa7b34",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1659560487988,
+      "modified": 1659827613443,
       "created": 1658355986212,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create with liable",
@@ -288,7 +324,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"email\": \"marcos@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"clinicId\": \"{{ _.clinicId }}\",\n\t\"gender\": 1,\n\t\"maritalStatus\": 2,\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"email\": \"email@email.com\",\n\t\t\"name\": \"Marcos Krul\",\n\t\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\t\"contactNumber\": \"(47) 99090-9090\",\n\t\t\"birthDate\": \"2000-06-02\"\n\t},\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"email\": \"marcos@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": 1,\n\t\"maritalStatus\": 2,\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"email\": \"email@email.com\",\n\t\t\"name\": \"Marcos Krul\",\n\t\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\t\"contactNumber\": \"(47) 99090-9090\",\n\t\t\"birthDate\": \"2000-06-02\"\n\t},\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -316,9 +352,9 @@
     {
       "_id": "req_f3977db84e194b189ab2329d998d20d4",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1659651808441,
+      "modified": 1659819060749,
       "created": 1659651705012,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/id",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/2ecebf77-e86e-4990-b5b4-708be5b83601",
       "name": "delete",
       "description": "",
       "method": "DELETE",
@@ -343,7 +379,7 @@
     {
       "_id": "req_24df639efa794dcc90a944bc52a61c2c",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1659564732466,
+      "modified": 1659823721778,
       "created": 1658874198938,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create with liable existing",
@@ -351,7 +387,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"email\": \"marcosa@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"clinicId\": \"{{ _.clinicId }}\",\n\t\"gender\": 1,\n\t\"maritalStatus\": 2,\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"id\": \"3a829258-6ea6-41b2-a489-fb9638c3c95f\"\n\t},\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"email\": \"marcosa@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": 1,\n\t\"maritalStatus\": 2,\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"id\": \"3a829258-6ea6-41b2-a489-fb9638c3c95f\"\n\t},\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -379,15 +415,24 @@
     {
       "_id": "req_899c0535c6974fe58a248141689dbcb2",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1659387843466,
+      "modified": 1659827166564,
       "created": 1657540575211,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
-      "name": "read",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "search",
       "description": "",
-      "method": "GET",
-      "body": {},
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"\",\n\t\"email\": \"\",\n\t\"CPF\": \"\"\n}"
+      },
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_9fed35960c474cb780be32217a35ae1b"
+        }
+      ],
       "authentication": {
         "type": "bearer",
         "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}",
@@ -406,7 +451,7 @@
     {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1659655369930,
+      "modified": 1659823166643,
       "created": 1659651213689,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/2d189d73-355b-40a4-a1fa-b48ff536ba46",
       "name": "delete",
@@ -445,7 +490,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1659654341981,
+      "modified": 1659823755436,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -453,7 +498,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"professional@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"clinicId\": \"{{ _.clinicId }}\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"professional@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -481,15 +526,24 @@
     {
       "_id": "req_4b0aa19c250f454bb12fdb8594f14c2c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1659655075336,
+      "modified": 1659823976950,
       "created": 1657542043564,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
-      "name": "read",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "search",
       "description": "",
-      "method": "GET",
-      "body": {},
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"\",\n\t\"email\": \"\",\n\t\"CPF\": \"\"\n}"
+      },
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_551d90903a4640c08e79f71c6c512d99"
+        }
+      ],
       "authentication": {
         "type": "bearer",
         "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}",
@@ -508,7 +562,7 @@
     {
       "_id": "req_803168cfaab9400a95969ce92480fb14",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1659655373228,
+      "modified": 1659825515149,
       "created": 1657151453642,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -516,7 +570,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.employee\",\n\t\"password\": \"UserEmployee123\",\n\t\"email\": \"employee@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"clinicId\": \"{{ _.clinicId }}\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.employee\",\n\t\"password\": \"UserEmployee123\",\n\t\"email\": \"employee@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -556,7 +610,7 @@
     {
       "_id": "req_cb580cfea75041b6883f671cd2f8d0f3",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1659655376050,
+      "modified": 1659766691265,
       "created": 1659651648805,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/bf0c911b-bc80-45db-a320-5ac01ef32d91",
       "name": "delete",
@@ -583,15 +637,24 @@
     {
       "_id": "req_355e0702f3c449aa9973c5457b984dc6",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1659655377833,
+      "modified": 1659823987315,
       "created": 1657142214249,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
-      "name": "read",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "search",
       "description": "",
-      "method": "GET",
-      "body": {},
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"\",\n\t\"email\": \"\",\n\t\"CPF\": \"\"\n}"
+      },
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_7ede744d20d14344be88645c16bd7eba"
+        }
+      ],
       "authentication": {
         "type": "bearer",
         "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}",
@@ -610,7 +673,7 @@
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1659651270505,
+      "modified": 1659825472423,
       "created": 1657664385365,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -654,7 +717,7 @@
     {
       "_id": "req_b709c2798a7b4e558e89b52bed10870d",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1658957875908,
+      "modified": 1659766616264,
       "created": 1657664385359,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}/{{ _.clinicId }}",
       "name": "read",
@@ -735,7 +798,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1659651264230,
+      "modified": 1659825449983,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -831,7 +894,7 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1658872204720,
+      "modified": 1659766621900,
       "created": 1654723872664,
       "name": "dev",
       "data": {
@@ -854,13 +917,13 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1658872209864,
+      "modified": 1659766641516,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
         "base_url": "https://psis-api.herokuapp.com/api",
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
-        "clinicId": ""
+        "clinicId": "709809ab-b0fe-419b-905c-55f8c8a0afb6"
       },
       "dataPropertyOrder": {
         "&": [
