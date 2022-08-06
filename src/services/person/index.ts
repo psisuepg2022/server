@@ -1,4 +1,9 @@
 import { CreatePersonService } from "./CreatePersonService";
+import { SearchPeopleWithFiltersService } from "./SearchPeopleWithFiltersService";
 import { SoftPersonDeleteService } from "./SoftPersonDeleteService";
 
-export { SoftPersonDeleteService, CreatePersonService };
+export {
+  SearchPeopleWithFiltersService,
+  SoftPersonDeleteService,
+  CreatePersonService,
+};

@@ -95,20 +95,6 @@ class UserRepository implements IUserRepository {
       | null
     >;
 
-  public count = (
-    clinicId: string,
-    domainClass: string
-  ): PrismaPromise<number> =>
-    this.prisma.user.count({
-      where: {
-        person: {
-          domainClass,
-          active: true,
-          clinicId,
-        },
-      },
-    });
-
   public verifyRole = (
     userId: string,
     role: string

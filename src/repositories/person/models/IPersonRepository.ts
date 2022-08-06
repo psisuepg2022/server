@@ -1,4 +1,5 @@
 import { PersonModel } from "@models/domain/PersonModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IPersonRepository {
@@ -18,6 +19,11 @@ interface IPersonRepository {
     clinicId: string,
     patientId: string
   ): PrismaPromise<{ person: Partial<PersonModel> | null }>;
+  count(
+    clinicId: string,
+    domainClass: string,
+    filters: SearchPersonRequestModel | null
+  ): PrismaPromise<number>;
 }
 
 export { IPersonRepository };

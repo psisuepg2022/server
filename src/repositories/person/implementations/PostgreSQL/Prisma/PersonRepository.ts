@@ -1,6 +1,7 @@
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
 import { PersonModel } from "@models/domain/PersonModel";
+import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IPersonRepository } from "@repositories/person/models/IPersonRepository";
 
@@ -81,6 +82,39 @@ class PersonRepository implements IPersonRepository {
         person: { select: { id: true } },
       },
     }) as PrismaPromise<{ person: Partial<PersonModel> | null }>;
+
+  public count = (
+    clinicId: string,
+    domainClass: string,
+    filters: SearchPersonRequestModel | null
+  ): PrismaPromise<number> =>
+    this.prisma.person.count({
+      where: {
+        domainClass,
+        active: true,
+        clinicId,
+        AND: [
+          {
+            name: {
+              contains: filters?.name || "%",
+              mode: "insensitive",
+            },
+          },
+          {
+            CPF: {
+              contains: filters?.CPF || "%",
+              mode: "default",
+            },
+          },
+          {
+            email: {
+              contains: filters?.email || "%",
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+    });
 }
 
 export { PersonRepository };
