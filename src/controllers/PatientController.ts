@@ -13,6 +13,7 @@ import {
   SearchPatientsWithFiltersService,
   SoftPatientDeleteService,
 } from "@services/patient";
+import { SearchLiablesWithFiltersService } from "@services/patient/SearchLiablesWithFiltersService";
 
 class PatientController {
   public async create(
@@ -130,13 +131,28 @@ class PatientController {
     >
   ): Promise<Response> {
     try {
-      // const { page, size } = req.query;
-      // const { id: clinicId } = req.clinic;
+      const { page, size } = req.query;
+      const { id: clinicId } = req.clinic;
 
-      // const { name, CPF, email } = req.body;
+      const { name, CPF, email } = req.body;
+
+      const listLiablesService = container.resolve(
+        SearchLiablesWithFiltersService
+      );
+
+      const result = await listLiablesService.execute(clinicId, {
+        page,
+        size,
+        filters: {
+          name,
+          CPF,
+          email,
+        },
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
