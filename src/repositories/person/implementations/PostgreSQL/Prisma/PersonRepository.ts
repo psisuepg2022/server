@@ -52,7 +52,7 @@ class PersonRepository implements IPersonRepository {
       },
     });
 
-  public findToDelete = (
+  public findActivated = (
     clinicId: string,
     id: string,
     domainClass: string

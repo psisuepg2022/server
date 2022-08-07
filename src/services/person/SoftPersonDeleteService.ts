@@ -47,7 +47,7 @@ class SoftPersonDeleteService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
     const [hasPerson] = await transaction([
-      this.personRepository.findToDelete(clinicId, id, this.getDomainClass()),
+      this.personRepository.findActivated(clinicId, id, this.getDomainClass()),
     ]);
 
     if (!hasPerson)

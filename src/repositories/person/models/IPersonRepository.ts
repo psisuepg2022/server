@@ -10,7 +10,7 @@ interface IPersonRepository {
     person: PersonModel
   ): PrismaPromise<Partial<PersonModel>>;
   safetyDelete(id: string): PrismaPromise<PersonModel>;
-  findToDelete(
+  findActivated(
     clinicId: string,
     id: string,
     domainClass: string

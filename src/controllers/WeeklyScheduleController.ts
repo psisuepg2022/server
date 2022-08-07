@@ -20,12 +20,16 @@ class WeeklyScheduleController {
   ): Promise<Response> {
     try {
       const { id: professionalId } = req.user;
+      const { id: clinicId } = req.clinic;
 
       const listWeeklyScheduleService = container.resolve(
         ListWeeklyScheduleService
       );
 
-      const result = await listWeeklyScheduleService.execute(professionalId);
+      const result = await listWeeklyScheduleService.execute(
+        clinicId,
+        professionalId
+      );
 
       return res.status(HttpStatus.OK).json({
         success: true,
@@ -47,11 +51,16 @@ class WeeklyScheduleController {
     try {
       const { professional_id: professionalId } = req.params;
 
+      const { id: clinicId } = req.clinic;
+
       const listWeeklyScheduleService = container.resolve(
         ListWeeklyScheduleService
       );
 
-      const result = await listWeeklyScheduleService.execute(professionalId);
+      const result = await listWeeklyScheduleService.execute(
+        clinicId,
+        professionalId
+      );
 
       return res.status(HttpStatus.OK).json({
         success: true,
