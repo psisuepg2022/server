@@ -41,9 +41,9 @@ class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService {
 
   public async execute(
     clinicId: string,
-    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
+    { page, size }: IPaginationOptions<SearchPersonRequestModel>
   ): Promise<IPaginationResponse<ListOwnersResponseModel>> {
-    const countOperation = this.getCountOperation(clinicId, { filters });
+    const countOperation = this.getCountOperation(clinicId, {});
 
     const getOperation = this.ownerRepository.get(
       clinicId,

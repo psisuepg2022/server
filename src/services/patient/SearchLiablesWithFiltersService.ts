@@ -47,7 +47,12 @@ class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService {
     const getOperation = this.liableRepository.get(
       clinicId,
       pagination({ page, size }),
-      filters || null
+      filters
+        ? {
+            ...filters,
+            CPF: this.maskProvider.remove(filters.CPF || ""),
+          }
+        : null
     );
 
     const [totalItems, items] = await transaction([

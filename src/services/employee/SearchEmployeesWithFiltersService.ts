@@ -48,7 +48,12 @@ class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService {
     const getOperation = this.employeeRepository.get(
       clinicId,
       pagination({ page, size }),
-      filters || null
+      filters
+        ? {
+            ...filters,
+            CPF: this.maskProvider.remove(filters.CPF || ""),
+          }
+        : null
     );
 
     const [totalItems, items] = await transaction([

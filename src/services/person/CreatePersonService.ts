@@ -151,7 +151,7 @@ class CreatePersonService {
         ? this.maskProvider.remove(contactNumber)
         : null,
       CPF: CPFRequired ? this.maskProvider.remove(CPF) : "",
-      email: email || null,
+      email: email || "",
       id,
       name,
       domainClass,
