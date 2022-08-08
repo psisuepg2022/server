@@ -5,6 +5,7 @@ import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
+import { clause2searchPeopleWithFilters } from "@repositories/person";
 import { IProfessionalRepository } from "@repositories/professional/models/IProfessionalRepository";
 
 class ProfessionalRepository implements IProfessionalRepository {
@@ -67,26 +68,7 @@ class ProfessionalRepository implements IProfessionalRepository {
           domainClass: UserDomainClasses.PROFESSIONAL,
           active: true,
           clinicId,
-          AND: [
-            {
-              name: {
-                contains: filters?.name || "%",
-                mode: "insensitive",
-              },
-            },
-            {
-              CPF: {
-                contains: filters?.CPF || "%",
-                mode: "default",
-              },
-            },
-            {
-              email: {
-                contains: filters?.email || "%",
-                mode: "insensitive",
-              },
-            },
-          ],
+          AND: clause2searchPeopleWithFilters(filters),
         },
       },
       orderBy: { person: { name: "asc" } },

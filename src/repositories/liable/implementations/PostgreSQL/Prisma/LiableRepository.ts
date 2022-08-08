@@ -4,6 +4,7 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { ILiableRepository } from "@repositories/liable/models/ILiableRepository";
+import { clause2searchPeopleWithFilters } from "@repositories/person";
 
 class LiableRepository implements ILiableRepository {
   constructor(private prisma = prismaClient) {}
@@ -45,26 +46,7 @@ class LiableRepository implements ILiableRepository {
           clinicId,
           domainClass: UserDomainClasses.LIABLE,
           active: true,
-          AND: [
-            {
-              name: {
-                contains: filters?.name || "%",
-                mode: "insensitive",
-              },
-            },
-            {
-              CPF: {
-                contains: filters?.CPF || "%",
-                mode: "default",
-              },
-            },
-            {
-              email: {
-                contains: filters?.email || "%",
-                mode: "insensitive",
-              },
-            },
-          ],
+          AND: clause2searchPeopleWithFilters(filters),
         },
       },
       select: {

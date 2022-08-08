@@ -5,6 +5,7 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IEmployeeRepository } from "@repositories/employee/models/IEmployeeRepository";
+import { clause2searchPeopleWithFilters } from "@repositories/person";
 
 class EmployeeRepository implements IEmployeeRepository {
   constructor(private prisma = prismaClient) {}
@@ -34,26 +35,7 @@ class EmployeeRepository implements IEmployeeRepository {
           domainClass: UserDomainClasses.EMPLOYEE,
           active: true,
           clinicId,
-          AND: [
-            {
-              name: {
-                contains: filters?.name || "%",
-                mode: "insensitive",
-              },
-            },
-            {
-              CPF: {
-                contains: filters?.CPF || "%",
-                mode: "default",
-              },
-            },
-            {
-              email: {
-                contains: filters?.email || "%",
-                mode: "insensitive",
-              },
-            },
-          ],
+          AND: clause2searchPeopleWithFilters(filters),
         },
       },
       orderBy: { person: { name: "asc" } },
