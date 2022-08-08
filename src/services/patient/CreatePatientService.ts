@@ -184,7 +184,9 @@ class CreatePatientService extends CreatePersonService {
       ...person,
       CPF: CPF ? this.maskProvider.cpf(person.CPF) : "",
       birthDate: this.maskProvider.date(person.birthDate),
-      contactNumber: this.maskProvider.contactNumber(person.contactNumber),
+      contactNumber: person.contactNumber
+        ? this.maskProvider.contactNumber(person.contactNumber)
+        : "",
       gender: getEnumDescription("GENDER", GenderDomain[patient.gender]),
       maritalStatus: getEnumDescription(
         "MARITAL_STATUS",
@@ -205,9 +207,9 @@ class CreatePatientService extends CreatePersonService {
               ...liableToSend,
               CPF: this.maskProvider.cpf(liableToSend.CPF),
               birthDate: this.maskProvider.date(liableToSend.birthDate),
-              contactNumber: this.maskProvider.contactNumber(
-                liableToSend.contactNumber
-              ),
+              contactNumber: liableToSend.contactNumber
+                ? this.maskProvider.contactNumber(liableToSend.contactNumber)
+                : "",
             }
           : null,
     } as Partial<PatientModel>;
