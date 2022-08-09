@@ -1,6 +1,8 @@
 class PermissionsKeys {
   public static readonly READ_APPOINTMENTS: string = "READ_APPOINTMENTS";
 
+  public static readonly CREATE_APPOINTMENTS: string = "CREATE_APPOINTMENTS";
+
   public static readonly READ_LIABLE: string = "READ_LIABLE";
 
   public static readonly CREATE_PROFESSIONAL: string = "CREATE_PROFESSIONAL";
@@ -15,15 +17,11 @@ class PermissionsKeys {
 
   public static readonly UPDATE_EMPLOYEE: string = "UPDATE_EMPLOYEE";
 
-  public static readonly UNACTIVATE_EMPLOYEE: string = "UNACTIVATE_EMPLOYEE";
-
   public static readonly CREATE_PATIENT: string = "CREATE_PATIENT";
 
   public static readonly READ_PATIENT: string = "READ_PATIENT";
 
   public static readonly UPDATE_PATIENT: string = "UPDATE_PATIENT";
-
-  public static readonly UNACTIVATE_PATIENT: string = "UNACTIVATE_PATIENT";
 
   public static readonly READ_WEEKLY_SCHEDULE: string = "READ_WEEKLY_SCHEDULE";
 
@@ -49,9 +47,6 @@ class PermissionsKeys {
 
   public static readonly CREATE_WEEKLY_SCHEDULE: string =
     "CREATE_WEEKLY_SCHEDULE";
-
-  public static readonly UNACTIVATE_PROFESSIONAL: string =
-    "UNACTIVATE_PROFESSIONAL";
 
   public static readonly UPDATE_WEEKLY_SCHEDULE: string =
     "UPDATE_WEEKLY_SCHEDULE";
