@@ -10,14 +10,22 @@ class AddressRepository implements IAddressRepository {
     personId: string,
     { city, district, id, publicArea, state, zipCode }: AddressModel
   ): PrismaPromise<Partial<AddressModel>> =>
-    this.prisma.address.create({
-      data: {
+    this.prisma.address.upsert({
+      where: { id },
+      create: {
         state,
         zipCode,
         city,
         district,
         id,
         personId,
+        publicArea,
+      },
+      update: {
+        state,
+        zipCode,
+        city,
+        district,
         publicArea,
       },
       select: {

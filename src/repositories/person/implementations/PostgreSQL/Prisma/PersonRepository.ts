@@ -14,8 +14,9 @@ class PersonRepository implements IPersonRepository {
     clinicId: string,
     { CPF, birthDate, contactNumber, email, domainClass, id, name }: PersonModel
   ): PrismaPromise<Partial<PersonModel>> =>
-    this.prisma.person.create({
-      data: {
+    this.prisma.person.upsert({
+      where: { id },
+      create: {
         birthDate,
         CPF,
         id,
@@ -24,6 +25,13 @@ class PersonRepository implements IPersonRepository {
         contactNumber,
         email,
         clinicId,
+      },
+      update: {
+        birthDate,
+        CPF,
+        name,
+        contactNumber,
+        email,
       },
       select: {
         birthDate: true,

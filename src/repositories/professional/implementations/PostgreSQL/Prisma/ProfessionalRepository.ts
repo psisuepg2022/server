@@ -15,13 +15,20 @@ class ProfessionalRepository implements IProfessionalRepository {
     userId: string,
     { baseDuration, profession, registry, specialization }: ProfessionalModel
   ): PrismaPromise<Partial<ProfessionalModel>> =>
-    this.prisma.professional.create({
-      data: {
+    this.prisma.professional.upsert({
+      where: { id: userId },
+      create: {
         profession,
         registry,
         baseDuration,
         specialization,
         id: userId,
+      },
+      update: {
+        profession,
+        registry,
+        baseDuration,
+        specialization,
       },
       select: {
         profession: true,

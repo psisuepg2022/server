@@ -119,11 +119,16 @@ class PatientRepository implements IPatientRepository {
     personId: string,
     { gender, maritalStatus }: PatientModel
   ): PrismaPromise<Partial<PatientModel>> =>
-    this.prisma.patient.create({
-      data: {
+    this.prisma.patient.upsert({
+      where: { id: personId },
+      create: {
         gender,
         maritalStatus,
         id: personId,
+      },
+      update: {
+        gender,
+        maritalStatus,
       },
     });
 }
