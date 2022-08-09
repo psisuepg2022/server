@@ -13,7 +13,14 @@ interface IPatientRepository {
     clinicId: string,
     [take, skip]: [number, number],
     filters: SearchPersonRequestModel | null
-  ): PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]>;
+  ): PrismaPromise<
+    Partial<
+      PersonModel & {
+        patient: PatientModel & { liable: any & { person: PersonModel } };
+        address: AddressModel;
+      }
+    >[]
+  >;
   count(clinicId: string): PrismaPromise<number>;
   getToUpdate(
     clinicId: string,

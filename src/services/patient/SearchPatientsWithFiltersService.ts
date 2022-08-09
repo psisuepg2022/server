@@ -6,6 +6,7 @@ import { pagination } from "@helpers/pagination";
 import { transaction } from "@infra/database/transaction";
 import { GenderDomain, MaritalStatusDomain } from "@infra/domains";
 import { IPaginationOptions, IPaginationResponse } from "@infra/http";
+import { AddressModel } from "@models/domain/AddressModel";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
@@ -69,7 +70,12 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
           patient,
           ...item
         }: Partial<
-          PersonModel & { patient: PatientModel }
+          PersonModel & {
+            patient: PatientModel & {
+              liable: any & { person: Partial<PersonModel> };
+            };
+            address: AddressModel;
+          }
         >): ListPatientsResponseModel =>
           ({
             ...item,
@@ -78,10 +84,30 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
             contactNumber: this.maskProvider.contactNumber(
               item.contactNumber || ""
             ),
+            address: item.address
+              ? {
+                  ...item.address,
+                  zipCode: this.maskProvider.zipCode(
+                    item.address?.zipCode || ""
+                  ),
+                }
+              : null,
             gender: getEnumDescription(
               "GENDER",
               GenderDomain[patient?.gender as number]
             ),
+            liable: patient?.liable?.person
+              ? {
+                  ...(patient?.liable.person || {}),
+                  CPF: this.maskProvider.cpf(patient?.liable.person.CPF || ""),
+                  contactNumber: this.maskProvider.contactNumber(
+                    patient?.liable.person.contactNumber || ""
+                  ),
+                  birthDate: this.maskProvider.date(
+                    patient?.liable.person.birthDate || ""
+                  ),
+                }
+              : null,
             maritalStatus: getEnumDescription(
               "MARITAL_STATUS",
               MaritalStatusDomain[patient?.maritalStatus as number]

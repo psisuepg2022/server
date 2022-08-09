@@ -88,7 +88,14 @@ class PatientRepository implements IPatientRepository {
     clinicId: string,
     [take, skip]: [number, number],
     filters: SearchPersonRequestModel | null
-  ): PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]> =>
+  ): PrismaPromise<
+    Partial<
+      PersonModel & {
+        patient: PatientModel & { liable: any & { person: PersonModel } };
+        address: AddressModel;
+      }
+    >[]
+  > =>
     this.prisma.person.findMany({
       where: {
         clinicId,
@@ -103,17 +110,48 @@ class PatientRepository implements IPatientRepository {
         email: true,
         name: true,
         id: true,
+        address: {
+          select: {
+            id: true,
+            city: true,
+            district: true,
+            publicArea: true,
+            state: true,
+            zipCode: true,
+          },
+        },
         patient: {
           select: {
             gender: true,
             maritalStatus: true,
+            liable: {
+              select: {
+                person: {
+                  select: {
+                    birthDate: true,
+                    contactNumber: true,
+                    CPF: true,
+                    email: true,
+                    name: true,
+                    id: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
       orderBy: { name: "asc" },
       take,
       skip,
-    }) as PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]>;
+    }) as PrismaPromise<
+      Partial<
+        PersonModel & {
+          patient: PatientModel & { liable: any & { person: PersonModel } };
+          address: AddressModel;
+        }
+      >[]
+    >;
 
   public save = (
     personId: string,
