@@ -85,7 +85,7 @@ class CreatePersonService {
         throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFInvalid"));
 
       const [hasCPF] = await transaction([
-        this.personRepository.hasCPF(this.maskProvider.remove(CPF)),
+        this.personRepository.hasCPF(id, this.maskProvider.remove(CPF)),
       ]);
 
       if (hasCPF)
@@ -111,7 +111,7 @@ class CreatePersonService {
         throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));
 
       const [hasEmail] = await transaction([
-        this.personRepository.hasEmail(email),
+        this.personRepository.hasEmail(id, email),
       ]);
 
       if (hasEmail)

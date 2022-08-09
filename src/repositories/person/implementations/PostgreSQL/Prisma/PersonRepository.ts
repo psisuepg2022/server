@@ -42,14 +42,26 @@ class PersonRepository implements IPersonRepository {
       },
     }) as PrismaPromise<Partial<PersonModel>>;
 
-  public hasEmail = (email: string): PrismaPromise<PersonModel | null> =>
+  public hasEmail = (
+    id: string,
+    email: string
+  ): PrismaPromise<PersonModel | null> =>
     this.prisma.person.findFirst({
-      where: { email },
+      where: {
+        email,
+        id: { not: id },
+      },
     }) as PrismaPromise<PersonModel | null>;
 
-  public hasCPF = (CPF: string): PrismaPromise<PersonModel | null> =>
+  public hasCPF = (
+    id: string,
+    CPF: string
+  ): PrismaPromise<PersonModel | null> =>
     this.prisma.person.findFirst({
-      where: { CPF },
+      where: {
+        CPF,
+        id: { not: id },
+      },
     }) as PrismaPromise<PersonModel | null>;
 
   public safetyDelete = (id: string): PrismaPromise<PersonModel> =>
