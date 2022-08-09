@@ -29,7 +29,7 @@ routes.post(
   "/",
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
-  controller.create
+  controller.save
 );
 routes.delete(
   "/:id",

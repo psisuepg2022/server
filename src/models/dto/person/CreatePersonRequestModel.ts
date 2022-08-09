@@ -1,6 +1,7 @@
 import { CreateAddressRequestModel } from "./CreateAddressRequestModel";
 
 type CreatePersonRequestModel = {
+  id?: string;
   email?: string;
   name: string;
   CPF: string;

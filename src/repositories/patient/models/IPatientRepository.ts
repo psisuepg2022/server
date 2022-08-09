@@ -1,3 +1,4 @@
+import { AddressModel } from "@models/domain/AddressModel";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
@@ -14,6 +15,16 @@ interface IPatientRepository {
     filters: SearchPersonRequestModel | null
   ): PrismaPromise<Partial<PersonModel & { patient: PatientModel }>[]>;
   count(clinicId: string): PrismaPromise<number>;
+  getToUpdate(
+    clinicId: string,
+    id: string
+  ): PrismaPromise<
+    | (Partial<PatientModel> & {
+        person: Partial<PersonModel> & { address?: AddressModel };
+        liable?: any & { person: Partial<PersonModel> };
+      })
+    | null
+  >;
 }
 
 export { IPatientRepository };

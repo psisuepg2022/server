@@ -1,5 +1,6 @@
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
+import { AddressModel } from "@models/domain/AddressModel";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
@@ -9,6 +10,71 @@ import { clause2searchPeopleWithFilters } from "@repositories/person";
 
 class PatientRepository implements IPatientRepository {
   constructor(private prisma = prismaClient) {}
+
+  public getToUpdate = (
+    clinicId: string,
+    id: string
+  ): PrismaPromise<
+    | (Partial<PatientModel> & {
+        person: Partial<PersonModel> & { address?: AddressModel };
+        liable?: any & { person: Partial<PersonModel> };
+      })
+    | null
+  > =>
+    this.prisma.patient.findFirst({
+      where: {
+        id,
+        person: {
+          clinicId,
+          active: true,
+          domainClass: UserDomainClasses.PATIENT,
+        },
+      },
+      select: {
+        id: true,
+        gender: true,
+        maritalStatus: true,
+        person: {
+          select: {
+            birthDate: true,
+            contactNumber: true,
+            CPF: true,
+            email: true,
+            name: true,
+            address: {
+              select: {
+                id: true,
+                city: true,
+                district: true,
+                state: true,
+                publicArea: true,
+                zipCode: true,
+              },
+            },
+          },
+        },
+        liable: {
+          select: {
+            person: {
+              select: {
+                id: true,
+                birthDate: true,
+                email: true,
+                name: true,
+                CPF: true,
+                contactNumber: true,
+              },
+            },
+          },
+        },
+      },
+    }) as PrismaPromise<
+      | (Partial<PatientModel> & {
+          person: Partial<PersonModel> & { address?: AddressModel };
+          liable?: any & { person: Partial<PersonModel> };
+        })
+      | null
+    >;
 
   public count = (clinicId: string): PrismaPromise<number> =>
     this.prisma.person.count({

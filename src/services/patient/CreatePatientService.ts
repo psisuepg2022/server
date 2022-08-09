@@ -39,9 +39,9 @@ class CreatePatientService extends CreatePersonService {
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
     @inject("PatientRepository")
-    private patientRepository: IPatientRepository,
+    protected patientRepository: IPatientRepository,
     @inject("LiableRepository")
-    private liableRepository: ILiableRepository
+    protected liableRepository: ILiableRepository
   ) {
     super(
       validatorsProvider,
@@ -53,8 +53,12 @@ class CreatePatientService extends CreatePersonService {
     );
   }
 
+  protected getObjectId = (_?: string): string =>
+    this.uniqueIdentifierProvider.generate();
+
   public async execute(
     {
+      id: idReceived,
       CPF,
       birthDate,
       clinicId,
@@ -69,7 +73,7 @@ class CreatePatientService extends CreatePersonService {
   ): Promise<Partial<PatientModel>> {
     const liableExisting = liable && typeof liable === "string";
 
-    const id = this.uniqueIdentifierProvider.generate();
+    const id = this.getObjectId(idReceived);
     const liableId = !liableExisting
       ? this.uniqueIdentifierProvider.generate()
       : "";

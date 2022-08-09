@@ -12,16 +12,18 @@ import {
   CreatePatientService,
   SearchPatientsWithFiltersService,
   SoftPatientDeleteService,
+  UpdatePatientService,
 } from "@services/patient";
 import { SearchLiablesWithFiltersService } from "@services/patient/SearchLiablesWithFiltersService";
 
 class PatientController {
-  public async create(
+  public async save(
     req: Request,
     res: Response<IResponseMessage<Partial<PatientModel>>>
   ): Promise<Response> {
     try {
       const {
+        id,
         email,
         name,
         CPF,
@@ -36,10 +38,13 @@ class PatientController {
 
       const { id: clinicId } = req.clinic;
 
-      const createPatientService = container.resolve(CreatePatientService);
+      const [service, httpStatusResponse] = stringIsNullOrEmpty(id)
+        ? [container.resolve(CreatePatientService), HttpStatus.CREATED]
+        : [container.resolve(UpdatePatientService), HttpStatus.OK];
 
-      const result = await createPatientService.execute(
+      const result = await service.execute(
         {
+          id,
           email,
           name,
           birthDate,
@@ -72,7 +77,7 @@ class PatientController {
           : null
       );
 
-      return res.status(HttpStatus.CREATED).json({
+      return res.status(httpStatusResponse).json({
         success: true,
         content: result,
         message: i18n.__("SuccessGeneric"),
