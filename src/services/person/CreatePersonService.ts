@@ -48,6 +48,21 @@ class CreatePersonService {
     );
   };
 
+  protected validateClinicId = async (clinicId: string): Promise<void> => {
+    if (stringIsNullOrEmpty(clinicId))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicRequired"));
+
+    if (!this.uniqueIdentifierProvider.isValid(clinicId))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
+
+    const [hasClinic] = await transaction([
+      this.clinicRepository.getById(clinicId),
+    ]);
+
+    if (!hasClinic)
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicNotFound"));
+  };
+
   protected async createPersonOperation(
     {
       CPF,
@@ -90,19 +105,6 @@ class CreatePersonService {
 
     if (new Date().getTime() < birthDateConverted.getTime())
       throw new AppError("BAD_REQUEST", i18n.__("ErrorFutureBirthDate"));
-
-    if (stringIsNullOrEmpty(clinicId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicRequired"));
-
-    if (!this.uniqueIdentifierProvider.isValid(clinicId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
-
-    const [hasClinic] = await transaction([
-      this.clinicRepository.getById(clinicId),
-    ]);
-
-    if (!hasClinic)
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicNotFound"));
 
     if (email) {
       if (!this.validatorsProvider.email(email))

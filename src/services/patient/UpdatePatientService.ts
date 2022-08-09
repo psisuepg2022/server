@@ -61,14 +61,10 @@ class UpdatePatientService extends CreatePatientService {
         i18n.__mf("ErrorUserIDRequired", ["paciente"])
       );
 
-    if (stringIsNullOrEmpty(clinicId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicRequired"));
-
-    if (
-      !this.uniqueIdentifierProvider.isValid(id) ||
-      !this.uniqueIdentifierProvider.isValid(clinicId)
-    )
+    if (!this.uniqueIdentifierProvider.isValid(id))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
+
+    await super.validateClinicId(clinicId);
 
     const [hasPatient] = await transaction([
       this.patientRepository.getToUpdate(clinicId, id),
