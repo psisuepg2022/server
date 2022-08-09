@@ -63,6 +63,11 @@ class CreatePersonService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicNotFound"));
   };
 
+  protected getObjectId = (id?: string): string =>
+    id && !stringIsNullOrEmpty(id) && this.uniqueIdentifierProvider.isValid(id)
+      ? id
+      : this.uniqueIdentifierProvider.generate();
+
   protected async createPersonOperation(
     {
       CPF,
@@ -141,8 +146,8 @@ class CreatePersonService {
         throw new AppError("BAD_REQUEST", i18n.__("ErrorZipCodeInvalid"));
 
       this.addressOperation = this.addressRepository.save(id, {
-        id: this.uniqueIdentifierProvider.generate(),
         ...address,
+        id: this.getObjectId(address.id),
         zipCode: this.maskProvider.remove(address.zipCode),
       });
     }

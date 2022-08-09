@@ -9,7 +9,6 @@ import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { GenderDomain, MaritalStatusDomain } from "@infra/domains";
 import { PatientModel } from "@models/domain/PatientModel";
-import { PersonModel } from "@models/domain/PersonModel";
 import { CreatePatientRequestModel } from "@models/dto/patient/CreatePatientRequestModel";
 import { CreatePersonRequestModel } from "@models/dto/person/CreatePersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
@@ -53,9 +52,6 @@ class CreatePatientService extends CreatePersonService {
     );
   }
 
-  protected getObjectId = (_?: string): string =>
-    this.uniqueIdentifierProvider.generate();
-
   public async execute(
     {
       id: idReceived,
@@ -69,14 +65,10 @@ class CreatePatientService extends CreatePersonService {
       gender,
       maritalStatus,
     }: CreatePatientRequestModel,
-    liable: CreatePersonRequestModel | string | null = null
+    liableReceived: CreatePersonRequestModel | null = null
   ): Promise<Partial<PatientModel>> {
-    const liableExisting = liable && typeof liable === "string";
-
     const id = this.getObjectId(idReceived);
-    const liableId = !liableExisting
-      ? this.uniqueIdentifierProvider.generate()
-      : "";
+    const liableId = this.getObjectId(liableReceived?.id);
 
     if (stringIsNullOrEmpty(gender))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorGenderRequired"));
@@ -103,27 +95,38 @@ class CreatePatientService extends CreatePersonService {
         i18n.__("ErrorValueOutOfMaritalStatusDomain")
       );
 
-    const hasLiable = await (async (): Promise<
-      (Partial<PersonModel> & { person: PersonModel }) | null
-    > => {
-      if (liableExisting) {
-        if (stringIsNullOrEmpty(liable))
-          throw new AppError("BAD_REQUEST", i18n.__("ErrorLiableRequired"));
+    const liable =
+      await (async (): Promise<CreatePersonRequestModel | null> => {
+        if (liableReceived && liableReceived.id) {
+          if (!this.uniqueIdentifierProvider.isValid(liableReceived.id))
+            throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
-        if (!this.uniqueIdentifierProvider.isValid(liable))
-          throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
+          const [_hasLiable] = await transaction([
+            this.liableRepository.hasLiablePersonSaved(liableReceived.id),
+          ]);
 
-        const [_hasLiable] = await transaction([
-          this.liableRepository.hasLiablePersonSaved(liable),
-        ]);
+          if (!_hasLiable)
+            throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
 
-        if (!_hasLiable)
-          throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
+          return {
+            CPF: `${liableReceived.CPF || _hasLiable.person.CPF}`,
+            birthDate:
+              birthDate ||
+              this.maskProvider.date(_hasLiable.person.birthDate || new Date()),
+            name: `${liableReceived.name || _hasLiable.person.name}`,
+            contactNumber:
+              liableReceived.contactNumber ||
+              this.maskProvider.contactNumber(
+                _hasLiable.person.contactNumber || ""
+              ),
+            email: `${liableReceived.email || _hasLiable.person.email}`,
+            clinicId,
+            id: _hasLiable.person.id,
+          };
+        }
 
-        return _hasLiable;
-      }
-      return null;
-    })();
+        return liableReceived;
+      })();
 
     await super.createPersonOperation(
       {
@@ -142,7 +145,7 @@ class CreatePatientService extends CreatePersonService {
 
     const createPatientPersonOperation = this.getCreatePersonOperation();
 
-    if (liable !== null && typeof liable !== "string")
+    if (liable)
       await this.createPersonOperation(
         liable,
         liableId,
@@ -163,10 +166,10 @@ class CreatePatientService extends CreatePersonService {
         if (liable) {
           const createLiableRelationOperation = this.liableRepository.save(
             id,
-            liableExisting ? liable : liableId
+            liableId
           );
 
-          if (!liableExisting) list.push(this.getCreatePersonOperation());
+          list.push(this.getCreatePersonOperation());
           list.push(createLiableRelationOperation);
         }
 
@@ -179,14 +182,10 @@ class CreatePatientService extends CreatePersonService {
       address ? 0 : -1,
     ])();
 
-    const liableToSend = liableExisting
-      ? hasLiable?.person
-      : optional[liableIndex];
-
     return {
       ...patient,
       ...person,
-      CPF: CPF ? this.maskProvider.cpf(person.CPF) : "",
+      CPF: person.CPF ? this.maskProvider.cpf(person.CPF) : "",
       birthDate: this.maskProvider.date(person.birthDate),
       contactNumber: person.contactNumber
         ? this.maskProvider.contactNumber(person.contactNumber)
@@ -208,11 +207,15 @@ class CreatePatientService extends CreatePersonService {
       liable:
         liableIndex !== -1
           ? {
-              ...liableToSend,
-              CPF: this.maskProvider.cpf(liableToSend.CPF),
-              birthDate: this.maskProvider.date(liableToSend.birthDate),
-              contactNumber: liableToSend.contactNumber
-                ? this.maskProvider.contactNumber(liableToSend.contactNumber)
+              ...optional[liableIndex],
+              CPF: this.maskProvider.cpf(optional[liableIndex].CPF),
+              birthDate: this.maskProvider.date(
+                optional[liableIndex].birthDate
+              ),
+              contactNumber: optional[liableIndex].contactNumber
+                ? this.maskProvider.contactNumber(
+                    optional[liableIndex].contactNumber
+                  )
                 : "",
             }
           : null,

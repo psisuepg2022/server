@@ -55,6 +55,7 @@ class PatientController {
           clinicId,
           address: address
             ? {
+                id: address.id,
                 state: address.state,
                 zipCode: address.zipCode,
                 city: address.city,
@@ -64,16 +65,15 @@ class PatientController {
             : undefined,
         },
         liableRequired === true
-          ? stringIsNullOrEmpty(liable.id)
-            ? {
-                birthDate: liable.birthDate,
-                CPF: liable.CPF,
-                contactNumber: liable.contactNumber,
-                name: liable.name,
-                email: liable.email,
-                clinicId,
-              }
-            : liable.id
+          ? {
+              birthDate: liable?.birthDate,
+              CPF: liable?.CPF,
+              contactNumber: liable?.contactNumber,
+              name: liable?.name,
+              email: liable?.email,
+              clinicId,
+              id: liable?.id,
+            }
           : null
       );
 
@@ -83,6 +83,7 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      console.log(error);
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),

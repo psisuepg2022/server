@@ -1,4 +1,5 @@
 type CreateAddressRequestModel = {
+  id?: string;
   city: string;
   district?: string;
   publicArea: string;

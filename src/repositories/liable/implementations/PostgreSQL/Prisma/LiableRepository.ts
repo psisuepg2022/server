@@ -10,8 +10,13 @@ class LiableRepository implements ILiableRepository {
   constructor(private prisma = prismaClient) {}
 
   public save = (patientId: string, liableId: string): PrismaPromise<any> =>
-    this.prisma.liable.create({
-      data: {
+    this.prisma.liable.upsert({
+      where: { patientId },
+      create: {
+        patientId,
+        personId: liableId,
+      },
+      update: {
         patientId,
         personId: liableId,
       },
