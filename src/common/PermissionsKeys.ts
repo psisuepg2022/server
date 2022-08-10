@@ -31,8 +31,6 @@ class PermissionsKeys {
 
   public static readonly READ_SCHEDULE_LOCK: string = "READ_SCHEDULE_LOCK";
 
-  public static readonly UPDATE_SCHEDULE_LOCK: string = "UPDATE_SCHEDULE_LOCK";
-
   public static readonly CREATE_COMMENTS: string = "CREATE_COMMENTS";
 
   public static readonly READ_COMMENTS: string = "READ_COMMENTS";

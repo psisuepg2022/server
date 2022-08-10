@@ -8,6 +8,7 @@ import { routes as employeeRoutes } from "./employee.routes";
 import { routes as ownerRoutes } from "./owner.routes";
 import { routes as patientRoutes } from "./patient.routes";
 import { routes as professionalRoutes } from "./professional.routes";
+import { routes as scheduleRoutes } from "./scheduleLocks.routes";
 import { routes as weeklyScheduleRoutes } from "./weeklySchedule.routes";
 
 const routes = Router();
@@ -19,5 +20,6 @@ routes.use(RoutesPrefix.PATIENT, patientRoutes);
 routes.use(RoutesPrefix.PROFESSIONAL, professionalRoutes);
 routes.use(RoutesPrefix.OWNER, ownerRoutes);
 routes.use(RoutesPrefix.WEEKLY_SCHEDULE, weeklyScheduleRoutes);
+routes.use(RoutesPrefix.SCHEDULE_LOCKS, scheduleRoutes);
 
 export { routes };
