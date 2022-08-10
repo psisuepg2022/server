@@ -1,4 +1,4 @@
 {
-  "ErrorGeneric": "An error has occurred. Please contact an administrator.",
+  "ErrorGenericUnknown": "An error has occurred. Please contact an administrator.",
   "ErrorInternal": "An internal server error has occurred."
 }

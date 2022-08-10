@@ -40,7 +40,7 @@ class SearchPeopleWithFiltersService<
   protected getDomainClass = (): string => {
     throw new AppError(
       "INTERNAL_SERVER_ERROR",
-      i18n.__("ErrorGetDomainClassNotDefined")
+      i18n.__("ErrorWithoutHandling")
     );
   };
 
@@ -51,14 +51,14 @@ class SearchPeopleWithFiltersService<
   ): PrismaPromise<K[]> => {
     throw new AppError(
       "INTERNAL_SERVER_ERROR",
-      i18n.__("ErrorSearchPeopleGetOperationNotDefined")
+      i18n.__("ErrorWithoutHandling")
     );
   };
 
   protected convertObject = (_: K): T => {
     throw new AppError(
       "INTERNAL_SERVER_ERROR",
-      i18n.__("ErrorSearchPeopleConvertObjectNotDefined")
+      i18n.__("ErrorWithoutHandling")
     );
   };
 

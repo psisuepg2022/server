@@ -27,7 +27,10 @@ class SoftPersonDeleteService {
   };
 
   protected getDomainClass = (): string => {
-    throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorGeneric"));
+    throw new AppError(
+      "INTERNAL_SERVER_ERROR",
+      i18n.__("ErrorWithoutHandling")
+    );
   };
 
   protected async createOperation(clinicId: string, id: string): Promise<void> {

@@ -19,7 +19,9 @@ class AppError extends Error {
   }
 
   public static getErrorMessage(error: any): string {
-    return error instanceof AppError ? error.message : i18n.__("ErrorGeneric");
+    return error instanceof AppError
+      ? error.message
+      : i18n.__("ErrorGenericUnknown");
   }
 }
 

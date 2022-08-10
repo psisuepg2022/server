@@ -19,7 +19,7 @@ const errorHandlerMiddleware = async (
 
   return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
     success: false,
-    message: i18n.__("ErrorGeneric"),
+    message: i18n.__("ErrorGenericUnknown"),
   });
 };
 

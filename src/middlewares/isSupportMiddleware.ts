@@ -15,7 +15,7 @@ const isSupportMiddleware: IMiddleware = async (req, _, next) => {
       throw new AppError("UNAUTHORIZED", i18n.__("ErrorOnlySupport"));
   } catch (e) {
     if (e instanceof AppError) throw e;
-    throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorGeneric"));
+    throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorGenericUnknown"));
   }
 
   return next();
