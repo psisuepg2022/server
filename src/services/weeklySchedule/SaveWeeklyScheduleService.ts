@@ -136,7 +136,7 @@ class SaveWeeklyScheduleService {
               );
 
             const [hasLock] = await transaction([
-              this.scheduleRepository.hasConflictingLock(
+              this.scheduleRepository.hasConflictingWeeklyScheduleLock(
                 id,
                 startDate,
                 endDate

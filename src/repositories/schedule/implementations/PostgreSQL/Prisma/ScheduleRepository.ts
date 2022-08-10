@@ -122,7 +122,7 @@ class ScheduleRepository implements IScheduleRepository {
       },
     });
 
-  public hasConflictingLock = (
+  public hasConflictingWeeklyScheduleLock = (
     weeklyScheduleId: string,
     startTime: Date,
     endTime: Date
