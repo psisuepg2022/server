@@ -20,7 +20,7 @@ class ValidateClinicIDMiddleware {
   public execute =
     (
       execSearchInDB = false,
-      authenticated = false,
+      authenticated = true,
       paramName = "id"
     ): IMiddleware =>
     async (req, _, next) => {
