@@ -8,6 +8,24 @@ import { IScheduleRepository } from "@repositories/schedule/models/IScheduleRepo
 class ScheduleRepository implements IScheduleRepository {
   constructor(private prisma = prismaClient) {}
 
+  public getScheduleLock = (
+    professionalId: string,
+    id: string
+  ): PrismaPromise<ScheduleLockModel | null> =>
+    this.prisma.scheduleLock.findFirst({
+      where: {
+        id,
+        professionalId,
+      },
+    });
+
+  public deleteScheduleLock = (id: string): PrismaPromise<ScheduleLockModel> =>
+    this.prisma.scheduleLock.delete({
+      where: {
+        id,
+      },
+    });
+
   public saveLockItem = (
     professionalId: string,
     { date, endTime, id, startTime }: ScheduleLockModel

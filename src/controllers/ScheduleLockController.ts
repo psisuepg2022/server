@@ -5,7 +5,10 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { CreateScheduleLockResponseModel } from "@models/dto/scheduleLock/CreateScheduleLockResponseModel";
-import { CreateScheduleLockService } from "@services/scheduleLocks";
+import {
+  CreateScheduleLockService,
+  DeleteScheduleLockService,
+} from "@services/scheduleLocks";
 
 class ScheduleLockController {
   public async save(
@@ -76,11 +79,19 @@ class ScheduleLockController {
 
   public async delete(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<boolean>>
   ): Promise<Response> {
     try {
+      const { id } = req.params;
+      const { id: professionalId } = req.user;
+
+      const service = container.resolve(DeleteScheduleLockService);
+
+      const result = await service.execute(professionalId, id);
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
@@ -93,11 +104,18 @@ class ScheduleLockController {
 
   public async deleteByProfessional(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<boolean>>
   ): Promise<Response> {
     try {
+      const { id, professional_id: professionalId } = req.params;
+
+      const service = container.resolve(DeleteScheduleLockService);
+
+      const result = await service.execute(professionalId, id);
+
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {

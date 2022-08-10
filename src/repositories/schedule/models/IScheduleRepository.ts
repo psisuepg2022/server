@@ -50,6 +50,11 @@ interface IScheduleRepository {
     endTime: Date,
     date: Date
   ): PrismaPromise<ScheduleLockModel | null>;
+  getScheduleLock(
+    professionalId: string,
+    id: string
+  ): PrismaPromise<ScheduleLockModel | null>;
+  deleteScheduleLock(id: string): PrismaPromise<ScheduleLockModel>;
 }
 
 export { IScheduleRepository };
