@@ -1,4 +1,4 @@
-const stringIsNullOrEmpty = (value: string): boolean =>
+const stringIsNullOrEmpty = (value: string | null): boolean =>
   !value || value.length === 0;
 
 export { stringIsNullOrEmpty };

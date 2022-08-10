@@ -2,7 +2,7 @@ import { CreateAddressRequestModel } from "./CreateAddressRequestModel";
 
 type CreatePersonRequestModel = {
   id?: string;
-  email?: string;
+  email: string | null;
   name: string;
   CPF: string;
   contactNumber?: string;

@@ -139,7 +139,7 @@ class UpdatePatientService extends CreatePatientService {
                 this.maskProvider.contactNumber(
                   hasPatient.liable.person.contactNumber || ""
                 ),
-              email: `${liable.email || hasPatient.liable.person.email}`,
+              email: liable.email || hasPatient.liable.person.email,
               clinicId,
               id: hasPatient.liable.person.id,
             };
@@ -162,7 +162,7 @@ class UpdatePatientService extends CreatePatientService {
           this.maskProvider.contactNumber(
             hasPatient.person.contactNumber || ""
           ),
-        email: `${email || hasPatient.person.email}`,
+        email: email || hasPatient.person.email || "",
         gender: `${gender || hasPatient.gender?.toString()}`,
         maritalStatus: `${
           maritalStatus || hasPatient.maritalStatus?.toString()
