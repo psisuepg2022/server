@@ -78,23 +78,14 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
           }
         >): ListPatientsResponseModel =>
           ({
-            ...item,
-            CPF: this.maskProvider.cpf(item.CPF || ""),
-            birthDate: this.maskProvider.date(new Date(item.birthDate || "")),
-            contactNumber: this.maskProvider.contactNumber(
-              item.contactNumber || ""
-            ),
-            address: item.address
-              ? {
-                  ...item.address,
-                  zipCode: this.maskProvider.zipCode(
-                    item.address?.zipCode || ""
-                  ),
-                }
-              : null,
+            ...this.convert(item as PersonModel, item.address),
             gender: getEnumDescription(
               "GENDER",
               GenderDomain[patient?.gender as number]
+            ),
+            maritalStatus: getEnumDescription(
+              "MARITAL_STATUS",
+              MaritalStatusDomain[patient?.maritalStatus as number]
             ),
             liable: patient?.liable?.person
               ? {
@@ -108,10 +99,6 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
                   ),
                 }
               : null,
-            maritalStatus: getEnumDescription(
-              "MARITAL_STATUS",
-              MaritalStatusDomain[patient?.maritalStatus as number]
-            ),
           } as ListPatientsResponseModel)
       ),
       totalItems,

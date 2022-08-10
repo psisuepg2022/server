@@ -3,6 +3,9 @@ import i18n from "i18n";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { IPaginationOptions } from "@infra/http";
+import { AddressModel } from "@models/domain/AddressModel";
+import { PersonModel } from "@models/domain/PersonModel";
+import { ListPeopleResponseModel } from "@models/dto/person/ListPeopleResponseModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IMaskProvider } from "@providers/mask";
@@ -48,6 +51,22 @@ class SearchPeopleWithFiltersService {
 
     return countOperation;
   }
+
+  protected convert = (
+    person: PersonModel,
+    address?: AddressModel
+  ): ListPeopleResponseModel => ({
+    ...person,
+    CPF: this.maskProvider.cpf(person.CPF || ""),
+    birthDate: this.maskProvider.date(new Date(person.birthDate || "")),
+    contactNumber: this.maskProvider.contactNumber(person.contactNumber || ""),
+    address: address
+      ? {
+          ...address,
+          zipCode: this.maskProvider.zipCode(address.zipCode || ""),
+        }
+      : null,
+  });
 }
 
 export { SearchPeopleWithFiltersService };
