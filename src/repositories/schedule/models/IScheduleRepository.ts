@@ -1,3 +1,4 @@
+import { ScheduleLockModel } from "@models/domain/ScheduleLockModel";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { PrismaPromise } from "@prisma/client";
@@ -11,6 +12,10 @@ interface IScheduleRepository {
     weeklyScheduleId: string,
     lock: WeeklyScheduleLockModel
   ): PrismaPromise<WeeklyScheduleLockModel>;
+  saveLockItem(
+    professionalId: string,
+    lock: ScheduleLockModel
+  ): PrismaPromise<ScheduleLockModel>;
   getWeeklySchedule(
     professionalId: string
   ): PrismaPromise<

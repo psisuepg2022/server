@@ -1,4 +1,5 @@
 import { prismaClient } from "@infra/database/client";
+import { ScheduleLockModel } from "@models/domain/ScheduleLockModel";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { PrismaPromise } from "@prisma/client";
@@ -6,6 +7,26 @@ import { IScheduleRepository } from "@repositories/schedule/models/IScheduleRepo
 
 class ScheduleRepository implements IScheduleRepository {
   constructor(private prisma = prismaClient) {}
+
+  public saveLockItem = (
+    professionalId: string,
+    { date, endTime, id, startTime }: ScheduleLockModel
+  ): PrismaPromise<ScheduleLockModel> =>
+    this.prisma.scheduleLock.create({
+      data: {
+        date,
+        endTime,
+        id,
+        startTime,
+        professionalId,
+      },
+      select: {
+        date: true,
+        endTime: true,
+        id: true,
+        startTime: true,
+      },
+    });
 
   public getWeeklySchedule = (
     professionalId: string
