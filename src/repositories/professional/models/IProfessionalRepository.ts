@@ -1,3 +1,4 @@
+import { AddressModel } from "@models/domain/AddressModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
@@ -15,7 +16,10 @@ interface IProfessionalRepository {
     filters: SearchPersonRequestModel | null
   ): PrismaPromise<
     Partial<
-      UserModel & { person: PersonModel; professional: ProfessionalModel }
+      UserModel & {
+        person: PersonModel & { address: AddressModel };
+        professional: ProfessionalModel;
+      }
     >[]
   >;
   updateBaseDuration(

@@ -1,5 +1,6 @@
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
+import { AddressModel } from "@models/domain/AddressModel";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
@@ -14,7 +15,11 @@ class EmployeeRepository implements IEmployeeRepository {
     clinicId: string,
     [take, skip]: [number, number],
     filters: SearchPersonRequestModel | null
-  ): PrismaPromise<Partial<EmployeeModel & { person: PersonModel }>[]> =>
+  ): PrismaPromise<
+    Partial<
+      EmployeeModel & { person: PersonModel & { address: AddressModel } }
+    >[]
+  > =>
     this.prisma.user.findMany({
       select: {
         accessCode: true,
@@ -27,6 +32,16 @@ class EmployeeRepository implements IEmployeeRepository {
             contactNumber: true,
             email: true,
             name: true,
+            address: {
+              select: {
+                id: true,
+                city: true,
+                district: true,
+                state: true,
+                publicArea: true,
+                zipCode: true,
+              },
+            },
           },
         },
       },
@@ -41,7 +56,11 @@ class EmployeeRepository implements IEmployeeRepository {
       orderBy: { person: { name: "asc" } },
       take,
       skip,
-    }) as PrismaPromise<Partial<EmployeeModel & { person: PersonModel }>[]>;
+    }) as PrismaPromise<
+      Partial<
+        EmployeeModel & { person: PersonModel & { address: AddressModel } }
+      >[]
+    >;
 }
 
 export { EmployeeRepository };

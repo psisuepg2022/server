@@ -1,3 +1,4 @@
+import { AddressModel } from "@models/domain/AddressModel";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
@@ -8,7 +9,11 @@ interface IEmployeeRepository {
     clinicId: string,
     [take, skip]: [number, number],
     filters: SearchPersonRequestModel | null
-  ): PrismaPromise<Partial<EmployeeModel & { person: PersonModel }>[]>;
+  ): PrismaPromise<
+    Partial<
+      EmployeeModel & { person: PersonModel & { address: AddressModel } }
+    >[]
+  >;
 }
 
 export { IEmployeeRepository };

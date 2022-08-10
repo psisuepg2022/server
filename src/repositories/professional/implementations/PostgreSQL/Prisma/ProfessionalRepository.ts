@@ -1,5 +1,6 @@
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
+import { AddressModel } from "@models/domain/AddressModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
@@ -44,14 +45,15 @@ class ProfessionalRepository implements IProfessionalRepository {
     filters: SearchPersonRequestModel | null
   ): PrismaPromise<
     Partial<
-      UserModel & { person: PersonModel; professional: ProfessionalModel }
+      UserModel & {
+        person: PersonModel & { address: AddressModel };
+        professional: ProfessionalModel;
+      }
     >[]
   > =>
     this.prisma.user.findMany({
       select: {
-        accessCode: true,
         id: true,
-        userName: true,
         person: {
           select: {
             birthDate: true,
@@ -59,6 +61,16 @@ class ProfessionalRepository implements IProfessionalRepository {
             contactNumber: true,
             email: true,
             name: true,
+            address: {
+              select: {
+                id: true,
+                city: true,
+                district: true,
+                publicArea: true,
+                state: true,
+                zipCode: true,
+              },
+            },
           },
         },
         professional: {
@@ -83,7 +95,10 @@ class ProfessionalRepository implements IProfessionalRepository {
       skip,
     }) as PrismaPromise<
       Partial<
-        UserModel & { person: PersonModel; professional: ProfessionalModel }
+        UserModel & {
+          person: PersonModel & { address: AddressModel };
+          professional: ProfessionalModel;
+        }
       >[]
     >;
 
