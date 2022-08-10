@@ -51,12 +51,7 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
     const getOperation = this.patientRepository.get(
       clinicId,
       pagination({ page, size }),
-      filters
-        ? {
-            ...filters,
-            CPF: this.maskProvider.remove(filters.CPF || ""),
-          }
-        : null
+      this.getFilters(filters)
     );
 
     const [totalItems, items] = await transaction([

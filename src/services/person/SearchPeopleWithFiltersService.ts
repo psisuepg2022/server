@@ -67,6 +67,16 @@ class SearchPeopleWithFiltersService {
         }
       : null,
   });
+
+  protected getFilters = (
+    filters?: SearchPersonRequestModel
+  ): SearchPersonRequestModel | null =>
+    filters
+      ? {
+          ...filters,
+          CPF: this.maskProvider.remove(filters.CPF || ""),
+        }
+      : null;
 }
 
 export { SearchPeopleWithFiltersService };
