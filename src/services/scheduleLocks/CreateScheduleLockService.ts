@@ -102,6 +102,7 @@ class CreateScheduleLockService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
+    const dateConverted = new Date(date);
     const endTimeConverted = time2date(endTime);
     const startTimeConverted = time2date(startTime);
     const totalTimeInMs =
@@ -113,9 +114,28 @@ class CreateScheduleLockService {
         i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
       );
 
+    const [hasScheduleLock] = await transaction([
+      this.scheduleRepository.hasConflictingScheduleLock(
+        professionalId,
+        startTimeConverted,
+        endTimeConverted,
+        dateConverted
+      ),
+    ]);
+
+    if (hasScheduleLock)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorScheduleLockConflicting", [
+          this.maskProvider.date(hasScheduleLock.date),
+          this.maskProvider.time(hasScheduleLock.startTime as Date),
+          this.maskProvider.time(hasScheduleLock.endTime as Date),
+        ])
+      );
+
     const [saved] = await transaction([
       this.scheduleRepository.saveLockItem(professionalId, {
-        date: new Date(date),
+        date: dateConverted,
         endTime: endTimeConverted,
         startTime: startTimeConverted,
         id: this.uniqueIdentifierProvider.generate(),

@@ -44,6 +44,12 @@ interface IScheduleRepository {
       })
     | null
   >;
+  hasConflictingScheduleLock(
+    professionalId: string,
+    startTime: Date,
+    endTime: Date,
+    date: Date
+  ): PrismaPromise<ScheduleLockModel | null>;
 }
 
 export { IScheduleRepository };

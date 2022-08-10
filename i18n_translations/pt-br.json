@@ -65,6 +65,7 @@
   "ErrorQueryTypecasting": "Não foi possível realizar a operação com as informações opcionais informadas.",
   "ErrorRegistryRequired": "É necessário informar o registro.",
   "ErrorRoleNotFound": "Não foi possível recuperar as informações de permissão. Por favor, entre em contato com um administrador.",
+  "ErrorScheduleLockConflicting": "Existe um outro intervalo conflitando com este bloqueio: dia {0} das {1} às {2}.",
   "ErrorScheduleLockDateInvalid": "A data do bloqueio informada é inválida.",
   "ErrorScheduleLockDateRequired": "É necessário informar a data para registro do bloqueio.",
   "ErrorScheduleLockEndTimeInvalid": "O horário de término do bloqueio informado é inválido.",
