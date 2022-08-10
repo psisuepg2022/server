@@ -1,9 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
 import { UserDomainClasses } from "@common/UserDomainClasses";
-import { pagination } from "@helpers/pagination";
-import { transaction } from "@infra/database/transaction";
-import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ListPeopleResponseModel } from "@models/dto/person/ListPeopleResponseModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
@@ -15,7 +12,10 @@ import { IPersonRepository } from "@repositories/person";
 import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService {
+class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService<
+  ListPeopleResponseModel,
+  any & { person: Partial<PersonModel> }
+> {
   constructor(
     @inject("PersonRepository")
     personRepository: IPersonRepository,
@@ -38,45 +38,19 @@ class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService {
 
   protected getDomainClass = (): string => UserDomainClasses.LIABLE;
 
-  public async execute(
+  protected getOperation = (
     clinicId: string,
-    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
-  ): Promise<IPaginationResponse<ListPeopleResponseModel>> {
-    const countOperation = this.getCountOperation(clinicId, { filters });
+    pagination: [number, number],
+    filters: SearchPersonRequestModel | null
+  ): any =>
+    this.liableRepository.get(clinicId, pagination, this.getFilters(filters));
 
-    const getOperation = this.liableRepository.get(
-      clinicId,
-      pagination({ page, size }),
-      filters
-        ? {
-            ...filters,
-            CPF: this.maskProvider.remove(filters.CPF || ""),
-          }
-        : null
-    );
-
-    const [totalItems, items] = await transaction([
-      countOperation,
-      getOperation,
-    ]);
-
-    return {
-      items: items.map(
-        ({
-          person,
-        }: any & { person: Partial<PersonModel> }): ListPeopleResponseModel =>
-          ({
-            ...person,
-            CPF: this.maskProvider.cpf(person.CPF || ""),
-            birthDate: this.maskProvider.date(new Date(person.birthDate || "")),
-            contactNumber: this.maskProvider.contactNumber(
-              person.contactNumber || ""
-            ),
-          } as ListPeopleResponseModel)
-      ),
-      totalItems,
-    };
-  }
+  protected convertObject = ({
+    person,
+  }: any & { person: Partial<PersonModel> }): ListPeopleResponseModel =>
+    ({
+      ...this.covertBase(person),
+    } as ListPeopleResponseModel);
 }
 
 export { SearchLiablesWithFiltersService };

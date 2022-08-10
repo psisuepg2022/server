@@ -2,10 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { getEnumDescription } from "@helpers/getEnumDescription";
-import { pagination } from "@helpers/pagination";
-import { transaction } from "@infra/database/transaction";
 import { GenderDomain, MaritalStatusDomain } from "@infra/domains";
-import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { AddressModel } from "@models/domain/AddressModel";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
@@ -19,7 +16,15 @@ import { IPersonRepository } from "@repositories/person";
 import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
+class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService<
+  ListPatientsResponseModel,
+  Partial<
+    PersonModel & {
+      patient: PatientModel & { liable: any & { person: PersonModel } };
+      address: AddressModel;
+    }
+  >
+> {
   constructor(
     @inject("PersonRepository")
     personRepository: IPersonRepository,
@@ -42,63 +47,47 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService {
 
   protected getDomainClass = (): string => UserDomainClasses.PATIENT;
 
-  public async execute(
+  protected getOperation = (
     clinicId: string,
-    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
-  ): Promise<IPaginationResponse<ListPatientsResponseModel>> {
-    const countOperation = this.getCountOperation(clinicId, { filters });
+    pagination: [number, number],
+    filters: SearchPersonRequestModel | null
+  ): any =>
+    this.patientRepository.get(clinicId, pagination, this.getFilters(filters));
 
-    const getOperation = this.patientRepository.get(
-      clinicId,
-      pagination({ page, size }),
-      this.getFilters(filters)
-    );
-
-    const [totalItems, items] = await transaction([
-      countOperation,
-      getOperation,
-    ]);
-
-    return {
-      items: items.map(
-        ({
-          patient,
-          ...item
-        }: Partial<
-          PersonModel & {
-            patient: PatientModel & {
-              liable: any & { person: Partial<PersonModel> };
-            };
-            address: AddressModel;
-          }
-        >): ListPatientsResponseModel =>
-          ({
-            ...this.convert(item as PersonModel, item.address),
-            gender: getEnumDescription(
-              "GENDER",
-              GenderDomain[patient?.gender as number]
-            ),
-            maritalStatus: getEnumDescription(
-              "MARITAL_STATUS",
-              MaritalStatusDomain[patient?.maritalStatus as number]
-            ),
-            liable: patient?.liable?.person
-              ? {
-                  ...(patient?.liable.person || {}),
-                  CPF: this.maskProvider.cpf(patient?.liable.person.CPF || ""),
-                  contactNumber: this.maskProvider.contactNumber(
-                    patient?.liable.person.contactNumber || ""
-                  ),
-                  birthDate: this.maskProvider.date(
-                    patient?.liable.person.birthDate || ""
-                  ),
-                }
-              : null,
-          } as ListPatientsResponseModel)
+  protected convertObject = ({
+    address,
+    ...item
+  }: Partial<
+    PersonModel & {
+      patient: PatientModel & {
+        liable: any & { person: Partial<PersonModel> };
+      };
+      address: AddressModel;
+    }
+  >): ListPatientsResponseModel =>
+    ({
+      ...this.covertBase({ ...item, address }),
+      gender: getEnumDescription(
+        "GENDER",
+        GenderDomain[item.patient?.gender as number]
       ),
-      totalItems,
-    };
-  }
+      maritalStatus: getEnumDescription(
+        "MARITAL_STATUS",
+        MaritalStatusDomain[item.patient?.maritalStatus as number]
+      ),
+      liable: item.patient?.liable?.person
+        ? {
+            ...(item.patient?.liable.person || {}),
+            CPF: this.maskProvider.cpf(item.patient?.liable.person.CPF || ""),
+            contactNumber: this.maskProvider.contactNumber(
+              item.patient?.liable.person.contactNumber || ""
+            ),
+            birthDate: this.maskProvider.date(
+              item.patient?.liable.person.birthDate || ""
+            ),
+          }
+        : null,
+    } as ListPatientsResponseModel);
 }
 
 export { SearchPatientsWithFiltersService };

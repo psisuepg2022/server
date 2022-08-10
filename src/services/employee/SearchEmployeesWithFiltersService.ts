@@ -1,9 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { UserDomainClasses } from "@common/UserDomainClasses";
-import { pagination } from "@helpers/pagination";
-import { transaction } from "@infra/database/transaction";
-import { IPaginationOptions, IPaginationResponse } from "@infra/http";
+import { AddressModel } from "@models/domain/AddressModel";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
@@ -16,7 +14,10 @@ import { IPersonRepository } from "@repositories/person";
 import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService {
+class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService<
+  ListEmployeesResponseModel,
+  Partial<EmployeeModel & { person: PersonModel & { address: AddressModel } }>
+> {
   constructor(
     @inject("PersonRepository")
     personRepository: IPersonRepository,
@@ -39,52 +40,21 @@ class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService {
 
   protected getDomainClass = (): string => UserDomainClasses.EMPLOYEE;
 
-  public async execute(
+  protected getOperation = (
     clinicId: string,
-    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
-  ): Promise<IPaginationResponse<ListEmployeesResponseModel>> {
-    const countOperation = this.getCountOperation(clinicId, { filters });
+    pagination: [number, number],
+    filters: SearchPersonRequestModel | null
+  ): any =>
+    this.employeeRepository.get(clinicId, pagination, this.getFilters(filters));
 
-    const getOperation = this.employeeRepository.get(
-      clinicId,
-      pagination({ page, size }),
-      filters
-        ? {
-            ...filters,
-            CPF: this.maskProvider.remove(filters.CPF || ""),
-          }
-        : null
-    );
-
-    const [totalItems, items] = await transaction([
-      countOperation,
-      getOperation,
-    ]);
-
-    return {
-      items: items.map(
-        ({
-          person,
-          ...item
-        }: Partial<
-          EmployeeModel & { person: PersonModel }
-        >): ListEmployeesResponseModel =>
-          ({
-            ...item,
-            CPF: this.maskProvider.cpf(person?.CPF || ""),
-            contactNumber: this.maskProvider.contactNumber(
-              person?.contactNumber || ""
-            ),
-            email: person?.email,
-            name: person?.name || "",
-            birthDate: this.maskProvider.date(
-              new Date(person?.birthDate || "")
-            ),
-          } as ListEmployeesResponseModel)
-      ),
-      totalItems,
-    };
-  }
+  protected convertObject = ({
+    person,
+  }: Partial<
+    EmployeeModel & { person: PersonModel & { address: AddressModel } }
+  >): ListEmployeesResponseModel =>
+    ({
+      ...this.covertBase(person || {}),
+    } as ListEmployeesResponseModel);
 }
 
 export { SearchEmployeesWithFiltersService };

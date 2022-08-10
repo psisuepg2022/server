@@ -1,9 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { UserDomainClasses } from "@common/UserDomainClasses";
-import { pagination } from "@helpers/pagination";
-import { transaction } from "@infra/database/transaction";
-import { IPaginationOptions, IPaginationResponse } from "@infra/http";
+import { AddressModel } from "@models/domain/AddressModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
@@ -17,7 +15,15 @@ import { IProfessionalRepository } from "@repositories/professional";
 import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersService {
+class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersService<
+  ListProfessionalsResponseModel,
+  Partial<
+    UserModel & {
+      person: PersonModel & { address: AddressModel };
+      professional: ProfessionalModel;
+    }
+  >
+> {
   constructor(
     @inject("PersonRepository")
     personRepository: IPersonRepository,
@@ -40,54 +46,33 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
 
   protected getDomainClass = (): string => UserDomainClasses.PROFESSIONAL;
 
-  public async execute(
+  protected getOperation = (
     clinicId: string,
-    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
-  ): Promise<IPaginationResponse<ListProfessionalsResponseModel>> {
-    const countOperation = this.getCountOperation(clinicId, { filters });
-
-    const getOperation = this.professionalRepository.get(
+    pagination: [number, number],
+    filters: SearchPersonRequestModel | null
+  ): any =>
+    this.professionalRepository.get(
       clinicId,
-      pagination({ page, size }),
-      filters
-        ? {
-            ...filters,
-            CPF: this.maskProvider.remove(filters.CPF || ""),
-          }
-        : null
+      pagination,
+      this.getFilters(filters)
     );
 
-    const [totalItems, items] = await transaction([
-      countOperation,
-      getOperation,
-    ]);
-
-    return {
-      items: items.map(
-        ({
-          person,
-          professional,
-          ...item
-        }: Partial<
-          UserModel & { person: PersonModel; professional: ProfessionalModel }
-        >): ListProfessionalsResponseModel =>
-          ({
-            ...item,
-            ...professional,
-            CPF: this.maskProvider.cpf(person?.CPF || ""),
-            contactNumber: this.maskProvider.contactNumber(
-              person?.contactNumber || ""
-            ),
-            email: person?.email,
-            name: person?.name || "",
-            birthDate: this.maskProvider.date(
-              new Date(person?.birthDate || "")
-            ),
-          } as ListProfessionalsResponseModel)
-      ),
-      totalItems,
-    };
-  }
+  protected convertObject = ({
+    person,
+    professional,
+  }: Partial<
+    UserModel & {
+      person: PersonModel & { address: AddressModel };
+      professional: ProfessionalModel;
+    }
+  >): ListProfessionalsResponseModel =>
+    ({
+      baseDuration: professional?.baseDuration,
+      profession: professional?.profession,
+      registry: professional?.registry,
+      specialization: professional?.specialization,
+      ...this.covertBase(person || {}),
+    } as ListProfessionalsResponseModel);
 }
 
 export { SearchProfessionalsWithFiltersService };
