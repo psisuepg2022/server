@@ -75,8 +75,6 @@ class UpdatePatientService extends CreatePatientService {
     if (!this.uniqueIdentifierProvider.isValid(id))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
-    await this.validateClinicId(clinicId);
-
     const [hasPatient] = await transaction([
       this.patientRepository.getToUpdate(clinicId, id),
     ]);

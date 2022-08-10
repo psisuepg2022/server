@@ -5,6 +5,7 @@ import { PermissionsKeys } from "@common/PermissionsKeys";
 import { PatientController } from "@controllers/PatientController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
+import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
 const routes = Router();
 const controller = new PatientController();
@@ -12,6 +13,7 @@ const RBAC = container.resolve(RBACMiddleware);
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
+const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
 routes.post(
   "/search",
@@ -28,6 +30,7 @@ routes.post(
 routes.post(
   "/",
   ensureAuthenticated.execute,
+  validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
   controller.save
 );
