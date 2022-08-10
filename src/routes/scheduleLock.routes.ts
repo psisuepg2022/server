@@ -17,12 +17,6 @@ const ensureAuthenticated = container.resolve(
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
 routes.post(
-  "/search",
-  ensureAuthenticated.execute,
-  RBAC.has(PermissionsKeys.READ_SCHEDULE_LOCK),
-  controller.read
-);
-routes.post(
   "/",
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
