@@ -4,7 +4,7 @@ import i18n from "i18n";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 
-class ScheduleLocksController {
+class ScheduleLockController {
   public async save(
     req: Request,
     res: Response<IResponseMessage>
@@ -91,4 +91,4 @@ class ScheduleLocksController {
   }
 }
 
-export { ScheduleLocksController };
+export { ScheduleLockController };

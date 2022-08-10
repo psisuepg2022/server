@@ -3,12 +3,12 @@ import { container } from "tsyringe";
 
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
-import { ScheduleLocksController } from "@controllers/ScheduleLocksController";
+import { ScheduleLockController } from "@controllers/ScheduleLockController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 
 const routes = Router();
-const controller = new ScheduleLocksController();
+const controller = new ScheduleLockController();
 const RBAC = container.resolve(RBACMiddleware);
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware

@@ -8,7 +8,7 @@ import { routes as employeeRoutes } from "./employee.routes";
 import { routes as ownerRoutes } from "./owner.routes";
 import { routes as patientRoutes } from "./patient.routes";
 import { routes as professionalRoutes } from "./professional.routes";
-import { routes as scheduleRoutes } from "./scheduleLocks.routes";
+import { routes as scheduleRoutes } from "./scheduleLock.routes";
 import { routes as weeklyScheduleRoutes } from "./weeklySchedule.routes";
 
 const routes = Router();
