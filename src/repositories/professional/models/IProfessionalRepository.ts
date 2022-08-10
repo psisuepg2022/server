@@ -26,6 +26,10 @@ interface IProfessionalRepository {
     professionalId: string,
     baseDuration: number
   ): PrismaPromise<Partial<ProfessionalModel>>;
+  getBaseDuration(
+    clinicId: string,
+    professionalId: string
+  ): PrismaPromise<{ id: string; baseDuration: number } | null>;
 }
 
 export { IProfessionalRepository };

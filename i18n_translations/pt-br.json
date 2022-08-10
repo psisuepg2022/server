@@ -70,6 +70,7 @@
   "ErrorScheduleLockEndTimeInvalid": "O horário de término do bloqueio informado é inválido.",
   "ErrorScheduleLockEndTimeRequired": "É necessário informar o término do período de bloqueio.",
   "ErrorScheduleLockIntervalInvalid": "O intervalo do bloqueio é inválido: o início deve estar antes do término.",
+  "ErrorScheduleLockIntervalOutOfBaseDuration": "O período do bloqueio não pode exceder a duração base das consultas do profissional.",
   "ErrorScheduleLockPastDate": "A data do bloqueio deve ser futura.",
   "ErrorScheduleLockStartTimeInvalid": "O horário de início do bloqueio informado é inválido.",
   "ErrorScheduleLockStartTimeRequired": "É necessário informar o início do período de bloqueio.",

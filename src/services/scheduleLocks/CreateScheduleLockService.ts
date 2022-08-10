@@ -1,7 +1,6 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
-import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { time2date } from "@helpers/time2date";
@@ -11,7 +10,7 @@ import { CreateScheduleLockResponseModel } from "@models/dto/scheduleLock/Create
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
-import { IPersonRepository } from "@repositories/person";
+import { IProfessionalRepository } from "@repositories/professional";
 import { IScheduleRepository } from "@repositories/schedule";
 
 @injectable()
@@ -21,8 +20,8 @@ class CreateScheduleLockService {
     private uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
     private validatorsProvider: IValidatorsProvider,
-    @inject("PersonRepository")
-    private personRepository: IPersonRepository,
+    @inject("ProfessionalRepository")
+    private professionalRepository: IProfessionalRepository,
     @inject("ScheduleRepository")
     private scheduleRepository: IScheduleRepository,
     @inject("MaskProvider")
@@ -94,11 +93,7 @@ class CreateScheduleLockService {
       );
 
     const [hasProfessional] = await transaction([
-      this.personRepository.findActivated(
-        clinicId,
-        professionalId,
-        UserDomainClasses.PROFESSIONAL
-      ),
+      this.professionalRepository.getBaseDuration(clinicId, professionalId),
     ]);
 
     if (!hasProfessional)
@@ -107,20 +102,31 @@ class CreateScheduleLockService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
+    const endTimeConverted = time2date(endTime);
+    const startTimeConverted = time2date(startTime);
+    const totalTimeInMs =
+      endTimeConverted.getTime() - startTimeConverted.getTime();
+
+    if (totalTimeInMs % (hasProfessional.baseDuration * 60000))
+      throw new AppError(
+        "NOT_FOUND",
+        i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
+      );
+
     const [saved] = await transaction([
       this.scheduleRepository.saveLockItem(professionalId, {
         date: new Date(date),
-        endTime: time2date(endTime),
-        startTime: time2date(startTime),
+        endTime: endTimeConverted,
+        startTime: startTimeConverted,
         id: this.uniqueIdentifierProvider.generate(),
       }),
     ]);
 
     return {
-      ...saved,
+      id: saved.id,
       date: this.maskProvider.date(saved.date),
-      endTime: this.maskProvider.time(new Date(saved.endTime)),
-      startTime: this.maskProvider.time(new Date(saved.startTime)),
+      endTime: this.maskProvider.time(saved.endTime as Date),
+      startTime: this.maskProvider.time(saved.startTime as Date),
     };
   }
 }

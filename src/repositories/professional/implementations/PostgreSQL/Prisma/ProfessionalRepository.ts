@@ -12,6 +12,27 @@ import { IProfessionalRepository } from "@repositories/professional/models/IProf
 class ProfessionalRepository implements IProfessionalRepository {
   constructor(private prisma = prismaClient) {}
 
+  public getBaseDuration = (
+    clinicId: string,
+    professionalId: string
+  ): PrismaPromise<{ id: string; baseDuration: number } | null> =>
+    this.prisma.professional.findFirst({
+      where: {
+        id: professionalId,
+        user: {
+          person: {
+            clinicId,
+            active: true,
+            domainClass: UserDomainClasses.PROFESSIONAL,
+          },
+        },
+      },
+      select: {
+        id: true,
+        baseDuration: true,
+      },
+    }) as PrismaPromise<{ id: string; baseDuration: number } | null>;
+
   public save = (
     userId: string,
     { baseDuration, profession, registry, specialization }: ProfessionalModel
