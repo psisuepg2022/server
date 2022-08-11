@@ -19,7 +19,7 @@ routes.post(
   "/",
   ensureAuthenticated.execute,
   validateClinicID.execute(),
-  RBAC.has(PermissionsKeys.CREATE_APPOINTMENTS),
+  RBAC.has(PermissionsKeys.CREATE_APPOINTMENT),
   controller.save
 );
 

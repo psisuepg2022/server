@@ -1,7 +1,7 @@
 class PermissionsKeys {
   public static readonly READ_APPOINTMENTS: string = "READ_APPOINTMENTS";
 
-  public static readonly CREATE_APPOINTMENTS: string = "CREATE_APPOINTMENTS";
+  public static readonly CREATE_APPOINTMENT: string = "CREATE_APPOINTMENT";
 
   public static readonly READ_LIABLE: string = "READ_LIABLE";
 
