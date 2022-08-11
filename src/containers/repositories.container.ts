@@ -2,6 +2,10 @@ import { container } from "tsyringe";
 
 import { AddressRepository, IAddressRepository } from "@repositories/address";
 import {
+  AppointmentRepository,
+  IAppointmentRepository,
+} from "@repositories/appointment";
+import {
   AuthenticationRepository,
   IAuthenticationRepository,
 } from "@repositories/authentication";
@@ -75,4 +79,9 @@ container.registerSingleton<IProfessionalRepository>(
 container.registerSingleton<IScheduleRepository>(
   "ScheduleRepository",
   ScheduleRepository
+);
+
+container.registerSingleton<IAppointmentRepository>(
+  "AppointmentRepository",
+  AppointmentRepository
 );
