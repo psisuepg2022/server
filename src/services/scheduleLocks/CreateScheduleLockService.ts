@@ -110,7 +110,7 @@ class CreateScheduleLockService {
 
     if (totalTimeInMs % (hasProfessional.baseDuration * 60000))
       throw new AppError(
-        "NOT_FOUND",
+        "BAD_REQUEST",
         i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
       );
 
