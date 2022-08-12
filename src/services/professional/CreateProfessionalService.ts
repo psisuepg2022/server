@@ -4,7 +4,6 @@ import { inject, injectable } from "tsyringe";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { time2date } from "@helpers/time2date";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
@@ -12,6 +11,7 @@ import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel"
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { CreateProfessionalRequestModel } from "@models/dto/professional/CreateProfessionalRequestModel";
 import { PrismaPromise } from "@prisma/client";
+import { IDateProvider } from "@providers/date";
 import { IHashProvider } from "@providers/hash";
 import { IMaskProvider } from "@providers/mask";
 import { IPasswordProvider } from "@providers/password";
@@ -52,7 +52,9 @@ class CreateProfessionalService extends CreateUserService {
     @inject("ProfessionalRepository")
     private professionalRepository: IProfessionalRepository,
     @inject("ScheduleRepository")
-    private scheduleRepository: IScheduleRepository
+    private scheduleRepository: IScheduleRepository,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {
     super(
       validatorsProvider,
@@ -166,8 +168,8 @@ class CreateProfessionalService extends CreateUserService {
         this.scheduleRepository.saveWeeklyScheduleItem(professionalId, {
           id: ids[index],
           dayOfTheWeek: item,
-          startTime: time2date("08:00"),
-          endTime: time2date("17:00"),
+          startTime: this.dateProvider.time2date("08:00"),
+          endTime: this.dateProvider.time2date("17:00"),
         })
     );
 
@@ -175,8 +177,8 @@ class CreateProfessionalService extends CreateUserService {
       (id: string): PrismaPromise<WeeklyScheduleLockModel> =>
         this.scheduleRepository.saveWeeklyScheduleLockItem(id, {
           id: this.uniqueIdentifierProvider.generate(),
-          startTime: time2date("12:00"),
-          endTime: time2date("13:00"),
+          startTime: this.dateProvider.time2date("12:00"),
+          endTime: this.dateProvider.time2date("13:00"),
         })
     );
 
