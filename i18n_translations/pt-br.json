@@ -22,6 +22,7 @@
   "DomainMaritalStatus_WIDOWED": "Viúvo(a)",
   "ErrorAccessCodeInvalid": "O código de acesso informado é inválido.",
   "ErrorAccessCodeRequired": "É necessário informar o código de acesso do usuário.",
+  "ErrorAppointmentAlreadyExists": "Já existe uma consulta marcada neste horário para o(a) paciente: {0}.",
   "ErrorAppointmentDateInvalid": "A data do agendamento informada é inválida.",
   "ErrorAppointmentDateRequired": "É necessário informar a data para realizar um agendamento.",
   "ErrorAppointmentEndTimeInvalid": "O horário de término informado para realizar o agendamento é inválido.",
