@@ -4,7 +4,6 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { time2date } from "@helpers/time2date";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
@@ -14,6 +13,7 @@ import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule
 import { SaveWeeklyScheduleRequestModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleRequestModel";
 import { SaveWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleResponseModel";
 import { PrismaPromise } from "@prisma/client";
+import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
@@ -32,20 +32,22 @@ class SaveWeeklyScheduleService {
     @inject("ProfessionalRepository")
     private professionalRepository: IProfessionalRepository,
     @inject("MaskProvider")
-    private maskProvider: IMaskProvider
+    private maskProvider: IMaskProvider,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {}
 
   private validateInterval = (start: string, end: string, index = -1): void => {
-    if (time2date(start) > time2date(end))
+    this.validateTime("Start", start, index);
+    this.validateTime("End", end, index);
+
+    if (this.dateProvider.time2date(start) > this.dateProvider.time2date(end))
       throw new AppError(
         "BAD_REQUEST",
         index === -1
           ? i18n.__("ErrorWeeklyScheduleInvalidInterval")
           : i18n.__mf("ErrorWeeklyScheduleLockInvalidInterval", [index + 1])
       );
-
-    this.validateTime("Start", start, index);
-    this.validateTime("End", end, index);
   };
 
   private validateTime = (
@@ -123,12 +125,13 @@ class SaveWeeklyScheduleService {
           ): Promise<void> => {
             this.validateInterval(item.startTime, item.endTime, index);
 
-            const startDate = time2date(item.startTime);
-            const endDate = time2date(item.endTime);
+            const startDate = this.dateProvider.time2date(item.startTime);
+            const endDate = this.dateProvider.time2date(item.endTime);
 
             if (
-              endDate.getTime() - startDate.getTime() !==
-              baseDurationConverted * 60000
+              (this.dateProvider.differenceInMillis(endDate, startDate) /
+                this.dateProvider.minuteToMilli(baseDurationConverted)) %
+              2
             )
               throw new AppError(
                 "BAD_REQUEST",
@@ -172,8 +175,8 @@ class SaveWeeklyScheduleService {
       await transaction([
         this.scheduleRepository.updateSchedule({
           id,
-          endTime: time2date(endTime),
-          startTime: time2date(startTime),
+          endTime: this.dateProvider.time2date(endTime),
+          startTime: this.dateProvider.time2date(startTime),
         } as WeeklyScheduleModel),
         this.professionalRepository.updateBaseDuration(
           professionalId,
