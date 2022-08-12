@@ -7,6 +7,7 @@ interface IDateProvider {
   minuteToMilli(minute: number): number;
   differenceInMillis(end: Date, start: Date): number;
   time2date(time: string, date?: string): Date;
+  getWeekDay(date: Date): number;
 }
 
 export { IDateProvider };

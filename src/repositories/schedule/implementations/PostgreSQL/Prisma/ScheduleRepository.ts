@@ -12,6 +12,44 @@ import { IScheduleRepository } from "@repositories/schedule/models/IScheduleRepo
 class ScheduleRepository implements IScheduleRepository {
   constructor(private prisma = prismaClient) {}
 
+  public hasTimeWithoutLock = (
+    professionalId: string,
+    dayOfTheWeek: number,
+    startTime: Date,
+    endTime: Date
+  ): PrismaPromise<WeeklyScheduleModel | null> =>
+    this.prisma.weeklySchedule.findFirst({
+      where: {
+        professionalId,
+        dayOfTheWeek,
+        startTime: { lte: startTime },
+        endTime: { gte: endTime },
+        NOT: [
+          {
+            WeeklyScheduleLocks: {
+              some: {
+                OR: [
+                  { startTime, endTime },
+                  {
+                    startTime: {
+                      lt: endTime,
+                      gt: startTime,
+                    },
+                  },
+                  {
+                    endTime: {
+                      lt: endTime,
+                      gt: startTime,
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
+    });
+
   public hasAppointment = (
     professionalId: string,
     startDate: Date,

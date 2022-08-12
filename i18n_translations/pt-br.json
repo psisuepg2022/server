@@ -25,6 +25,7 @@
   "ErrorAppointmentAlreadyExists": "Já existe uma consulta marcada neste horário para o(a) paciente: {0}.",
   "ErrorAppointmentDateInvalid": "A data do agendamento informada é inválida.",
   "ErrorAppointmentDateRequired": "É necessário informar a data para realizar um agendamento.",
+  "ErrorAppointmentDontHaveTimeWithoutLock": "O profissional não poderá atender no horário da consulta informado.",
   "ErrorAppointmentEndTimeInvalid": "O horário de término informado para realizar o agendamento é inválido.",
   "ErrorAppointmentEndTimeRequired": "É necessário informar o horário de término para realizar um agendamento.",
   "ErrorAppointmentIntervalInvalid": "O intervalo da consulta é inválido.",

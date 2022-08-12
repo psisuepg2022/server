@@ -1,4 +1,4 @@
-import ptBR, { isAfter, format, isBefore } from "date-fns";
+import ptBR, { isAfter, format, isBefore, getDay } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 import { IDateProvider } from "@providers/date/models/IDateProvider";
@@ -32,6 +32,8 @@ class DateProvider implements IDateProvider {
     zonedTimeToUtc(`${date} ${time}:00.000Z`, "America/Sao_Paulo", {
       locale: ptBR,
     });
+
+  getWeekDay = (date: Date): number => getDay(date) + 1;
 }
 
 export { DateProvider };

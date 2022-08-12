@@ -179,6 +179,21 @@ class CreateAppointmentService {
         ])
       );
 
+    const [hasTimeWithoutLock] = await transaction([
+      this.scheduleRepository.hasTimeWithoutLock(
+        professionalId,
+        this.dateProvider.getWeekDay(appointmentDate),
+        startTimeConverted,
+        endTimeConverted
+      ),
+    ]);
+
+    if (!hasTimeWithoutLock)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorAppointmentDontHaveTimeWithoutLock")
+      );
+
     const [saved] = await transaction([
       this.scheduleRepository.saveAppointment(
         professionalId,
