@@ -14,6 +14,7 @@ import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAppointmentRepository } from "@repositories/appointment";
 import { IPersonRepository } from "@repositories/person";
 import { IProfessionalRepository } from "@repositories/professional";
 import { IScheduleRepository } from "@repositories/schedule";
@@ -34,7 +35,9 @@ class CreateAppointmentService {
     @inject("ScheduleRepository")
     private scheduleRepository: IScheduleRepository,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("AppointmentRepository")
+    private appointmentRepository: IAppointmentRepository
   ) {}
 
   public async execute({
@@ -164,7 +167,7 @@ class CreateAppointmentService {
     ];
 
     const [hasAppointment] = await transaction([
-      this.scheduleRepository.hasAppointment(
+      this.appointmentRepository.hasAppointment(
         professionalId,
         appointmentDate,
         forecastEndAppointmentDate
@@ -195,7 +198,7 @@ class CreateAppointmentService {
       );
 
     const [saved] = await transaction([
-      this.scheduleRepository.saveAppointment(
+      this.appointmentRepository.saveAppointment(
         professionalId,
         employeeId,
         patientId,

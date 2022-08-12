@@ -1,6 +1,3 @@
-import { AppointmentModel } from "@models/domain/AppointmentModel";
-import { PatientModel } from "@models/domain/PatientModel";
-import { PersonModel } from "@models/domain/PersonModel";
 import { ScheduleLockModel } from "@models/domain/ScheduleLockModel";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
@@ -64,22 +61,6 @@ interface IScheduleRepository {
     id: string
   ): PrismaPromise<ScheduleLockModel | null>;
   deleteScheduleLock(id: string): PrismaPromise<ScheduleLockModel>;
-  hasAppointment(
-    professionalId: string,
-    startDate: Date,
-    endDate: Date
-  ): PrismaPromise<
-    | (Partial<AppointmentModel> & {
-        patient: Partial<PatientModel> & { person: Partial<PersonModel> };
-      })
-    | null
-  >;
-  saveAppointment(
-    professionalId: string,
-    employeeId: string,
-    patientId: string,
-    appointment: AppointmentModel
-  ): PrismaPromise<AppointmentModel>;
 }
 
 export { IScheduleRepository };
