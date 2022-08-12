@@ -5,12 +5,12 @@ import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { time2date } from "@helpers/time2date";
 import { transaction } from "@infra/database/transaction";
 import { AppointmentStatus } from "@infra/domains";
 import { AppointmentModel } from "@models/domain/AppointmentModel";
 import { CreateAppointmentRequestModel } from "@models/dto/appointment/CreateAppointmentRequestModel";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
+import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
@@ -32,7 +32,9 @@ class CreateAppointmentService {
     @inject("MaskProvider")
     private maskProvider: IMaskProvider,
     @inject("ScheduleRepository")
-    private scheduleRepository: IScheduleRepository
+    private scheduleRepository: IScheduleRepository,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {}
 
   public async execute({
@@ -78,10 +80,12 @@ class CreateAppointmentService {
     if (!this.validatorsProvider.date(date))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorAppointmentDateInvalid"));
 
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-
-    if (new Date(date).getTime() < today.getTime())
+    if (
+      this.dateProvider.isBefore(
+        this.dateProvider.getUTCDate(date, endTime),
+        this.dateProvider.now()
+      )
+    )
       throw new AppError("BAD_REQUEST", i18n.__("ErrorAppointmentPastDate"));
 
     if (stringIsNullOrEmpty(startTime))
@@ -108,10 +112,10 @@ class CreateAppointmentService {
         i18n.__("ErrorAppointmentEndTimeInvalid")
       );
 
-    const endTimeConverted = time2date(endTime);
-    const startTimeConverted = time2date(startTime);
+    const endTimeConverted = this.dateProvider.time2date(endTime);
+    const startTimeConverted = this.dateProvider.time2date(startTime);
 
-    if (startTimeConverted > endTimeConverted)
+    if (this.dateProvider.isAfter(startTimeConverted, endTimeConverted))
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorAppointmentIntervalInvalid")
@@ -142,8 +146,12 @@ class CreateAppointmentService {
       );
 
     if (
-      (endTimeConverted.getTime() - startTimeConverted.getTime()) %
-      (hasProfessional.baseDuration * 60000)
+      (this.dateProvider.differenceInMillis(
+        endTimeConverted,
+        startTimeConverted
+      ) /
+        this.dateProvider.minuteToMilli(hasProfessional.baseDuration)) %
+      2
     )
       throw new AppError(
         "BAD_REQUEST",
@@ -151,22 +159,8 @@ class CreateAppointmentService {
       );
 
     const [appointmentDate, forecastEndAppointmentDate] = [
-      time2date(
-        startTime,
-        date.split("-").map((item: string): number => Number(item)) as [
-          number,
-          number,
-          number
-        ]
-      ),
-      time2date(
-        endTime,
-        date.split("-").map((item: string): number => Number(item)) as [
-          number,
-          number,
-          number
-        ]
-      ),
+      this.dateProvider.time2date(startTime, date),
+      this.dateProvider.time2date(endTime, date),
     ];
 
     const [hasAppointment] = await transaction([
