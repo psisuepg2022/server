@@ -82,7 +82,7 @@ class CreateAppointmentService {
 
     if (
       this.dateProvider.isBefore(
-        this.dateProvider.getUTCDate(date, endTime),
+        this.dateProvider.getUTCDate(date, startTime),
         this.dateProvider.now()
       )
     )
