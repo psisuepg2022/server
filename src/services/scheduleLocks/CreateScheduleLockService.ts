@@ -3,10 +3,10 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { time2date } from "@helpers/time2date";
 import { transaction } from "@infra/database/transaction";
 import { CreateScheduleLockRequestModel } from "@models/dto/scheduleLock/CreateScheduleLockRequestModel";
 import { CreateScheduleLockResponseModel } from "@models/dto/scheduleLock/CreateScheduleLockResponseModel";
+import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
@@ -25,7 +25,9 @@ class CreateScheduleLockService {
     @inject("ScheduleRepository")
     private scheduleRepository: IScheduleRepository,
     @inject("MaskProvider")
-    private maskProvider: IMaskProvider
+    private maskProvider: IMaskProvider,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {}
 
   public async execute({
@@ -56,10 +58,12 @@ class CreateScheduleLockService {
         i18n.__("ErrorScheduleLockDateInvalid")
       );
 
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-
-    if (new Date(date).getTime() < today.getTime())
+    if (
+      this.dateProvider.isBefore(
+        this.dateProvider.getUTCDate(date, endTime),
+        this.dateProvider.now()
+      )
+    )
       throw new AppError("BAD_REQUEST", i18n.__("ErrorScheduleLockPastDate"));
 
     if (stringIsNullOrEmpty(startTime))
@@ -86,7 +90,10 @@ class CreateScheduleLockService {
         i18n.__("ErrorScheduleLockEndTimeInvalid")
       );
 
-    if (time2date(startTime) > time2date(endTime))
+    const endTimeConverted = this.dateProvider.time2date(endTime);
+    const startTimeConverted = this.dateProvider.time2date(startTime);
+
+    if (this.dateProvider.isAfter(startTimeConverted, endTimeConverted))
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorScheduleLockIntervalInvalid")
@@ -102,13 +109,16 @@ class CreateScheduleLockService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
-    const dateConverted = new Date(date);
-    const endTimeConverted = time2date(endTime);
-    const startTimeConverted = time2date(startTime);
-    const totalTimeInMs =
-      endTimeConverted.getTime() - startTimeConverted.getTime();
+    const dateConverted = this.dateProvider.getUTCDate(date);
 
-    if (totalTimeInMs % (hasProfessional.baseDuration * 60000))
+    if (
+      (this.dateProvider.differenceInMillis(
+        endTimeConverted,
+        startTimeConverted
+      ) /
+        this.dateProvider.minuteToMilli(hasProfessional.baseDuration)) %
+      2
+    )
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
@@ -135,7 +145,7 @@ class CreateScheduleLockService {
 
     const [saved] = await transaction([
       this.scheduleRepository.saveLockItem(professionalId, {
-        date: dateConverted,
+        date: new Date(date),
         endTime: endTimeConverted,
         startTime: startTimeConverted,
         id: this.uniqueIdentifierProvider.generate(),
