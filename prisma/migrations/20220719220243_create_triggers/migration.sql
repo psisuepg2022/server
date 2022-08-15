@@ -69,7 +69,7 @@ BEGIN
     ag.id_profissional = NEW.id_profissional
     AND ag.dia_semana = ((extract(DOW FROM NEW.data_agendamento::TIMESTAMP)) + 1)
     AND (NEW.data_agendamento::TIME) < ag.horario_fim
-    AND (NEW.data_agendamento::TIME) > ag.horario_inicio;
+    AND (NEW.data_agendamento::TIME) >= ag.horario_inicio;
 
   IF (coalesce(ID_AGENDA_SEMANAL_EXISTENTE, '') = '') THEN
     raise exception 'Não existe um horário na agenda semanal do profissional que compreende a data de agendamento.';
@@ -80,7 +80,7 @@ BEGIN
   WHERE
     rag.id_agenda_semanal = (ID_AGENDA_SEMANAL_EXISTENTE::UUID)
     AND (NEW.data_agendamento::TIME) < rag.horario_fim
-    AND (NEW.data_agendamento::TIME) > rag.horario_inicio; 
+    AND (NEW.data_agendamento::TIME) >= rag.horario_inicio; 
 
   IF (coalesce(ID_RESTRICAO_AGENDA_SEMANAL_EXISTENTE, '') <> '') THEN
     raise exception 'Existe uma restrição de horário na agenda semanal do profissional para a data de agendamento.';
@@ -108,7 +108,7 @@ BEGIN
     r.id_profissional = NEW.id_profissional
     AND r.data = (NEW.data_agendamento::DATE)
     AND (NEW.data_agendamento::TIME) < r.horario_fim
-    AND (NEW.data_agendamento::TIME) > r.horario_inicio;
+    AND (NEW.data_agendamento::TIME) >= r.horario_inicio;
 
   IF (coalesce(ID_RESTRICAO_HORARIO_EXISTENTE, '') <> '') THEN
     raise exception 'Existe uma restrição de horário do profissional conflitando com a data de agendamento.';
