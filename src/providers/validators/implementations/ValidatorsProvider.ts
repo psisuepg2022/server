@@ -13,10 +13,8 @@ class ValidatorsProvider implements IValidatorsProvider {
   zipCode = (zipCode: string): boolean =>
     /^[0-9]{5}(?:-)[0-9]{3}/.test(zipCode);
 
-  // yyyy-MM-dd or dd/MM/yyyy
   date = (date: string): boolean =>
-    /^[0-9]{4}(?:-)[0-9]{2}(?:-)[0-9]{2}$/.test(date) ||
-    /^[0-9]{2}(?:\/)[0-9]{2}(?:\/)[0-9]{4}$/.test(date);
+    /^[0-9]{4}(?:-)[0-9]{2}(?:-)[0-9]{2}$/.test(date);
 
   contactNumber = (contactNumber: string): boolean =>
     /^(?:\()[0-9]{2}(?:\))\s?[0-9]{4,5}(?:-)[0-9]{4}$/.test(contactNumber);
