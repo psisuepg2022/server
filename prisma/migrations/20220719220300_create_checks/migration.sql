@@ -7,8 +7,8 @@ ALTER TABLE "pessoa"
 
 -- CreateCheck
 ALTER TABLE "paciente" 
-  ADD CONSTRAINT paciente_check_sexo 
-  CHECK ("sexo" IN (1, 2, 3, 4, 5));
+  ADD CONSTRAINT paciente_check_genero 
+  CHECK ("genero" IN (1, 2, 3, 4, 5));
 
 -- CreateCheck
 ALTER TABLE "paciente" 

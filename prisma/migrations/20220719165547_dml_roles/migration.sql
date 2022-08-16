@@ -4,20 +4,20 @@ DO
 $$
 BEGIN
 
-	IF NOT EXISTS(SELECT * FROM "role" WHERE "nome" = 'OWNER') THEN 	
-		INSERT INTO "role" ("nome") VALUES('OWNER');
+	IF NOT EXISTS(SELECT * FROM "papel_usuario" WHERE "nome" = 'OWNER') THEN 	
+		INSERT INTO "papel_usuario" ("nome") VALUES('OWNER');
 	END IF;
 
-	IF NOT EXISTS(SELECT * FROM "role" WHERE "nome" = 'PROFESSIONAL') THEN 	
-		INSERT INTO "role" ("nome") VALUES('PROFESSIONAL');
+	IF NOT EXISTS(SELECT * FROM "papel_usuario" WHERE "nome" = 'PROFESSIONAL') THEN 	
+		INSERT INTO "papel_usuario" ("nome") VALUES('PROFESSIONAL');
 	END IF;
 
-	IF NOT EXISTS(SELECT * FROM "role" WHERE "nome" = 'EMPLOYEE') THEN 	
-		INSERT INTO "role" ("nome") VALUES('EMPLOYEE');
+	IF NOT EXISTS(SELECT * FROM "papel_usuario" WHERE "nome" = 'EMPLOYEE') THEN 	
+		INSERT INTO "papel_usuario" ("nome") VALUES('EMPLOYEE');
 	END IF;
 
-	IF NOT EXISTS(SELECT * FROM "role" WHERE "nome" = 'PATIENT') THEN 	
-		INSERT INTO "role" ("nome") VALUES('PATIENT');
+	IF NOT EXISTS(SELECT * FROM "papel_usuario" WHERE "nome" = 'PATIENT') THEN 	
+		INSERT INTO "papel_usuario" ("nome") VALUES('PATIENT');
 	END IF;
 
 END

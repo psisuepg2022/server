@@ -17,9 +17,9 @@ CREATE TABLE "pessoa" (
     "email" VARCHAR(100),
     "nome" VARCHAR(100) NOT NULL,
     "classe_dominio" VARCHAR(32) NOT NULL,
-    "cpf" VARCHAR(16),
+    "cpf" VARCHAR(11),
     "data_nascimento" DATE NOT NULL,
-    "telefone" VARCHAR(32),
+    "telefone" VARCHAR(11),
     "ativo" BOOLEAN NOT NULL DEFAULT true,
     "data_criacao" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "id_clinica" UUID NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE "endereco" (
     "bairro" VARCHAR(100),
     "estado" VARCHAR(100) NOT NULL,
     "logradouro" VARCHAR(255) NOT NULL,
-    "CEP" VARCHAR(12) NOT NULL,
+    "CEP" VARCHAR(8) NOT NULL,
     "id_pessoa" UUID NOT NULL,
 
     CONSTRAINT "endereco_pkey" PRIMARY KEY ("id")
@@ -48,31 +48,31 @@ CREATE TABLE "usuario" (
     "senha" VARCHAR(255) NOT NULL,
     "codigo_acesso" SERIAL NOT NULL,
     "id" UUID NOT NULL,
-    "id_role" INTEGER NOT NULL,
+    "id_papel_usuario" INTEGER NOT NULL,
 
     CONSTRAINT "usuario_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "role" (
+CREATE TABLE "papel_usuario" (
     "id" SERIAL NOT NULL,
     "nome" VARCHAR(36) NOT NULL,
 
-    CONSTRAINT "role_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "papel_usuario_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "permissoes" (
     "id" SERIAL NOT NULL,
     "nome" VARCHAR(36) NOT NULL,
-    "id_role" INTEGER NOT NULL,
+    "id_papel_usuario" INTEGER NOT NULL,
 
     CONSTRAINT "permissoes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "paciente" (
-    "sexo" SMALLINT NOT NULL,
+    "genero" SMALLINT NOT NULL,
     "estado_civil" SMALLINT NOT NULL,
     "id" UUID NOT NULL,
 
@@ -164,7 +164,7 @@ CREATE UNIQUE INDEX "usuario_id_key" ON "usuario"("id");
 CREATE UNIQUE INDEX "usuario_nome_usuario_key" ON "usuario"("nome_usuario");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "role_nome_key" ON "role"("nome");
+CREATE UNIQUE INDEX "papel_usuario_nome_key" ON "papel_usuario"("nome");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "permissoes_nome_key" ON "permissoes"("nome");
@@ -185,10 +185,10 @@ ALTER TABLE "endereco" ADD CONSTRAINT "endereco_id_pessoa_fkey" FOREIGN KEY ("id
 ALTER TABLE "usuario" ADD CONSTRAINT "usuario_id_fkey" FOREIGN KEY ("id") REFERENCES "pessoa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "usuario" ADD CONSTRAINT "usuario_id_role_fkey" FOREIGN KEY ("id_role") REFERENCES "role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "usuario" ADD CONSTRAINT "usuario_id_papel_usuario_fkey" FOREIGN KEY ("id_papel_usuario") REFERENCES "papel_usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "permissoes" ADD CONSTRAINT "permissoes_id_role_fkey" FOREIGN KEY ("id_role") REFERENCES "role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "permissoes" ADD CONSTRAINT "permissoes_id_papel_usuario_fkey" FOREIGN KEY ("id_papel_usuario") REFERENCES "papel_usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "paciente" ADD CONSTRAINT "paciente_id_fkey" FOREIGN KEY ("id") REFERENCES "pessoa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
