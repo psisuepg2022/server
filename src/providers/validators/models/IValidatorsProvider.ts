@@ -5,6 +5,7 @@ interface IValidatorsProvider {
   zipCode(zipCode: string): boolean;
   time(time: string): boolean;
   date(date: string): boolean;
+  length(str: string, length: number): boolean;
 }
 
 export { IValidatorsProvider };

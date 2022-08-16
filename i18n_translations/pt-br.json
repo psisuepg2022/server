@@ -104,6 +104,7 @@
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
   "ErrorValueOutOfGenderDomain": "A informação do Sexo não é reconhecida.",
   "ErrorValueOutOfMaritalStatusDomain": "A informação do estado civil não é reconhecida.",
+  "ErrorVarcharLengthExceeded": "A informação de {0} excedeu o limite de {1} caracteres.",
   "ErrorWeeklyScheduleEndTimeInvalid": "O horário de término do intervalo de trabalho para este dia da semana é inválido.",
   "ErrorWeeklyScheduleEndTimeRequired": "É necessário informar o horário de término do intervalo de trabalho para este dia da semana.",
   "ErrorWeeklyScheduleIDRequired": "É necessário informar o identificar da agenda semanal.",

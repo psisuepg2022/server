@@ -10,6 +10,8 @@ class ValidatorsProvider implements IValidatorsProvider {
 
   time = (time: string): boolean => /^[0-9]{2}(?::)[0-9]{2}$/.test(time);
 
+  length = (str: string, length: number): boolean => str.length <= length;
+
   zipCode = (zipCode: string): boolean =>
     /^[0-9]{5}(?:-)[0-9]{3}/.test(zipCode);
 
