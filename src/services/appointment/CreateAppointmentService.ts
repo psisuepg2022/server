@@ -197,6 +197,25 @@ class CreateAppointmentService {
         i18n.__("ErrorAppointmentDontHaveTimeWithoutLock")
       );
 
+    const [hasLock] = await transaction([
+      this.scheduleRepository.hasConflictingScheduleLock(
+        professionalId,
+        startTimeConverted,
+        endTimeConverted,
+        appointmentDate
+      ),
+    ]);
+
+    if (hasLock)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorAppointmentDateWithScheduleLock", [
+          this.maskProvider.date(hasLock.date),
+          this.maskProvider.time(hasLock.startTime as Date),
+          this.maskProvider.time(hasLock.endTime as Date),
+        ])
+      );
+
     const [saved] = await transaction([
       this.appointmentRepository.saveAppointment(
         professionalId,
