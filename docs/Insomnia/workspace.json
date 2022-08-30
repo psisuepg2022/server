@@ -1,13 +1,141 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-08-10T22:18:51.668Z",
+  "__export_date": "2022-08-30T21:15:46.342Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
+      "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1661894128949,
+      "created": 1661882176759,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "calendar",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"startDate\": \"2022-01-01\",\n\t\"endDate\": \"2022-01-30\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e76c8fe8acd140c28a0b682d973ed22e"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1661882176759,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1660223914289,
+      "created": 1660223914289,
+      "name": "appointment",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1660223914289,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "parentId": null,
+      "modified": 1654723859605,
+      "created": 1654723859605,
+      "name": "psis",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1661894123171,
+      "created": 1661888766274,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
+      "name": "calendar by professional",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"startDate\": \"2022-08-29\",\n\t\"endDate\": \"2022-08-31\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e76c8fe8acd140c28a0b682d973ed22e"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1661053046308,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_01d6a83bff304a92bd3333d98b39be18",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1661894128270,
+      "created": 1660223915857,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "save",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"date\": \"2022-08-31\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f\",\n\t\"patientId\": \"9d8095a3-6d92-410f-a424-c3c7dd6d57dc\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_33ebee0596444281b2cd6045fb8a91b1"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "prefix": "Bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1660223915857,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_f5e5e203657645dba7887ef335fa8f6b",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1660166288607,
+      "modified": 1661894125905,
       "created": 1660148582028,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -53,27 +181,26 @@
       "_type": "request_group"
     },
     {
-      "_id": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "parentId": null,
-      "modified": 1654723859605,
-      "created": 1654723859605,
-      "name": "psis",
-      "description": "",
-      "scope": "collection",
-      "_type": "workspace"
-    },
-    {
       "_id": "req_56726a3c9892404e8a215ba84e05437b",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1660165337149,
+      "modified": 1661894127260,
       "created": 1660149314823,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/eae",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "save by professional",
       "description": "",
       "method": "POST",
-      "body": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"date\": \"2022-09-01\",\n\t\"startTime\": \"10:00\",\n\t\"endTime\": \"11:00\"\n}"
+      },
       "parameters": [],
-      "headers": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_58ec9b3b30244b058ca870779e4ee401"
+        }
+      ],
       "authentication": {
         "type": "bearer",
         "prefix": "Bearer",
@@ -146,7 +273,7 @@
     {
       "_id": "req_4ba536b111eb44c78083be3a383d04b3",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1660147971495,
+      "modified": 1660315346080,
       "created": 1659389449397,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -154,7 +281,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"id\": \"63710d1f-693c-49ae-a0b9-c0bae2d192df\",\n\t\"baseDuration\": \"60\",\n\t\"startTime\": \"08:00\",\n\t\"endTime\": \"17:00\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"13:00\",\n\t\t\t\"endTime\": \"14:00\"\n\t\t}\n\t]\n}"
+        "text": "{\n\t\"id\": \"2823393c-9276-4257-b702-dd50306766f2\",\n\t\"baseDuration\": \"60\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"17:00\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"13:00\",\n\t\t\t\"endTime\": \"14:00\"\n\t\t}\n\t]\n}"
       },
       "parameters": [],
       "headers": [
@@ -194,7 +321,7 @@
     {
       "_id": "req_0ea2819059aa47b08b98d4a0010ab68b",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1660140412252,
+      "modified": 1660315350167,
       "created": 1659355375486,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "read",
@@ -275,7 +402,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1660166998886,
+      "modified": 1661888753454,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -283,7 +410,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"accessCode\": \"1003\"\n}"
+        "text": "{\n\t\"userName\": \"user.employee\",\n\t\"password\": \"UserEmployee123\",\n\t\"accessCode\": \"1002\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -361,7 +488,7 @@
     {
       "_id": "req_e9f3b58eb420491597c88eae2487b465",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660154405874,
+      "modified": 1661877678930,
       "created": 1659823934456,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search_liable",
@@ -409,7 +536,7 @@
     {
       "_id": "req_4304794bd0e749deb243cc984ec53d31",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660154402582,
+      "modified": 1661878359536,
       "created": 1657540606624,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -445,7 +572,7 @@
     {
       "_id": "req_32b9829bf5d043a1a2d9e93c921a89db",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660154464253,
+      "modified": 1661880613607,
       "created": 1659994463537,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update",
@@ -453,7 +580,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"id\": \"1f5bf241-c696-45ea-aa05-b20de0dafae0\"\n}"
+        "text": "{\n\t\"id\": \"c23d7329-f6e9-4f9f-af5f-eb9650422196\",\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"birthDate\": \"2001-02-06\",\n\t\t\"contactNumber\": \"(47) 99090-9090\",\n\t\t\"CPF\": \"281.334.832-55\",\n\t\t\"email\": null,\n\t\t\"name\": \"Marcos Krul\",\n\t\t\"id\": \"1048e987-05a5-4198-a85c-f4be4d993589\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -481,7 +608,7 @@
     {
       "_id": "req_9dd74821a81445cf8c20f3f625fa7b34",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660153410458,
+      "modified": 1661879846637,
       "created": 1658355986212,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create with liable",
@@ -489,7 +616,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"email\": \"\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": 1,\n\t\"maritalStatus\": 2,\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"email\": \"email@email.com\",\n\t\t\"name\": \"Marcos Krul\",\n\t\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\t\"contactNumber\": \"(47) 99090-9090\",\n\t\t\"birthDate\": \"2000-06-02\"\n\t},\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"email\": \"\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": 1,\n\t\"maritalStatus\": 2,\n\t\"liableRequired\": true,\n\t\"liable\": {\n\t\t\"name\": \"Marcos Krul\",\n\t\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\t\"contactNumber\": \"(47) 99090-9090\",\n\t\t\"birthDate\": \"2000-06-02\"\n\t},\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -544,7 +671,7 @@
     {
       "_id": "req_24df639efa794dcc90a944bc52a61c2c",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660101553384,
+      "modified": 1661877648657,
       "created": 1658874198938,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create with liable existing",
@@ -580,7 +707,7 @@
     {
       "_id": "req_899c0535c6974fe58a248141689dbcb2",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660146635291,
+      "modified": 1661880212610,
       "created": 1657540575211,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -616,7 +743,7 @@
     {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1659903966953,
+      "modified": 1660687584288,
       "created": 1659651213689,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/2d189d73-355b-40a4-a1fa-b48ff536ba46",
       "name": "delete",
@@ -655,7 +782,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1660166975261,
+      "modified": 1660687588325,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -691,7 +818,7 @@
     {
       "_id": "req_4b0aa19c250f454bb12fdb8594f14c2c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1660150360353,
+      "modified": 1661877523495,
       "created": 1657542043564,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -727,7 +854,7 @@
     {
       "_id": "req_803168cfaab9400a95969ce92480fb14",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1660166928853,
+      "modified": 1660687502512,
       "created": 1657151453642,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -802,7 +929,7 @@
     {
       "_id": "req_355e0702f3c449aa9973c5457b984dc6",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1660146144674,
+      "modified": 1660687404102,
       "created": 1657142214249,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -838,7 +965,7 @@
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1660166902515,
+      "modified": 1660686915437,
       "created": 1657664385365,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -963,7 +1090,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1660166896985,
+      "modified": 1660686466616,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1059,7 +1186,7 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1660101589303,
+      "modified": 1661394963814,
       "created": 1654723872664,
       "name": "dev",
       "data": {
@@ -1082,7 +1209,7 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1660101588035,
+      "modified": 1661394965111,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
