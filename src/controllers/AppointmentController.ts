@@ -5,7 +5,9 @@ import { container } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
+import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarResponseModel";
 import { CreateAppointmentService } from "@services/appointment";
+import { GetCalendarService } from "@services/calendar";
 
 class AppointmentController {
   public async save(
@@ -44,14 +46,25 @@ class AppointmentController {
 
   public async getCalendar(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<GetCalendarResponseModel>>
   ): Promise<Response> {
     try {
       const { id: professionalId } = req.user;
-      console.log(professionalId);
+      const { id: clinicId } = req.clinic;
+      const { startDate, endDate } = req.body;
+
+      const service = container.resolve(GetCalendarService);
+
+      const result = await service.execute({
+        professionalId,
+        clinicId,
+        endDate,
+        startDate,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
@@ -64,14 +77,25 @@ class AppointmentController {
 
   public async getCalendarByProfessional(
     req: Request,
-    res: Response<IResponseMessage>
+    res: Response<IResponseMessage<GetCalendarResponseModel>>
   ): Promise<Response> {
     try {
       const { professional_id: professionalId } = req.params;
-      console.log(professionalId);
+      const { id: clinicId } = req.clinic;
+      const { startDate, endDate } = req.body;
+
+      const service = container.resolve(GetCalendarService);
+
+      const result = await service.execute({
+        professionalId,
+        clinicId,
+        endDate,
+        startDate,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,
+        content: result,
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
