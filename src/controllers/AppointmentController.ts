@@ -41,6 +41,46 @@ class AppointmentController {
       });
     }
   }
+
+  public async getCalendar(
+    req: Request,
+    res: Response<IResponseMessage>
+  ): Promise<Response> {
+    try {
+      const { id: professionalId } = req.user;
+      console.log(professionalId);
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getCalendarByProfessional(
+    req: Request,
+    res: Response<IResponseMessage>
+  ): Promise<Response> {
+    try {
+      const { professional_id: professionalId } = req.params;
+      console.log(professionalId);
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
 }
 
 export { AppointmentController };
