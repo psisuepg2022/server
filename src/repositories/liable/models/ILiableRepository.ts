@@ -7,6 +7,8 @@ interface ILiableRepository {
   hasLiablePersonSaved(
     id: string
   ): PrismaPromise<(any & { person: PersonModel }) | null>;
+  hasByPatient(patientId: string): PrismaPromise<any | null>;
+  unlink(patientId: string): PrismaPromise<any>;
   get(
     clinicId: string,
     [take, skip]: [number, number],

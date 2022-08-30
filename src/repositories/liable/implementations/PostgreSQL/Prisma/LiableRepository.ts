@@ -30,6 +30,7 @@ class LiableRepository implements ILiableRepository {
       select: {
         person: {
           select: {
+            id: true,
             email: true,
             name: true,
             CPF: true,
@@ -69,6 +70,19 @@ class LiableRepository implements ILiableRepository {
       take,
       skip,
     }) as PrismaPromise<(any & { person: Partial<PersonModel> })[]>;
+
+  public hasByPatient = (patientId: string): PrismaPromise<any | null> =>
+    this.prisma.liable.findFirst({
+      where: {
+        patientId,
+        patient: {
+          person: { active: true },
+        },
+      },
+    });
+
+  public unlink = (patientId: string): PrismaPromise<any> =>
+    this.prisma.liable.delete({ where: { patientId } });
 }
 
 export { LiableRepository };

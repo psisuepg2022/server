@@ -109,17 +109,17 @@ class CreatePatientService extends CreatePersonService {
             throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
 
           return {
-            CPF: `${liableReceived.CPF || _hasLiable.person.CPF}`,
+            CPF: liableReceived.CPF || _hasLiable.person.CPF,
             birthDate:
-              birthDate ||
+              liableReceived.birthDate ||
               this.maskProvider.date(_hasLiable.person.birthDate || new Date()),
-            name: `${liableReceived.name || _hasLiable.person.name}`,
+            name: liableReceived.name || _hasLiable.person.name,
             contactNumber:
               liableReceived.contactNumber ||
               this.maskProvider.contactNumber(
                 _hasLiable.person.contactNumber || ""
               ),
-            email: `${liableReceived.email || _hasLiable.person.email}`,
+            email: liableReceived.email || _hasLiable.person.email,
             clinicId,
             id: _hasLiable.person.id,
           };
@@ -127,6 +127,16 @@ class CreatePatientService extends CreatePersonService {
 
         return liableReceived;
       })();
+
+    let unlinkLiableOperation: PrismaPromise<any> | null = null;
+    if (liableReceived === null) {
+      const [_hasLiableToRemove] = await transaction([
+        this.liableRepository.hasByPatient(id),
+      ]);
+
+      if (_hasLiableToRemove)
+        unlinkLiableOperation = this.liableRepository.unlink(id);
+    }
 
     await super.createPersonOperation(
       {
@@ -172,6 +182,8 @@ class CreatePatientService extends CreatePersonService {
           list.push(this.getCreatePersonOperation());
           list.push(createLiableRelationOperation);
         }
+
+        if (unlinkLiableOperation) list.push(unlinkLiableOperation);
 
         return list;
       })()

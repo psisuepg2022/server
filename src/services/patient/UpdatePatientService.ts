@@ -117,18 +117,7 @@ class UpdatePatientService extends CreatePatientService {
           stringIsNullOrEmpty(hasPatient.liable?.person?.id as string)
           ? liable
           : {
-              CPF: `${liable.CPF || hasPatient.liable.person.CPF}`,
-              birthDate: `${
-                liable.birthDate ||
-                hasPatient.liable.person.birthDate?.toISOString().split("T")[0]
-              }`,
-              name: `${liable.name || hasPatient.liable.person.name}`,
-              contactNumber:
-                liable.contactNumber ||
-                this.maskProvider.contactNumber(
-                  hasPatient.liable.person.contactNumber || ""
-                ),
-              email: liable.email || hasPatient.liable.person.email,
+              ...liable,
               clinicId,
               id: hasPatient.liable.person.id,
             };
@@ -141,21 +130,20 @@ class UpdatePatientService extends CreatePatientService {
       {
         id,
         clinicId,
-        CPF: `${CPF || hasPatient.person.CPF}`,
+        CPF: CPF || hasPatient.person.CPF || "",
         birthDate: `${
           birthDate || hasPatient.person.birthDate?.toISOString().split("T")[0]
         }`,
-        name: `${name || hasPatient.person.name}`,
+        name: name || hasPatient.person.name || "",
         contactNumber:
           contactNumber ||
           this.maskProvider.contactNumber(
             hasPatient.person.contactNumber || ""
           ),
         email: email || hasPatient.person.email || "",
-        gender: `${gender || hasPatient.gender?.toString()}`,
-        maritalStatus: `${
-          maritalStatus || hasPatient.maritalStatus?.toString()
-        }`,
+        gender: gender || hasPatient.gender?.toString() || "",
+        maritalStatus:
+          maritalStatus || hasPatient.maritalStatus?.toString() || "",
         address: addressToSave,
       },
       liableToSave
