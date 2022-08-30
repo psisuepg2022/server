@@ -1,6 +1,7 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
@@ -92,12 +93,23 @@ class LoginService {
       this.userRepository.updateLoginControlProps(hasUser.id, 0, false),
     ]);
 
+    const baseDuration = ((): number | undefined => {
+      if (
+        !stringIsNullOrEmpty(hasUser.person.domainClass) &&
+        hasUser.person.domainClass === UserDomainClasses.PROFESSIONAL
+      )
+        return hasUser.professional?.baseDuration;
+
+      return undefined;
+    })();
+
     const accessToken = this.authTokenProvider.generate({
       id: hasUser.id,
       name: hasUser.person.name,
       email: hasUser.person.email,
       accessCode: hasUser.accessCode,
       userName: hasUser.userName,
+      baseDuration,
       clinic: {
         id: hasUser.person.clinic.id,
         name: hasUser.person.clinic.name,

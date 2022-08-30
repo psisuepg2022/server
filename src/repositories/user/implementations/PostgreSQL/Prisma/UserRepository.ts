@@ -1,6 +1,7 @@
 import { prismaClient } from "@infra/database/client";
 import { ClinicModel } from "@models/domain/ClinicModel";
 import { PersonModel } from "@models/domain/PersonModel";
+import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
 import { PermissionModel } from "@models/utils/PermissionModel";
 import { PrismaPromise } from "@prisma/client";
@@ -57,6 +58,7 @@ class UserRepository implements IUserRepository {
     | (UserModel & {
         person: PersonModel & { clinic: ClinicModel };
         role: { permissions: Partial<PermissionModel>[] };
+        professional?: Partial<ProfessionalModel>;
       })
     | null
   > =>
@@ -78,6 +80,7 @@ class UserRepository implements IUserRepository {
           select: {
             name: true,
             email: true,
+            domainClass: true,
             clinic: {
               select: {
                 id: true,
@@ -86,11 +89,17 @@ class UserRepository implements IUserRepository {
             },
           },
         },
+        professional: {
+          select: {
+            baseDuration: true,
+          },
+        },
       },
     }) as PrismaPromise<
       | (UserModel & {
           person: PersonModel & { clinic: ClinicModel };
           role: { permissions: Partial<PermissionModel>[] };
+          professional?: Partial<ProfessionalModel>;
         })
       | null
     >;
