@@ -103,19 +103,8 @@ class UpdatePatientService extends CreatePatientService {
           );
 
         return {
+          ...address,
           id: hasPatient.person.address?.id,
-          city: `${address.city || hasPatient.person.address?.city}`,
-          publicArea: `${
-            address.publicArea || hasPatient.person.address?.publicArea
-          }`,
-          state: `${address.state || hasPatient.person.address?.state}`,
-          zipCode: `${
-            address.zipCode ||
-            this.maskProvider.zipCode(hasPatient.person.address?.zipCode)
-          }`,
-          district: `${
-            address.district || hasPatient.person.address?.district
-          }`,
         };
       }
 
