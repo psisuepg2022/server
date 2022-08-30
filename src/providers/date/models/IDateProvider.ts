@@ -8,6 +8,8 @@ interface IDateProvider {
   differenceInMillis(end: Date, start: Date): number;
   time2date(time: string, date?: string): Date;
   getWeekDay(date: Date): number;
+  getCurrentWeek(): [Date, Date];
+  differenceInDays(left: Date, rigth: Date): number;
 }
 
 export { IDateProvider };

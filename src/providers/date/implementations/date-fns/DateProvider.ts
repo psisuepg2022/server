@@ -1,4 +1,12 @@
-import ptBR, { isAfter, format, isBefore, getDay } from "date-fns";
+import ptBR, {
+  isAfter,
+  format,
+  isBefore,
+  getDay,
+  startOfWeek,
+  endOfWeek,
+  differenceInDays,
+} from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 import { IDateProvider } from "@providers/date/models/IDateProvider";
@@ -34,6 +42,24 @@ class DateProvider implements IDateProvider {
     });
 
   getWeekDay = (date: Date): number => getDay(date) + 1;
+
+  differenceInDays = (left: Date, rigth: Date): number =>
+    differenceInDays(left, rigth);
+
+  getCurrentWeek = (): [Date, Date] => [
+    zonedTimeToUtc(
+      startOfWeek(this.now(), {
+        weekStartsOn: 0,
+      }),
+      ""
+    ),
+    zonedTimeToUtc(
+      endOfWeek(this.now(), {
+        weekStartsOn: 0,
+      }),
+      ""
+    ),
+  ];
 }
 
 export { DateProvider };
