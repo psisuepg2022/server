@@ -2,7 +2,7 @@ import { WeeklyScheduleLockOnCalendarModel } from "./WeeklyScheduleLockOnCalenda
 
 type WeeklyScheduleOnCalendarModel = {
   id: string;
-  dayOfTheWeek: string;
+  dayOfTheWeek: number;
   startTime: string;
   endTime: string;
   locks: WeeklyScheduleLockOnCalendarModel[];

@@ -66,6 +66,35 @@ class AppointmentRepository implements IAppointmentRepository {
         patientId,
       },
     }) as PrismaPromise<AppointmentModel>;
+
+  public get = (
+    professionalId: string,
+    startDate: Date,
+    endDate: Date
+  ): PrismaPromise<
+    Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
+  > =>
+    this.prisma.appointment.findMany({
+      where: {
+        professionalId,
+        appointmentDate: {
+          lte: endDate,
+          gte: startDate,
+        },
+      },
+      select: {
+        id: true,
+        status: true,
+        appointmentDate: true,
+        patient: {
+          select: {
+            person: {
+              select: { name: true },
+            },
+          },
+        },
+      },
+    });
 }
 
 export { AppointmentRepository };

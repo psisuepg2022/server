@@ -6,6 +6,7 @@ import ptBR, {
   startOfWeek,
   endOfWeek,
   differenceInDays,
+  addMinutes,
 } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
@@ -60,6 +61,8 @@ class DateProvider implements IDateProvider {
       ""
     ),
   ];
+
+  addMinutes = (date: Date, hours: number): Date => addMinutes(date, hours);
 }
 
 export { DateProvider };

@@ -8,6 +8,18 @@ import { IScheduleRepository } from "@repositories/schedule/models/IScheduleRepo
 class ScheduleRepository implements IScheduleRepository {
   constructor(private prisma = prismaClient) {}
 
+  public getScheduleLockByInterval = (
+    professionalId: string,
+    startDate: Date,
+    endDate: Date
+  ): PrismaPromise<ScheduleLockModel[]> =>
+    this.prisma.scheduleLock.findMany({
+      where: {
+        professionalId,
+        date: { lte: endDate, gte: startDate },
+      },
+    });
+
   public hasTimeWithoutLock = (
     professionalId: string,
     dayOfTheWeek: number,
