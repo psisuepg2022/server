@@ -4,7 +4,7 @@ import { WeeklyScheduleOnCalendarModel } from "./WeeklyScheduleOnCalendarModel";
 
 type GetCalendarResponseModel = {
   appointments: AppointmentOnCalendarModel[];
-  weeklySchedule: WeeklyScheduleOnCalendarModel[];
+  weeklySchedule?: WeeklyScheduleOnCalendarModel[];
   scheduleLocks: ScheduleLockOnCalendarModel[];
 };
 

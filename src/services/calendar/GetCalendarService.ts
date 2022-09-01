@@ -17,6 +17,7 @@ import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarRespon
 import { ScheduleLockOnCalendarModel } from "@models/dto/calendar/ScheduleLockOnCalendarModel";
 import { WeeklyScheduleLockOnCalendarModel } from "@models/dto/calendar/WeeklyScheduleLockOnCalendarModel";
 import { WeeklyScheduleOnCalendarModel } from "@models/dto/calendar/WeeklyScheduleOnCalendarModel";
+import { PrismaPromise } from "@prisma/client";
 import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
@@ -49,6 +50,7 @@ class GetCalendarService {
     startDate,
     professionalId,
     clinicId,
+    returnWeeklySchedule,
   }: GetCalendarRequestModel): Promise<GetCalendarResponseModel> {
     if (stringIsNullOrEmpty(professionalId))
       throw new AppError(
@@ -110,19 +112,27 @@ class GetCalendarService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
-    const [appointments, weeklySchedule, scheduleLocks] = await transaction([
-      this.appointmentRepository.get(
-        professionalId,
-        startDateConverted,
-        endDateConverted
-      ),
-      this.scheduleRepository.getWeeklySchedule(professionalId),
-      this.scheduleRepository.getScheduleLockByInterval(
-        professionalId,
-        startDateConverted,
-        endDateConverted
-      ),
-    ]);
+    const [appointments, scheduleLocks, weeklySchedule] = await transaction(
+      ((): PrismaPromise<any>[] => {
+        const list: PrismaPromise<any>[] = [
+          this.appointmentRepository.get(
+            professionalId,
+            startDateConverted,
+            endDateConverted
+          ),
+          this.scheduleRepository.getScheduleLockByInterval(
+            professionalId,
+            startDateConverted,
+            endDateConverted
+          ),
+        ];
+
+        if (returnWeeklySchedule)
+          list.push(this.scheduleRepository.getWeeklySchedule(professionalId));
+
+        return list;
+      })()
+    );
 
     return {
       appointments: appointments.map(
@@ -147,29 +157,31 @@ class GetCalendarService {
           updatedAt: item.updatedAt?.toISOString() || "",
         })
       ),
-      weeklySchedule: weeklySchedule.map(
-        ({
-          WeeklyScheduleLocks: locks,
-          ...item
-        }: WeeklyScheduleModel & {
-          WeeklyScheduleLocks: WeeklyScheduleLockModel[];
-        }): WeeklyScheduleOnCalendarModel => ({
-          id: item.id,
-          endTime: this.maskProvider.time(item.endTime as Date),
-          startTime: this.maskProvider.time(item.startTime as Date),
-          dayOfTheWeek: item.dayOfTheWeek,
-          locks: locks.map(
-            (
-              lock: WeeklyScheduleLockModel
-            ): WeeklyScheduleLockOnCalendarModel => ({
-              id: lock.id,
-              endTime: this.maskProvider.time(lock.endTime as Date),
-              startTime: this.maskProvider.time(lock.startTime as Date),
-              resource: "LOCK",
+      weeklySchedule: returnWeeklySchedule
+        ? weeklySchedule.map(
+            ({
+              WeeklyScheduleLocks: locks,
+              ...item
+            }: WeeklyScheduleModel & {
+              WeeklyScheduleLocks: WeeklyScheduleLockModel[];
+            }): WeeklyScheduleOnCalendarModel => ({
+              id: item.id,
+              endTime: this.maskProvider.time(item.endTime as Date),
+              startTime: this.maskProvider.time(item.startTime as Date),
+              dayOfTheWeek: item.dayOfTheWeek,
+              locks: locks.map(
+                (
+                  lock: WeeklyScheduleLockModel
+                ): WeeklyScheduleLockOnCalendarModel => ({
+                  id: lock.id,
+                  endTime: this.maskProvider.time(lock.endTime as Date),
+                  startTime: this.maskProvider.time(lock.startTime as Date),
+                  resource: "LOCK",
+                })
+              ),
             })
-          ),
-        })
-      ),
+          )
+        : undefined,
       scheduleLocks: scheduleLocks.map(
         (item: ScheduleLockModel): ScheduleLockOnCalendarModel => ({
           date: this.maskProvider.date(item.date),

@@ -52,6 +52,7 @@ class AppointmentController {
       const { id: professionalId } = req.user;
       const { id: clinicId } = req.clinic;
       const { startDate, endDate } = req.body;
+      const { weekly: returnWeeklySchedule } = req.query;
 
       const service = container.resolve(GetCalendarService);
 
@@ -60,6 +61,7 @@ class AppointmentController {
         clinicId,
         endDate,
         startDate,
+        returnWeeklySchedule: returnWeeklySchedule === "true",
       });
 
       return res.status(HttpStatus.OK).json({
@@ -83,6 +85,7 @@ class AppointmentController {
       const { professional_id: professionalId } = req.params;
       const { id: clinicId } = req.clinic;
       const { startDate, endDate } = req.body;
+      const { weekly: returnWeeklySchedule } = req.query;
 
       const service = container.resolve(GetCalendarService);
 
@@ -91,6 +94,7 @@ class AppointmentController {
         clinicId,
         endDate,
         startDate,
+        returnWeeklySchedule: returnWeeklySchedule === "true",
       });
 
       return res.status(HttpStatus.OK).json({
