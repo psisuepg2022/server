@@ -19,25 +19,28 @@ const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 routes.post(
   "/",
   ensureAuthenticated.execute,
-  validateClinicID.execute(),
+  validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_APPOINTMENT),
   controller.save
 );
 routes.post(
   "/calendar",
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.getCalendar
 );
 routes.post(
   "/calendar/:professional_id",
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
   controller.getCalendarByProfessional
 );
 routes.post(
   "/autocomplete_patient",
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.autocompletePatient
 );
