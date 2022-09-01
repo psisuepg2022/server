@@ -77,6 +77,7 @@ class ProfessionalRepository implements IProfessionalRepository {
         id: true,
         person: {
           select: {
+            id: true,
             birthDate: true,
             CPF: true,
             contactNumber: true,

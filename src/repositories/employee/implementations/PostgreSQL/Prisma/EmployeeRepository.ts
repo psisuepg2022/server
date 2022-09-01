@@ -27,6 +27,7 @@ class EmployeeRepository implements IEmployeeRepository {
         userName: true,
         person: {
           select: {
+            id: true,
             birthDate: true,
             CPF: true,
             contactNumber: true,
