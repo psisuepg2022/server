@@ -86,6 +86,7 @@ class AppointmentRepository implements IAppointmentRepository {
         id: true,
         status: true,
         appointmentDate: true,
+        updatedAt: true,
         patient: {
           select: {
             person: {

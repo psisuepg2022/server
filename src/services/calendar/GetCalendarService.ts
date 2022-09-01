@@ -144,6 +144,7 @@ class GetCalendarService {
           ),
           startDate: item.appointmentDate?.toISOString() || "",
           title: item.patient.person.name || "",
+          updatedAt: item.updatedAt?.toISOString() || "",
         })
       ),
       weeklySchedule: weeklySchedule.map(
