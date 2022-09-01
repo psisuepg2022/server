@@ -35,5 +35,11 @@ routes.post(
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
   controller.getCalendarByProfessional
 );
+routes.post(
+  "/autocomplete_patient",
+  ensureAuthenticated.execute,
+  RBAC.has(PermissionsKeys.READ_PATIENT),
+  controller.autocompletePatient
+);
 
 export { routes };

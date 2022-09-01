@@ -4,9 +4,13 @@ import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
+import { AutocompletePatientResponseModel } from "@models/dto/appointment/AutocompletePatientResponseModel";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
 import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarResponseModel";
-import { CreateAppointmentService } from "@services/appointment";
+import {
+  AutocompletePatientService,
+  CreateAppointmentService,
+} from "@services/appointment";
 import { GetCalendarService } from "@services/calendar";
 
 class AppointmentController {
@@ -95,6 +99,34 @@ class AppointmentController {
         endDate,
         startDate,
         returnWeeklySchedule: returnWeeklySchedule === "true",
+      });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async autocompletePatient(
+    req: Request,
+    res: Response<IResponseMessage<AutocompletePatientResponseModel>>
+  ): Promise<Response> {
+    try {
+      const { id: clinicId } = req.clinic;
+      const { name } = req.body;
+
+      const service = container.resolve(AutocompletePatientService);
+
+      const result = await service.execute({
+        name,
+        clinicId,
       });
 
       return res.status(HttpStatus.OK).json({
