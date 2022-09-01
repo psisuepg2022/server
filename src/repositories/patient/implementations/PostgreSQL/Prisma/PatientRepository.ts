@@ -169,6 +169,84 @@ class PatientRepository implements IPatientRepository {
         maritalStatus,
       },
     });
+
+  public countToAutocomplete = (
+    clinicId: string,
+    name: string
+  ): PrismaPromise<number> =>
+    this.prisma.patient.count({
+      where: {
+        person: {
+          clinicId,
+          active: true,
+          domainClass: UserDomainClasses.PATIENT,
+          name: {
+            contains: name,
+          },
+        },
+      },
+      orderBy: {
+        person: {
+          name: "asc",
+        },
+      },
+    });
+
+  public getToAutocomplete = (
+    clinicId: string,
+    name: string
+  ): PrismaPromise<
+    Partial<PatientModel> &
+      {
+        person: Partial<PersonModel>;
+        liable: { person: Partial<PersonModel> };
+      }[]
+  > =>
+    this.prisma.patient.findMany({
+      where: {
+        person: {
+          clinicId,
+          active: true,
+          domainClass: UserDomainClasses.PATIENT,
+          name: {
+            contains: name,
+          },
+        },
+      },
+      select: {
+        person: {
+          select: {
+            id: true,
+            name: true,
+            CPF: true,
+            contactNumber: true,
+          },
+        },
+        liable: {
+          select: {
+            person: {
+              select: {
+                CPF: true,
+                name: true,
+                contactNumber: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        person: {
+          name: "asc",
+        },
+      },
+      take: 30,
+    }) as PrismaPromise<
+      Partial<PatientModel> &
+        {
+          person: Partial<PersonModel>;
+          liable: { person: Partial<PersonModel> };
+        }[]
+    >;
 }
 
 export { PatientRepository };

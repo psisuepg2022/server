@@ -34,6 +34,7 @@
   "ErrorAppointmentPastDate": "Não é possível realizar um agendamento para uma data que já passou.",
   "ErrorAppointmentStartTimeInvalid": "O horário de início informado para realizar o agendamento é inválido.",
   "ErrorAppointmentStartTimeRequired": "É necessário informar o horário de início para realizar um agendamento.",
+  "ErrorAutocompletePatientNameRequired": "É necessário informar o nome para recuperar o paciente.",
   "ErrorBaseCreateOperationFailed": "Não foi possível realizar a operação. Por favor, entre em contato com um administrador.",
   "ErrorBaseDurationInvalid": "A duração base das consultas informada é inválida.",
   "ErrorBaseDurationRequired": "É necessário informar a duração base das consultas.",

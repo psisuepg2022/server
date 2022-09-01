@@ -3,7 +3,7 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
-import { HttpStatus, IResponseMessage } from "@infra/http";
+import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { AutocompletePatientResponseModel } from "@models/dto/appointment/AutocompletePatientResponseModel";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
 import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarResponseModel";
@@ -116,7 +116,9 @@ class AppointmentController {
 
   public async autocompletePatient(
     req: Request,
-    res: Response<IResponseMessage<AutocompletePatientResponseModel>>
+    res: Response<
+      IResponseMessage<IPaginationResponse<AutocompletePatientResponseModel>>
+    >
   ): Promise<Response> {
     try {
       const { id: clinicId } = req.clinic;

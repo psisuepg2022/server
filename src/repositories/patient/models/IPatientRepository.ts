@@ -32,6 +32,17 @@ interface IPatientRepository {
       })
     | null
   >;
+  countToAutocomplete(clinicId: string, name: string): PrismaPromise<number>;
+  getToAutocomplete(
+    clinicId: string,
+    name: string
+  ): PrismaPromise<
+    Partial<PatientModel> &
+      {
+        person: Partial<PersonModel>;
+        liable: { person: Partial<PersonModel> };
+      }[]
+  >;
 }
 
 export { IPatientRepository };
