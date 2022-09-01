@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
+import { getUserType2External } from "@helpers/getUserType2External";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
@@ -110,6 +111,7 @@ class LoginService {
       accessCode: hasUser.accessCode,
       userName: hasUser.userName,
       baseDuration,
+      userType: getUserType2External(hasUser.person.domainClass),
       clinic: {
         id: hasUser.person.clinic.id,
         name: hasUser.person.clinic.name,
