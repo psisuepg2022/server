@@ -4,7 +4,6 @@ type AuthTokenPayloadModel = {
   name: string;
   accessCode: number;
   userName: string;
-  userType: string;
   baseDuration?: number;
   clinic: {
     id: string;
