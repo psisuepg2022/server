@@ -119,6 +119,25 @@ class UserRepository implements IUserRepository {
       },
       select: { id: true },
     }) as PrismaPromise<Partial<UserModel> | null>;
+
+  public findUserToResetPassword = (
+    clinicId: string,
+    userId: string
+  ): PrismaPromise<{ id: string; password: string } | null> =>
+    this.prisma.user.findFirst({
+      where: {
+        id: userId,
+        blocked: false,
+        person: {
+          clinicId,
+          active: true,
+        },
+      },
+      select: {
+        id: true,
+        password: true,
+      },
+    });
 }
 
 export { UserRepository };

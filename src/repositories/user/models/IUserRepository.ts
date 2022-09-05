@@ -28,6 +28,10 @@ interface IUserRepository {
     userId: string,
     role: string
   ): PrismaPromise<Partial<UserModel> | null>;
+  findUserToResetPassword(
+    clinicId: string,
+    userId: string
+  ): PrismaPromise<{ id: string; password: string } | null>;
 }
 
 export { IUserRepository };
