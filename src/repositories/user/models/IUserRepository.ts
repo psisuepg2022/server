@@ -32,6 +32,10 @@ interface IUserRepository {
     clinicId: string,
     userId: string
   ): PrismaPromise<{ id: string; password: string } | null>;
+  updatePassword(
+    userId: string,
+    password: string
+  ): PrismaPromise<Partial<UserModel>>;
 }
 
 export { IUserRepository };

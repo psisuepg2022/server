@@ -138,6 +138,16 @@ class UserRepository implements IUserRepository {
         password: true,
       },
     });
+
+  public updatePassword = (
+    userId: string,
+    password: string
+  ): PrismaPromise<Partial<UserModel>> =>
+    this.prisma.user.update({
+      where: { id: userId },
+      data: { password },
+      select: { id: true, password: true },
+    });
 }
 
 export { UserRepository };

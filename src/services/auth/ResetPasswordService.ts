@@ -2,7 +2,9 @@ import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { env } from "@helpers/env";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
+import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { ResetPasswordRequestModel } from "@models/dto/auth/ResetPasswordRequestModel";
 import { IHashProvider } from "@providers/hash";
@@ -94,9 +96,22 @@ class ResetPasswordService {
         i18n.__("ErrorResetPasswdOldPasswordInvalid")
       );
 
-    // atualizar nova senha
+    const salt = toNumber({
+      value: env("PASSWORD_HASH_SALT"),
+      error: new AppError(
+        "INTERNAL_SERVER_ERROR",
+        i18n.__("ErrorMissingEnvVar")
+      ),
+    });
 
-    return true;
+    const [updated] = await transaction([
+      this.userRepository.updatePassword(
+        userId,
+        await this.hashProvider.hash(newPassword, salt)
+      ),
+    ]);
+
+    return !!updated;
   }
 }
 
