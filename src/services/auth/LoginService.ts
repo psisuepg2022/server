@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
+import { getUserType2External } from "@helpers/getUserType2External";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
@@ -114,9 +115,12 @@ class LoginService {
         id: hasUser.person.clinic.id,
         name: hasUser.person.clinic.name,
       },
-      permissions: hasUser.role.permissions?.map(
-        ({ name }: Partial<PermissionModel>): string => name || "ERROR"
-      ),
+      permissions: [
+        ...hasUser.role.permissions?.map(
+          ({ name }: Partial<PermissionModel>): string => name || "ERROR"
+        ),
+        getUserType2External(hasUser.person.domainClass),
+      ],
       type: "access_token",
     } as AuthTokenPayloadModel);
 
