@@ -1,35 +1,35 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-08-30T21:15:46.342Z",
-  "__export_source": "insomnia.desktop.app:v2022.5.0",
+  "__export_date": "2022-09-05T19:10:54.620Z",
+  "__export_source": "insomnia.desktop.app:v2022.5.1",
   "resources": [
     {
-      "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
+      "_id": "req_35dc8b234ae44af58e88e4c122616cf2",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1661894128949,
-      "created": 1661882176759,
+      "modified": 1662056653049,
+      "created": 1662052890946,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
-      "name": "calendar",
+      "name": "autocomplete_patient",
       "description": "",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"startDate\": \"2022-01-01\",\n\t\"endDate\": \"2022-01-30\"\n}"
+        "text": "{\n\t\"name\": \"M\"\n}"
       },
       "parameters": [],
       "headers": [
         {
           "name": "Content-Type",
           "value": "application/json",
-          "id": "pair_e76c8fe8acd140c28a0b682d973ed22e"
+          "id": "pair_69cf4b7e62e2452180c0f792a3590f8b"
         }
       ],
       "authentication": {
         "type": "bearer",
         "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
       },
-      "metaSortKey": -1661882176759,
+      "metaSortKey": -1662052890946,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
@@ -62,17 +62,52 @@
       "_type": "workspace"
     },
     {
+      "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1662168146812,
+      "created": 1661882176759,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "calendar",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"startDate\": \"\",\n\t\"endDate\": \"\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e76c8fe8acd140c28a0b682d973ed22e"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1661882176759,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1661894123171,
+      "modified": 1662401322378,
       "created": 1661888766274,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/01937cdf-fec9-49eb-b994-8a4337b85a75",
       "name": "calendar by professional",
       "description": "",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"startDate\": \"2022-08-29\",\n\t\"endDate\": \"2022-08-31\"\n}"
+        "text": "{\n\t\"startDate\": \"\",\n\t\"endDate\": \"\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -99,7 +134,7 @@
     {
       "_id": "req_01d6a83bff304a92bd3333d98b39be18",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1661894128270,
+      "modified": 1662168136665,
       "created": 1660223915857,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -107,7 +142,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-08-31\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f\",\n\t\"patientId\": \"9d8095a3-6d92-410f-a424-c3c7dd6d57dc\"\n}"
+        "text": "{\n\t\"date\": \"2022-09-03\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"01937cdf-fec9-49eb-b994-8a4337b85a75\",\n\t\"patientId\": \"ad0bc619-cff4-4070-b27f-e0e2a3666e74\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -273,7 +308,7 @@
     {
       "_id": "req_4ba536b111eb44c78083be3a383d04b3",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1660315346080,
+      "modified": 1662056029118,
       "created": 1659389449397,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -281,7 +316,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"id\": \"2823393c-9276-4257-b702-dd50306766f2\",\n\t\"baseDuration\": \"60\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"17:00\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"13:00\",\n\t\t\t\"endTime\": \"14:00\"\n\t\t}\n\t]\n}"
+        "text": "{\n\t\"id\": \"c8fe4d68-56c4-4c26-a52d-68500ecea1e8\",\n\t\"baseDuration\": \"60\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"17:00\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"13:00\",\n\t\t\t\"endTime\": \"14:00\"\n\t\t}\n\t]\n}"
       },
       "parameters": [],
       "headers": [
@@ -321,7 +356,7 @@
     {
       "_id": "req_0ea2819059aa47b08b98d4a0010ab68b",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1660315350167,
+      "modified": 1662056024152,
       "created": 1659355375486,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "read",
@@ -348,7 +383,7 @@
     {
       "_id": "req_c53be768a45a4cc8ab4bdbbb041d5207",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1660140411877,
+      "modified": 1662055928484,
       "created": 1659355950316,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/5ba9bf6f-5c77-4cc6-a5e9-eedbf2ba9267",
       "name": "read by professional",
@@ -400,9 +435,56 @@
       "_type": "request"
     },
     {
+      "_id": "req_2e0a89dd2f454dd5a6f1ef171427aedb",
+      "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "modified": 1662405036871,
+      "created": 1662402795446,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "reset_password",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"oldPassword\": \"UserEmployee321\", \n\t\"newPassword\": \"UserEmployee123\", \n\t\"confirmNewPassword\": \"UserEmployee123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_616132016dd140ad85b875aa350cc643"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1662402795446,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1658670473389,
+      "created": 1658670029899,
+      "name": "auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1658670029899,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1661888753454,
+      "modified": 1662404984599,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -430,18 +512,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1658670473389,
-      "created": 1658670029899,
-      "name": "auth",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1658670029899,
-      "_type": "request_group"
     },
     {
       "_id": "req_a30541e8667a44249bc0c96557da37f5",
@@ -488,7 +558,7 @@
     {
       "_id": "req_e9f3b58eb420491597c88eae2487b465",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1661877678930,
+      "modified": 1662054224457,
       "created": 1659823934456,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search_liable",
@@ -536,7 +606,7 @@
     {
       "_id": "req_4304794bd0e749deb243cc984ec53d31",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1661878359536,
+      "modified": 1662054224892,
       "created": 1657540606624,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -608,7 +678,7 @@
     {
       "_id": "req_9dd74821a81445cf8c20f3f625fa7b34",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1661879846637,
+      "modified": 1662054357356,
       "created": 1658355986212,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create with liable",
@@ -671,7 +741,7 @@
     {
       "_id": "req_24df639efa794dcc90a944bc52a61c2c",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1661877648657,
+      "modified": 1662054351932,
       "created": 1658874198938,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create with liable existing",
@@ -707,7 +777,7 @@
     {
       "_id": "req_899c0535c6974fe58a248141689dbcb2",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1661880212610,
+      "modified": 1662054227312,
       "created": 1657540575211,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -743,7 +813,7 @@
     {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1660687584288,
+      "modified": 1661983006662,
       "created": 1659651213689,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/2d189d73-355b-40a4-a1fa-b48ff536ba46",
       "name": "delete",
@@ -782,7 +852,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1660687588325,
+      "modified": 1662054679609,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -818,7 +888,7 @@
     {
       "_id": "req_4b0aa19c250f454bb12fdb8594f14c2c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1661877523495,
+      "modified": 1662057199130,
       "created": 1657542043564,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -854,7 +924,7 @@
     {
       "_id": "req_803168cfaab9400a95969ce92480fb14",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1660687502512,
+      "modified": 1661982999613,
       "created": 1657151453642,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -929,7 +999,7 @@
     {
       "_id": "req_355e0702f3c449aa9973c5457b984dc6",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1660687404102,
+      "modified": 1662054686336,
       "created": 1657142214249,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -965,7 +1035,7 @@
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1660686915437,
+      "modified": 1661982965248,
       "created": 1657664385365,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1090,7 +1160,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1660686466616,
+      "modified": 1661982953068,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1146,9 +1216,7 @@
           "maxAge": 7200,
           "domain": "gerador.app",
           "path": "/",
-          "extensions": [
-            "samesite=lax"
-          ],
+          "extensions": ["samesite=lax"],
           "hostOnly": true,
           "creation": "2022-07-21T22:05:42.452Z",
           "lastAccessed": "2022-07-21T22:35:12.150Z",
@@ -1162,9 +1230,7 @@
           "domain": "gerador.app",
           "path": "/",
           "httpOnly": true,
-          "extensions": [
-            "samesite=lax"
-          ],
+          "extensions": ["samesite=lax"],
           "hostOnly": true,
           "creation": "2022-07-21T22:05:42.453Z",
           "lastAccessed": "2022-07-21T22:35:12.150Z",
@@ -1186,7 +1252,7 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1661394963814,
+      "modified": 1662068953049,
       "created": 1654723872664,
       "name": "dev",
       "data": {
@@ -1194,13 +1260,7 @@
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
         "clinicId": "{% response 'body', 'req_698f458fffe74931b121812d0d0f19c2', 'b64::JC5jb250ZW50Lmlk::46b', 'never', 60 %}"
       },
-      "dataPropertyOrder": {
-        "&": [
-          "base_url",
-          "support",
-          "clinicId"
-        ]
-      },
+      "dataPropertyOrder": { "&": ["base_url", "support", "clinicId"] },
       "color": "#10e529",
       "isPrivate": false,
       "metaSortKey": 1654723872664,
@@ -1209,7 +1269,7 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1661394965111,
+      "modified": 1662068955824,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
@@ -1217,13 +1277,7 @@
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
         "clinicId": "{% response 'body', 'req_698f458fffe74931b121812d0d0f19c2', 'b64::JC5jb250ZW50Lmlk::46b', 'never', 60 %}"
       },
-      "dataPropertyOrder": {
-        "&": [
-          "base_url",
-          "support",
-          "clinicId"
-        ]
-      },
+      "dataPropertyOrder": { "&": ["base_url", "support", "clinicId"] },
       "color": "#f00f0f",
       "isPrivate": false,
       "metaSortKey": 1654723874269,

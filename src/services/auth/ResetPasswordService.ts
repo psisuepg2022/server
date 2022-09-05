@@ -87,9 +87,6 @@ class ResetPasswordService {
         i18n.__mf("ErrorUserIDNotFound", ["usuário"])
       );
 
-    if (!this.uniqueIdentifierProvider.isValid(userId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
-
     if (!(await this.hashProvider.compare(oldPassword, hasUser.password)))
       throw new AppError(
         "BAD_REQUEST",
