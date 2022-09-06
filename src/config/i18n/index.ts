@@ -19,8 +19,6 @@ i18n.configure({
   missingKeyFn(locale, value) {
     const message = ((): string => {
       switch (locale) {
-        case Languages.ENGLISH:
-          return "Internal server error.";
         case Languages.PORTUGUESE:
           return "Ocorreu um erro interno no servidor";
         default:
