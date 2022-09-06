@@ -64,6 +64,47 @@ class UpdateStatusService {
         i18n.__("ErrorUpdateStatusAppointmentNotFound")
       );
 
+    if (hasAppointment.status === statusConverted)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorUpdateStatusAlreadyUpdated")
+      );
+
+    if (
+      [
+        AppointmentStatus.ABSENCE,
+        AppointmentStatus.CANCELED,
+        AppointmentStatus.COMPLETED,
+      ].includes(hasAppointment.status)
+    )
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorUpdateStatusAppointmentFinished", [
+          getEnumDescription(
+            "APPOINTMENT_STATUS",
+            AppointmentStatus[hasAppointment.status]
+          ),
+        ])
+      );
+
+    if (
+      hasAppointment.status === AppointmentStatus.CONFIRMED &&
+      statusConverted === AppointmentStatus.SCHEDULED
+    )
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorUpdateStatusInvalidChange", [
+          getEnumDescription(
+            "APPOINTMENT_STATUS",
+            AppointmentStatus[AppointmentStatus.CONFIRMED]
+          ),
+          getEnumDescription(
+            "APPOINTMENT_STATUS",
+            AppointmentStatus[AppointmentStatus.SCHEDULED]
+          ),
+        ])
+      );
+
     if (
       this.dateProvider.isBefore(
         hasAppointment.appointmentDate,
