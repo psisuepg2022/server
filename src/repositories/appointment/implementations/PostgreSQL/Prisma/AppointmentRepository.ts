@@ -96,6 +96,53 @@ class AppointmentRepository implements IAppointmentRepository {
         },
       },
     });
+
+  public findToUpdateStatus = (
+    id: string
+  ): PrismaPromise<{
+    id: string;
+    status: number;
+    appointmentDate: Date;
+    professional: { baseDuration: number };
+  } | null> =>
+    this.prisma.appointment.findFirst({
+      where: { id },
+      select: {
+        id: true,
+        status: true,
+        appointmentDate: true,
+        professional: {
+          select: {
+            baseDuration: true,
+          },
+        },
+      },
+    });
+
+  public updateStatus = (
+    id: string,
+    status: number,
+    updatedAt: Date
+  ): PrismaPromise<
+    Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }
+  > =>
+    this.prisma.appointment.update({
+      where: { id },
+      data: { status, updatedAt },
+      select: {
+        id: true,
+        status: true,
+        appointmentDate: true,
+        updatedAt: true,
+        patient: {
+          select: {
+            person: {
+              select: { name: true },
+            },
+          },
+        },
+      },
+    });
 }
 
 export { AppointmentRepository };

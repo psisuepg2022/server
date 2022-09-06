@@ -151,14 +151,12 @@ class AppointmentController {
     res: Response<IResponseMessage<AppointmentOnCalendarModel>>
   ): Promise<Response> {
     try {
-      const { id: clinicId } = req.clinic;
       const { status } = req.body;
       const { id } = req.params;
 
       const service = container.resolve(UpdateStatusService);
 
       const result = await service.execute({
-        clinicId,
         id,
         status,
       });

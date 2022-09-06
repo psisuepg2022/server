@@ -27,6 +27,19 @@ interface IAppointmentRepository {
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   >;
+  findToUpdateStatus(id: string): PrismaPromise<{
+    id: string;
+    status: number;
+    appointmentDate: Date;
+    professional: { baseDuration: number };
+  } | null>;
+  updateStatus(
+    id: string,
+    status: number,
+    updatedAt: Date
+  ): PrismaPromise<
+    Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }
+  >;
 }
 
 export { IAppointmentRepository };

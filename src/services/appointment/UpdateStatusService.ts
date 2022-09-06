@@ -2,18 +2,26 @@ import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
+import { transaction } from "@infra/database/transaction";
 import { AppointmentStatus } from "@infra/domains";
 import { UpdateStatusRequestModel } from "@models/dto/appointment/UpdateStatusRequestModel";
 import { AppointmentOnCalendarModel } from "@models/dto/calendar/AppointmentOnCalendarModel";
+import { IDateProvider } from "@providers/date";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
+import { IAppointmentRepository } from "@repositories/appointment";
 
 @injectable()
 class UpdateStatusService {
   constructor(
     @inject("UniqueIdentifierProvider")
-    private uniqueIdentifierProvider: IUniqueIdentifierProvider
+    private uniqueIdentifierProvider: IUniqueIdentifierProvider,
+    @inject("AppointmentRepository")
+    private appointmentRepository: IAppointmentRepository,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {}
 
   public async execute({
@@ -46,7 +54,52 @@ class UpdateStatusService {
         i18n.__("ErrorValueOutOfAppointmentStatusDomain")
       );
 
-    return {} as AppointmentOnCalendarModel;
+    const [hasAppointment] = await transaction([
+      this.appointmentRepository.findToUpdateStatus(id),
+    ]);
+
+    if (!hasAppointment)
+      throw new AppError(
+        "NOT_FOUND",
+        i18n.__("ErrorUpdateStatusAppointmentNotFound")
+      );
+
+    if (
+      this.dateProvider.isBefore(
+        hasAppointment.appointmentDate,
+        this.dateProvider.now()
+      ) &&
+      hasAppointment.status !== AppointmentStatus.SCHEDULED
+    )
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorUpdateStatusAppointmentDatePast")
+      );
+
+    const [updated] = await transaction([
+      this.appointmentRepository.updateStatus(
+        id,
+        statusConverted,
+        this.dateProvider.now()
+      ),
+    ]);
+
+    return {
+      id: updated.id || "",
+      endDate: this.dateProvider
+        .addMinutes(
+          updated.appointmentDate as Date,
+          hasAppointment.professional.baseDuration
+        )
+        .toISOString(),
+      resource: getEnumDescription(
+        "APPOINTMENT_STATUS",
+        AppointmentStatus[updated.status || -1]
+      ),
+      startDate: updated.appointmentDate?.toISOString() || "",
+      title: updated.patient.person.name || "",
+      updatedAt: updated.updatedAt?.toISOString() || "",
+    };
   }
 }
 
