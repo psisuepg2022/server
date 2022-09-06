@@ -1,35 +1,35 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-05T19:10:54.620Z",
+  "__export_date": "2022-09-06T14:00:50.414Z",
   "__export_source": "insomnia.desktop.app:v2022.5.1",
   "resources": [
     {
-      "_id": "req_35dc8b234ae44af58e88e4c122616cf2",
+      "_id": "req_35890d19f5904844a50ce38dcebafa77",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662056653049,
-      "created": 1662052890946,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
-      "name": "autocomplete_patient",
+      "modified": 1662472664147,
+      "created": 1662467185449,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/2a1900a7-1b70-40e1-97a0-cb116a98b523",
+      "name": "status",
       "description": "",
-      "method": "POST",
+      "method": "PATCH",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"M\"\n}"
+        "text": "{\n\t\"status\": \"1\"\n}"
       },
       "parameters": [],
       "headers": [
         {
           "name": "Content-Type",
           "value": "application/json",
-          "id": "pair_69cf4b7e62e2452180c0f792a3590f8b"
+          "id": "pair_9693e37238654ec2975580e7ee5347be"
         }
       ],
       "authentication": {
         "type": "bearer",
         "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
       },
-      "metaSortKey": -1662052890946,
+      "metaSortKey": -1662467185449,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
@@ -62,9 +62,44 @@
       "_type": "workspace"
     },
     {
+      "_id": "req_35dc8b234ae44af58e88e4c122616cf2",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1662467801831,
+      "created": 1662052890946,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "autocomplete_patient",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"M\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_69cf4b7e62e2452180c0f792a3590f8b"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1662052890946,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662168146812,
+      "modified": 1662472646305,
       "created": 1661882176759,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "calendar",
@@ -99,7 +134,7 @@
     {
       "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662401322378,
+      "modified": 1662472646926,
       "created": 1661888766274,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/01937cdf-fec9-49eb-b994-8a4337b85a75",
       "name": "calendar by professional",
@@ -134,7 +169,7 @@
     {
       "_id": "req_01d6a83bff304a92bd3333d98b39be18",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662168136665,
+      "modified": 1662468302921,
       "created": 1660223915857,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -142,7 +177,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-09-03\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"01937cdf-fec9-49eb-b994-8a4337b85a75\",\n\t\"patientId\": \"ad0bc619-cff4-4070-b27f-e0e2a3666e74\"\n}"
+        "text": "{\n\t\"date\": \"2022-09-07\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"01937cdf-fec9-49eb-b994-8a4337b85a75\",\n\t\"patientId\": \"ad0bc619-cff4-4070-b27f-e0e2a3666e74\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -437,7 +472,7 @@
     {
       "_id": "req_2e0a89dd2f454dd5a6f1ef171427aedb",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1662405036871,
+      "modified": 1662412943470,
       "created": 1662402795446,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "reset_password",
@@ -484,7 +519,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1662404984599,
+      "modified": 1662466844754,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
