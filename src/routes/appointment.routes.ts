@@ -44,5 +44,12 @@ routes.post(
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.autocompletePatient
 );
+routes.patch(
+  "/status/:id",
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
+  controller.updateStatus
+);
 
 export { routes };

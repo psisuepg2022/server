@@ -1,4 +1,9 @@
 import { AutocompletePatientService } from "./AutocompletePatientService";
 import { CreateAppointmentService } from "./CreateAppointmentService";
+import { UpdateStatusService } from "./UpdateStatusService";
 
-export { AutocompletePatientService, CreateAppointmentService };
+export {
+  UpdateStatusService,
+  AutocompletePatientService,
+  CreateAppointmentService,
+};

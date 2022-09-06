@@ -6,10 +6,12 @@ import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { AutocompletePatientResponseModel } from "@models/dto/appointment/AutocompletePatientResponseModel";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
+import { AppointmentOnCalendarModel } from "@models/dto/calendar/AppointmentOnCalendarModel";
 import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarResponseModel";
 import {
   AutocompletePatientService,
   CreateAppointmentService,
+  UpdateStatusService,
 } from "@services/appointment";
 import { GetCalendarService } from "@services/calendar";
 
@@ -129,6 +131,36 @@ class AppointmentController {
       const result = await service.execute({
         name,
         clinicId,
+      });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async updateStatus(
+    req: Request,
+    res: Response<IResponseMessage<AppointmentOnCalendarModel>>
+  ): Promise<Response> {
+    try {
+      const { id: clinicId } = req.clinic;
+      const { status } = req.body;
+      const { id } = req.params;
+
+      const service = container.resolve(UpdateStatusService);
+
+      const result = await service.execute({
+        clinicId,
+        id,
+        status,
       });
 
       return res.status(HttpStatus.OK).json({
