@@ -16,7 +16,7 @@ const ensureAuthenticated = container.resolve(
 );
 
 routes.post(
-  "/",
+  "/:id",
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
