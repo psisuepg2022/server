@@ -110,7 +110,9 @@ class UpdateStatusService {
         hasAppointment.appointmentDate,
         this.dateProvider.now()
       ) &&
-      hasAppointment.status !== AppointmentStatus.SCHEDULED
+      ![AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED].includes(
+        hasAppointment.status
+      )
     )
       throw new AppError(
         "BAD_REQUEST",

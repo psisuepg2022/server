@@ -47,7 +47,6 @@ routes.post(
 routes.patch(
   "/status/:id",
   ensureAuthenticated.execute,
-  validateClinicID.execute(),
   RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
   controller.updateStatus
 );
