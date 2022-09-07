@@ -18,6 +18,8 @@ class RoutesPrefix {
   public static readonly SCHEDULE_LOCKS: string = "/schedule_locks";
 
   public static readonly APPOINTMENT: string = "/appointment";
+
+  public static readonly COMMENTS: string = "/comments";
 }
 
 export { RoutesPrefix };

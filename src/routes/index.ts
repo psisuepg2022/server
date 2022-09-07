@@ -5,6 +5,7 @@ import { RoutesPrefix } from "@common/RoutesPrefix";
 import { routes as appointmentsRoutes } from "./appointment.routes";
 import { routes as authRoutes } from "./auth.routes";
 import { routes as clinicRoutes } from "./clinic.routes";
+import { routes as commentsRoutes } from "./comments.routes";
 import { routes as employeeRoutes } from "./employee.routes";
 import { routes as ownerRoutes } from "./owner.routes";
 import { routes as patientRoutes } from "./patient.routes";
@@ -23,5 +24,6 @@ routes.use(RoutesPrefix.OWNER, ownerRoutes);
 routes.use(RoutesPrefix.WEEKLY_SCHEDULE, weeklyScheduleRoutes);
 routes.use(RoutesPrefix.SCHEDULE_LOCKS, scheduleRoutes);
 routes.use(RoutesPrefix.APPOINTMENT, appointmentsRoutes);
+routes.use(RoutesPrefix.COMMENTS, commentsRoutes);
 
 export { routes };
