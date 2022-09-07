@@ -40,6 +40,10 @@ interface IAppointmentRepository {
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }
   >;
+  findToUpdateComment(
+    id: string,
+    professionalId: string
+  ): PrismaPromise<Partial<AppointmentModel> | null>;
 }
 
 export { IAppointmentRepository };

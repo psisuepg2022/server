@@ -144,6 +144,19 @@ class AppointmentRepository implements IAppointmentRepository {
         },
       },
     });
+
+  public findToUpdateComment = (
+    id: string,
+    professionalId: string
+  ): PrismaPromise<Partial<AppointmentModel> | null> =>
+    this.prisma.appointment.findFirst({
+      where: {
+        id,
+        professionalId,
+        comments: null,
+      },
+      select: { id: true },
+    });
 }
 
 export { AppointmentRepository };
