@@ -11,6 +11,10 @@ import {
 } from "@repositories/authentication";
 import { ClinicRepository, IClinicRepository } from "@repositories/clinic";
 import {
+  CommentsRepository,
+  ICommentsRepository,
+} from "@repositories/comments";
+import {
   EmployeeRepository,
   IEmployeeRepository,
 } from "@repositories/employee";
@@ -84,4 +88,9 @@ container.registerSingleton<IScheduleRepository>(
 container.registerSingleton<IAppointmentRepository>(
   "AppointmentRepository",
   AppointmentRepository
+);
+
+container.registerSingleton<ICommentsRepository>(
+  "CommentsRepository",
+  CommentsRepository
 );
