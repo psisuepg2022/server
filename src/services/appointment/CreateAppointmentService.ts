@@ -225,6 +225,7 @@ class CreateAppointmentService {
           appointmentDate,
           id: this.uniqueIdentifierProvider.generate(),
           status: AppointmentStatus.SCHEDULED,
+          updatedAt: this.dateProvider.now(),
         } as AppointmentModel
       ),
     ]);

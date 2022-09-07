@@ -54,7 +54,7 @@ class AppointmentRepository implements IAppointmentRepository {
     professionalId: string,
     employeeId: string,
     patientId: string,
-    { appointmentDate, id, status }: AppointmentModel
+    { appointmentDate, id, status, updatedAt }: AppointmentModel
   ): PrismaPromise<AppointmentModel> =>
     this.prisma.appointment.create({
       data: {
@@ -64,6 +64,7 @@ class AppointmentRepository implements IAppointmentRepository {
         employeeId,
         professionalId,
         patientId,
+        updatedAt,
       },
     }) as PrismaPromise<AppointmentModel>;
 
