@@ -22,5 +22,11 @@ routes.post(
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.create
 );
+routes.get(
+  "/:patient_id",
+  ensureAuthenticated.execute,
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.read
+);
 
 export { routes };
