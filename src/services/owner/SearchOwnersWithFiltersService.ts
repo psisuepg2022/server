@@ -6,7 +6,6 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { IMaskProvider } from "@providers/mask";
-import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IOwnerRepository } from "@repositories/owner";
 import { IPersonRepository } from "@repositories/person";
@@ -22,19 +21,12 @@ class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService<
     personRepository: IPersonRepository,
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
-    @inject("UniqueIdentifierProvider")
-    uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("OwnerRepository")
     private ownerRepository: IOwnerRepository
   ) {
-    super(
-      personRepository,
-      maskProvider,
-      uniqueIdentifierProvider,
-      validatorsProvider
-    );
+    super(personRepository, maskProvider, validatorsProvider);
   }
 
   protected getDomainClass = (): string => UserDomainClasses.OWNER;

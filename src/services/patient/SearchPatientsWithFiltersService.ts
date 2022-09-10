@@ -9,7 +9,6 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { IMaskProvider } from "@providers/mask";
-import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IPatientRepository } from "@repositories/patient";
 import { IPersonRepository } from "@repositories/person";
@@ -30,19 +29,12 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService<
     personRepository: IPersonRepository,
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
-    @inject("UniqueIdentifierProvider")
-    uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("PatientRepository")
     private patientRepository: IPatientRepository
   ) {
-    super(
-      personRepository,
-      maskProvider,
-      uniqueIdentifierProvider,
-      validatorsProvider
-    );
+    super(personRepository, maskProvider, validatorsProvider);
   }
 
   protected getDomainClass = (): string => UserDomainClasses.PATIENT;

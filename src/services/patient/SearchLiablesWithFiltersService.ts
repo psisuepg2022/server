@@ -5,7 +5,6 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { ListPeopleResponseModel } from "@models/dto/person/ListPeopleResponseModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { IMaskProvider } from "@providers/mask";
-import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { ILiableRepository } from "@repositories/liable";
 import { IPersonRepository } from "@repositories/person";
@@ -21,19 +20,12 @@ class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService<
     personRepository: IPersonRepository,
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
-    @inject("UniqueIdentifierProvider")
-    uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("LiableRepository")
     private liableRepository: ILiableRepository
   ) {
-    super(
-      personRepository,
-      maskProvider,
-      uniqueIdentifierProvider,
-      validatorsProvider
-    );
+    super(personRepository, maskProvider, validatorsProvider);
   }
 
   protected getDomainClass = (): string => UserDomainClasses.LIABLE;

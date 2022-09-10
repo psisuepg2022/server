@@ -8,7 +8,6 @@ import { UserModel } from "@models/domain/UserModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import { IMaskProvider } from "@providers/mask";
-import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IPersonRepository } from "@repositories/person";
 import { IProfessionalRepository } from "@repositories/professional";
@@ -29,19 +28,12 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
     personRepository: IPersonRepository,
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
-    @inject("UniqueIdentifierProvider")
-    uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("ProfessionalRepository")
     private professionalRepository: IProfessionalRepository
   ) {
-    super(
-      personRepository,
-      maskProvider,
-      uniqueIdentifierProvider,
-      validatorsProvider
-    );
+    super(personRepository, maskProvider, validatorsProvider);
   }
 
   protected getDomainClass = (): string => UserDomainClasses.PROFESSIONAL;

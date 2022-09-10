@@ -18,12 +18,14 @@ const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 routes.post(
   "/search",
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.read
 );
 routes.post(
   "/search_liable",
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_LIABLE),
   controller.readLiable
 );

@@ -6,9 +6,11 @@ import { RolesKeys } from "@common/RolesKeys";
 import { ProfessionalController } from "@controllers/ProfessionalController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
+import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
 const routes = Router();
 const controller = new ProfessionalController();
+const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 const RBAC = container.resolve(RBACMiddleware);
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
@@ -17,6 +19,7 @@ const ensureAuthenticated = container.resolve(
 routes.post(
   "/search",
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PROFESSIONAL),
   controller.read
 );

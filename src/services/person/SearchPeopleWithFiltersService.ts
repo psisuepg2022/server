@@ -2,7 +2,6 @@ import i18n from "i18n";
 
 import { AppError } from "@handlers/error/AppError";
 import { pagination } from "@helpers/pagination";
-import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
 import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { AddressModel } from "@models/domain/AddressModel";
@@ -12,7 +11,6 @@ import { ListPeopleResponseModel } from "@models/dto/person/ListPeopleResponseMo
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IMaskProvider } from "@providers/mask";
-import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IPersonRepository } from "@repositories/person";
 
@@ -33,7 +31,6 @@ class SearchPeopleWithFiltersService<
   constructor(
     protected personRepository: IPersonRepository,
     protected maskProvider: IMaskProvider,
-    protected uniqueIdentifierProvider: IUniqueIdentifierProvider,
     protected validatorsProvider: IValidatorsProvider
   ) {}
 
@@ -99,12 +96,6 @@ class SearchPeopleWithFiltersService<
     clinicId: string,
     { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
   ): Promise<IPaginationResponse<T>> {
-    if (stringIsNullOrEmpty(clinicId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicRequired"));
-
-    if (!this.uniqueIdentifierProvider.isValid(clinicId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
-
     if (filters?.CPF && !this.validatorsProvider.cpf(filters?.CPF))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFInvalid"));
 
