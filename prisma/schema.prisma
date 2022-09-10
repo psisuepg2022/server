@@ -174,7 +174,7 @@ model Appointment {
   id              String   @id @db.Uuid
   status          Int      @map("situacao") @db.SmallInt
   appointmentDate DateTime @map("data_agendamento") @db.Timestamp()
-  updatedAt       DateTime @updatedAt @map("data_ultima_atualizacao") @db.Timestamp()
+  updatedAt       DateTime @map("data_ultima_atualizacao") @db.Timestamp()
   createdAt       DateTime @default(now()) @map("data_criacao") @db.Timestamp()
   comments        String?  @map("observacoes") @db.Text
 
