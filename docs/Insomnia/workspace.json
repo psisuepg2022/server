@@ -1,15 +1,15 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-10T21:29:16.711Z",
-  "__export_source": "insomnia.desktop.app:v2022.5.1",
+  "__export_date": "2022-09-12T19:26:36.751Z",
+  "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
       "_id": "req_2a8931043cfe4d7aa5f73148fd9f9aac",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "modified": 1662845336604,
+      "modified": 1662988460815,
       "created": 1662824569199,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/ad0bc619-cff4-4070-b27f-e0e2a3666e74",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/fb74f609-1a61-4766-bce5-028e5cf9ecfb",
       "name": "read",
       "description": "",
       "method": "GET",
@@ -55,15 +55,15 @@
     {
       "_id": "req_3e7acdb8c7a94d2a809fc45014fc118d",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "modified": 1662825542699,
+      "modified": 1662988843720,
       "created": 1662560106123,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/4c0a8d50-266d-4ea4-bfd0-885e38c85842",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/fb74f609-1a61-4766-bce5-028e5cf9ecfb",
       "name": "save",
       "description": "",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"text\": \"<h1>eae</h1><h1 title='eae' />\"\n}"
+        "text": "{\n\t\"text\": \"eae\",\n\t\"blankComments\": \"false\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -90,7 +90,7 @@
     {
       "_id": "req_35890d19f5904844a50ce38dcebafa77",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662566093793,
+      "modified": 1662993385412,
       "created": 1662467185449,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/4c0a8d50-266d-4ea4-bfd0-885e38c85842",
       "name": "status",
@@ -172,7 +172,7 @@
     {
       "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662821095482,
+      "modified": 1662993454708,
       "created": 1661882176759,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "calendar",
@@ -207,15 +207,15 @@
     {
       "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662561772956,
+      "modified": 1662988443869,
       "created": 1661888766274,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/01937cdf-fec9-49eb-b994-8a4337b85a75",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "calendar by professional",
       "description": "",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"startDate\": \"\",\n\t\"endDate\": \"\"\n}"
+        "text": "{\n\t\"startDate\": \"2022-08-27\",\n\t\"endDate\": \"2022-09-02\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -242,7 +242,7 @@
     {
       "_id": "req_01d6a83bff304a92bd3333d98b39be18",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1662561704977,
+      "modified": 1662992971984,
       "created": 1660223915857,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -250,7 +250,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-09-08\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"01937cdf-fec9-49eb-b994-8a4337b85a75\",\n\t\"patientId\": \"ad0bc619-cff4-4070-b27f-e0e2a3666e74\"\n}"
+        "text": "{\n\t\"date\": \"2022-09-14\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"01937cdf-fec9-49eb-b994-8a4337b85a75\",\n\t\"patientId\": \"ad0bc619-cff4-4070-b27f-e0e2a3666e74\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -545,7 +545,7 @@
     {
       "_id": "req_2e0a89dd2f454dd5a6f1ef171427aedb",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1662560152498,
+      "modified": 1662988393236,
       "created": 1662402795446,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "reset_password",
@@ -592,7 +592,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1662845086175,
+      "modified": 1662993458174,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -600,7 +600,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"accessCode\": \"1003\"\n}"
+        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"accessCode\": \"1001\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -919,6 +919,53 @@
       "_type": "request"
     },
     {
+      "_id": "req_ca5f62e5c64f4fe3a56e50eb73bf02fc",
+      "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "modified": 1663009502323,
+      "created": 1662989732760,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "update",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"id\": \"77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f\",\n\t\"name\": \"Marcos\",\n\t\"userName\": \"user.professional\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"id\": \"a2ec8e9c-e9fa-4011-b56f-439324c2568a\",\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_7cd84d31a94c4d8dba78c4f936b31557"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1662989732760,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657542043558,
+      "created": 1657542043558,
+      "name": "professional",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657341392945.5,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
       "modified": 1661983006662,
@@ -946,21 +993,9 @@
       "_type": "request"
     },
     {
-      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657542043558,
-      "created": 1657542043558,
-      "name": "professional",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657341392945.5,
-      "_type": "request_group"
-    },
-    {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1662054679609,
+      "modified": 1663009422717,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -996,7 +1031,7 @@
     {
       "_id": "req_4b0aa19c250f454bb12fdb8594f14c2c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1662845053002,
+      "modified": 1662991489674,
       "created": 1657542043564,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -1030,9 +1065,56 @@
       "_type": "request"
     },
     {
+      "_id": "req_b6bfe93d801f4f58acf223460b100c1d",
+      "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
+      "modified": 1663010716850,
+      "created": 1663009775898,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "update",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"id\": \"e413e04b-25aa-4bec-89ef-99dd6eaf978c\",\n\t\"userName\": \"user.employee\",\n\t\"password\": \"UserEmployee123\",\n\t\"email\": \"employee@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_f7ff50bf1cc94d3cb33d3619ce36c1f9"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1663009775898,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8bde367d58d470d99959c29472f6b61",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657143642068,
+      "created": 1657142212136,
+      "name": "employee",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657142212136,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_803168cfaab9400a95969ce92480fb14",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1661982999613,
+      "modified": 1663010757161,
       "created": 1657151453642,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -1064,18 +1146,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_a8bde367d58d470d99959c29472f6b61",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657143642068,
-      "created": 1657142212136,
-      "name": "employee",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657142212136,
-      "_type": "request_group"
     },
     {
       "_id": "req_cb580cfea75041b6883f671cd2f8d0f3",
@@ -1324,7 +1394,9 @@
           "maxAge": 7200,
           "domain": "gerador.app",
           "path": "/",
-          "extensions": ["samesite=lax"],
+          "extensions": [
+            "samesite=lax"
+          ],
           "hostOnly": true,
           "creation": "2022-07-21T22:05:42.452Z",
           "lastAccessed": "2022-07-21T22:35:12.150Z",
@@ -1338,7 +1410,9 @@
           "domain": "gerador.app",
           "path": "/",
           "httpOnly": true,
-          "extensions": ["samesite=lax"],
+          "extensions": [
+            "samesite=lax"
+          ],
           "hostOnly": true,
           "creation": "2022-07-21T22:05:42.453Z",
           "lastAccessed": "2022-07-21T22:35:12.150Z",
@@ -1368,7 +1442,13 @@
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
         "clinicId": "{% response 'body', 'req_698f458fffe74931b121812d0d0f19c2', 'b64::JC5jb250ZW50Lmlk::46b', 'never', 60 %}"
       },
-      "dataPropertyOrder": { "&": ["base_url", "support", "clinicId"] },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "support",
+          "clinicId"
+        ]
+      },
       "color": "#10e529",
       "isPrivate": false,
       "metaSortKey": 1654723872664,
@@ -1385,7 +1465,13 @@
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
         "clinicId": "{% response 'body', 'req_698f458fffe74931b121812d0d0f19c2', 'b64::JC5jb250ZW50Lmlk::46b', 'never', 60 %}"
       },
-      "dataPropertyOrder": { "&": ["base_url", "support", "clinicId"] },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "support",
+          "clinicId"
+        ]
+      },
       "color": "#f00f0f",
       "isPrivate": false,
       "metaSortKey": 1654723874269,
