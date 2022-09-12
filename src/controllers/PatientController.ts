@@ -83,7 +83,6 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
-      console.log(error);
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
