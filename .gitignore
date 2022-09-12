@@ -8,3 +8,4 @@
 dist
 node_modules
 backup/db/*.sql
+log/db/*.log
