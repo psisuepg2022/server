@@ -153,7 +153,9 @@ class AppointmentRepository implements IAppointmentRepository {
       where: {
         id,
         professionalId,
-        comments: null,
+        status: {
+          in: [AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED],
+        },
       },
       select: { id: true },
     });

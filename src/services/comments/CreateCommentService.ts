@@ -2,8 +2,10 @@ import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
+import { AppointmentStatus } from "@infra/domains";
 import { CreateCommentRequestModel } from "@models/dto/comments/CreateCommentRequestModel";
 import { CreateCommentResponseModel } from "@models/dto/comments/CreateCommentResponseModel";
 import { IDateProvider } from "@providers/date";
@@ -53,33 +55,42 @@ class CreateCommentService {
 
     // TODO: text validation
 
-    if (!blankComments) {
-      const [hasAppointment] = await transaction([
-        this.appointmentRepository.findToUpdateComment(
-          appointmentId,
-          professionalId
-        ),
-      ]);
+    const [hasAppointment] = await transaction([
+      this.appointmentRepository.findToUpdateComment(
+        appointmentId,
+        professionalId
+      ),
+    ]);
 
-      if (!hasAppointment)
-        throw new AppError(
-          "NOT_FOUND",
-          i18n.__("ErrorCreateCommentAppointmentNotFound")
-        );
-    }
+    if (!hasAppointment)
+      throw new AppError(
+        "NOT_FOUND",
+        i18n.__("ErrorCreateCommentAppointmentNotFound")
+      );
 
-    const [created] = await transaction([
+    const updatedAt = this.dateProvider.now();
+
+    const [createdComment, updatedStatus] = await transaction([
       this.commentsRepository.save(
         appointmentId,
         blankComments ? null : text,
-        this.dateProvider.now()
+        updatedAt
+      ),
+      this.appointmentRepository.updateStatus(
+        appointmentId,
+        AppointmentStatus.CONFIRMED,
+        updatedAt
       ),
     ]);
 
     return {
-      appointmentId: created.id,
-      text: created.comments || "",
-      updatedAt: created.updatedAt.toISOString(),
+      appointmentId: createdComment.id,
+      text: createdComment.comments || "",
+      updatedAt: createdComment.updatedAt.toISOString(),
+      status: getEnumDescription(
+        "APPOINTMENT_STATUS",
+        AppointmentStatus[updatedStatus.status as number]
+      ),
     };
   }
 }
