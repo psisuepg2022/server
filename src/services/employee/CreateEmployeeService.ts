@@ -55,18 +55,22 @@ class CreateEmployeeService extends CreateUserService {
     );
   }
 
-  public async execute({
-    CPF,
-    birthDate,
-    name,
-    address,
-    password,
-    userName,
-    contactNumber,
-    email,
-    clinicId,
-  }: CreateEmployeeRequestModel): Promise<Partial<EmployeeModel>> {
-    const id = this.uniqueIdentifierProvider.generate();
+  public async execute(
+    {
+      id: idReceived,
+      CPF,
+      birthDate,
+      name,
+      address,
+      password,
+      userName,
+      contactNumber,
+      email,
+      clinicId,
+    }: CreateEmployeeRequestModel,
+    savePassword = true
+  ): Promise<Partial<EmployeeModel>> {
+    const id = this.getObjectId(idReceived);
 
     await super.createUserOperation(
       {
@@ -81,7 +85,8 @@ class CreateEmployeeService extends CreateUserService {
         clinicId,
       },
       id,
-      UserDomainClasses.EMPLOYEE
+      UserDomainClasses.EMPLOYEE,
+      savePassword
     );
 
     const [person, user, addressSaved] = await transaction(
