@@ -87,32 +87,35 @@ class CreateUserService extends CreatePersonService {
       userName,
     }: CreateUserRequestModel,
     id: string,
-    domainClass: string
+    domainClass: string,
+    savePassword = true
   ): Promise<void> {
     if (stringIsNullOrEmpty(userName))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameRequired"));
 
     const [hasUserName] = await transaction([
-      this.userRepository.hasUserName(userName),
+      this.userRepository.hasUserName(id, userName),
     ]);
 
     if (hasUserName)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameAlreadyExists"));
 
-    if (stringIsNullOrEmpty(password))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordRequired"));
+    if (savePassword && password) {
+      if (stringIsNullOrEmpty(password))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordRequired"));
 
-    if (this.passwordProvider.outOfBounds(password))
-      throw new AppError(
-        "BAD_REQUEST",
-        i18n.__mf("ErrorPasswordOutOfBounds", [
-          this.passwordProvider.MIN_LENGTH,
-          this.passwordProvider.MAX_LENGTH,
-        ])
-      );
+      if (this.passwordProvider.outOfBounds(password))
+        throw new AppError(
+          "BAD_REQUEST",
+          i18n.__mf("ErrorPasswordOutOfBounds", [
+            this.passwordProvider.MIN_LENGTH,
+            this.passwordProvider.MAX_LENGTH,
+          ])
+        );
 
-    if (!this.passwordProvider.hasStrength(password))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordToWeak"));
+      if (!this.passwordProvider.hasStrength(password))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorPasswordToWeak"));
+    }
 
     const salt = toNumber({
       value: env("PASSWORD_HASH_SALT"),
@@ -147,7 +150,9 @@ class CreateUserService extends CreatePersonService {
 
     this.userOperation = this.userRepository.save(hasRole.id, {
       id,
-      password: await this.hashProvider.hash(password, salt),
+      password: savePassword
+        ? await this.hashProvider.hash(password as string, salt)
+        : "null",
       userName,
     } as UserModel);
   }

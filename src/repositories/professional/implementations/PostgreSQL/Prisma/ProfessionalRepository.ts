@@ -136,6 +136,67 @@ class ProfessionalRepository implements IProfessionalRepository {
         baseDuration: true,
       },
     }) as PrismaPromise<Partial<ProfessionalModel>>;
+
+  public getToUpdate = (
+    clinicId: string,
+    id: string
+  ): PrismaPromise<
+    | (Partial<ProfessionalModel> & {
+        user: Partial<UserModel> & {
+          person: Partial<PersonModel> & { address: AddressModel };
+        };
+      })
+    | null
+  > =>
+    this.prisma.professional.findFirst({
+      where: {
+        id,
+        user: {
+          person: {
+            clinicId,
+            active: true,
+            domainClass: UserDomainClasses.PROFESSIONAL,
+          },
+        },
+      },
+      select: {
+        baseDuration: true,
+        profession: true,
+        registry: true,
+        specialization: true,
+        user: {
+          select: {
+            userName: true,
+            person: {
+              select: {
+                birthDate: true,
+                contactNumber: true,
+                CPF: true,
+                email: true,
+                name: true,
+                address: {
+                  select: {
+                    id: true,
+                    city: true,
+                    district: true,
+                    state: true,
+                    publicArea: true,
+                    zipCode: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    }) as PrismaPromise<
+      | (Partial<ProfessionalModel> & {
+          user: Partial<UserModel> & {
+            person: Partial<PersonModel> & { address: AddressModel };
+          };
+        })
+      | null
+    >;
 }
 
 export { ProfessionalRepository };

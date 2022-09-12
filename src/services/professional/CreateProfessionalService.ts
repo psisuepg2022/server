@@ -44,13 +44,13 @@ class CreateProfessionalService extends CreateUserService {
     @inject("MaskProvider")
     maskProvider: IMaskProvider,
     @inject("HashProvider")
-    haskProvider: IHashProvider,
+    hashProvider: IHashProvider,
     @inject("AuthenticationRepository")
     authenticationRepository: IAuthenticationRepository,
     @inject("AddressRepository")
     addressRepository: IAddressRepository,
     @inject("ProfessionalRepository")
-    private professionalRepository: IProfessionalRepository,
+    protected professionalRepository: IProfessionalRepository,
     @inject("ScheduleRepository")
     private scheduleRepository: IScheduleRepository,
     @inject("DateProvider")
@@ -65,26 +65,31 @@ class CreateProfessionalService extends CreateUserService {
       addressRepository,
       userRepository,
       passwordProvider,
-      haskProvider,
+      hashProvider,
       authenticationRepository
     );
   }
 
-  public async execute({
-    CPF,
-    birthDate,
-    name,
-    address,
-    password,
-    userName,
-    contactNumber,
-    email,
-    clinicId,
-    profession,
-    registry,
-    specialization,
-  }: CreateProfessionalRequestModel): Promise<Partial<ProfessionalModel>> {
-    const id = this.uniqueIdentifierProvider.generate();
+  public async execute(
+    {
+      id: idReceived,
+      CPF,
+      birthDate,
+      name,
+      address,
+      password,
+      userName,
+      contactNumber,
+      email,
+      clinicId,
+      profession,
+      registry,
+      specialization,
+    }: CreateProfessionalRequestModel,
+    createSchedule = true,
+    savePassword = true
+  ): Promise<Partial<ProfessionalModel>> {
+    const id = this.getObjectId(idReceived);
 
     if (stringIsNullOrEmpty(profession))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorProfessionRequired"));
@@ -105,7 +110,8 @@ class CreateProfessionalService extends CreateUserService {
         clinicId,
       },
       id,
-      UserDomainClasses.PROFESSIONAL
+      UserDomainClasses.PROFESSIONAL,
+      savePassword
     );
 
     const createProfessionalOperation = this.professionalRepository.save(id, {
@@ -114,27 +120,28 @@ class CreateProfessionalService extends CreateUserService {
       specialization,
     } as ProfessionalModel);
 
-    const [createWeeklyScheduleOperation, createWeeklyScheduleLocksOperation] =
-      this.getWeeklyScheduleOperations(id);
-
     const [person, user, professional, addressSaved] = await transaction(
-      ((): PrismaPromise<any>[] =>
-        address
-          ? [
-              this.getCreatePersonOperation(),
-              this.getCreateUserOperation(),
-              createProfessionalOperation,
-              this.getAddressOperation(),
-              ...createWeeklyScheduleOperation,
-              ...createWeeklyScheduleLocksOperation,
-            ]
-          : [
-              this.getCreatePersonOperation(),
-              this.getCreateUserOperation(),
-              createProfessionalOperation,
-              ...createWeeklyScheduleOperation,
-              ...createWeeklyScheduleLocksOperation,
-            ])()
+      ((): PrismaPromise<any>[] => {
+        const list = [
+          this.getCreatePersonOperation(),
+          this.getCreateUserOperation(),
+          createProfessionalOperation,
+        ];
+
+        if (address) list.push(this.getAddressOperation());
+
+        if (createSchedule) {
+          const [
+            createWeeklyScheduleOperation,
+            createWeeklyScheduleLocksOperation,
+          ] = this.getWeeklyScheduleOperations(id);
+
+          list.push(...createWeeklyScheduleOperation);
+          list.push(...createWeeklyScheduleLocksOperation);
+        }
+
+        return list;
+      })()
     );
 
     return {

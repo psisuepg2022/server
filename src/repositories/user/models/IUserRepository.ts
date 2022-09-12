@@ -6,7 +6,7 @@ import { PermissionModel } from "@models/utils/PermissionModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IUserRepository {
-  hasUserName(userName: string): PrismaPromise<UserModel | null>;
+  hasUserName(id: string, userName: string): PrismaPromise<UserModel | null>;
   hasActivatedUser(
     userName: string,
     accessCode: number

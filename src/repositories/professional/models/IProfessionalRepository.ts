@@ -30,6 +30,17 @@ interface IProfessionalRepository {
     clinicId: string,
     professionalId: string
   ): PrismaPromise<{ id: string; baseDuration: number } | null>;
+  getToUpdate(
+    clinicId: string,
+    id: string
+  ): PrismaPromise<
+    | (Partial<ProfessionalModel> & {
+        user: Partial<UserModel> & {
+          person: Partial<PersonModel> & { address: AddressModel };
+        };
+      })
+    | null
+  >;
 }
 
 export { IProfessionalRepository };

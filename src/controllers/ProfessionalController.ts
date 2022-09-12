@@ -3,6 +3,7 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
@@ -10,6 +11,7 @@ import {
   CreateProfessionalService,
   SearchProfessionalsWithFiltersService,
   SoftProfessionalDeleteService,
+  UpdateProfessionalService,
 } from "@services/professional";
 
 class ProfessionalController {
@@ -19,6 +21,7 @@ class ProfessionalController {
   ): Promise<Response> {
     try {
       const {
+        id,
         userName,
         password,
         email,
@@ -34,11 +37,12 @@ class ProfessionalController {
 
       const { id: clinicId } = req.clinic;
 
-      const createProfessionalService = container.resolve(
-        CreateProfessionalService
-      );
+      const [service, httpStatusResponse] = stringIsNullOrEmpty(id)
+        ? [container.resolve(CreateProfessionalService), HttpStatus.CREATED]
+        : [container.resolve(UpdateProfessionalService), HttpStatus.OK];
 
-      const result = await createProfessionalService.execute({
+      const result = await service.execute({
+        id,
         userName,
         birthDate,
         contactNumber,
@@ -52,6 +56,7 @@ class ProfessionalController {
         specialization,
         address: address
           ? {
+              id: address.id,
               state: address.state,
               zipCode: address.zipCode,
               city: address.city,
@@ -61,7 +66,7 @@ class ProfessionalController {
           : undefined,
       });
 
-      return res.status(HttpStatus.CREATED).json({
+      return res.status(httpStatusResponse).json({
         success: true,
         content: result,
         message: i18n.__("SuccessGeneric"),
