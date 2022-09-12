@@ -8,7 +8,7 @@ class CommentsRepository implements ICommentsRepository {
 
   public save = (
     id: string,
-    text: string,
+    text: string | null,
     updatedAt: Date
   ): PrismaPromise<{ id: string; comments: string | null; updatedAt: Date }> =>
     this.prisma.appointment.update({

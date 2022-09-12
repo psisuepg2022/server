@@ -15,7 +15,7 @@ class CommentsController {
     try {
       const { id: professionalId } = req.user;
       const { id: appointmentId } = req.params;
-      const { text } = req.body;
+      const { text, blankComments } = req.body;
 
       const service = container.resolve(CreateCommentService);
 
@@ -23,6 +23,7 @@ class CommentsController {
         appointmentId,
         professionalId,
         text,
+        blankComments: blankComments === "true",
       });
 
       return res.status(HttpStatus.CREATED).json({

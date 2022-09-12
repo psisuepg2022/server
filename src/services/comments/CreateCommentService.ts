@@ -28,6 +28,7 @@ class CreateCommentService {
     appointmentId,
     professionalId,
     text,
+    blankComments,
   }: CreateCommentRequestModel): Promise<CreateCommentResponseModel> {
     if (stringIsNullOrEmpty(appointmentId))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorAppointmentIdRequired"));
@@ -44,7 +45,7 @@ class CreateCommentService {
     )
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
-    if (stringIsNullOrEmpty(text))
+    if (!blankComments && stringIsNullOrEmpty(text))
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorCreateCommentTextRequired")
@@ -52,23 +53,25 @@ class CreateCommentService {
 
     // TODO: text validation
 
-    const [hasAppointment] = await transaction([
-      this.appointmentRepository.findToUpdateComment(
-        appointmentId,
-        professionalId
-      ),
-    ]);
+    if (!blankComments) {
+      const [hasAppointment] = await transaction([
+        this.appointmentRepository.findToUpdateComment(
+          appointmentId,
+          professionalId
+        ),
+      ]);
 
-    if (!hasAppointment)
-      throw new AppError(
-        "NOT_FOUND",
-        i18n.__("ErrorCreateCommentAppointmentNotFound")
-      );
+      if (!hasAppointment)
+        throw new AppError(
+          "NOT_FOUND",
+          i18n.__("ErrorCreateCommentAppointmentNotFound")
+        );
+    }
 
     const [created] = await transaction([
       this.commentsRepository.save(
         appointmentId,
-        text,
+        blankComments ? null : text,
         this.dateProvider.now()
       ),
     ]);
