@@ -1,13 +1,11 @@
 import { IMiddleware } from "@infra/http";
 import { logger } from "@infra/log";
 
-const logMiddleware =
-  (msg: string): IMiddleware =>
-  async (_, __, next) => {
-    logger.info(
-      `============================ ${msg} ============================`
-    );
-    return next();
-  };
+const logMiddleware: IMiddleware = async (req, _, next) => {
+  logger.info(
+    `============================ ${req.method} ${req.originalUrl} ============================`
+  );
+  return next();
+};
 
 export { logMiddleware };
