@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { RolesKeys } from "@common/RolesKeys";
 import { CommentsController } from "@controllers/CommentsController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
@@ -17,6 +18,7 @@ const ensureAuthenticated = container.resolve(
 
 routes.post(
   "/:id",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
@@ -24,6 +26,7 @@ routes.post(
 );
 routes.get(
   "/:patient_id",
+  logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.read

@@ -5,6 +5,7 @@ import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { EmployeeController } from "@controllers/EmployeeController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
@@ -18,6 +19,7 @@ const ensureAuthenticated = container.resolve(
 
 routes.post(
   "/search",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_EMPLOYEE),
@@ -25,12 +27,14 @@ routes.post(
 );
 routes.post(
   "/",
+  logMiddleware,
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.CREATE_EMPLOYEE),
   controller.create
 );
 routes.delete(
   "/:id",
+  logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.OWNER),
   controller.delete

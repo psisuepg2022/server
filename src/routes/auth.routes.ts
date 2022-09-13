@@ -3,6 +3,7 @@ import { container } from "tsyringe";
 
 import { AuthController } from "@controllers/AuthController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { logMiddleware } from "@middlewares/logMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
 const routes = Router();
@@ -12,9 +13,10 @@ const ensureAuthenticated = container.resolve(
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
-routes.post("/", controller.login);
+routes.post("/", logMiddleware, controller.login);
 routes.post(
   "/reset_password",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   controller.resetPassword

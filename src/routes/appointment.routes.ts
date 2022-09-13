@@ -5,6 +5,7 @@ import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { AppointmentController } from "@controllers/AppointmentController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
@@ -18,6 +19,7 @@ const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
 routes.post(
   "/",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_APPOINTMENT),
@@ -32,6 +34,7 @@ routes.post(
 );
 routes.post(
   "/calendar/:professional_id",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
@@ -39,6 +42,7 @@ routes.post(
 );
 routes.post(
   "/autocomplete_patient",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
@@ -46,6 +50,7 @@ routes.post(
 );
 routes.patch(
   "/status/:id",
+  logMiddleware,
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
   controller.updateStatus
