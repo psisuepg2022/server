@@ -38,6 +38,7 @@ BEGIN
     c.id_profissional = NEW.id_profissional 
     AND c.situacao <> 4
     AND c.id_paciente <> NEW.id_paciente
+    AND OLD.id <> NEW.id
     AND NEW.data_agendamento >= c.data_agendamento
     AND NEW.data_agendamento <= (c.data_agendamento + (DURACAO_CONSULTA* interval '1 minute'))
   LIMIT 1;
