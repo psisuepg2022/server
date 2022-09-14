@@ -1,5 +1,6 @@
 import { createPrismaRedisCache } from "prisma-redis-middleware";
 
+import { logger } from "@infra/log";
 import { Prisma } from "@prisma/client";
 
 const cacheMiddleware: Prisma.Middleware<any> = createPrismaRedisCache({
@@ -17,15 +18,12 @@ const cacheMiddleware: Prisma.Middleware<any> = createPrismaRedisCache({
   ],
   storage: {
     type: "memory",
-    options: {
-      invalidation: true,
-      // log: "console",
-    },
+    options: { invalidation: true },
   },
   cacheTime: 1,
-  // onHit: (key) => console.log("hit", key),
-  // onMiss: (key) => console.log("miss", key),
-  // onError: (key) => console.log("error", key),
+  onHit: (key) => logger.info(`Prisma Cache Middleware -> hit ${key}`),
+  onMiss: (key) => logger.info(`Prisma Cache Middleware -> miss ${key}`),
+  onError: (key) => logger.info(`Prisma Cache Middleware -> error ${key}`),
 }) as Prisma.Middleware<any>;
 
 export { cacheMiddleware };
