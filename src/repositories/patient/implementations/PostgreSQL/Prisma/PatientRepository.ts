@@ -210,6 +210,7 @@ class PatientRepository implements IPatientRepository {
           domainClass: UserDomainClasses.PATIENT,
           name: {
             contains: name,
+            mode: "insensitive",
           },
         },
       },
