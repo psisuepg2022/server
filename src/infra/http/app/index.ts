@@ -19,17 +19,8 @@ const xss = require("xss-clean");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      const whitelist = env("LIST_ALLOWED_ORIGINS")?.split(",");
-
-      if (whitelist?.indexOf(origin || "") !== -1) callback(null, true);
-      else callback(new Error(""));
-    },
-  })
-);
 app.use(helmet());
+app.use(cors({ origin: env("LIST_ALLOWED_ORIGINS")?.split(",") }));
 app.use(express.json({ limit: "10kb" }));
 app.use(xss());
 app.use(hpp());
