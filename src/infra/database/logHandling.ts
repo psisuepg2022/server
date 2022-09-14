@@ -6,7 +6,14 @@ const handleErrorLog = (evt: Prisma.LogEvent): void => {
 };
 
 const handleQueryLog = (evt: Prisma.QueryEvent): void => {
-  const params = JSON.parse(evt.params);
+  const params = (() => {
+    try {
+      const _params = JSON.parse(evt.params);
+      return _params;
+    } catch (e) {
+      return evt.params.substring(1, evt.params.length - 1).split(",");
+    }
+  })();
 
   const matchArray: string[] = [...evt.query.matchAll(/(?:\$)[0-9]+/g)].map(
     ([item]: RegExpMatchArray): string => item
