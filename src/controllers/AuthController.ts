@@ -4,8 +4,13 @@ import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
+import { GetProfileResponseModel } from "@models/dto/auth/GetProfileResponseModel";
 import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
-import { LoginService, ResetPasswordService } from "@services/auth";
+import {
+  GetProfileService,
+  LoginService,
+  ResetPasswordService,
+} from "@services/auth";
 
 class AuthController {
   public async login(
@@ -54,6 +59,30 @@ class AuthController {
         oldPassword,
         userId,
       });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getProfile(
+    req: Request,
+    res: Response<IResponseMessage<GetProfileResponseModel>>
+  ): Promise<Response> {
+    try {
+      const { id: userId } = req.user;
+
+      const service = container.resolve(GetProfileService);
+
+      const result = await service.execute(userId);
 
       return res.status(HttpStatus.OK).json({
         success: true,

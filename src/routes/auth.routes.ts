@@ -13,6 +13,12 @@ const ensureAuthenticated = container.resolve(
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
+routes.get(
+  "/",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  controller.getProfile
+);
 routes.post("/", logMiddleware, controller.login);
 routes.post(
   "/reset_password",
