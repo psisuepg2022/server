@@ -27,6 +27,7 @@ routes.post(
 );
 routes.post(
   "/calendar",
+  logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
