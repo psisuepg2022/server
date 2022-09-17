@@ -106,10 +106,6 @@ class LoginService {
 
     const accessToken = this.authTokenProvider.generate({
       id: hasUser.id,
-      name: hasUser.person.name,
-      email: hasUser.person.email,
-      accessCode: hasUser.accessCode,
-      userName: hasUser.userName,
       baseDuration,
       clinic: {
         id: hasUser.person.clinic.id,
