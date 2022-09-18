@@ -39,7 +39,8 @@ interface IUserRepository {
   ): PrismaPromise<Partial<UserModel>>;
   getProfile(
     clinicId: string,
-    id: string
+    id: string,
+    domainClass: string
   ): PrismaPromise<{
     person: Partial<PersonModel> & { address: AddressModel };
   } | null>;

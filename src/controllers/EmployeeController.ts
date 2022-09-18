@@ -10,11 +10,11 @@ import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesRe
 import { GetUserProfileResponseModel } from "@models/dto/user/GetUserProfileResponseModel";
 import {
   CreateEmployeeService,
+  GetEmployeeProfileService,
   SearchEmployeesWithFiltersService,
   SoftEmployeeDeleteService,
   UpdateEmployeeService,
 } from "@services/employee";
-import { GetUserProfileService } from "@services/user";
 
 class EmployeeController {
   public async create(
@@ -147,7 +147,7 @@ class EmployeeController {
       const { id: userId } = req.user;
       const { id: clinicId } = req.clinic;
 
-      const service = container.resolve(GetUserProfileService);
+      const service = container.resolve(GetEmployeeProfileService);
 
       const result = await service.execute({
         clinicId,

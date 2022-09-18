@@ -160,7 +160,8 @@ class UserRepository implements IUserRepository {
 
   public getProfile = (
     clinicId: string,
-    id: string
+    id: string,
+    domainClass: string
   ): PrismaPromise<{
     person: Partial<PersonModel> & { address: AddressModel };
   } | null> =>
@@ -171,6 +172,7 @@ class UserRepository implements IUserRepository {
         person: {
           clinicId,
           active: true,
+          domainClass,
         },
       },
       select: {
