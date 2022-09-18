@@ -9,9 +9,9 @@ import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeMod
 import { GetUserProfileResponseModel } from "@models/dto/user/GetUserProfileResponseModel";
 import {
   CreateOwnerService,
+  GetOwnerProfileService,
   SearchOwnersWithFiltersService,
 } from "@services/owner";
-import { GetUserProfileService } from "@services/user";
 
 class OwnerController {
   public async create(
@@ -103,7 +103,7 @@ class OwnerController {
       const { id: userId } = req.user;
       const { id: clinicId } = req.clinic;
 
-      const service = container.resolve(GetUserProfileService);
+      const service = container.resolve(GetOwnerProfileService);
 
       const result = await service.execute({
         clinicId,
