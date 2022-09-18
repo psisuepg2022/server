@@ -6,9 +6,11 @@ import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { GetProfessionalProfileModel } from "@models/dto/professional/GetProfessionalProfileModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import {
   CreateProfessionalService,
+  GetProfessionalProfileService,
   SearchProfessionalsWithFiltersService,
   SoftProfessionalDeleteService,
   UpdateProfessionalService,
@@ -131,6 +133,34 @@ class ProfessionalController {
       );
 
       const result = await softDeleteService.execute(clinicId, id);
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getProfile(
+    req: Request,
+    res: Response<IResponseMessage<GetProfessionalProfileModel>>
+  ): Promise<Response> {
+    try {
+      const { id: userId } = req.user;
+      const { id: clinicId } = req.clinic;
+
+      const service = container.resolve(GetProfessionalProfileService);
+
+      const result = await service.execute({
+        clinicId,
+        userId,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,

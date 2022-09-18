@@ -39,5 +39,13 @@ routes.delete(
   RBAC.is(RolesKeys.OWNER),
   controller.delete
 );
+routes.get(
+  "/profile",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.getProfile
+);
 
 export { routes };

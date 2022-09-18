@@ -41,6 +41,14 @@ interface IProfessionalRepository {
       })
     | null
   >;
+  getProfile(
+    clinicId: string,
+    id: string,
+    domainClass: string
+  ): PrismaPromise<{
+    person: Partial<PersonModel> & { address: AddressModel };
+    professional: Partial<ProfessionalModel>;
+  } | null>;
 }
 
 export { IProfessionalRepository };
