@@ -4,7 +4,7 @@ import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AddressModel } from "@models/domain/AddressModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
-import { GetProfessionalProfileModel } from "@models/dto/professional/GetProfessionalProfileModel";
+import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IProfessionalRepository } from "@repositories/professional";
@@ -12,7 +12,7 @@ import { GetUserProfileService } from "@services/user";
 
 @injectable()
 class GetProfessionalProfileService extends GetUserProfileService<
-  GetProfessionalProfileModel,
+  GetProfessionalProfileResponseModel,
   {
     person: Partial<PersonModel> & { address: AddressModel };
     professional: Partial<ProfessionalModel>;
@@ -41,13 +41,13 @@ class GetProfessionalProfileService extends GetUserProfileService<
   protected convertObject = (obj: {
     person: Partial<PersonModel> & { address: AddressModel };
     professional: Partial<ProfessionalModel>;
-  }): GetProfessionalProfileModel =>
+  }): GetProfessionalProfileResponseModel =>
     ({
       ...this.covertBase(obj),
       specialization: obj.professional.specialization,
       profession: obj.professional.profession,
       registry: obj.professional.registry,
-    } as GetProfessionalProfileModel);
+    } as GetProfessionalProfileResponseModel);
 }
 
 export { GetProfessionalProfileService };

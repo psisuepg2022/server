@@ -6,7 +6,7 @@ import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
-import { GetProfessionalProfileModel } from "@models/dto/professional/GetProfessionalProfileModel";
+import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import {
   CreateProfessionalService,
@@ -149,7 +149,7 @@ class ProfessionalController {
 
   public async getProfile(
     req: Request,
-    res: Response<IResponseMessage<GetProfessionalProfileModel>>
+    res: Response<IResponseMessage<GetProfessionalProfileResponseModel>>
   ): Promise<Response> {
     try {
       const { id: userId } = req.user;

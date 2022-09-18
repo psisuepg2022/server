@@ -1,9 +1,9 @@
 import { GetUserProfileResponseModel } from "../user/GetUserProfileResponseModel";
 
-type GetProfessionalProfileModel = GetUserProfileResponseModel & {
+type GetProfessionalProfileResponseModel = GetUserProfileResponseModel & {
   specialization?: string;
   profession: string;
   registry: string;
 };
 
-export { GetProfessionalProfileModel };
+export { GetProfessionalProfileResponseModel };
