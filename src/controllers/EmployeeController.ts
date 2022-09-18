@@ -145,10 +145,14 @@ class EmployeeController {
   ): Promise<Response> {
     try {
       const { id: userId } = req.user;
+      const { id: clinicId } = req.clinic;
 
       const service = container.resolve(GetUserProfileService);
 
-      const result = await service.execute(userId);
+      const result = await service.execute({
+        clinicId,
+        userId,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,

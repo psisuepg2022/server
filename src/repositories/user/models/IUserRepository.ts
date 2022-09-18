@@ -1,3 +1,4 @@
+import { AddressModel } from "@models/domain/AddressModel";
 import { ClinicModel } from "@models/domain/ClinicModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
@@ -36,6 +37,12 @@ interface IUserRepository {
     userId: string,
     password: string
   ): PrismaPromise<Partial<UserModel>>;
+  getProfile(
+    clinicId: string,
+    id: string
+  ): PrismaPromise<{
+    person: Partial<PersonModel> & { address: AddressModel };
+  } | null>;
 }
 
 export { IUserRepository };

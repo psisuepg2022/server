@@ -1,4 +1,5 @@
 import { prismaClient } from "@infra/database/client";
+import { AddressModel } from "@models/domain/AddressModel";
 import { ClinicModel } from "@models/domain/ClinicModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
@@ -156,6 +157,47 @@ class UserRepository implements IUserRepository {
       data: { password },
       select: { id: true, password: true },
     });
+
+  public getProfile = (
+    clinicId: string,
+    id: string
+  ): PrismaPromise<{
+    person: Partial<PersonModel> & { address: AddressModel };
+  } | null> =>
+    this.prisma.user.findFirst({
+      where: {
+        id,
+        blocked: false,
+        person: {
+          clinicId,
+          active: true,
+        },
+      },
+      select: {
+        person: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            CPF: true,
+            birthDate: true,
+            domainClass: true,
+            address: {
+              select: {
+                city: true,
+                district: true,
+                id: true,
+                publicArea: true,
+                state: true,
+                zipCode: true,
+              },
+            },
+          },
+        },
+      },
+    }) as PrismaPromise<{
+      person: Partial<PersonModel> & { address: AddressModel };
+    } | null>;
 }
 
 export { UserRepository };

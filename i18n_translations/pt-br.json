@@ -66,6 +66,7 @@
   "ErrorGenderInvalid": "A informação do gênero é inválida.",
   "ErrorGenderRequired": "É necessário informar o gênero.",
   "ErrorGenericUnknown": "Ocorreu um erro desconhecido. Por favor, entre em contato com um administrador.",
+  "ErrorGetProfileNotFound": "Não foi possível encontrar o perfil com o identificador informado. Por favor, entre em contato com um administrador.",
   "ErrorIdIsRequired": "É necessário informar um identificado único para realizar a operação.",
   "ErrorInternal": "Ocorreu um erro interno no servidor.",
   "ErrorLiableNotFound": "Não foi possível encontrar o responsável informado.",

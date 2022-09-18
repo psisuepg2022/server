@@ -43,6 +43,7 @@ routes.get(
   "/profile",
   logMiddleware,
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
   controller.getProfile
 );
