@@ -6,10 +6,12 @@ import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { OwnerModel } from "@models/domain/OwnerModel";
 import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
+import { GetUserProfileResponseModel } from "@models/dto/user/GetUserProfileResponseModel";
 import {
   CreateOwnerService,
   SearchOwnersWithFiltersService,
 } from "@services/owner";
+import { GetUserProfileService } from "@services/user";
 
 class OwnerController {
   public async create(
@@ -79,6 +81,34 @@ class OwnerController {
       );
 
       const result = await listOwnersService.execute(clinicId, { page, size });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getProfile(
+    req: Request,
+    res: Response<IResponseMessage<GetUserProfileResponseModel>>
+  ): Promise<Response> {
+    try {
+      const { id: userId } = req.user;
+      const { id: clinicId } = req.clinic;
+
+      const service = container.resolve(GetUserProfileService);
+
+      const result = await service.execute({
+        clinicId,
+        userId,
+      });
 
       return res.status(HttpStatus.OK).json({
         success: true,
