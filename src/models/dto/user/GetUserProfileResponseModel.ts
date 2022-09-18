@@ -1,6 +1,6 @@
 import { AddressModel } from "@models/domain/AddressModel";
 
-type GetProfileResponseModel = {
+type GetUserProfileResponseModel = {
   name: string;
   email?: string;
   CPF: string;
@@ -8,4 +8,4 @@ type GetProfileResponseModel = {
   address: AddressModel;
 };
 
-export { GetProfileResponseModel };
+export { GetUserProfileResponseModel };

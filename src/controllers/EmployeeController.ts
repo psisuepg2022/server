@@ -7,12 +7,14 @@ import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { ListEmployeesResponseModel } from "@models/dto/employee/ListEmployeesResponseModel";
+import { GetUserProfileResponseModel } from "@models/dto/user/GetUserProfileResponseModel";
 import {
   CreateEmployeeService,
   SearchEmployeesWithFiltersService,
   SoftEmployeeDeleteService,
   UpdateEmployeeService,
 } from "@services/employee";
+import { GetUserProfileService } from "@services/user";
 
 class EmployeeController {
   public async create(
@@ -123,6 +125,30 @@ class EmployeeController {
       const softDeleteService = container.resolve(SoftEmployeeDeleteService);
 
       const result = await softDeleteService.execute(clinicId, id);
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getProfile(
+    req: Request,
+    res: Response<IResponseMessage<GetUserProfileResponseModel>>
+  ): Promise<Response> {
+    try {
+      const { id: userId } = req.user;
+
+      const service = container.resolve(GetUserProfileService);
+
+      const result = await service.execute(userId);
 
       return res.status(HttpStatus.OK).json({
         success: true,

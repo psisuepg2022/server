@@ -3,17 +3,19 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { GetProfileResponseModel } from "@models/dto/auth/GetProfileResponseModel";
+import { GetUserProfileResponseModel } from "@models/dto/user/GetUserProfileResponseModel";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 
 @injectable()
-class GetProfileService {
+class GetUserProfileService<
+  T extends GetUserProfileResponseModel = GetUserProfileResponseModel
+> {
   constructor(
     @inject("UniqueIdentifierProvider")
     private uniqueIdentifierProvider: IUniqueIdentifierProvider
   ) {}
 
-  public async execute(id: string): Promise<GetProfileResponseModel> {
+  public async execute(id: string): Promise<T> {
     if (stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",
@@ -23,8 +25,8 @@ class GetProfileService {
     if (!this.uniqueIdentifierProvider.isValid(id))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
-    return {} as GetProfileResponseModel;
+    return {} as T;
   }
 }
 
-export { GetProfileService };
+export { GetUserProfileService };

@@ -1,3 +1,4 @@
 import { CreateUserService } from "./CreateUserService";
+import { GetUserProfileService } from "./GetUserProfileService";
 
-export { CreateUserService };
+export { GetUserProfileService, CreateUserService };

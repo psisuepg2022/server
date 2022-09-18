@@ -39,5 +39,12 @@ routes.delete(
   RBAC.is(RolesKeys.OWNER),
   controller.delete
 );
+routes.get(
+  "/profile",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  RBAC.is(RolesKeys.EMPLOYEE),
+  controller.getProfile
+);
 
 export { routes };
