@@ -102,11 +102,9 @@ class PatientController {
 
       const { name, CPF, email } = req.body;
 
-      const listPatientsService = container.resolve(
-        SearchPatientsWithFiltersService
-      );
+      const service = container.resolve(SearchPatientsWithFiltersService);
 
-      const result = await listPatientsService.execute(clinicId, {
+      const result = await service.execute(clinicId, {
         page,
         size,
         filters: {
@@ -141,11 +139,9 @@ class PatientController {
 
       const { name, CPF, email } = req.body;
 
-      const listLiablesService = container.resolve(
-        SearchLiablesWithFiltersService
-      );
+      const service = container.resolve(SearchLiablesWithFiltersService);
 
-      const result = await listLiablesService.execute(clinicId, {
+      const result = await service.execute(clinicId, {
         page,
         size,
         filters: {
@@ -176,9 +172,9 @@ class PatientController {
       const { id } = req.params;
       const { id: clinicId } = req.clinic;
 
-      const softDeleteService = container.resolve(SoftPatientDeleteService);
+      const service = container.resolve(SoftPatientDeleteService);
 
-      const result = await softDeleteService.execute(clinicId, id);
+      const result = await service.execute(clinicId, id);
 
       return res.status(HttpStatus.OK).json({
         success: true,

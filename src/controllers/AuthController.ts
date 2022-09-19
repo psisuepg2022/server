@@ -16,9 +16,9 @@ class AuthController {
     try {
       const { userName, password, accessCode } = req.body;
 
-      const loginService = container.resolve(LoginService);
+      const service = container.resolve(LoginService);
 
-      const result = await loginService.execute({
+      const result = await service.execute({
         accessCode,
         password,
         userName,

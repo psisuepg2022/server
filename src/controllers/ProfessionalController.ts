@@ -155,11 +155,9 @@ class ProfessionalController {
 
       const { name, CPF, email } = req.body;
 
-      const listProfessionalsService = container.resolve(
-        SearchProfessionalsWithFiltersService
-      );
+      const service = container.resolve(SearchProfessionalsWithFiltersService);
 
-      const result = await listProfessionalsService.execute(clinicId, {
+      const result = await service.execute(clinicId, {
         page,
         size,
         filters: {

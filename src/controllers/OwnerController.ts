@@ -32,9 +32,9 @@ class OwnerController {
         clinicId,
       } = req.body;
 
-      const createOwnerService = container.resolve(CreateOwnerService);
+      const service = container.resolve(CreateOwnerService);
 
-      const result = await createOwnerService.execute({
+      const result = await service.execute({
         userName,
         birthDate,
         contactNumber,
@@ -132,11 +132,9 @@ class OwnerController {
       const { page, size } = req.query;
       const { clinic_id: clinicId } = req.params;
 
-      const listOwnersService = container.resolve(
-        SearchOwnersWithFiltersService
-      );
+      const service = container.resolve(SearchOwnersWithFiltersService);
 
-      const result = await listOwnersService.execute(clinicId, { page, size });
+      const result = await service.execute(clinicId, { page, size });
 
       return res.status(HttpStatus.OK).json({
         success: true,

@@ -143,11 +143,11 @@ class EmployeeController {
 
       const { name, CPF, email } = req.body;
 
-      const listEmployeesService = container.resolve(
+      const servicelistEmployeesService = container.resolve(
         SearchEmployeesWithFiltersService
       );
 
-      const result = await listEmployeesService.execute(clinicId, {
+      const result = await servicelistEmployeesService.execute(clinicId, {
         page,
         size,
         filters: {
@@ -178,9 +178,9 @@ class EmployeeController {
       const { id } = req.params;
       const { id: clinicId } = req.clinic;
 
-      const softDeleteService = container.resolve(SoftEmployeeDeleteService);
+      const service = container.resolve(SoftEmployeeDeleteService);
 
-      const result = await softDeleteService.execute(clinicId, id);
+      const result = await service.execute(clinicId, id);
 
       return res.status(HttpStatus.OK).json({
         success: true,

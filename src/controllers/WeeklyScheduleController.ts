@@ -22,14 +22,9 @@ class WeeklyScheduleController {
       const { id: professionalId } = req.user;
       const { id: clinicId } = req.clinic;
 
-      const listWeeklyScheduleService = container.resolve(
-        ListWeeklyScheduleService
-      );
+      const service = container.resolve(ListWeeklyScheduleService);
 
-      const result = await listWeeklyScheduleService.execute(
-        clinicId,
-        professionalId
-      );
+      const result = await service.execute(clinicId, professionalId);
 
       return res.status(HttpStatus.OK).json({
         success: true,
@@ -53,14 +48,9 @@ class WeeklyScheduleController {
 
       const { id: clinicId } = req.clinic;
 
-      const listWeeklyScheduleService = container.resolve(
-        ListWeeklyScheduleService
-      );
+      const service = container.resolve(ListWeeklyScheduleService);
 
-      const result = await listWeeklyScheduleService.execute(
-        clinicId,
-        professionalId
-      );
+      const result = await service.execute(clinicId, professionalId);
 
       return res.status(HttpStatus.OK).json({
         success: true,
@@ -84,11 +74,9 @@ class WeeklyScheduleController {
 
       const { id: professionalId } = req.user;
 
-      const saveWeeklyScheduleService = container.resolve(
-        SaveWeeklyScheduleService
-      );
+      const service = container.resolve(SaveWeeklyScheduleService);
 
-      const result = await saveWeeklyScheduleService.execute({
+      const result = await service.execute({
         id,
         professionalId,
         startTime,
@@ -125,11 +113,9 @@ class WeeklyScheduleController {
       const { schedule_id: weeklyScheduleId, lock_id: weeklyScheduleLockId } =
         req.params;
 
-      const deleteWeeklyScheduleLockService = container.resolve(
-        DeleteWeeklyScheduleLockService
-      );
+      const service = container.resolve(DeleteWeeklyScheduleLockService);
 
-      const result = await deleteWeeklyScheduleLockService.execute({
+      const result = await service.execute({
         professionalId,
         weeklyScheduleId,
         weeklyScheduleLockId,

@@ -19,9 +19,9 @@ class ClinicController {
     try {
       const { name, email } = req.body;
 
-      const createClinicService = container.resolve(CreateClinicService);
+      const service = container.resolve(CreateClinicService);
 
-      const result = await createClinicService.execute({
+      const result = await service.execute({
         email,
         name,
       });
@@ -46,9 +46,9 @@ class ClinicController {
     try {
       const { page, size } = req.query;
 
-      const listClinicsService = container.resolve(ListClinicsService);
+      const service = container.resolve(ListClinicsService);
 
-      const result = await listClinicsService.execute({ page, size });
+      const result = await service.execute({ page, size });
 
       return res.status(HttpStatus.OK).json({
         success: true,
@@ -70,9 +70,9 @@ class ClinicController {
     try {
       const { id } = req.params;
 
-      const deleteClinicService = container.resolve(DeleteClinicService);
+      const service = container.resolve(DeleteClinicService);
 
-      const result = await deleteClinicService.execute(id);
+      const result = await service.execute(id);
 
       return res.status(HttpStatus.OK).json({
         success: true,
