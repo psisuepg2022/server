@@ -6,6 +6,7 @@ import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
 import { LoginService, ResetPasswordService } from "@services/auth";
+import { RefreshTokenService } from "@services/auth/RefreshTokenService";
 
 class AuthController {
   public async login(
@@ -22,6 +23,30 @@ class AuthController {
         password,
         userName,
       });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async refreshToken(
+    req: Request,
+    res: Response<IResponseMessage<LoginResponseModel>>
+  ): Promise<Response> {
+    try {
+      const { refreshToken } = req.body;
+
+      const service = container.resolve(RefreshTokenService);
+
+      const result = await service.execute(refreshToken);
 
       return res.status(HttpStatus.OK).json({
         success: true,
