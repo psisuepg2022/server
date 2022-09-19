@@ -29,6 +29,7 @@ routes.post(
   "/",
   logMiddleware,
   ensureAuthenticated.execute,
+  validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PROFESSIONAL),
   controller.create
 );
