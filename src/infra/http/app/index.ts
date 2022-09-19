@@ -31,7 +31,7 @@ app.use(RoutesPrefix.API, routes);
 app.use(
   "/logs/:support",
   isSupportMiddleware,
-  express.static(path.join(__dirname, "..", "..", "..", "..", "log", "db"))
+  express.static(path.join(__dirname, "..", "..", "..", "..", "logs"))
 );
 app.use(errorHandlerMiddleware);
 
