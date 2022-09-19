@@ -3,8 +3,10 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
+import { logger } from "@infra/log";
 import { PatientModel } from "@models/domain/PatientModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import { ListPeopleResponseModel } from "@models/dto/person/ListPeopleResponseModel";
@@ -83,6 +85,7 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -120,6 +123,7 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -157,6 +161,7 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -182,6 +187,7 @@ class PatientController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),

@@ -3,7 +3,9 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
+import { logger } from "@infra/log";
 import { ClinicModel } from "@models/domain/ClinicModel";
 import {
   CreateClinicService,
@@ -32,6 +34,7 @@ class ClinicController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -56,6 +59,7 @@ class ClinicController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -80,6 +84,7 @@ class ClinicController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),

@@ -3,8 +3,10 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
+import { logger } from "@infra/log";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
@@ -74,6 +76,7 @@ class ProfessionalController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -136,6 +139,7 @@ class ProfessionalController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -173,6 +177,7 @@ class ProfessionalController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -200,6 +205,7 @@ class ProfessionalController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
@@ -228,6 +234,7 @@ class ProfessionalController {
         message: i18n.__("SuccessGeneric"),
       });
     } catch (error) {
+      logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
         success: false,
         message: AppError.getErrorMessage(error),
