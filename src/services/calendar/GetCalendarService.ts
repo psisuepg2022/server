@@ -95,7 +95,7 @@ class GetCalendarService {
 
     if (
       this.dateProvider.differenceInDays(endDateConverted, startDateConverted) >
-      30
+      42
     )
       throw new AppError(
         "BAD_REQUEST",
