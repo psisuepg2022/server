@@ -48,5 +48,13 @@ routes.get(
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.getProfile
 );
+routes.put(
+  "/",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.updateProfile
+);
 
 export { routes };

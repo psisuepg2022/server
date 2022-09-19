@@ -81,6 +81,68 @@ class ProfessionalController {
     }
   }
 
+  public async updateProfile(
+    req: Request,
+    res: Response<IResponseMessage<Partial<ProfessionalModel>>>
+  ): Promise<Response> {
+    try {
+      const {
+        userName,
+        password,
+        email,
+        name,
+        CPF,
+        birthDate,
+        contactNumber,
+        address,
+        profession,
+        registry,
+        specialization,
+      } = req.body;
+
+      const { id: userId } = req.user;
+      const { id: clinicId } = req.clinic;
+
+      const service = container.resolve(UpdateProfessionalService);
+
+      const result = await service.execute({
+        id: userId,
+        userName,
+        birthDate,
+        contactNumber,
+        name,
+        CPF,
+        email,
+        password,
+        clinicId,
+        profession,
+        registry,
+        specialization,
+        address: address
+          ? {
+              id: address.id,
+              state: address.state,
+              zipCode: address.zipCode,
+              city: address.city,
+              district: address.district,
+              publicArea: address.publicArea,
+            }
+          : undefined,
+      });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
   public async read(
     req: Request,
     res: Response<
