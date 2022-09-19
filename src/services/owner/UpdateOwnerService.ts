@@ -1,6 +1,7 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
@@ -15,7 +16,6 @@ import { IValidatorsProvider } from "@providers/validators";
 import { IAddressRepository } from "@repositories/address";
 import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
-import { IOwnerRepository } from "@repositories/owner";
 import { IPersonRepository } from "@repositories/person";
 import { IUserRepository } from "@repositories/user";
 
@@ -43,9 +43,7 @@ class UpdateOwnerService extends CreateOwnerService {
     @inject("AuthenticationRepository")
     authenticationRepository: IAuthenticationRepository,
     @inject("AddressRepository")
-    addressRepository: IAddressRepository,
-    @inject("OwnerRepository")
-    private ownerRepository: IOwnerRepository
+    addressRepository: IAddressRepository
   ) {
     super(
       uniqueIdentifierProvider,
@@ -82,7 +80,7 @@ class UpdateOwnerService extends CreateOwnerService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
     const [hasEmployee] = await transaction([
-      this.ownerRepository.getToUpdate(clinicId, id),
+      this.userRepository.getToUpdate(clinicId, id, UserDomainClasses.OWNER),
     ]);
 
     if (!hasEmployee)

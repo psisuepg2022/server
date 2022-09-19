@@ -1,6 +1,7 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
@@ -15,7 +16,6 @@ import { IValidatorsProvider } from "@providers/validators";
 import { IAddressRepository } from "@repositories/address";
 import { IAuthenticationRepository } from "@repositories/authentication";
 import { IClinicRepository } from "@repositories/clinic";
-import { IEmployeeRepository } from "@repositories/employee";
 import { IPersonRepository } from "@repositories/person";
 import { IUserRepository } from "@repositories/user";
 
@@ -43,9 +43,7 @@ class UpdateEmployeeService extends CreateEmployeeService {
     @inject("AuthenticationRepository")
     authenticationRepository: IAuthenticationRepository,
     @inject("AddressRepository")
-    addressRepository: IAddressRepository,
-    @inject("EmployeeRepository")
-    private employeeRepository: IEmployeeRepository
+    addressRepository: IAddressRepository
   ) {
     super(
       uniqueIdentifierProvider,
@@ -82,13 +80,13 @@ class UpdateEmployeeService extends CreateEmployeeService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
     const [hasEmployee] = await transaction([
-      this.employeeRepository.getToUpdate(clinicId, id),
+      this.userRepository.getToUpdate(clinicId, id, UserDomainClasses.EMPLOYEE),
     ]);
 
     if (!hasEmployee)
       throw new AppError(
         "BAD_REQUEST",
-        i18n.__mf("ErrorUserIDNotFound", ["paciente"])
+        i18n.__mf("ErrorUserIDNotFound", ["colaborador"])
       );
 
     const addressToSave = ((): CreateAddressRequestModel | undefined => {

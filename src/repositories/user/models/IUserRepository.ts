@@ -44,6 +44,16 @@ interface IUserRepository {
   ): PrismaPromise<{
     person: Partial<PersonModel> & { address: AddressModel };
   } | null>;
+  getToUpdate(
+    clinicId: string,
+    id: string,
+    domainClass: string
+  ): PrismaPromise<
+    | (Partial<UserModel> & {
+        person: Partial<PersonModel> & { address: AddressModel };
+      })
+    | null
+  >;
 }
 
 export { IUserRepository };
