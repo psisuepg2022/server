@@ -55,18 +55,22 @@ class CreateOwnerService extends CreateUserService {
     );
   }
 
-  public async execute({
-    CPF,
-    birthDate,
-    name,
-    address,
-    password,
-    userName,
-    contactNumber,
-    email,
-    clinicId,
-  }: CreateOwnerRequestModel): Promise<Partial<OwnerModel>> {
-    const id = this.uniqueIdentifierProvider.generate();
+  public async execute(
+    {
+      id: idReceived,
+      CPF,
+      birthDate,
+      name,
+      address,
+      password,
+      userName,
+      contactNumber,
+      email,
+      clinicId,
+    }: CreateOwnerRequestModel,
+    savePassword = true
+  ): Promise<Partial<OwnerModel>> {
+    const id = this.getObjectId(idReceived);
 
     await super.createUserOperation(
       {
@@ -81,7 +85,8 @@ class CreateOwnerService extends CreateUserService {
         clinicId,
       },
       id,
-      UserDomainClasses.OWNER
+      UserDomainClasses.OWNER,
+      savePassword
     );
 
     const [person, user, addressSaved] = await transaction(
