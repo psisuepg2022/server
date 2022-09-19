@@ -6,7 +6,8 @@ type keys =
   | "SUPPORT_ID"
   | "LIST_ALLOWED_ORIGINS"
   | "JWT_SECRET_KEY"
-  | "MAX_LOGIN_ATTEMPTS";
+  | "MAX_LOGIN_ATTEMPTS"
+  | "JWT_SECRET_KEY_REFRESH";
 
 const env = (key: keys): string | undefined => {
   if (!key) return undefined;
