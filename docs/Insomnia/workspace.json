@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-18T01:40:39.216Z",
+  "__export_date": "2022-09-19T13:09:38.604Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
@@ -543,9 +543,53 @@
       "_type": "request"
     },
     {
+      "_id": "req_a170a7df61e94ef293c1dc6f76693750",
+      "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "modified": 1663591370625,
+      "created": 1663587327100,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "refresh",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"refreshToken\": \"{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LnJlZnJlc2hUb2tlbg==::46b', 'never', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_7add161e106c434e99ee9ed859d78891"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1663587327100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1658670473389,
+      "created": 1658670029899,
+      "name": "auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1658670029899,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_2e0a89dd2f454dd5a6f1ef171427aedb",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663465114570,
+      "modified": 1663590601200,
       "created": 1662402795446,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "reset_password",
@@ -578,21 +622,9 @@
       "_type": "request"
     },
     {
-      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1658670473389,
-      "created": 1658670029899,
-      "name": "auth",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1658670029899,
-      "_type": "request_group"
-    },
-    {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663465129265,
+      "modified": 1663591896443,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -919,9 +951,56 @@
       "_type": "request"
     },
     {
+      "_id": "req_69cdbb3ace8447c5b517b355004773d7",
+      "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "modified": 1663591600001,
+      "created": 1663591474893,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "update profile",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Marcos\",\n\t\"specialization\": \"Pediatria\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e67dae82e36d44ef82889e3c02e74dd0"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1662989732810,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657542043558,
+      "created": 1657542043558,
+      "name": "professional",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657341392945.5,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_ca5f62e5c64f4fe3a56e50eb73bf02fc",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663009502323,
+      "modified": 1663554923846,
       "created": 1662989732760,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update",
@@ -954,18 +1033,6 @@
       "_type": "request"
     },
     {
-      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657542043558,
-      "created": 1657542043558,
-      "name": "professional",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657341392945.5,
-      "_type": "request_group"
-    },
-    {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
       "modified": 1663464861723,
@@ -995,7 +1062,7 @@
     {
       "_id": "req_4e9764580ac44c4caed640bb954c6f4c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663465131788,
+      "modified": 1663538272537,
       "created": 1663461736577,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "profile",
@@ -1091,6 +1158,53 @@
       "_type": "request"
     },
     {
+      "_id": "req_9770fc58a11843a79dd709458cb1f99b",
+      "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
+      "modified": 1663591396537,
+      "created": 1663590011942,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "update profile",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Marcos\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e67dae82e36d44ef82889e3c02e74dd0"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1663009775948,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8bde367d58d470d99959c29472f6b61",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657143642068,
+      "created": 1657142212136,
+      "name": "employee",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657142212136,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_b6bfe93d801f4f58acf223460b100c1d",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
       "modified": 1663010716850,
@@ -1124,18 +1238,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_a8bde367d58d470d99959c29472f6b61",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657143642068,
-      "created": 1657142212136,
-      "name": "employee",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657142212136,
-      "_type": "request_group"
     },
     {
       "_id": "req_803168cfaab9400a95969ce92480fb14",
@@ -1263,9 +1365,56 @@
       "_type": "request"
     },
     {
+      "_id": "req_23f154644d6b40af99f7dbd0356f7202",
+      "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
+      "modified": 1663591365644,
+      "created": 1663590591187,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
+      "name": "update profile",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Marcos Krul\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_e67dae82e36d44ef82889e3c02e74dd0"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1657151453742,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_659ce58b8e244e9a9038a5f18d139870",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657664385351,
+      "created": 1657664385351,
+      "name": "owner",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657053935876,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_3000a9a22d154db59b9ecc78fc5965b2",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1663461660107,
+      "modified": 1663552635733,
       "created": 1663461640781,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "profile",
@@ -1287,18 +1436,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657664385351,
-      "created": 1657664385351,
-      "name": "owner",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657053935876,
-      "_type": "request_group"
     },
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
@@ -1535,7 +1672,7 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1663262981369,
+      "modified": 1663552645278,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
