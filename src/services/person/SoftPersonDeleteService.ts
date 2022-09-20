@@ -34,19 +34,13 @@ class SoftPersonDeleteService {
   };
 
   protected async createOperation(clinicId: string, id: string): Promise<void> {
-    if (stringIsNullOrEmpty(clinicId))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorClinicRequired"));
-
     if (stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",
         i18n.__mf("ErrorUserIDRequired", [this.labelUserType])
       );
 
-    if (
-      !this.uniqueIdentifierProvider.isValid(clinicId) ||
-      !this.uniqueIdentifierProvider.isValid(id)
-    )
+    if (!this.uniqueIdentifierProvider.isValid(id))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
     const [hasPerson] = await transaction([

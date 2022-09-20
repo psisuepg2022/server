@@ -37,6 +37,7 @@ routes.delete(
   "/:id",
   logMiddleware,
   ensureAuthenticated.execute,
+  validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
   controller.delete
 );
