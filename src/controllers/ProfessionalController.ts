@@ -10,6 +10,7 @@ import { logger } from "@infra/log";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
+import { SoftProfessionalDeleteResponseModel } from "@models/dto/professional/SoftProfessionalDeleteResponseModel";
 import {
   CreateProfessionalService,
   GetProfessionalProfileService,
@@ -187,7 +188,7 @@ class ProfessionalController {
 
   public async delete(
     req: Request,
-    res: Response<IResponseMessage<boolean>>
+    res: Response<IResponseMessage<SoftProfessionalDeleteResponseModel>>
   ): Promise<Response> {
     try {
       const { id } = req.params;
