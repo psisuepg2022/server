@@ -159,6 +159,43 @@ class AppointmentRepository implements IAppointmentRepository {
       },
       select: { id: true },
     });
+
+  public getAllUncompletedAppointments = (
+    entity: "patient" | "professional",
+    id: string,
+    date: Date
+  ): PrismaPromise<{ patient: { person: Partial<PersonModel> } }[]> =>
+    this.prisma.appointment.findMany({
+      where: {
+        [`${entity}Id`]: id,
+        appointmentDate: { gte: date },
+      },
+      select: {
+        patient: {
+          select: {
+            person: {
+              select: {
+                name: true,
+                contactNumber: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    }) as PrismaPromise<{ patient: { person: Partial<PersonModel> } }[]>;
+
+  public deleteAllUncompletedAppointments = (
+    entity: "patient" | "professional",
+    id: string,
+    date: Date
+  ): PrismaPromise<{ count: number }> =>
+    this.prisma.appointment.deleteMany({
+      where: {
+        [`${entity}Id`]: id,
+        appointmentDate: { gte: date },
+      },
+    });
 }
 
 export { AppointmentRepository };

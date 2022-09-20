@@ -153,5 +153,6 @@
   "ErrorWithoutHandling": "Ocorreu um erro. Por favor, entre em contato com um administrador.",
   "ErrorZipCodeInvalid": "O CEP informado é inválido.",
   "ErrorZipCodeRequired": "É necessário informar o CEP para registro do endereço.",
-  "SuccessGeneric": "Operação realizada com sucesso."
+  "SuccessGeneric": "Operação realizada com sucesso.",
+  "SuccessPersonWithAppointmentsRelationDeleted": "O {0} foi deletado com sucesso. Total de consultas pendentes que foram excluídas: {1}."
 }

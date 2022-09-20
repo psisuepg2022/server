@@ -44,6 +44,16 @@ interface IAppointmentRepository {
     id: string,
     professionalId: string
   ): PrismaPromise<Partial<AppointmentModel> | null>;
+  getAllUncompletedAppointments(
+    entity: "patient" | "professional",
+    id: string,
+    date: Date
+  ): PrismaPromise<{ patient: { person: Partial<PersonModel> } }[]>;
+  deleteAllUncompletedAppointments(
+    entity: "patient" | "professional",
+    id: string,
+    date: Date
+  ): PrismaPromise<{ count: number }>;
 }
 
 export { IAppointmentRepository };

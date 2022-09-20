@@ -171,7 +171,7 @@ class PatientController {
 
   public async delete(
     req: Request,
-    res: Response<IResponseMessage<boolean>>
+    res: Response<IResponseMessage>
   ): Promise<Response> {
     try {
       const { id } = req.params;
@@ -183,8 +183,7 @@ class PatientController {
 
       return res.status(HttpStatus.OK).json({
         success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
+        message: result,
       });
     } catch (error) {
       logger.error(getErrorStackTrace(error));
