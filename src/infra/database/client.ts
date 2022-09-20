@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-import { cacheMiddleware } from "./cacheMiddleware";
 import { handleErrorLog, handleQueryLog } from "./logHandling";
 
 const prismaClient = new PrismaClient({
@@ -13,6 +12,7 @@ const prismaClient = new PrismaClient({
 prismaClient.$on("query", handleQueryLog);
 prismaClient.$on("error", handleErrorLog);
 
-prismaClient.$use(cacheMiddleware);
+// import { cacheMiddleware } from "./cacheMiddleware";
+// prismaClient.$use(cacheMiddleware);
 
 export { prismaClient };
