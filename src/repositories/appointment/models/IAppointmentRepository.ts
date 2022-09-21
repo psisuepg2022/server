@@ -23,7 +23,8 @@ interface IAppointmentRepository {
   get(
     professionalId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    today: Date
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   >;

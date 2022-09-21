@@ -71,7 +71,8 @@ class AppointmentRepository implements IAppointmentRepository {
   public get = (
     professionalId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    today: Date
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   > =>
@@ -82,6 +83,17 @@ class AppointmentRepository implements IAppointmentRepository {
           lte: endDate,
           gte: startDate,
         },
+        OR: [
+          {
+            appointmentDate: { lte: today },
+          },
+          {
+            appointmentDate: { gt: today },
+            status: {
+              notIn: [AppointmentStatus.CANCELED, AppointmentStatus.ABSENCE],
+            },
+          },
+        ],
       },
       select: {
         id: true,

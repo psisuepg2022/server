@@ -118,7 +118,8 @@ class GetCalendarService {
           this.appointmentRepository.get(
             professionalId,
             startDateConverted,
-            endDateConverted
+            endDateConverted,
+            this.dateProvider.now()
           ),
           this.scheduleRepository.getScheduleLockByInterval(
             professionalId,
