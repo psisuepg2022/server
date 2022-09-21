@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-19T13:09:38.604Z",
+  "__export_date": "2022-09-21T02:28:50.694Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
@@ -172,7 +172,7 @@
     {
       "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663258608929,
+      "modified": 1663716300645,
       "created": 1661882176759,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "calendar",
@@ -207,15 +207,15 @@
     {
       "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663432131133,
+      "modified": 1663716328912,
       "created": 1661888766274,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/c1991100-ed67-4535-ae15-0f9a602c53ac",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "calendar by professional",
       "description": "",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n   \"startDate\": \"2022-09-11\",\n   \"endDate\": \"2022-09-17\"\n}"
+        "text": "{\n   \"startDate\": \"2022-09-11\",\n   \"endDate\": \"2022-09-22\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -242,7 +242,7 @@
     {
       "_id": "req_01d6a83bff304a92bd3333d98b39be18",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663258651292,
+      "modified": 1663717356576,
       "created": 1660223915857,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -250,7 +250,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-09-16\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f\",\n\t\"patientId\": \"9d8095a3-6d92-410f-a424-c3c7dd6d57dc\"\n}"
+        "text": "{\n\t\"date\": \"2022-09-21\",\n\t\"startTime\": \"10:30\",\n\t\"endTime\": \"11:30\",\n\t\"professionalId\": \"77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f\",\n\t\"patientId\": \"9d8095a3-6d92-410f-a424-c3c7dd6d57dc\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -543,9 +543,56 @@
       "_type": "request"
     },
     {
+      "_id": "req_12f1c402da4c4e348438aedc29282442",
+      "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "modified": 1663719474259,
+      "created": 1663718358236,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/e413e04b-25aa-4bec-89ef-99dd6eaf978c",
+      "name": "adm_reset_password",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"newPassword\": \"EaeEae123\",\n\t\"confirmNewPassword\": \"EaeEae123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_dd561719afc5477c85218ce3e0452312"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1663718358236,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1658670473389,
+      "created": 1658670029899,
+      "name": "auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1658670029899,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_a170a7df61e94ef293c1dc6f76693750",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663591370625,
+      "modified": 1663717385702,
       "created": 1663587327100,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "refresh",
@@ -573,18 +620,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1658670473389,
-      "created": 1658670029899,
-      "name": "auth",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1658670029899,
-      "_type": "request_group"
     },
     {
       "_id": "req_2e0a89dd2f454dd5a6f1ef171427aedb",
@@ -624,7 +659,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663591896443,
+      "modified": 1663727291658,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -632,7 +667,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"accessCode\": \"1004\"\n}"
+        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"accessCode\": \"1001\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -854,9 +889,9 @@
     {
       "_id": "req_f3977db84e194b189ab2329d998d20d4",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1660136798554,
+      "modified": 1663716401900,
       "created": 1659651705012,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/2ecebf77-e86e-4990-b5b4-708be5b83601",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/9d8095a3-6d92-410f-a424-c3c7dd6d57dc",
       "name": "delete",
       "description": "",
       "method": "DELETE",
@@ -1035,9 +1070,9 @@
     {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663464861723,
+      "modified": 1663717398468,
       "created": 1659651213689,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/2d189d73-355b-40a4-a1fa-b48ff536ba46",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "delete",
       "description": "",
       "method": "DELETE",
@@ -1649,7 +1684,7 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1663260288548,
+      "modified": 1663596283436,
       "created": 1654723872664,
       "name": "dev",
       "data": {
