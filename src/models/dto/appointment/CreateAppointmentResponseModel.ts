@@ -4,6 +4,7 @@ type CreateAppointmentResponseModel = {
   startTime: string;
   endTime: string;
   status: string;
+  updatedAt: string;
 };
 
 export { CreateAppointmentResponseModel };

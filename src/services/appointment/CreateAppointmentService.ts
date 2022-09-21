@@ -239,6 +239,7 @@ class CreateAppointmentService {
       ),
       endTime,
       startTime,
+      updatedAt: saved.updatedAt.toISOString(),
     };
   }
 }
