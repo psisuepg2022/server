@@ -7,6 +7,7 @@ import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { ResetAnotherUserPasswordRequestModel } from "@models/dto/auth/ResetAnotherUserPasswordRequestModel";
+import { IHashProvider } from "@providers/hash";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IUserRepository } from "@repositories/user";
@@ -19,7 +20,9 @@ class ResetAnotherUserPasswordService {
     @inject("PasswordProvider")
     private passwordProvider: IPasswordProvider,
     @inject("UserRepository")
-    private userRepository: IUserRepository
+    private userRepository: IUserRepository,
+    @inject("HashProvider")
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute({
@@ -85,7 +88,14 @@ class ResetAnotherUserPasswordService {
       ),
     });
 
-    return true;
+    const [updated] = await transaction([
+      this.userRepository.updatePassword(
+        userId,
+        await this.hashProvider.hash(newPassword, salt)
+      ),
+    ]);
+
+    return !!updated;
   }
 }
 
