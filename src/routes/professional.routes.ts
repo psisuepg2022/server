@@ -57,5 +57,13 @@ routes.put(
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.updateProfile
 );
+routes.get(
+  "/tap_bar",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
+  controller.getProfessionalsToScheduleTapBar
+);
 
 export { routes };

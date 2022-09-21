@@ -9,11 +9,13 @@ import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { logger } from "@infra/log";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
+import { GetProfessionalsToScheduleTapBarResponseModel } from "@models/dto/professional/GetProfessionalsToScheduleTapBarResponseModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import { SoftProfessionalDeleteResponseModel } from "@models/dto/professional/SoftProfessionalDeleteResponseModel";
 import {
   CreateProfessionalService,
   GetProfessionalProfileService,
+  GetProfessionalsToScheduleTapBarService,
   SearchProfessionalsWithFiltersService,
   SoftProfessionalDeleteService,
   UpdateProfessionalService,
@@ -227,6 +229,41 @@ class ProfessionalController {
       const result = await service.execute({
         clinicId,
         userId,
+      });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      logger.error(getErrorStackTrace(error));
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getProfessionalsToScheduleTapBar(
+    req: Request,
+    res: Response<
+      IResponseMessage<
+        IPaginationResponse<GetProfessionalsToScheduleTapBarResponseModel>
+      >
+    >
+  ): Promise<Response> {
+    try {
+      const { id: clinicId } = req.clinic;
+      const { page, size } = req.query;
+
+      const service = container.resolve(
+        GetProfessionalsToScheduleTapBarService
+      );
+
+      const result = await service.execute(clinicId, {
+        page,
+        size,
       });
 
       return res.status(HttpStatus.OK).json({
