@@ -58,7 +58,7 @@ routes.put(
   controller.updateProfile
 );
 routes.get(
-  "/tap_bar",
+  "/top_bar",
   logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
