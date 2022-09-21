@@ -7,7 +7,11 @@ import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { logger } from "@infra/log";
 import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
-import { LoginService, ResetPasswordService } from "@services/auth";
+import {
+  LoginService,
+  ResetAnotherUserPasswordService,
+  ResetPasswordService,
+} from "@services/auth";
 import { RefreshTokenService } from "@services/auth/RefreshTokenService";
 
 class AuthController {
@@ -81,6 +85,38 @@ class AuthController {
         confirmNewPassword,
         newPassword,
         oldPassword,
+        userId,
+      });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      logger.error(getErrorStackTrace(error));
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async resetAnotherUserPassword(
+    req: Request,
+    res: Response<IResponseMessage<boolean>>
+  ): Promise<Response> {
+    try {
+      const { id: clinicId } = req.clinic;
+      const { newPassword, confirmNewPassword } = req.body;
+      const { user_id: userId } = req.params;
+
+      const service = container.resolve(ResetAnotherUserPasswordService);
+
+      const result = await service.execute({
+        clinicId,
+        confirmNewPassword,
+        newPassword,
         userId,
       });
 

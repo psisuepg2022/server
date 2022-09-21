@@ -1,4 +1,5 @@
 import { LoginService } from "./LoginService";
+import { ResetAnotherUserPasswordService } from "./ResetAnotherUserPasswordService";
 import { ResetPasswordService } from "./ResetPasswordService";
 
-export { ResetPasswordService, LoginService };
+export { ResetAnotherUserPasswordService, ResetPasswordService, LoginService };
