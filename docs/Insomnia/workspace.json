@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-21T02:28:50.694Z",
+  "__export_date": "2022-09-21T12:37:13.502Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
@@ -659,7 +659,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663727291658,
+      "modified": 1663761491434,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -986,6 +986,44 @@
       "_type": "request"
     },
     {
+      "_id": "req_01e11becfa8c41ddba88e610f2100753",
+      "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "modified": 1663763781890,
+      "created": 1663762643418,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "tap_bar",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1663762643418,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657542043558,
+      "created": 1657542043558,
+      "name": "professional",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657341392945.5,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_69cdbb3ace8447c5b517b355004773d7",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
       "modified": 1663591600001,
@@ -1019,18 +1057,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657542043558,
-      "created": 1657542043558,
-      "name": "professional",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657341392945.5,
-      "_type": "request_group"
     },
     {
       "_id": "req_ca5f62e5c64f4fe3a56e50eb73bf02fc",
@@ -1123,7 +1149,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663009422717,
+      "modified": 1663763759812,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -1131,7 +1157,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.professional2\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
