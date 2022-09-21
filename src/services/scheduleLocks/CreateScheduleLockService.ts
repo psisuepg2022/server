@@ -2,8 +2,10 @@ import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
+import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
+import { DaysOfTheWeek } from "@infra/domains";
 import { CreateScheduleLockRequestModel } from "@models/dto/scheduleLock/CreateScheduleLockRequestModel";
 import { CreateScheduleLockResponseModel } from "@models/dto/scheduleLock/CreateScheduleLockResponseModel";
 import { IDateProvider } from "@providers/date";
@@ -122,6 +124,28 @@ class CreateScheduleLockService {
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
+      );
+
+    const [hasWeeklyScheduleLock] = await transaction([
+      this.scheduleRepository.hasWeklyScheduleLockConflictingWithScheduleLock(
+        professionalId,
+        startTimeConverted,
+        endTimeConverted,
+        this.dateProvider.getWeekDay(dateConverted)
+      ),
+    ]);
+
+    if (hasWeeklyScheduleLock)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorScheduleLockHasWeeklyScheduleLock", [
+          getEnumDescription(
+            "DAYS_OF_THE_WEEK",
+            DaysOfTheWeek[
+              hasWeeklyScheduleLock.weeklySchedule.dayOfTheWeek as number
+            ]
+          ),
+        ])
       );
 
     const [hasScheduleLock] = await transaction([
