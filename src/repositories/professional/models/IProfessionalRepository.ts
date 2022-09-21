@@ -49,6 +49,11 @@ interface IProfessionalRepository {
     person: Partial<PersonModel> & { address: AddressModel };
     professional: Partial<ProfessionalModel>;
   } | null>;
+  getNames(
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<{ id: string; name: string }[]>;
+  countNames(clinicId: string): PrismaPromise<number>;
 }
 
 export { IProfessionalRepository };

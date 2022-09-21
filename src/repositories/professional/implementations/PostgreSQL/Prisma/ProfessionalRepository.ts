@@ -259,6 +259,36 @@ class ProfessionalRepository implements IProfessionalRepository {
       person: Partial<PersonModel> & { address: AddressModel };
       professional: Partial<ProfessionalModel>;
     } | null>;
+
+  public getNames = (
+    clinicId: string,
+    [take, skip]: [number, number]
+  ): PrismaPromise<{ id: string; name: string }[]> =>
+    this.prisma.person.findMany({
+      where: {
+        clinicId,
+        active: true,
+        domainClass: UserDomainClasses.PROFESSIONAL,
+        user: { blocked: false },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: { name: "asc" },
+      take,
+      skip,
+    });
+
+  public countNames = (clinicId: string): PrismaPromise<number> =>
+    this.prisma.person.count({
+      where: {
+        clinicId,
+        active: true,
+        domainClass: UserDomainClasses.PROFESSIONAL,
+        user: { blocked: false },
+      },
+    });
 }
 
 export { ProfessionalRepository };
