@@ -78,7 +78,7 @@ class CreateCommentService {
       ),
       this.appointmentRepository.updateStatus(
         appointmentId,
-        AppointmentStatus.CONFIRMED,
+        AppointmentStatus.COMPLETED,
         updatedAt
       ),
     ]);
