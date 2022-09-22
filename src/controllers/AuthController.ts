@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import i18n from "i18n";
 import { container } from "tsyringe";
 
@@ -17,8 +17,9 @@ import { RefreshTokenService } from "@services/auth/RefreshTokenService";
 class AuthController {
   public async login(
     req: Request,
-    res: Response<IResponseMessage<LoginResponseModel>>
-  ): Promise<Response> {
+    res: Response<IResponseMessage<LoginResponseModel>>,
+    next: NextFunction
+  ): Promise<Response | void> {
     try {
       const { userName, password, accessCode } = req.body;
 
@@ -30,11 +31,13 @@ class AuthController {
         userName,
       });
 
-      return res.status(HttpStatus.OK).json({
+      res.status(HttpStatus.OK).json({
         success: true,
         content: result,
         message: i18n.__("SuccessGeneric"),
       });
+
+      return next();
     } catch (error) {
       logger.error(getErrorStackTrace(error));
       return res.status(AppError.getErrorStatusCode(error)).json({
