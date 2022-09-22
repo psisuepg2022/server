@@ -23,18 +23,10 @@ interface IAppointmentRepository {
   get(
     professionalId: string,
     startDate: Date,
-    endDate: Date,
-    today: Date,
-    toIgnore: { id: string; appointmentDate: Date }[]
+    endDate: Date
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   >;
-  getAppointmentDatesByStatus(
-    professionalId: string,
-    startDate: Date,
-    today: Date,
-    statusList: number[]
-  ): PrismaPromise<{ id: string; appointmentDate: Date }[]>;
   findToUpdateStatus(id: string): PrismaPromise<{
     id: string;
     status: number;
@@ -66,6 +58,7 @@ interface IAppointmentRepository {
     professionalId: string,
     appointmentId: string
   ): PrismaPromise<AppointmentModel | null>;
+  deleteById(id: string): PrismaPromise<Partial<AppointmentModel>>;
 }
 
 export { IAppointmentRepository };

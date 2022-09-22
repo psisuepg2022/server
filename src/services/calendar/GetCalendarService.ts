@@ -112,30 +112,13 @@ class GetCalendarService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
-    const now = this.dateProvider.now();
-
-    const [appointmentsToVerifyRescheduled] = await transaction([
-      this.appointmentRepository.getAppointmentDatesByStatus(
-        professionalId,
-        startDateConverted,
-        now,
-        [
-          AppointmentStatus.SCHEDULED,
-          AppointmentStatus.COMPLETED,
-          AppointmentStatus.CONFIRMED,
-        ]
-      ),
-    ]);
-
     const [appointments, scheduleLocks, weeklySchedule] = await transaction(
       ((): PrismaPromise<any>[] => {
         const list: PrismaPromise<any>[] = [
           this.appointmentRepository.get(
             professionalId,
             startDateConverted,
-            endDateConverted,
-            now,
-            appointmentsToVerifyRescheduled
+            endDateConverted
           ),
           this.scheduleRepository.getScheduleLockByInterval(
             professionalId,

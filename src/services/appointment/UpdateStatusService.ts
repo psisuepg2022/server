@@ -27,7 +27,7 @@ class UpdateStatusService {
   public async execute({
     id,
     status,
-  }: UpdateStatusRequestModel): Promise<AppointmentOnCalendarModel> {
+  }: UpdateStatusRequestModel): Promise<AppointmentOnCalendarModel | null> {
     if (stringIsNullOrEmpty(id))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUpdateStatusIdRequired"));
 
@@ -105,11 +105,10 @@ class UpdateStatusService {
         ])
       );
 
+    const now = this.dateProvider.now();
+
     if (
-      this.dateProvider.isBefore(
-        hasAppointment.appointmentDate,
-        this.dateProvider.now()
-      ) &&
+      this.dateProvider.isBefore(hasAppointment.appointmentDate, now) &&
       ![AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED].includes(
         hasAppointment.status
       )
@@ -119,12 +118,17 @@ class UpdateStatusService {
         i18n.__("ErrorUpdateStatusAppointmentDatePast")
       );
 
+    if (
+      (statusConverted === AppointmentStatus.CANCELED ||
+        statusConverted === AppointmentStatus.ABSENCE) &&
+      this.dateProvider.isAfter(hasAppointment.appointmentDate, now)
+    ) {
+      await transaction([this.appointmentRepository.deleteById(id)]);
+      return null;
+    }
+
     const [updated] = await transaction([
-      this.appointmentRepository.updateStatus(
-        id,
-        statusConverted,
-        this.dateProvider.now()
-      ),
+      this.appointmentRepository.updateStatus(id, statusConverted, now),
     ]);
 
     return {

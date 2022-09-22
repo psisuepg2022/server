@@ -68,30 +68,10 @@ class AppointmentRepository implements IAppointmentRepository {
       },
     }) as PrismaPromise<AppointmentModel>;
 
-  public getAppointmentDatesByStatus = (
-    professionalId: string,
-    startDate: Date,
-    today: Date,
-    statusList: number[]
-  ): PrismaPromise<{ id: string; appointmentDate: Date }[]> =>
-    this.prisma.appointment.findMany({
-      where: {
-        professionalId,
-        appointmentDate: {
-          lte: today,
-          gte: startDate,
-        },
-        status: { in: statusList },
-      },
-      select: { id: true, appointmentDate: true },
-    });
-
   get = (
     professionalId: string,
     startDate: Date,
-    endDate: Date,
-    today: Date,
-    toIgnore: { id: string; appointmentDate: Date }[]
+    endDate: Date
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   > =>
@@ -102,33 +82,6 @@ class AppointmentRepository implements IAppointmentRepository {
           lte: endDate,
           gte: startDate,
         },
-        OR: [
-          {
-            appointmentDate: { lte: today },
-            status: {
-              in: [
-                AppointmentStatus.SCHEDULED,
-                AppointmentStatus.COMPLETED,
-                AppointmentStatus.CONFIRMED,
-              ],
-            },
-          },
-          {
-            appointmentDate: {
-              lte: today,
-              notIn: toIgnore.map(({ appointmentDate }) => appointmentDate),
-            },
-            status: {
-              in: [AppointmentStatus.CANCELED, AppointmentStatus.ABSENCE],
-            },
-          },
-          {
-            appointmentDate: { gt: today },
-            status: {
-              notIn: [AppointmentStatus.CANCELED, AppointmentStatus.ABSENCE],
-            },
-          },
-        ],
       },
       select: {
         id: true,
@@ -262,6 +215,16 @@ class AppointmentRepository implements IAppointmentRepository {
         status: true,
       },
     }) as PrismaPromise<AppointmentModel | null>;
+
+  public deleteById = (id: string): PrismaPromise<Partial<AppointmentModel>> =>
+    this.prisma.appointment.delete({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+      },
+    }) as PrismaPromise<Partial<AppointmentModel>>;
 }
 
 export { AppointmentRepository };

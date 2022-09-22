@@ -156,7 +156,7 @@ class AppointmentController {
 
   public async updateStatus(
     req: Request,
-    res: Response<IResponseMessage<AppointmentOnCalendarModel>>
+    res: Response<IResponseMessage<AppointmentOnCalendarModel | null>>
   ): Promise<Response> {
     try {
       const { status } = req.body;
