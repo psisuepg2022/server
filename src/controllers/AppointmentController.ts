@@ -6,6 +6,7 @@ import { AppError } from "@handlers/error/AppError";
 import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { logger } from "@infra/log";
+import { AppointmentModel } from "@models/domain/AppointmentModel";
 import { AutocompletePatientResponseModel } from "@models/dto/appointment/AutocompletePatientResponseModel";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
 import { AppointmentOnCalendarModel } from "@models/dto/calendar/AppointmentOnCalendarModel";
@@ -13,6 +14,7 @@ import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarRespon
 import {
   AutocompletePatientService,
   CreateAppointmentService,
+  GetAppointmentService,
   UpdateStatusService,
 } from "@services/appointment";
 import { GetCalendarService } from "@services/calendar";
@@ -165,6 +167,35 @@ class AppointmentController {
       const result = await service.execute({
         id,
         status,
+      });
+
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        content: result,
+        message: i18n.__("SuccessGeneric"),
+      });
+    } catch (error) {
+      logger.error(getErrorStackTrace(error));
+      return res.status(AppError.getErrorStatusCode(error)).json({
+        success: false,
+        message: AppError.getErrorMessage(error),
+      });
+    }
+  }
+
+  public async getById(
+    req: Request,
+    res: Response<IResponseMessage<AppointmentModel>>
+  ): Promise<Response> {
+    try {
+      const { id: professionalId } = req.user;
+      const { appointment_id: appointmentId } = req.params;
+
+      const service = container.resolve(GetAppointmentService);
+
+      const result = await service.execute({
+        professionalId,
+        appointmentId,
       });
 
       return res.status(HttpStatus.OK).json({

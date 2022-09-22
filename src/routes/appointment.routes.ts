@@ -56,5 +56,12 @@ routes.patch(
   RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
   controller.updateStatus
 );
+routes.get(
+  "/appointment_id",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.getById
+);
 
 export { routes };

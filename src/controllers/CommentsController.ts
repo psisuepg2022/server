@@ -7,12 +7,7 @@ import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { logger } from "@infra/log";
 import { CreateCommentResponseModel } from "@models/dto/comments/CreateCommentResponseModel";
-import { GetAppointmentCommentsResponseModel } from "@models/dto/comments/GetAppointmentCommentsResponseModel";
-import {
-  CreateCommentService,
-  GetAppointmentCommentsService,
-  ListCommentsService,
-} from "@services/comments";
+import { CreateCommentService, ListCommentsService } from "@services/comments";
 
 class CommentsController {
   public async create(
@@ -70,35 +65,6 @@ class CommentsController {
           size,
         }
       );
-
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
-  }
-
-  public async getById(
-    req: Request,
-    res: Response<IResponseMessage<GetAppointmentCommentsResponseModel>>
-  ): Promise<Response> {
-    try {
-      const { id: professionalId } = req.user;
-      const { appointment_id: appointmentId } = req.params;
-
-      const service = container.resolve(GetAppointmentCommentsService);
-
-      const result = await service.execute({
-        professionalId,
-        appointmentId,
-      });
 
       return res.status(HttpStatus.OK).json({
         success: true,
