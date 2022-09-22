@@ -112,6 +112,16 @@ class GetCalendarService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
+    const now = this.dateProvider.now();
+
+    const [idsToIgnore] = await transaction([
+      this.appointmentRepository.getRescheduledAppointmentsIds(
+        professionalId,
+        startDateConverted,
+        now
+      ),
+    ]);
+
     const [appointments, scheduleLocks, weeklySchedule] = await transaction(
       ((): PrismaPromise<any>[] => {
         const list: PrismaPromise<any>[] = [
@@ -119,7 +129,8 @@ class GetCalendarService {
             professionalId,
             startDateConverted,
             endDateConverted,
-            this.dateProvider.now()
+            now,
+            idsToIgnore.map(({ id }) => id)
           ),
           this.scheduleRepository.getScheduleLockByInterval(
             professionalId,
