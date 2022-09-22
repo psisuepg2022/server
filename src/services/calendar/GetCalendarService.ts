@@ -114,11 +114,16 @@ class GetCalendarService {
 
     const now = this.dateProvider.now();
 
-    const [idsToIgnore] = await transaction([
-      this.appointmentRepository.getRescheduledAppointmentsIds(
+    const [appointmentsToVerifyRescheduled] = await transaction([
+      this.appointmentRepository.getAppointmentDatesByStatus(
         professionalId,
         startDateConverted,
-        now
+        now,
+        [
+          AppointmentStatus.SCHEDULED,
+          AppointmentStatus.COMPLETED,
+          AppointmentStatus.CONFIRMED,
+        ]
       ),
     ]);
 
@@ -130,7 +135,7 @@ class GetCalendarService {
             startDateConverted,
             endDateConverted,
             now,
-            idsToIgnore.map(({ id }) => id)
+            appointmentsToVerifyRescheduled
           ),
           this.scheduleRepository.getScheduleLockByInterval(
             professionalId,

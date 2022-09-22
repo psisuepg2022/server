@@ -25,15 +25,16 @@ interface IAppointmentRepository {
     startDate: Date,
     endDate: Date,
     today: Date,
-    idsToIgnore: string[]
+    toIgnore: { id: string; appointmentDate: Date }[]
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   >;
-  getRescheduledAppointmentsIds(
+  getAppointmentDatesByStatus(
     professionalId: string,
     startDate: Date,
-    today: Date
-  ): PrismaPromise<{ id: string }[]>;
+    today: Date,
+    statusList: number[]
+  ): PrismaPromise<{ id: string; appointmentDate: Date }[]>;
   findToUpdateStatus(id: string): PrismaPromise<{
     id: string;
     status: number;

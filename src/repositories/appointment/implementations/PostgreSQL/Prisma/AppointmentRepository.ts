@@ -68,11 +68,12 @@ class AppointmentRepository implements IAppointmentRepository {
       },
     }) as PrismaPromise<AppointmentModel>;
 
-  public getRescheduledAppointmentsIds = (
+  public getAppointmentDatesByStatus = (
     professionalId: string,
     startDate: Date,
-    today: Date
-  ): PrismaPromise<{ id: string }[]> =>
+    today: Date,
+    statusList: number[]
+  ): PrismaPromise<{ id: string; appointmentDate: Date }[]> =>
     this.prisma.appointment.findMany({
       where: {
         professionalId,
@@ -80,11 +81,9 @@ class AppointmentRepository implements IAppointmentRepository {
           lte: today,
           gte: startDate,
         },
-        status: {
-          in: [AppointmentStatus.CANCELED, AppointmentStatus.ABSENCE],
-        },
+        status: { in: statusList },
       },
-      select: { id: true },
+      select: { id: true, appointmentDate: true },
     });
 
   get = (
@@ -92,7 +91,7 @@ class AppointmentRepository implements IAppointmentRepository {
     startDate: Date,
     endDate: Date,
     today: Date,
-    idsToIgnore: string[]
+    toIgnore: { id: string; appointmentDate: Date }[]
   ): PrismaPromise<
     Partial<AppointmentModel> & { patient: { person: Partial<PersonModel> } }[]
   > =>
@@ -106,7 +105,22 @@ class AppointmentRepository implements IAppointmentRepository {
         OR: [
           {
             appointmentDate: { lte: today },
-            id: { notIn: idsToIgnore },
+            status: {
+              in: [
+                AppointmentStatus.SCHEDULED,
+                AppointmentStatus.COMPLETED,
+                AppointmentStatus.CONFIRMED,
+              ],
+            },
+          },
+          {
+            appointmentDate: {
+              lte: today,
+              notIn: toIgnore.map(({ appointmentDate }) => appointmentDate),
+            },
+            status: {
+              in: [AppointmentStatus.CANCELED, AppointmentStatus.ABSENCE],
+            },
           },
           {
             appointmentDate: { gt: today },
