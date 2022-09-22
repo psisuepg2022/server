@@ -208,6 +208,25 @@ class AppointmentRepository implements IAppointmentRepository {
         appointmentDate: { gte: date },
       },
     });
+
+  public getById = (
+    professionalId: string,
+    appointmentId: string
+  ): PrismaPromise<AppointmentModel | null> =>
+    this.prisma.appointment.findFirst({
+      where: {
+        professionalId,
+        id: appointmentId,
+      },
+      select: {
+        id: true,
+        comments: true,
+        createdAt: true,
+        updatedAt: true,
+        appointmentDate: true,
+        status: true,
+      },
+    }) as PrismaPromise<AppointmentModel | null>;
 }
 
 export { AppointmentRepository };

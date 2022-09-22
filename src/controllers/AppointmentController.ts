@@ -6,9 +6,9 @@ import { AppError } from "@handlers/error/AppError";
 import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { logger } from "@infra/log";
-import { AppointmentModel } from "@models/domain/AppointmentModel";
 import { AutocompletePatientResponseModel } from "@models/dto/appointment/AutocompletePatientResponseModel";
 import { CreateAppointmentResponseModel } from "@models/dto/appointment/CreateAppointmentResponseModel";
+import { GetAppointmentResponseModel } from "@models/dto/appointment/GetAppointmentResponseModel";
 import { AppointmentOnCalendarModel } from "@models/dto/calendar/AppointmentOnCalendarModel";
 import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarResponseModel";
 import {
@@ -185,7 +185,7 @@ class AppointmentController {
 
   public async getById(
     req: Request,
-    res: Response<IResponseMessage<AppointmentModel>>
+    res: Response<IResponseMessage<GetAppointmentResponseModel>>
   ): Promise<Response> {
     try {
       const { id: professionalId } = req.user;

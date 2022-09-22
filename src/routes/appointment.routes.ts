@@ -57,7 +57,7 @@ routes.patch(
   controller.updateStatus
 );
 routes.get(
-  "/appointment_id",
+  "/:appointment_id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),

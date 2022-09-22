@@ -55,6 +55,10 @@ interface IAppointmentRepository {
     id: string,
     date: Date
   ): PrismaPromise<{ count: number }>;
+  getById(
+    professionalId: string,
+    appointmentId: string
+  ): PrismaPromise<AppointmentModel | null>;
 }
 
 export { IAppointmentRepository };
