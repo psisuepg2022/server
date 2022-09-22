@@ -5,6 +5,14 @@ const handleErrorLog = (evt: Prisma.LogEvent): void => {
   logger.error(evt.message);
 };
 
+const handleInfoLog = (evt: Prisma.LogEvent): void => {
+  logger.info(evt.message);
+};
+
+const handleWarnLog = (evt: Prisma.LogEvent): void => {
+  logger.warn(evt.message);
+};
+
 const handleQueryLog = (evt: Prisma.QueryEvent): void => {
   const params = (() => {
     try {
@@ -31,4 +39,4 @@ const handleQueryLog = (evt: Prisma.QueryEvent): void => {
   logger.info(log);
 };
 
-export { handleQueryLog, handleErrorLog };
+export { handleQueryLog, handleErrorLog, handleInfoLog, handleWarnLog };
