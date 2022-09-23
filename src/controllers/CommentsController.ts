@@ -25,7 +25,7 @@ class CommentsController {
         appointmentId,
         professionalId,
         text,
-        blankComments: blankComments === "true",
+        blankComments: blankComments === "true" || blankComments === true,
       });
 
       return res.status(HttpStatus.CREATED).json({
