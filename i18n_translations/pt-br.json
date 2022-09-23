@@ -102,7 +102,7 @@
   "ErrorScheduleLockDeletePastEvent": "Não é possível remover um bloqueio que já ocorreu.",
   "ErrorScheduleLockEndTimeInvalid": "O horário de término do bloqueio informado é inválido.",
   "ErrorScheduleLockEndTimeRequired": "É necessário informar o término do período de bloqueio.",
-  "ErrorScheduleLockHasWeeklyScheduleLock": "Não é necessário cadastrar o bloqueio pois a agenda de {0} já compreende este horário.",
+  "ErrorScheduleLockHasWeeklyScheduleLock": "Não é possível cadastrar pois já existe um bloqueio na agenda de {0}.",
   "ErrorScheduleLockIdRequired": "É necessário informar o identificar do bloqueio.",
   "ErrorScheduleLockIntervalInvalid": "O intervalo do bloqueio é inválido: o início deve estar antes do término.",
   "ErrorScheduleLockIntervalOutOfBaseDuration": "O período do bloqueio não pode exceder a duração base das consultas do profissional.",
