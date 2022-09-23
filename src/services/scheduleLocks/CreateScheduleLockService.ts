@@ -127,7 +127,7 @@ class CreateScheduleLockService {
       );
 
     const [hasWeeklySchedule] = await transaction([
-      this.scheduleRepository.hasWeklyScheduleConflictingWithScheduleLock(
+      this.scheduleRepository.hasWeeklyScheduleConflictingWithScheduleLock(
         professionalId,
         startTimeConverted,
         endTimeConverted,

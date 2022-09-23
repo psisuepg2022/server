@@ -273,7 +273,7 @@ class ScheduleRepository implements IScheduleRepository {
       },
     });
 
-  public hasWeklyScheduleConflictingWithScheduleLock = (
+  public hasWeeklyScheduleConflictingWithScheduleLock = (
     professionalId: string,
     startTime: Date,
     endTime: Date,
@@ -286,10 +286,10 @@ class ScheduleRepository implements IScheduleRepository {
         OR: [
           { startTime, endTime },
           {
-            startTime: { gte: startTime, lt: endTime },
+            startTime: { gt: startTime, lt: endTime },
           },
           {
-            endTime: { gt: startTime, lte: endTime },
+            endTime: { gt: startTime, lt: endTime },
           },
           {
             WeeklyScheduleLocks: {
@@ -301,10 +301,10 @@ class ScheduleRepository implements IScheduleRepository {
                 OR: [
                   { startTime, endTime },
                   {
-                    startTime: { gte: startTime, lt: endTime },
+                    startTime: { gt: startTime, lt: endTime },
                   },
                   {
-                    endTime: { gt: startTime, lte: endTime },
+                    endTime: { gt: startTime, lt: endTime },
                   },
                 ],
               },
