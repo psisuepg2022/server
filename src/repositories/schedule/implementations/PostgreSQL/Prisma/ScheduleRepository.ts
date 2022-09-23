@@ -287,8 +287,24 @@ class ScheduleRepository implements IScheduleRepository {
     this.prisma.weeklyScheduleLock.findFirst({
       where: {
         weeklySchedule: { professionalId, dayOfTheWeek },
-        startTime: { lte: startTime },
-        endTime: { gte: endTime },
+        OR: [
+          {
+            startTime,
+            endTime,
+          },
+          {
+            startTime: {
+              gte: startTime,
+              lt: endTime,
+            },
+          },
+          {
+            endTime: {
+              gt: startTime,
+              lte: endTime,
+            },
+          },
+        ],
       },
       select: {
         id: true,
