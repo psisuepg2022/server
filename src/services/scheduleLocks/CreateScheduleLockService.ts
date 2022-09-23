@@ -126,8 +126,8 @@ class CreateScheduleLockService {
         i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
       );
 
-    const [hasWeeklyScheduleLock] = await transaction([
-      this.scheduleRepository.hasWeklyScheduleLockConflictingWithScheduleLock(
+    const [hasWeeklySchedule] = await transaction([
+      this.scheduleRepository.hasWeklyScheduleConflictingWithScheduleLock(
         professionalId,
         startTimeConverted,
         endTimeConverted,
@@ -135,15 +135,13 @@ class CreateScheduleLockService {
       ),
     ]);
 
-    if (hasWeeklyScheduleLock)
+    if (hasWeeklySchedule)
       throw new AppError(
         "BAD_REQUEST",
         i18n.__mf("ErrorScheduleLockHasWeeklyScheduleLock", [
           getEnumDescription(
             "DAYS_OF_THE_WEEK",
-            DaysOfTheWeek[
-              hasWeeklyScheduleLock.weeklySchedule.dayOfTheWeek as number
-            ]
+            DaysOfTheWeek[hasWeeklySchedule.dayOfTheWeek as number]
           ),
         ])
       );
