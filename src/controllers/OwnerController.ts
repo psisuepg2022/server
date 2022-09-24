@@ -1,11 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import i18n from "i18n";
 import { container } from "tsyringe";
 
-import { AppError } from "@handlers/error/AppError";
-import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
-import { logger } from "@infra/log";
 import { OwnerModel } from "@models/domain/OwnerModel";
 import { ListOwnersResponseModel } from "@models/dto/owner/ListOwnersRespondeModel";
 import { GetUserProfileResponseModel } from "@models/dto/user/GetUserProfileResponseModel";
@@ -19,168 +16,148 @@ import {
 class OwnerController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage<Partial<OwnerModel>>>
-  ): Promise<Response> {
-    try {
-      const {
-        userName,
-        password,
-        email,
-        name,
-        CPF,
-        birthDate,
-        contactNumber,
-        address,
-        clinicId,
-      } = req.body;
+    res: Response<IResponseMessage<Partial<OwnerModel>>>,
+    next: NextFunction
+  ): Promise<void> {
+    const {
+      userName,
+      password,
+      email,
+      name,
+      CPF,
+      birthDate,
+      contactNumber,
+      address,
+      clinicId,
+    } = req.body;
 
-      const service = container.resolve(CreateOwnerService);
+    const service = container.resolve(CreateOwnerService);
 
-      const result = await service.execute({
-        userName,
-        birthDate,
-        contactNumber,
-        name,
-        CPF,
-        email,
-        password,
-        clinicId,
-        address: address
-          ? {
-              state: address.state,
-              zipCode: address.zipCode,
-              city: address.city,
-              district: address.district,
-              publicArea: address.publicArea,
-            }
-          : undefined,
-      });
+    const result = await service.execute({
+      userName,
+      birthDate,
+      contactNumber,
+      name,
+      CPF,
+      email,
+      password,
+      clinicId,
+      address: address
+        ? {
+            state: address.state,
+            zipCode: address.zipCode,
+            city: address.city,
+            district: address.district,
+            publicArea: address.publicArea,
+          }
+        : undefined,
+    });
 
-      return res.status(HttpStatus.CREATED).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.CREATED).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async updateProfile(
     req: Request,
-    res: Response<IResponseMessage<Partial<OwnerModel>>>
-  ): Promise<Response> {
-    try {
-      const {
-        userName,
-        password,
-        email,
-        name,
-        CPF,
-        birthDate,
-        contactNumber,
-        address,
-      } = req.body;
+    res: Response<IResponseMessage<Partial<OwnerModel>>>,
+    next: NextFunction
+  ): Promise<void> {
+    const {
+      userName,
+      password,
+      email,
+      name,
+      CPF,
+      birthDate,
+      contactNumber,
+      address,
+    } = req.body;
 
-      const { id: userId } = req.user;
-      const { id: clinicId } = req.clinic;
+    const { id: userId } = req.user;
+    const { id: clinicId } = req.clinic;
 
-      const service = container.resolve(UpdateOwnerService);
+    const service = container.resolve(UpdateOwnerService);
 
-      const result = await service.execute({
-        id: userId,
-        userName,
-        birthDate,
-        contactNumber,
-        name,
-        CPF,
-        email,
-        password,
-        clinicId,
-        address: address
-          ? {
-              state: address.state,
-              zipCode: address.zipCode,
-              city: address.city,
-              district: address.district,
-              publicArea: address.publicArea,
-            }
-          : undefined,
-      });
+    const result = await service.execute({
+      id: userId,
+      userName,
+      birthDate,
+      contactNumber,
+      name,
+      CPF,
+      email,
+      password,
+      clinicId,
+      address: address
+        ? {
+            state: address.state,
+            zipCode: address.zipCode,
+            city: address.city,
+            district: address.district,
+            publicArea: address.publicArea,
+          }
+        : undefined,
+    });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async read(
     req: Request,
     res: Response<
       IResponseMessage<IPaginationResponse<ListOwnersResponseModel>>
-    >
-  ): Promise<Response> {
-    try {
-      const { page, size } = req.query;
-      const { clinic_id: clinicId } = req.params;
+    >,
+    next: NextFunction
+  ): Promise<void> {
+    const { page, size } = req.query;
+    const { clinic_id: clinicId } = req.params;
 
-      const service = container.resolve(SearchOwnersWithFiltersService);
+    const service = container.resolve(SearchOwnersWithFiltersService);
 
-      const result = await service.execute(clinicId, { page, size });
+    const result = await service.execute(clinicId, { page, size });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async getProfile(
     req: Request,
-    res: Response<IResponseMessage<GetUserProfileResponseModel>>
-  ): Promise<Response> {
-    try {
-      const { id: userId } = req.user;
-      const { id: clinicId } = req.clinic;
+    res: Response<IResponseMessage<GetUserProfileResponseModel>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: userId } = req.user;
+    const { id: clinicId } = req.clinic;
 
-      const service = container.resolve(GetOwnerProfileService);
+    const service = container.resolve(GetOwnerProfileService);
 
-      const result = await service.execute({
-        clinicId,
-        userId,
-      });
+    const result = await service.execute({
+      clinicId,
+      userId,
+    });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 }
 

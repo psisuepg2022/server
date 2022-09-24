@@ -1,11 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import i18n from "i18n";
 import { container } from "tsyringe";
 
-import { AppError } from "@handlers/error/AppError";
-import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
-import { logger } from "@infra/log";
 import { ClinicModel } from "@models/domain/ClinicModel";
 import {
   CreateClinicService,
@@ -16,80 +13,65 @@ import {
 class ClinicController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage<ClinicModel>>
-  ): Promise<Response> {
-    try {
-      const { name, email } = req.body;
+    res: Response<IResponseMessage<ClinicModel>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { name, email } = req.body;
 
-      const service = container.resolve(CreateClinicService);
+    const service = container.resolve(CreateClinicService);
 
-      const result = await service.execute({
-        email,
-        name,
-      });
+    const result = await service.execute({
+      email,
+      name,
+    });
 
-      return res.status(HttpStatus.CREATED).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.CREATED).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async read(
     req: Request,
-    res: Response<IResponseMessage<IPaginationResponse<ClinicModel>>>
-  ): Promise<Response> {
-    try {
-      const { page, size } = req.query;
+    res: Response<IResponseMessage<IPaginationResponse<ClinicModel>>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { page, size } = req.query;
 
-      const service = container.resolve(ListClinicsService);
+    const service = container.resolve(ListClinicsService);
 
-      const result = await service.execute({ page, size });
+    const result = await service.execute({ page, size });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async delete(
     req: Request,
-    res: Response<IResponseMessage<boolean>>
-  ): Promise<Response> {
-    try {
-      const { id } = req.params;
+    res: Response<IResponseMessage<boolean>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
 
-      const service = container.resolve(DeleteClinicService);
+    const service = container.resolve(DeleteClinicService);
 
-      const result = await service.execute(id);
+    const result = await service.execute(id);
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 }
 

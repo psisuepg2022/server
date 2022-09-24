@@ -2,24 +2,26 @@ import { NextFunction, Request, Response } from "express";
 
 import { i18n } from "@config/i18n";
 import { AppError } from "@handlers/error/AppError";
+import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { HttpStatus, IResponseMessage } from "@infra/http";
+import { logger } from "@infra/log";
 
 const errorHandlerMiddleware = async (
   err: Error,
   _: Request,
   res: Response<IResponseMessage>,
   __: NextFunction
-): Promise<void | Response> => {
-  if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-    });
-  }
+): Promise<Response> => {
+  logger.error(getErrorStackTrace(err));
 
-  return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+  const [statusCode, message] = ((): [number, string] => {
+    if (err instanceof AppError) return [err.statusCode, err.message];
+    return [HttpStatus.INTERNAL_SERVER_ERROR, i18n.__("ErrorGenericUnknown")];
+  })();
+
+  return res.status(statusCode).json({
+    message,
     success: false,
-    message: i18n.__("ErrorGenericUnknown"),
   });
 };
 

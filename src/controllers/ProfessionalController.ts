@@ -1,12 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import i18n from "i18n";
 import { container } from "tsyringe";
 
-import { AppError } from "@handlers/error/AppError";
-import { getErrorStackTrace } from "@helpers/getErrorStackTrace";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
-import { logger } from "@infra/log";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { GetProfessionalsToScheduleTapBarResponseModel } from "@models/dto/professional/GetProfessionalsToScheduleTapBarResponseModel";
@@ -24,225 +21,198 @@ import {
 class ProfessionalController {
   public async create(
     req: Request,
-    res: Response<IResponseMessage<Partial<ProfessionalModel>>>
-  ): Promise<Response> {
-    try {
-      const {
-        id,
-        userName,
-        password,
-        email,
-        name,
-        CPF,
-        birthDate,
-        contactNumber,
-        address,
-        profession,
-        registry,
-        specialization,
-      } = req.body;
+    res: Response<IResponseMessage<Partial<ProfessionalModel>>>,
+    next: NextFunction
+  ): Promise<void> {
+    const {
+      id,
+      userName,
+      password,
+      email,
+      name,
+      CPF,
+      birthDate,
+      contactNumber,
+      address,
+      profession,
+      registry,
+      specialization,
+    } = req.body;
 
-      const { id: clinicId } = req.clinic;
+    const { id: clinicId } = req.clinic;
 
-      const [service, httpStatusResponse] = stringIsNullOrEmpty(id)
-        ? [container.resolve(CreateProfessionalService), HttpStatus.CREATED]
-        : [container.resolve(UpdateProfessionalService), HttpStatus.OK];
+    const [service, httpStatusResponse] = stringIsNullOrEmpty(id)
+      ? [container.resolve(CreateProfessionalService), HttpStatus.CREATED]
+      : [container.resolve(UpdateProfessionalService), HttpStatus.OK];
 
-      const result = await service.execute({
-        id,
-        userName,
-        birthDate,
-        contactNumber,
-        name,
-        CPF,
-        email,
-        password,
-        clinicId,
-        profession,
-        registry,
-        specialization,
-        address: address
-          ? {
-              id: address.id,
-              state: address.state,
-              zipCode: address.zipCode,
-              city: address.city,
-              district: address.district,
-              publicArea: address.publicArea,
-            }
-          : undefined,
-      });
+    const result = await service.execute({
+      id,
+      userName,
+      birthDate,
+      contactNumber,
+      name,
+      CPF,
+      email,
+      password,
+      clinicId,
+      profession,
+      registry,
+      specialization,
+      address: address
+        ? {
+            id: address.id,
+            state: address.state,
+            zipCode: address.zipCode,
+            city: address.city,
+            district: address.district,
+            publicArea: address.publicArea,
+          }
+        : undefined,
+    });
 
-      return res.status(httpStatusResponse).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(httpStatusResponse).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async updateProfile(
     req: Request,
-    res: Response<IResponseMessage<Partial<ProfessionalModel>>>
-  ): Promise<Response> {
-    try {
-      const {
-        userName,
-        password,
-        email,
-        name,
-        CPF,
-        birthDate,
-        contactNumber,
-        address,
-        profession,
-        registry,
-        specialization,
-      } = req.body;
+    res: Response<IResponseMessage<Partial<ProfessionalModel>>>,
+    next: NextFunction
+  ): Promise<void> {
+    const {
+      userName,
+      password,
+      email,
+      name,
+      CPF,
+      birthDate,
+      contactNumber,
+      address,
+      profession,
+      registry,
+      specialization,
+    } = req.body;
 
-      const { id: userId } = req.user;
-      const { id: clinicId } = req.clinic;
+    const { id: userId } = req.user;
+    const { id: clinicId } = req.clinic;
 
-      const service = container.resolve(UpdateProfessionalService);
+    const service = container.resolve(UpdateProfessionalService);
 
-      const result = await service.execute({
-        id: userId,
-        userName,
-        birthDate,
-        contactNumber,
-        name,
-        CPF,
-        email,
-        password,
-        clinicId,
-        profession,
-        registry,
-        specialization,
-        address: address
-          ? {
-              id: address.id,
-              state: address.state,
-              zipCode: address.zipCode,
-              city: address.city,
-              district: address.district,
-              publicArea: address.publicArea,
-            }
-          : undefined,
-      });
+    const result = await service.execute({
+      id: userId,
+      userName,
+      birthDate,
+      contactNumber,
+      name,
+      CPF,
+      email,
+      password,
+      clinicId,
+      profession,
+      registry,
+      specialization,
+      address: address
+        ? {
+            id: address.id,
+            state: address.state,
+            zipCode: address.zipCode,
+            city: address.city,
+            district: address.district,
+            publicArea: address.publicArea,
+          }
+        : undefined,
+    });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async read(
     req: Request,
     res: Response<
       IResponseMessage<IPaginationResponse<ListProfessionalsResponseModel>>
-    >
-  ): Promise<Response> {
-    try {
-      const { page, size } = req.query;
-      const { id: clinicId } = req.clinic;
+    >,
+    next: NextFunction
+  ): Promise<void> {
+    const { page, size } = req.query;
+    const { id: clinicId } = req.clinic;
 
-      const { name, CPF, email } = req.body;
+    const { name, CPF, email } = req.body;
 
-      const service = container.resolve(SearchProfessionalsWithFiltersService);
+    const service = container.resolve(SearchProfessionalsWithFiltersService);
 
-      const result = await service.execute(clinicId, {
-        page,
-        size,
-        filters: {
-          name,
-          CPF,
-          email,
-        },
-      });
+    const result = await service.execute(clinicId, {
+      page,
+      size,
+      filters: {
+        name,
+        CPF,
+        email,
+      },
+    });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async delete(
     req: Request,
-    res: Response<IResponseMessage<SoftProfessionalDeleteResponseModel>>
-  ): Promise<Response> {
-    try {
-      const { id } = req.params;
-      const { id: clinicId } = req.clinic;
+    res: Response<IResponseMessage<SoftProfessionalDeleteResponseModel>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id } = req.params;
+    const { id: clinicId } = req.clinic;
 
-      const softDeleteService = container.resolve(
-        SoftProfessionalDeleteService
-      );
+    const softDeleteService = container.resolve(SoftProfessionalDeleteService);
 
-      const result = await softDeleteService.execute(clinicId, id);
+    const result = await softDeleteService.execute(clinicId, id);
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async getProfile(
     req: Request,
-    res: Response<IResponseMessage<GetProfessionalProfileResponseModel>>
-  ): Promise<Response> {
-    try {
-      const { id: userId } = req.user;
-      const { id: clinicId } = req.clinic;
+    res: Response<IResponseMessage<GetProfessionalProfileResponseModel>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: userId } = req.user;
+    const { id: clinicId } = req.clinic;
 
-      const service = container.resolve(GetProfessionalProfileService);
+    const service = container.resolve(GetProfessionalProfileService);
 
-      const result = await service.execute({
-        clinicId,
-        userId,
-      });
+    const result = await service.execute({
+      clinicId,
+      userId,
+    });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 
   public async getProfessionalsToScheduleTapBar(
@@ -251,33 +221,26 @@ class ProfessionalController {
       IResponseMessage<
         IPaginationResponse<GetProfessionalsToScheduleTapBarResponseModel>
       >
-    >
-  ): Promise<Response> {
-    try {
-      const { id: clinicId } = req.clinic;
-      const { page, size } = req.query;
+    >,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: clinicId } = req.clinic;
+    const { page, size } = req.query;
 
-      const service = container.resolve(
-        GetProfessionalsToScheduleTapBarService
-      );
+    const service = container.resolve(GetProfessionalsToScheduleTapBarService);
 
-      const result = await service.execute(clinicId, {
-        page,
-        size,
-      });
+    const result = await service.execute(clinicId, {
+      page,
+      size,
+    });
 
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        content: result,
-        message: i18n.__("SuccessGeneric"),
-      });
-    } catch (error) {
-      logger.error(getErrorStackTrace(error));
-      return res.status(AppError.getErrorStatusCode(error)).json({
-        success: false,
-        message: AppError.getErrorMessage(error),
-      });
-    }
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
   }
 }
 
