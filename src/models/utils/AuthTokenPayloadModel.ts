@@ -4,6 +4,7 @@ type AuthTokenPayloadModel = {
   clinic: {
     id: string;
     name: string;
+    email: string;
   };
   type: "access_token" | "refresh_token";
   iat: number;

@@ -94,6 +94,7 @@ class UserRepository implements IUserRepository {
               select: {
                 id: true,
                 name: true,
+                email: true,
               },
             },
           },

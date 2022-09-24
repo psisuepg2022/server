@@ -110,6 +110,7 @@ class LoginService {
       clinic: {
         id: hasUser.person.clinic.id,
         name: hasUser.person.clinic.name,
+        email: hasUser.person.clinic.email,
       },
       permissions: [
         ...hasUser.role.permissions?.map(
