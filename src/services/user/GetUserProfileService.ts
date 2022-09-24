@@ -63,6 +63,7 @@ class GetUserProfileService<
     CPF: this.maskProvider.cpf(person.CPF || ""),
     email: person.email || "",
     birthDate: this.maskProvider.date(person.birthDate as Date),
+    contactNumber: this.maskProvider.contactNumber(person.contactNumber || ""),
     address: {
       id: person.address.id,
       city: person.address.city,

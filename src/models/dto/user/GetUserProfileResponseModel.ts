@@ -7,6 +7,7 @@ type GetUserProfileResponseModel = {
   CPF: string;
   birthDate: string;
   address: AddressModel;
+  contactNumber?: string;
 };
 
 export { GetUserProfileResponseModel };

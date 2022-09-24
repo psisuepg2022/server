@@ -242,6 +242,7 @@ class ProfessionalRepository implements IProfessionalRepository {
             CPF: true,
             birthDate: true,
             domainClass: true,
+            contactNumber: true,
             address: {
               select: {
                 city: true,
