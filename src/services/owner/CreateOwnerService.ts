@@ -103,10 +103,12 @@ class CreateOwnerService extends CreateUserService {
     return {
       ...user,
       ...person,
-      address: {
-        ...addressSaved,
-        zipCode: this.maskProvider.zipCode(address?.zipCode || ""),
-      },
+      address: addressSaved
+        ? {
+            ...addressSaved,
+            zipCode: this.maskProvider.zipCode(address?.zipCode || ""),
+          }
+        : undefined,
       CPF: this.maskProvider.cpf(person.CPF),
       birthDate: this.maskProvider.date(person.birthDate),
       contactNumber: this.maskProvider.contactNumber(person.contactNumber),
