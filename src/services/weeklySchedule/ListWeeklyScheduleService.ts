@@ -75,7 +75,7 @@ class ListWeeklyScheduleService {
         ),
         startTime: this.maskProvider.time(new Date(item.startTime)),
         endTime: this.maskProvider.time(new Date(item.endTime)),
-        WeeklyScheduleLocks: item.WeeklyScheduleLocks.map(
+        locks: item.WeeklyScheduleLocks.map(
           (lock: WeeklyScheduleLockModel): WeeklyScheduleLockModel => ({
             ...lock,
             startTime: this.maskProvider.time(new Date(lock.startTime)),

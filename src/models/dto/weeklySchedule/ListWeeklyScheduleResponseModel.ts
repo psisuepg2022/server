@@ -5,7 +5,7 @@ type ListWeeklyScheduleResponseModel = {
   dayOfTheWeek: string;
   endTime: string;
   startTime: string;
-  WeeklyScheduleLocks: WeeklyScheduleLockModel[];
+  locks: WeeklyScheduleLockModel[];
 };
 
 export { ListWeeklyScheduleResponseModel };
