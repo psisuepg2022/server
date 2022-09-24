@@ -68,7 +68,7 @@ class ListWeeklyScheduleService {
           WeeklyScheduleLocks: WeeklyScheduleLockModel[];
         }
       ): ListWeeklyScheduleResponseModel => ({
-        ...item,
+        id: item.id,
         dayOfTheWeek: getEnumDescription(
           "DAYS_OF_THE_WEEK",
           DaysOfTheWeek[item.dayOfTheWeek as number]
