@@ -118,6 +118,7 @@ class ScheduleRepository implements IScheduleRepository {
           },
         },
       },
+      orderBy: { dayOfTheWeek: "asc" },
     }) as PrismaPromise<
       (WeeklyScheduleModel & {
         WeeklyScheduleLocks: WeeklyScheduleLockModel[];
