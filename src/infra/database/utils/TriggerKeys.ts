@@ -1,0 +1,3 @@
+enum TriggerKeys {}
+
+export { TriggerKeys };
