@@ -123,7 +123,9 @@ class CreateScheduleLockService {
     )
       throw new AppError(
         "BAD_REQUEST",
-        i18n.__("ErrorScheduleLockIntervalOutOfBaseDuration")
+        i18n.__mf("ErrorScheduleLockIntervalOutOfBaseDuration", [
+          hasProfessional.baseDuration,
+        ])
       );
 
     const [hasWeeklySchedule] = await transaction([
