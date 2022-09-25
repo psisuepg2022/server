@@ -111,7 +111,7 @@ class CreateScheduleLockService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
-    const dateConverted = this.dateProvider.getUTCDate(date);
+    const dateConverted = this.dateProvider.getUTCDate(date, startTime);
 
     if (
       (this.dateProvider.differenceInMillis(
