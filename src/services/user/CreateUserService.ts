@@ -56,16 +56,15 @@ class CreateUserService extends CreatePersonService {
     );
   };
 
-  private getRoleName = (domainClass: string): string => {
-    switch (domainClass) {
-      case UserDomainClasses.EMPLOYEE:
-        return RolesKeys.EMPLOYEE;
-      case UserDomainClasses.OWNER:
-        return RolesKeys.OWNER;
-      case UserDomainClasses.PATIENT:
-        return RolesKeys.PATIENT;
-      case UserDomainClasses.PROFESSIONAL:
-        return RolesKeys.PROFESSIONAL;
+  private getDomainClass = (role: string): string => {
+    switch (role) {
+      case RolesKeys.EMPLOYEE:
+        return UserDomainClasses.EMPLOYEE;
+      case RolesKeys.OWNER:
+        return UserDomainClasses.OWNER;
+      case RolesKeys.PROFESSIONAL:
+      case RolesKeys.PROFESSIONAL_UNCONFIGURED:
+        return UserDomainClasses.PROFESSIONAL;
       default:
         throw new AppError(
           "INTERNAL_SERVER_ERROR",
@@ -87,7 +86,7 @@ class CreateUserService extends CreatePersonService {
       userName,
     }: CreateUserRequestModel,
     id: string,
-    domainClass: string,
+    role: string,
     savePassword = true
   ): Promise<void> {
     if (stringIsNullOrEmpty(userName))
@@ -126,9 +125,7 @@ class CreateUserService extends CreatePersonService {
     });
 
     const [hasRole] = await transaction([
-      this.authenticationRepository.getRoleByName(
-        this.getRoleName(domainClass)
-      ),
+      this.authenticationRepository.getRoleByName(role),
     ]);
 
     if (!hasRole)
@@ -145,7 +142,7 @@ class CreateUserService extends CreatePersonService {
         clinicId,
       },
       id,
-      domainClass
+      this.getDomainClass(role)
     );
 
     this.userOperation = this.userRepository.save(hasRole.id, {

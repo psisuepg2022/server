@@ -14,7 +14,7 @@ interface IUserRepository {
   ): PrismaPromise<
     | (UserModel & {
         person: PersonModel & { clinic: ClinicModel };
-        role: { permissions: Partial<PermissionModel>[] };
+        role: { name: string; permissions: Partial<PermissionModel>[] };
         professional?: Partial<ProfessionalModel>;
       })
     | null

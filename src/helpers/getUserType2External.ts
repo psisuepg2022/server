@@ -1,4 +1,3 @@
-const getUserType2External = (userDomainClass: string): string =>
-  `USER_TYPE_${userDomainClass.split(".").pop()?.toUpperCase() || "ERROR"}`;
+const getUserType2External = (role: string): string => `USER_TYPE_${role}`;
 
 export { getUserType2External };

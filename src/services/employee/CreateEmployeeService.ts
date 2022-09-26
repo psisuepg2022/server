@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { UserDomainClasses } from "@common/UserDomainClasses";
+import { RolesKeys } from "@common/RolesKeys";
 import { transaction } from "@infra/database/transaction";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
 import { CreateEmployeeRequestModel } from "@models/dto/employee/CreateEmployeeRequestModel";
@@ -85,7 +85,7 @@ class CreateEmployeeService extends CreateUserService {
         clinicId,
       },
       id,
-      UserDomainClasses.EMPLOYEE,
+      RolesKeys.EMPLOYEE,
       savePassword
     );
 

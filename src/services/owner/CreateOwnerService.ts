@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { UserDomainClasses } from "@common/UserDomainClasses";
+import { RolesKeys } from "@common/RolesKeys";
 import { transaction } from "@infra/database/transaction";
 import { OwnerModel } from "@models/domain/OwnerModel";
 import { CreateOwnerRequestModel } from "@models/dto/owner/CreateOwnerRequestModel";
@@ -85,7 +85,7 @@ class CreateOwnerService extends CreateUserService {
         clinicId,
       },
       id,
-      UserDomainClasses.OWNER,
+      RolesKeys.OWNER,
       savePassword
     );
 

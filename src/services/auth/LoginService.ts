@@ -116,7 +116,7 @@ class LoginService {
         ...hasUser.role.permissions?.map(
           ({ name }: Partial<PermissionModel>): string => name || "ERROR"
         ),
-        getUserType2External(hasUser.person.domainClass),
+        getUserType2External(hasUser.role.name),
       ],
       type: "access_token",
     } as AuthTokenPayloadModel);

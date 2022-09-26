@@ -66,7 +66,7 @@ class UserRepository implements IUserRepository {
   ): PrismaPromise<
     | (UserModel & {
         person: PersonModel & { clinic: ClinicModel };
-        role: { permissions: Partial<PermissionModel>[] };
+        role: { name: string; permissions: Partial<PermissionModel>[] };
         professional?: Partial<ProfessionalModel>;
       })
     | null
@@ -82,6 +82,7 @@ class UserRepository implements IUserRepository {
         id: true,
         role: {
           select: {
+            name: true,
             permissions: { select: { name: true } },
           },
         },
@@ -108,7 +109,7 @@ class UserRepository implements IUserRepository {
     }) as PrismaPromise<
       | (UserModel & {
           person: PersonModel & { clinic: ClinicModel };
-          role: { permissions: Partial<PermissionModel>[] };
+          role: { name: string; permissions: Partial<PermissionModel>[] };
           professional?: Partial<ProfessionalModel>;
         })
       | null

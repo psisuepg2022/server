@@ -1,7 +1,7 @@
 import i18n, { __ } from "i18n";
 import { inject, injectable } from "tsyringe";
 
-import { UserDomainClasses } from "@common/UserDomainClasses";
+import { RolesKeys } from "@common/RolesKeys";
 import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
@@ -110,7 +110,7 @@ class CreateProfessionalService extends CreateUserService {
         clinicId,
       },
       id,
-      UserDomainClasses.PROFESSIONAL,
+      RolesKeys.PROFESSIONAL_UNCONFIGURED,
       savePassword
     );
 
