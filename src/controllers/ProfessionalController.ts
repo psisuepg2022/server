@@ -10,6 +10,7 @@ import { GetProfessionalsToScheduleTapBarResponseModel } from "@models/dto/profe
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
 import { SoftProfessionalDeleteResponseModel } from "@models/dto/professional/SoftProfessionalDeleteResponseModel";
 import {
+  ConfigureProfessionalService,
   CreateProfessionalService,
   GetProfessionalProfileService,
   GetProfessionalsToScheduleTopBarService,
@@ -237,6 +238,41 @@ class ProfessionalController {
     res.status(HttpStatus.OK).json({
       success: true,
       content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
+  }
+
+  public async configure(
+    req: Request,
+    res: Response<IResponseMessage>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: userId } = req.user;
+    const { id: clinicId } = req.clinic;
+    const {
+      oldPassword,
+      newPassword,
+      confirmNewPassword,
+      baseDuration,
+      weeklySchedule,
+    } = req.body;
+
+    const service = container.resolve(ConfigureProfessionalService);
+
+    await service.execute({
+      clinicId,
+      userId,
+      oldPassword,
+      newPassword,
+      confirmNewPassword,
+      baseDuration,
+      weeklySchedule,
+    });
+
+    res.status(HttpStatus.OK).json({
+      success: true,
       message: i18n.__("SuccessGeneric"),
     });
 

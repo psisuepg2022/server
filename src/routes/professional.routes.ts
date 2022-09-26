@@ -65,5 +65,13 @@ routes.get(
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
   controller.getProfessionalsToScheduleTopBar
 );
+routes.post(
+  "/configure",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.is(RolesKeys.PROFESSIONAL_UNCONFIGURED),
+  controller.configure
+);
 
 export { routes };
