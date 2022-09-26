@@ -86,7 +86,7 @@ class CreateProfessionalService extends CreateUserService {
       registry,
       specialization,
     }: CreateProfessionalRequestModel,
-    createSchedule = true,
+    createSchedule = false,
     savePassword = true
   ): Promise<Partial<ProfessionalModel>> {
     const id = this.getObjectId(idReceived);
