@@ -63,7 +63,7 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
-  controller.getProfessionalsToScheduleTapBar
+  controller.getProfessionalsToScheduleTopBar
 );
 
 export { routes };

@@ -1,3 +1,4 @@
+import { RolesKeys } from "@common/RolesKeys";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
 import { AddressModel } from "@models/domain/AddressModel";
@@ -270,7 +271,12 @@ class ProfessionalRepository implements IProfessionalRepository {
         clinicId,
         active: true,
         domainClass: UserDomainClasses.PROFESSIONAL,
-        user: { blocked: false },
+        user: {
+          blocked: false,
+          role: {
+            name: RolesKeys.PROFESSIONAL,
+          },
+        },
       },
       select: {
         id: true,
@@ -287,7 +293,12 @@ class ProfessionalRepository implements IProfessionalRepository {
         clinicId,
         active: true,
         domainClass: UserDomainClasses.PROFESSIONAL,
-        user: { blocked: false },
+        user: {
+          blocked: false,
+          role: {
+            name: RolesKeys.PROFESSIONAL,
+          },
+        },
       },
     });
 }

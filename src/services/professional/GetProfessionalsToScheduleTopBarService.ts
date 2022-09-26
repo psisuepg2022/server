@@ -7,7 +7,7 @@ import { GetProfessionalsToScheduleTapBarResponseModel } from "@models/dto/profe
 import { IProfessionalRepository } from "@repositories/professional";
 
 @injectable()
-class GetProfessionalsToScheduleTapBarService {
+class GetProfessionalsToScheduleTopBarService {
   constructor(
     @inject("ProfessionalRepository")
     private professionalRepository: IProfessionalRepository
@@ -31,4 +31,4 @@ class GetProfessionalsToScheduleTapBarService {
   }
 }
 
-export { GetProfessionalsToScheduleTapBarService };
+export { GetProfessionalsToScheduleTopBarService };

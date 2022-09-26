@@ -1,12 +1,12 @@
 import { CreateProfessionalService } from "./CreateProfessionalService";
 import { GetProfessionalProfileService } from "./GetProfessionalProfileService";
-import { GetProfessionalsToScheduleTapBarService } from "./GetProfessionalsToScheduleTapBarService";
+import { GetProfessionalsToScheduleTopBarService } from "./GetProfessionalsToScheduleTopBarService";
 import { SearchProfessionalsWithFiltersService } from "./SearchProfessionalsWithFiltersService";
 import { SoftProfessionalDeleteService } from "./SoftProfessionalDeleteService";
 import { UpdateProfessionalService } from "./UpdateProfessionalService";
 
 export {
-  GetProfessionalsToScheduleTapBarService,
+  GetProfessionalsToScheduleTopBarService,
   GetProfessionalProfileService,
   UpdateProfessionalService,
   SoftProfessionalDeleteService,

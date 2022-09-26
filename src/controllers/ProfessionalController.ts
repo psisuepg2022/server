@@ -12,7 +12,7 @@ import { SoftProfessionalDeleteResponseModel } from "@models/dto/professional/So
 import {
   CreateProfessionalService,
   GetProfessionalProfileService,
-  GetProfessionalsToScheduleTapBarService,
+  GetProfessionalsToScheduleTopBarService,
   SearchProfessionalsWithFiltersService,
   SoftProfessionalDeleteService,
   UpdateProfessionalService,
@@ -215,7 +215,7 @@ class ProfessionalController {
     return next();
   }
 
-  public async getProfessionalsToScheduleTapBar(
+  public async getProfessionalsToScheduleTopBar(
     req: Request,
     res: Response<
       IResponseMessage<
@@ -227,7 +227,7 @@ class ProfessionalController {
     const { id: clinicId } = req.clinic;
     const { page, size } = req.query;
 
-    const service = container.resolve(GetProfessionalsToScheduleTapBarService);
+    const service = container.resolve(GetProfessionalsToScheduleTopBarService);
 
     const result = await service.execute(clinicId, {
       page,
