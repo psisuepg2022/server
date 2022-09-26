@@ -1,0 +1,12 @@
+-- This is an empty migration.
+
+DO
+$$
+BEGIN
+
+	IF NOT EXISTS(SELECT * FROM "role" WHERE "name" = 'PROFESSIONAL_UNCONFIGURED') THEN 	
+		INSERT INTO "role" ("name") VALUES('PROFESSIONAL_UNCONFIGURED');
+	END IF;
+
+END
+$$;
