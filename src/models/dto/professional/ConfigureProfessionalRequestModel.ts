@@ -1,3 +1,5 @@
+import { ConfigureWeeklyScheduleLocksRequestModel } from "../weeklySchedule/ConfigureWeeklyScheduleRequestModel";
+
 type ConfigureProfessionalRequestModel = {
   userId: string;
   clinicId: string;
@@ -5,15 +7,7 @@ type ConfigureProfessionalRequestModel = {
   newPassword: string;
   confirmNewPassword: string;
   baseDuration: string;
-  weeklySchedule: {
-    dayOfTheWeek: string;
-    startTime: string;
-    endTime: string;
-    locks: {
-      startTime: string;
-      endTime: string;
-    }[];
-  }[];
+  weeklySchedule: ConfigureWeeklyScheduleLocksRequestModel[];
 };
 
 export { ConfigureProfessionalRequestModel };

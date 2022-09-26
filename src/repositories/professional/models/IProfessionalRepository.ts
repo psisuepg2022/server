@@ -54,6 +54,10 @@ interface IProfessionalRepository {
     [take, skip]: [number, number]
   ): PrismaPromise<{ id: string; name: string }[]>;
   countNames(clinicId: string): PrismaPromise<number>;
+  getToConfigure(
+    clinicId: string,
+    id: string
+  ): PrismaPromise<{ id: true } | null>;
 }
 
 export { IProfessionalRepository };

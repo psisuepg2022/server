@@ -301,6 +301,26 @@ class ProfessionalRepository implements IProfessionalRepository {
         },
       },
     });
+
+  public getToConfigure = (
+    clinicId: string,
+    id: string
+  ): PrismaPromise<{ id: true } | null> =>
+    this.prisma.professional.findFirst({
+      where: {
+        id,
+        user: {
+          blocked: false,
+          role: {
+            name: RolesKeys.PROFESSIONAL_UNCONFIGURED,
+          },
+          person: { clinicId, active: true },
+        },
+      },
+      select: {
+        id: true,
+      },
+    }) as PrismaPromise<{ id: true } | null>;
 }
 
 export { ProfessionalRepository };
