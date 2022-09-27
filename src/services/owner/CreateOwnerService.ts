@@ -111,7 +111,10 @@ class CreateOwnerService extends CreateUserService {
         : undefined,
       CPF: this.maskProvider.cpf(person.CPF),
       birthDate: this.maskProvider.date(person.birthDate),
-      contactNumber: this.maskProvider.contactNumber(person.contactNumber),
+      email: person.email || undefined,
+      contactNumber: person.contactNumber
+        ? this.maskProvider.contactNumber(person.contactNumber)
+        : undefined,
     } as Partial<OwnerModel>;
   }
 }
