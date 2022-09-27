@@ -28,9 +28,17 @@ class ClinicRepository implements IClinicRepository {
       skip,
     });
 
-  public hasEmail = (email: string): PrismaPromise<ClinicModel | null> =>
+  public hasEmail = (
+    clinicId: string,
+    email: string
+  ): PrismaPromise<ClinicModel | null> =>
     this.prisma.clinic.findFirst({
-      where: { email },
+      where: {
+        email,
+        id: {
+          not: clinicId,
+        },
+      },
     }) as PrismaPromise<ClinicModel | null>;
 
   public save = ({
@@ -38,9 +46,14 @@ class ClinicRepository implements IClinicRepository {
     id,
     name,
   }: Omit<ClinicModel, "code">): PrismaPromise<ClinicModel> =>
-    this.prisma.clinic.create({
-      data: {
+    this.prisma.clinic.upsert({
+      where: { id },
+      create: {
         id,
+        name,
+        email,
+      },
+      update: {
         name,
         email,
       },
