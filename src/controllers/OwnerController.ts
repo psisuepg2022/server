@@ -95,6 +95,7 @@ class OwnerController {
       clinicId,
       address: address
         ? {
+            id: address.id,
             state: address.state,
             zipCode: address.zipCode,
             city: address.city,
