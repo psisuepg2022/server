@@ -52,7 +52,13 @@ interface IProfessionalRepository {
   getNames(
     clinicId: string,
     [take, skip]: [number, number]
-  ): PrismaPromise<{ id: string; name: string }[]>;
+  ): PrismaPromise<
+    {
+      id: string;
+      name: string;
+      user: { professional: { baseDuration: number } };
+    }[]
+  >;
   countNames(clinicId: string): PrismaPromise<number>;
   getToConfigure(
     clinicId: string,

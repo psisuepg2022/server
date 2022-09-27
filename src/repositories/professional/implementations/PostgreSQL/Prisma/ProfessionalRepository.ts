@@ -266,7 +266,13 @@ class ProfessionalRepository implements IProfessionalRepository {
   public getNames = (
     clinicId: string,
     [take, skip]: [number, number]
-  ): PrismaPromise<{ id: string; name: string }[]> =>
+  ): PrismaPromise<
+    {
+      id: string;
+      name: string;
+      user: { professional: { baseDuration: number } };
+    }[]
+  > =>
     this.prisma.person.findMany({
       where: {
         clinicId,
@@ -282,11 +288,22 @@ class ProfessionalRepository implements IProfessionalRepository {
       select: {
         id: true,
         name: true,
+        user: {
+          select: {
+            professional: { select: { baseDuration: true } },
+          },
+        },
       },
       orderBy: { name: "asc" },
       take,
       skip,
-    });
+    }) as PrismaPromise<
+      {
+        id: string;
+        name: string;
+        user: { professional: { baseDuration: number } };
+      }[]
+    >;
 
   public countNames = (clinicId: string): PrismaPromise<number> =>
     this.prisma.person.count({

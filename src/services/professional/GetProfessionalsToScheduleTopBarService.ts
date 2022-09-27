@@ -27,7 +27,20 @@ class GetProfessionalsToScheduleTopBarService {
       ),
     ]);
 
-    return { items, totalItems };
+    return {
+      items: items.map(
+        ({
+          id,
+          name,
+          user,
+        }): GetProfessionalsToScheduleTapBarResponseModel => ({
+          id,
+          name,
+          baseDuration: user.professional.baseDuration,
+        })
+      ),
+      totalItems,
+    };
   }
 }
 
