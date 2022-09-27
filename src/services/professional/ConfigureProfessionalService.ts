@@ -13,6 +13,7 @@ import { ConfigureWeeklyScheduleLocksRequestModel } from "@models/dto/weeklySche
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
 import { PrismaPromise, WeeklySchedule } from "@prisma/client";
 import { IDateProvider } from "@providers/date";
+import { IHashProvider } from "@providers/hash";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
@@ -30,7 +31,9 @@ class ConfigureProfessionalService {
     @inject("PasswordProvider")
     private passwordProvider: IPasswordProvider,
     @inject("ValidatorsProvider")
-    private validatorsProvider: IValidatorsProvider
+    private validatorsProvider: IValidatorsProvider,
+    @inject("HashProvider")
+    private hashProvider: IHashProvider
   ) {}
 
   private validateInterval = (
@@ -312,6 +315,14 @@ class ConfigureProfessionalService {
       throw new AppError(
         "NOT_FOUND",
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
+      );
+
+    if (
+      !(await this.hashProvider.compare(oldPassword, hasProfessional.password))
+    )
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorResetPasswdOldPasswordInvalid")
       );
   }
 }

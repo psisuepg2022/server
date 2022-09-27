@@ -306,22 +306,21 @@ class ProfessionalRepository implements IProfessionalRepository {
   public getToConfigure = (
     clinicId: string,
     id: string
-  ): PrismaPromise<{ id: true } | null> =>
-    this.prisma.professional.findFirst({
+  ): PrismaPromise<{ id: string; password: string } | null> =>
+    this.prisma.user.findFirst({
       where: {
         id,
-        user: {
-          blocked: false,
-          role: {
-            name: RolesKeys.PROFESSIONAL_UNCONFIGURED,
-          },
-          person: { clinicId, active: true },
+        blocked: false,
+        role: {
+          name: RolesKeys.PROFESSIONAL_UNCONFIGURED,
         },
+        person: { clinicId, active: true },
       },
       select: {
         id: true,
+        password: true,
       },
-    }) as PrismaPromise<{ id: true } | null>;
+    }) as PrismaPromise<{ id: string; password: string } | null>;
 }
 
 export { ProfessionalRepository };

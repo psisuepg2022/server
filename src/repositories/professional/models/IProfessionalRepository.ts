@@ -57,7 +57,7 @@ interface IProfessionalRepository {
   getToConfigure(
     clinicId: string,
     id: string
-  ): PrismaPromise<{ id: true } | null>;
+  ): PrismaPromise<{ id: string; password: string } | null>;
 }
 
 export { IProfessionalRepository };
