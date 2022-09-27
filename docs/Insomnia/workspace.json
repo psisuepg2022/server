@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-27T02:36:32.079Z",
+  "__export_date": "2022-09-27T23:40:58.777Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
@@ -442,7 +442,7 @@
     {
       "_id": "req_4ba536b111eb44c78083be3a383d04b3",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1664049230800,
+      "modified": 1664321797811,
       "created": 1659389449397,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -450,7 +450,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"id\": \"c8fe4d68-56c4-4c26-a52d-68500ecea1e8\",\n\t\"baseDuration\": \"60\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"17:00\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"13:00\",\n\t\t\t\"endTime\": \"14:00\"\n\t\t}\n\t]\n}"
+        "text": "{\n\t\"id\": \"c8fe4d68-56c4-4c26-a52d-68500ecea1e8\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"17:00\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"13:00\",\n\t\t\t\"endTime\": \"14:00\"\n\t\t}\n\t]\n}"
       },
       "parameters": [],
       "headers": [
@@ -490,7 +490,7 @@
     {
       "_id": "req_0ea2819059aa47b08b98d4a0010ab68b",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1664048683833,
+      "modified": 1664321803256,
       "created": 1659355375486,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "read",
@@ -685,7 +685,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1664246000426,
+      "modified": 1664321781349,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -693,7 +693,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"accessCode\": \"1001\"\n}"
+        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"accessCode\": \"1004\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -1014,7 +1014,7 @@
     {
       "_id": "req_2cd2465cc9934a8b8102a23e36327b47",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1664245806968,
+      "modified": 1664314842487,
       "created": 1664200173403,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "configure",
@@ -1022,7 +1022,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"oldPassword\": \"a\",\n\t\"newPassword\": \"Sssssss1sssss\",\n\t\"confirmNewPassword\": \"Sssssss1sssss\",\n\t\"baseDuration\": \"60\",\n\t\"weeklySchedule\": [\n\t\t{\n\t\t\t\"dayOfTheWeek\": \"1\",\n\t\t\t\"startTime\": \"16:00\",\n\t\t\t\"endTime\": \"17:00\",\n\t\t\t\"locks\": [\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"10:00\",\n\t\t\t\t\t\"endTime\": \"11:00\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"12:00\",\n\t\t\t\t\t\"endTime\": \"13:00\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
+        "text": "{\n\t\"oldPassword\": \"UserProfessional123\",\n\t\"newPassword\": \"UserProfessional123\",\n\t\"confirmNewPassword\": \"UserProfessional123\",\n\t\"baseDuration\": \"60\",\n\t\"weeklySchedule\": [\n\t\t{\n\t\t\t\"dayOfTheWeek\": \"1\",\n\t\t\t\"startTime\": \"08:00\",\n\t\t\t\"endTime\": \"17:00\",\n\t\t\t\"locks\": [\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"12:00\",\n\t\t\t\t\t\"endTime\": \"13:00\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"12:30\",\n\t\t\t\t\t\"endTime\": \"13:30\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
       },
       "parameters": [],
       "headers": [
@@ -1489,7 +1489,7 @@
     {
       "_id": "req_23f154644d6b40af99f7dbd0356f7202",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1664196726225,
+      "modified": 1664316369606,
       "created": 1663590591187,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update profile",
