@@ -5,13 +5,14 @@ import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
-import { DaysOfTheWeek } from "@infra/domains";
+import { AppointmentStatus, DaysOfTheWeek } from "@infra/domains";
 import { CreateScheduleLockRequestModel } from "@models/dto/scheduleLock/CreateScheduleLockRequestModel";
 import { CreateScheduleLockResponseModel } from "@models/dto/scheduleLock/CreateScheduleLockResponseModel";
 import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAppointmentRepository } from "@repositories/appointment";
 import { IProfessionalRepository } from "@repositories/professional";
 import { IScheduleRepository } from "@repositories/schedule";
 
@@ -29,7 +30,9 @@ class CreateScheduleLockService {
     @inject("MaskProvider")
     private maskProvider: IMaskProvider,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("AppointmentRepository")
+    private appointmentRepository: IAppointmentRepository
   ) {}
 
   public async execute({
@@ -92,8 +95,8 @@ class CreateScheduleLockService {
         i18n.__("ErrorScheduleLockEndTimeInvalid")
       );
 
-    const endTimeConverted = this.dateProvider.time2date(endTime);
-    const startTimeConverted = this.dateProvider.time2date(startTime);
+    const endTimeConverted = this.dateProvider.time2date(endTime, date);
+    const startTimeConverted = this.dateProvider.time2date(startTime, date);
 
     if (this.dateProvider.isAfter(startTimeConverted, endTimeConverted))
       throw new AppError(
@@ -164,6 +167,32 @@ class CreateScheduleLockService {
           this.maskProvider.date(hasScheduleLock.date),
           this.maskProvider.time(hasScheduleLock.startTime as Date),
           this.maskProvider.time(hasScheduleLock.endTime as Date),
+        ])
+      );
+
+    const [hasAppointment] = await transaction([
+      this.appointmentRepository.hasAppointmentByStatus(
+        professionalId,
+        startTimeConverted,
+        endTimeConverted,
+        [
+          AppointmentStatus.ABSENCE,
+          AppointmentStatus.CANCELED,
+          AppointmentStatus.COMPLETED,
+          AppointmentStatus.SCHEDULED,
+          AppointmentStatus.CONFIRMED,
+        ]
+      ),
+    ]);
+
+    console.log(hasAppointment);
+
+    if (hasAppointment)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorScheduleLockAppointmentConflicting", [
+          hasAppointment.patient.person.name,
+          this.maskProvider.time(hasAppointment.appointmentDate as Date),
         ])
       );
 

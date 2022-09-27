@@ -4,10 +4,11 @@ import { PersonModel } from "@models/domain/PersonModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IAppointmentRepository {
-  hasAppointment(
+  hasAppointmentByStatus(
     professionalId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    statusList: number[]
   ): PrismaPromise<
     | (Partial<AppointmentModel> & {
         patient: Partial<PatientModel> & { person: Partial<PersonModel> };

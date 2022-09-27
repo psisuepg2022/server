@@ -9,10 +9,11 @@ import { IAppointmentRepository } from "@repositories/appointment/models/IAppoin
 class AppointmentRepository implements IAppointmentRepository {
   constructor(private prisma = prismaClient) {}
 
-  public hasAppointment = (
+  public hasAppointmentByStatus = (
     professionalId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    statusList: number[]
   ): PrismaPromise<
     | (Partial<AppointmentModel> & {
         patient: Partial<PatientModel> & { person: Partial<PersonModel> };
@@ -23,11 +24,7 @@ class AppointmentRepository implements IAppointmentRepository {
       where: {
         professionalId,
         AND: [
-          {
-            status: {
-              in: [AppointmentStatus.COMPLETED, AppointmentStatus.SCHEDULED],
-            },
-          },
+          { status: { in: statusList } },
           { appointmentDate: { lt: endDate } },
           { appointmentDate: { gte: startDate } },
         ],

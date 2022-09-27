@@ -114,6 +114,7 @@
   "ErrorResetPasswdOldPasswordInvalid": "A senha antiga não é válida.",
   "ErrorResetPasswdOldPasswordRequired": "É necessário informar a senha antiga.",
   "ErrorRoleNotFound": "Não foi possível recuperar as informações de permissão. Por favor, entre em contato com um administrador.",
+  "ErrorScheduleLockAppointmentConflicting": "Não é possível cadastrar o bloqueio pois existe uma consulta conflitando para o paciente {0} às {1}.",
   "ErrorScheduleLockConflicting": "Existe um outro intervalo conflitando com este bloqueio: dia {0} das {1} às {2}.",
   "ErrorScheduleLockDateInvalid": "A data do bloqueio informada é inválida.",
   "ErrorScheduleLockDateRequired": "É necessário informar a data para registro do bloqueio.",

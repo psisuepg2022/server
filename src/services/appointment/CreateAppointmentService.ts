@@ -167,10 +167,11 @@ class CreateAppointmentService {
     ];
 
     const [hasAppointment] = await transaction([
-      this.appointmentRepository.hasAppointment(
+      this.appointmentRepository.hasAppointmentByStatus(
         professionalId,
         appointmentDate,
-        forecastEndAppointmentDate
+        forecastEndAppointmentDate,
+        [AppointmentStatus.COMPLETED, AppointmentStatus.SCHEDULED]
       ),
     ]);
 
