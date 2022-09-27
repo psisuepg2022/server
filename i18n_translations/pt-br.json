@@ -56,7 +56,7 @@
   "ErrorConfigureProfessionalDayOfTheWeekInvalid": "O dia da semana do {0}º intervalo informado está inválido.",
   "ErrorConfigureProfessionalDayOfTheWeekRequired": "É necessário informar o dia da semana para o {0}º intervalo informado.",
   "ErrorConfigureProfessionalDuplicateDayOfTheWeek": "Não é possível cadastrar mais de um período para o mesmo dia da semana.",
-  "ErrorConfigureProfessionalLocksConflicting": "Não é possível realizar a operação pois existem bloqueios conflitantes.",
+  "ErrorConfigureProfessionalLocksConflicting": "Não é possível realizar a operação pois existem bloqueios conflitantes: {0} às {1} e {2} às {3}.",
   "ErrorConfigureProfessionalWeeklyEndTimeInvalid": "O horário de término de {0} é inválido.",
   "ErrorConfigureProfessionalWeeklyEndTimeRequired": "É necessário informar o término do horário de {0}.",
   "ErrorConfigureProfessionalWeeklyIntervalInvalid": "O intervalo de {0} é inválido, o início não pode ser depois do término.",

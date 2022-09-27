@@ -299,6 +299,64 @@ class ConfigureProfessionalService {
                   "lock"
                 );
 
+                const weeklyScheduleLocksConflicting = locks.filter((item) => {
+                  const _startLockConverted = this.dateProvider.time2date(
+                    item.startTime
+                  );
+                  const _endLockConverted = this.dateProvider.time2date(
+                    item.endTime
+                  );
+
+                  if (
+                    this.dateProvider.equals(
+                      _startLockConverted,
+                      lockStartTimeConverted
+                    ) &&
+                    this.dateProvider.equals(
+                      _endLockConverted,
+                      lockEndTimeConverted
+                    )
+                  )
+                    return item;
+
+                  if (
+                    this.dateProvider.isBefore(
+                      lockStartTimeConverted,
+                      _endLockConverted
+                    ) &&
+                    this.dateProvider.isAfter(
+                      lockStartTimeConverted,
+                      _startLockConverted
+                    )
+                  )
+                    return item;
+
+                  if (
+                    this.dateProvider.isBefore(
+                      lockEndTimeConverted,
+                      _endLockConverted
+                    ) &&
+                    this.dateProvider.isAfter(
+                      lockEndTimeConverted,
+                      _startLockConverted
+                    )
+                  )
+                    return item;
+
+                  return null;
+                });
+
+                if (weeklyScheduleLocksConflicting.length > 1)
+                  throw new AppError(
+                    "BAD_REQUEST",
+                    i18n.__mf("ErrorConfigureProfessionalLocksConflicting", [
+                      weeklyScheduleLocksConflicting[0].startTime,
+                      weeklyScheduleLocksConflicting[0].endTime,
+                      weeklyScheduleLocksConflicting[1].startTime,
+                      weeklyScheduleLocksConflicting[1].endTime,
+                    ])
+                  );
+
                 createLocksOperations.push();
               }
             );
