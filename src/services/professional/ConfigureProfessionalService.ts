@@ -8,16 +8,18 @@ import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
+import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
 import { ConfigureProfessionalRequestModel } from "@models/dto/professional/ConfigureProfessionalRequestModel";
 import { ConfigureWeeklyScheduleLocksRequestModel } from "@models/dto/weeklySchedule/ConfigureWeeklyScheduleRequestModel";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
-import { PrismaPromise, WeeklySchedule } from "@prisma/client";
+import { PrismaPromise } from "@prisma/client";
 import { IDateProvider } from "@providers/date";
 import { IHashProvider } from "@providers/hash";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
 import { IProfessionalRepository } from "@repositories/professional";
+import { IScheduleRepository } from "@repositories/schedule";
 
 @injectable()
 class ConfigureProfessionalService {
@@ -33,7 +35,9 @@ class ConfigureProfessionalService {
     @inject("ValidatorsProvider")
     private validatorsProvider: IValidatorsProvider,
     @inject("HashProvider")
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+    @inject("ScheduleRepository")
+    private scheduleRepository: IScheduleRepository
   ) {}
 
   private validateInterval = (
@@ -189,7 +193,8 @@ class ConfigureProfessionalService {
         i18n.__("ErrorConfigureProfessionalWeeklyScheduleRequired")
       );
 
-    const createWeeklyScheduleOperations: PrismaPromise<WeeklySchedule>[] = [];
+    const createWeeklyScheduleOperations: PrismaPromise<WeeklyScheduleModel>[] =
+      [];
     const createLocksOperations: PrismaPromise<WeeklyScheduleLockModel>[] = [];
 
     if (weeklySchedule.length > 7)
@@ -268,6 +273,8 @@ class ConfigureProfessionalService {
             indexWeeklySchedule,
             "weekly_schedule"
           );
+
+          const weeklyScheduleId = this.uniqueIdentifierProvider.generate();
 
           if (Array.isArray(locks) && locks.length > 0)
             locks.forEach(
@@ -357,11 +364,27 @@ class ConfigureProfessionalService {
                     ])
                   );
 
-                createLocksOperations.push();
+                createLocksOperations.push(
+                  this.scheduleRepository.saveWeeklyScheduleLockItem(
+                    weeklyScheduleId,
+                    {
+                      endTime: lockEndTimeConverted,
+                      startTime: lockStartTimeConverted,
+                      id: this.uniqueIdentifierProvider.generate(),
+                    }
+                  )
+                );
               }
             );
 
-          createWeeklyScheduleOperations.push();
+          createWeeklyScheduleOperations.push(
+            this.scheduleRepository.saveWeeklyScheduleItem(userId, {
+              id: weeklyScheduleId,
+              dayOfTheWeek: dayOfTheWeekConverted,
+              endTime: endTimeConverted,
+              startTime: startTimeConverted,
+            })
+          );
         }
       );
 
@@ -382,6 +405,11 @@ class ConfigureProfessionalService {
         "BAD_REQUEST",
         i18n.__("ErrorResetPasswdOldPasswordInvalid")
       );
+
+    await transaction([
+      ...createWeeklyScheduleOperations,
+      ...createLocksOperations,
+    ]);
   }
 }
 
