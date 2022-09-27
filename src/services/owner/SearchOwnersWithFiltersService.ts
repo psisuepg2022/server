@@ -38,9 +38,11 @@ class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService<
   ): any => this.ownerRepository.get(clinicId, pagination);
 
   protected convertObject = ({
+    userName,
     person,
   }: Partial<OwnerModel & { person: PersonModel }>): ListOwnersResponseModel =>
     ({
+      userName,
       ...this.covertBase(person || {}),
     } as ListOwnersResponseModel);
 }

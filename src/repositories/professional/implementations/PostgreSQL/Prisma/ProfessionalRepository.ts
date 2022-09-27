@@ -76,6 +76,7 @@ class ProfessionalRepository implements IProfessionalRepository {
     this.prisma.user.findMany({
       select: {
         id: true,
+        userName: true,
         person: {
           select: {
             id: true,
