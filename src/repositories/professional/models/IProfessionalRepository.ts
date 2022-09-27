@@ -22,10 +22,6 @@ interface IProfessionalRepository {
       }
     >[]
   >;
-  updateBaseDuration(
-    professionalId: string,
-    baseDuration: number
-  ): PrismaPromise<Partial<ProfessionalModel>>;
   getBaseDuration(
     clinicId: string,
     professionalId: string

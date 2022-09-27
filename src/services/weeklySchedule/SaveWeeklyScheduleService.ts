@@ -4,7 +4,6 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
-import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
@@ -79,8 +78,8 @@ class SaveWeeklyScheduleService {
     professionalId,
     endTime,
     startTime,
-    baseDuration,
     locks,
+    clinicId,
   }: SaveWeeklyScheduleRequestModel): Promise<SaveWeeklyScheduleResponseModel> {
     if (stringIsNullOrEmpty(id))
       throw new AppError(
@@ -97,15 +96,17 @@ class SaveWeeklyScheduleService {
     )
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
-    if (stringIsNullOrEmpty(baseDuration))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationRequired"));
-
-    const baseDurationConverted = toNumber({
-      value: baseDuration,
-      error: new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationInvalid")),
-    });
-
     this.validateInterval(startTime, endTime);
+
+    const [hasProfessional] = await transaction([
+      this.professionalRepository.getBaseDuration(clinicId, professionalId),
+    ]);
+
+    if (!hasProfessional)
+      throw new AppError(
+        "NOT_FOUND",
+        i18n.__mf("ErrorUserIDNotFound", ["profissional"])
+      );
 
     const [hasSchedule] = await transaction([
       this.scheduleRepository.hasWeeklySchedule(id, professionalId),
@@ -130,7 +131,7 @@ class SaveWeeklyScheduleService {
 
             if (
               (this.dateProvider.differenceInMillis(endDate, startDate) /
-                this.dateProvider.minuteToMilli(baseDurationConverted)) %
+                this.dateProvider.minuteToMilli(hasProfessional.baseDuration)) %
               2
             )
               throw new AppError(
@@ -171,22 +172,16 @@ class SaveWeeklyScheduleService {
         )
       );
 
-    const [weeklyScheduleUpdated, professionalUpdated, ...insertedLocks] =
-      await transaction([
-        this.scheduleRepository.updateSchedule({
-          id,
-          endTime: this.dateProvider.time2date(endTime),
-          startTime: this.dateProvider.time2date(startTime),
-        } as WeeklyScheduleModel),
-        this.professionalRepository.updateBaseDuration(
-          professionalId,
-          baseDurationConverted
-        ),
-        ...createLocksOperations,
-      ]);
+    const [weeklyScheduleUpdated, ...insertedLocks] = await transaction([
+      this.scheduleRepository.updateSchedule({
+        id,
+        endTime: this.dateProvider.time2date(endTime),
+        startTime: this.dateProvider.time2date(startTime),
+      } as WeeklyScheduleModel),
+      ...createLocksOperations,
+    ]);
 
     return {
-      baseDuration: professionalUpdated.baseDuration || -1,
       id: weeklyScheduleUpdated.id,
       endTime: this.maskProvider.time(new Date(weeklyScheduleUpdated.endTime)),
       startTime: this.maskProvider.time(

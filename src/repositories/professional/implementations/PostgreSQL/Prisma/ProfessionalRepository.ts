@@ -126,19 +126,6 @@ class ProfessionalRepository implements IProfessionalRepository {
       >[]
     >;
 
-  public updateBaseDuration = (
-    professionalId: string,
-    baseDuration: number
-  ): PrismaPromise<Partial<ProfessionalModel>> =>
-    this.prisma.professional.update({
-      where: { id: professionalId },
-      data: { baseDuration },
-      select: {
-        id: true,
-        baseDuration: true,
-      },
-    }) as PrismaPromise<Partial<ProfessionalModel>>;
-
   public getToUpdate = (
     clinicId: string,
     id: string

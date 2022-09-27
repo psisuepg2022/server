@@ -3,7 +3,7 @@ import { CreateWeeklyScheduleLockRequestModel } from "./CreateWeeklyScheduleLock
 type SaveWeeklyScheduleRequestModel = {
   id: string;
   professionalId: string;
-  baseDuration: string;
+  clinicId: string;
   startTime: string;
   endTime: string;
   locks: CreateWeeklyScheduleLockRequestModel[];

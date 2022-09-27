@@ -61,18 +61,19 @@ class WeeklyScheduleController {
     res: Response<IResponseMessage<SaveWeeklyScheduleResponseModel>>,
     next: NextFunction
   ): Promise<void> {
-    const { id, startTime, endTime, baseDuration, locks } = req.body;
+    const { id, startTime, endTime, locks } = req.body;
 
+    const { id: clinicId } = req.clinic;
     const { id: professionalId } = req.user;
 
     const service = container.resolve(SaveWeeklyScheduleService);
 
     const result = await service.execute({
       id,
+      clinicId,
       professionalId,
       startTime,
       endTime,
-      baseDuration,
       locks: locks?.map(
         (item: any): CreateWeeklyScheduleLockRequestModel => ({
           endTime: item.endTime,
