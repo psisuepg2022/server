@@ -3,6 +3,7 @@ import { container } from "tsyringe";
 
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { PatientController } from "@controllers/PatientController";
+import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -22,7 +23,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
-  controller.read
+  controller.read,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/search_liable",
@@ -30,7 +32,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_LIABLE),
-  controller.readLiable
+  controller.readLiable,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/",
@@ -38,7 +41,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
-  controller.save
+  controller.save,
+  databaseDisconnectMiddleware
 );
 routes.delete(
   "/:id",
@@ -46,7 +50,8 @@ routes.delete(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.DELETE_PATIENT),
-  controller.delete
+  controller.delete,
+  databaseDisconnectMiddleware
 );
 
 export { routes };

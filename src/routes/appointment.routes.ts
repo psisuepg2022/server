@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { AppointmentController } from "@controllers/AppointmentController";
+import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -23,7 +24,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_APPOINTMENT),
-  controller.save
+  controller.save,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/calendar",
@@ -31,7 +33,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.getCalendar
+  controller.getCalendar,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/calendar/:professional_id",
@@ -39,7 +42,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
-  controller.getCalendarByProfessional
+  controller.getCalendarByProfessional,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/autocomplete_patient",
@@ -47,21 +51,24 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
-  controller.autocompletePatient
+  controller.autocompletePatient,
+  databaseDisconnectMiddleware
 );
 routes.patch(
   "/status/:id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
-  controller.updateStatus
+  controller.updateStatus,
+  databaseDisconnectMiddleware
 );
 routes.get(
   "/:appointment_id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.getById
+  controller.getById,
+  databaseDisconnectMiddleware
 );
 
 export { routes };

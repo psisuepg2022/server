@@ -18,13 +18,19 @@ const ensureAuthenticated = container.resolve(
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
 routes.post("/", logMiddleware, controller.login, databaseDisconnectMiddleware);
-routes.post("/refresh", logMiddleware, controller.refreshToken);
+routes.post(
+  "/refresh",
+  logMiddleware,
+  controller.refreshToken,
+  databaseDisconnectMiddleware
+);
 routes.post(
   "/reset_password",
   logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
-  controller.resetPassword
+  controller.resetPassword,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/adm_reset_password/:user_id",
@@ -32,7 +38,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.resetAnotherUserPassword
+  controller.resetAnotherUserPassword,
+  databaseDisconnectMiddleware
 );
 
 export { routes };

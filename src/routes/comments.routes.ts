@@ -3,6 +3,7 @@ import { container } from "tsyringe";
 
 import { RolesKeys } from "@common/RolesKeys";
 import { CommentsController } from "@controllers/CommentsController";
+import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -22,14 +23,16 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.create
+  controller.create,
+  databaseDisconnectMiddleware
 );
 routes.get(
   "/:patient_id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.read
+  controller.read,
+  databaseDisconnectMiddleware
 );
 
 export { routes };

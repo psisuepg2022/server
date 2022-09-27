@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { EmployeeController } from "@controllers/EmployeeController";
+import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -23,7 +24,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_EMPLOYEE),
-  controller.read
+  controller.read,
+  databaseDisconnectMiddleware
 );
 routes.post(
   "/",
@@ -31,7 +33,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_EMPLOYEE),
-  controller.create
+  controller.create,
+  databaseDisconnectMiddleware
 );
 routes.delete(
   "/:id",
@@ -39,7 +42,8 @@ routes.delete(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.delete
+  controller.delete,
+  databaseDisconnectMiddleware
 );
 routes.get(
   "/profile",
@@ -47,7 +51,8 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
-  controller.getProfile
+  controller.getProfile,
+  databaseDisconnectMiddleware
 );
 routes.put(
   "/",
@@ -55,7 +60,8 @@ routes.put(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
-  controller.updateProfile
+  controller.updateProfile,
+  databaseDisconnectMiddleware
 );
 
 export { routes };
