@@ -119,17 +119,13 @@ class UpdateOwnerService extends CreateOwnerService {
       {
         id,
         clinicId,
+        email,
+        contactNumber,
         CPF: CPF || hasEmployee.person.CPF || "",
         birthDate: `${
           birthDate || hasEmployee.person.birthDate?.toISOString().split("T")[0]
         }`,
         name: name || hasEmployee.person.name || "",
-        contactNumber:
-          contactNumber ||
-          this.maskProvider.contactNumber(
-            hasEmployee.person.contactNumber || ""
-          ),
-        email: email || hasEmployee.person.email || "",
         address: addressToSave,
         userName: userName || hasEmployee.userName || "",
         password: "null",

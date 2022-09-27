@@ -133,18 +133,14 @@ class UpdateProfessionalService extends CreateProfessionalService {
       {
         id,
         clinicId,
+        email,
+        contactNumber,
         CPF: CPF || hasProfessional.user.person.CPF || "",
         birthDate: `${
           birthDate ||
           hasProfessional.user.person.birthDate?.toISOString().split("T")[0]
         }`,
         name: name || hasProfessional.user.person.name || "",
-        contactNumber:
-          contactNumber ||
-          this.maskProvider.contactNumber(
-            hasProfessional.user.person.contactNumber || ""
-          ),
-        email: email || hasProfessional.user.person.email || "",
         address: addressToSave,
         profession: profession || hasProfessional.profession || "",
         registry: registry || hasProfessional.registry || "",
