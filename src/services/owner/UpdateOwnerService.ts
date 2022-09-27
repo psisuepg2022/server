@@ -6,7 +6,7 @@ import { AppError } from "@handlers/error/AppError";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
 import { EmployeeModel } from "@models/domain/EmployeeModel";
-import { CreateEmployeeRequestModel } from "@models/dto/employee/CreateEmployeeRequestModel";
+import { UpdateOwnerRequestModel } from "@models/dto/owner/UpdateOwnerRequestModel";
 import { CreateAddressRequestModel } from "@models/dto/person/CreateAddressRequestModel";
 import { IHashProvider } from "@providers/hash";
 import { IMaskProvider } from "@providers/mask";
@@ -69,7 +69,8 @@ class UpdateOwnerService extends CreateOwnerService {
     contactNumber,
     email,
     clinicId,
-  }: CreateEmployeeRequestModel): Promise<Partial<EmployeeModel>> {
+    clinic,
+  }: UpdateOwnerRequestModel): Promise<Partial<EmployeeModel>> {
     if (!id || stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",
@@ -88,6 +89,27 @@ class UpdateOwnerService extends CreateOwnerService {
         "BAD_REQUEST",
         i18n.__mf("ErrorUserIDNotFound", ["proprietário"])
       );
+
+    if (clinic) {
+      if (stringIsNullOrEmpty(clinic.name))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorNameIsRequired"));
+
+      if (stringIsNullOrEmpty(clinic.email))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailIsRequired"));
+
+      if (!this.validatorsProvider.email(clinic.email))
+        throw new AppError("BAD_REQUEST", i18n.__("ErrorEmailInvalid"));
+
+      const [hasClinic] = await transaction([
+        this.clinicRepository.hasEmail(clinicId, clinic.email),
+      ]);
+
+      if (hasClinic)
+        throw new AppError(
+          "BAD_REQUEST",
+          i18n.__("ErrorClinicEmailAlreadyExists")
+        );
+    }
 
     const addressToSave = ((): CreateAddressRequestModel | undefined => {
       if (address) {
@@ -130,7 +152,8 @@ class UpdateOwnerService extends CreateOwnerService {
         userName: userName || hasEmployee.userName || "",
         password: "null",
       },
-      false
+      false,
+      clinic
     );
 
     return updated;

@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { RolesKeys } from "@common/RolesKeys";
 import { transaction } from "@infra/database/transaction";
 import { OwnerModel } from "@models/domain/OwnerModel";
+import { CreateClinicRequestModel } from "@models/dto/clinic/CreateClinicRequestModel";
 import { CreateOwnerRequestModel } from "@models/dto/owner/CreateOwnerRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IHashProvider } from "@providers/hash";
@@ -68,7 +69,8 @@ class CreateOwnerService extends CreateUserService {
       email,
       clinicId,
     }: CreateOwnerRequestModel,
-    savePassword = true
+    savePassword = true,
+    clinic?: CreateClinicRequestModel
   ): Promise<Partial<OwnerModel>> {
     const id = this.getObjectId(idReceived);
 
@@ -89,26 +91,50 @@ class CreateOwnerService extends CreateUserService {
       savePassword
     );
 
-    const [person, user, addressSaved] = await transaction(
-      ((): PrismaPromise<any>[] =>
-        address
-          ? [
-              this.getCreatePersonOperation(),
-              this.getCreateUserOperation(),
-              this.getAddressOperation(),
-            ]
-          : [this.getCreatePersonOperation(), this.getCreateUserOperation()])()
+    const [person, user, ...optional] = await transaction(
+      ((): PrismaPromise<any>[] => {
+        const operations = [
+          this.getCreatePersonOperation(),
+          this.getCreateUserOperation(),
+        ];
+
+        if (address) operations.push(this.getAddressOperation());
+
+        if (clinic)
+          operations.push(
+            this.clinicRepository.save({
+              id: clinicId,
+              email: clinic.email,
+              name: clinic.name,
+            })
+          );
+
+        return operations;
+      })()
     );
+
+    const [addressIndex, clinicIndex] = ((): [number, number] => [
+      address ? 0 : -1,
+      clinic ? (address ? 1 : 0) : -1,
+    ])();
 
     return {
       ...user,
       ...person,
-      address: addressSaved
-        ? {
-            ...addressSaved,
-            zipCode: this.maskProvider.zipCode(address?.zipCode || ""),
-          }
-        : undefined,
+      address:
+        addressIndex !== -1
+          ? {
+              ...optional[addressIndex],
+              zipCode: this.maskProvider.zipCode(address?.zipCode || ""),
+            }
+          : undefined,
+      clinic:
+        clinicIndex !== -1
+          ? {
+              name: optional[clinicIndex].name,
+              email: optional[clinicIndex].email,
+            }
+          : undefined,
       CPF: this.maskProvider.cpf(person.CPF),
       birthDate: this.maskProvider.date(person.birthDate),
       email: person.email || undefined,

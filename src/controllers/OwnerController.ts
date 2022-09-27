@@ -76,6 +76,7 @@ class OwnerController {
       birthDate,
       contactNumber,
       address,
+      clinic,
     } = req.body;
 
     const { id: userId } = req.user;
@@ -93,6 +94,7 @@ class OwnerController {
       email,
       password,
       clinicId,
+      clinic,
       address: address
         ? {
             id: address.id,

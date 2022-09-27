@@ -46,7 +46,7 @@ routes.put(
   "/",
   logMiddleware,
   ensureAuthenticated.execute,
-  validateClinicID.execute(),
+  validateClinicID.execute(true),
   RBAC.is(RolesKeys.OWNER),
   controller.updateProfile,
   databaseDisconnectMiddleware
