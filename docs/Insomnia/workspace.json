@@ -1,13 +1,13 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-09-22T02:46:50.241Z",
+  "__export_date": "2022-09-27T02:36:32.079Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
       "_id": "req_2a8931043cfe4d7aa5f73148fd9f9aac",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "modified": 1663806884886,
+      "modified": 1663816574006,
       "created": 1662824569199,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/fb74f609-1a61-4766-bce5-028e5cf9ecfb",
       "name": "read",
@@ -55,9 +55,9 @@
     {
       "_id": "req_3e7acdb8c7a94d2a809fc45014fc118d",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "modified": 1663814188781,
+      "modified": 1664045657598,
       "created": 1662560106123,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/fb74f609-1a61-4766-bce5-028e5cf9ecfb",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/5b74bf86-a9a9-4cb1-97e5-81f53be19639",
       "name": "save",
       "description": "",
       "method": "POST",
@@ -90,15 +90,15 @@
     {
       "_id": "req_35890d19f5904844a50ce38dcebafa77",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663083904678,
+      "modified": 1663940503847,
       "created": 1662467185449,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/4c0a8d50-266d-4ea4-bfd0-885e38c85842",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/b077ff31-eaa6-4d70-9133-0913678d98c4",
       "name": "status",
       "description": "",
       "method": "PATCH",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"status\": \"3\"\n}"
+        "text": "{\n\t\"status\": \"2\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -172,7 +172,7 @@
     {
       "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663803433005,
+      "modified": 1664143358097,
       "created": 1661882176759,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "calendar",
@@ -207,7 +207,7 @@
     {
       "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663814307689,
+      "modified": 1664157788570,
       "created": 1661888766274,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "calendar by professional",
@@ -242,7 +242,7 @@
     {
       "_id": "req_0b1bbf3ef0fd45b887aca0eb402d431f",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663814769847,
+      "modified": 1663816517991,
       "created": 1663807427569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/630c67f2-9350-4651-af0f-e1ef4fe8f226",
       "name": "get by id",
@@ -268,7 +268,7 @@
     {
       "_id": "req_01d6a83bff304a92bd3333d98b39be18",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663806621719,
+      "modified": 1663890552436,
       "created": 1660223915857,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -304,7 +304,7 @@
     {
       "_id": "req_f5e5e203657645dba7887ef335fa8f6b",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1663792860992,
+      "modified": 1664157999268,
       "created": 1660148582028,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -312,7 +312,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-09-22\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"13:00\"\n}"
+        "text": "{\n\t\"date\": \"2022-09-26\",\n\t\"startTime\": \"22:30\",\n\t\"endTime\": \"23:30\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -352,7 +352,7 @@
     {
       "_id": "req_56726a3c9892404e8a215ba84e05437b",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1663793058136,
+      "modified": 1663941035519,
       "created": 1660149314823,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "save by professional",
@@ -360,7 +360,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-09-22\",\n\t\"startTime\": \"12:30\",\n\t\"endTime\": \"13:30\"\n}"
+        "text": "{\n\t\"date\": \"2022-09-22\",\n\t\"startTime\": \"12:00\",\n\t\"endTime\": \"13:00\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -388,7 +388,7 @@
     {
       "_id": "req_e4b9557d050647fa9c8f0f690695c401",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1660166994734,
+      "modified": 1664049184983,
       "created": 1660149368962,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/171d6446-5fc2-42d4-adda-bf9a90c26b53",
       "name": "delete",
@@ -442,7 +442,7 @@
     {
       "_id": "req_4ba536b111eb44c78083be3a383d04b3",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1662056029118,
+      "modified": 1664049230800,
       "created": 1659389449397,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -490,7 +490,7 @@
     {
       "_id": "req_0ea2819059aa47b08b98d4a0010ab68b",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1663791914591,
+      "modified": 1664048683833,
       "created": 1659355375486,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "read",
@@ -517,7 +517,7 @@
     {
       "_id": "req_c53be768a45a4cc8ab4bdbbb041d5207",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1663792845199,
+      "modified": 1664048660190,
       "created": 1659355950316,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "read by professional",
@@ -571,7 +571,7 @@
     {
       "_id": "req_12f1c402da4c4e348438aedc29282442",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663719474259,
+      "modified": 1664200219363,
       "created": 1663718358236,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/e413e04b-25aa-4bec-89ef-99dd6eaf978c",
       "name": "adm_reset_password",
@@ -618,7 +618,7 @@
     {
       "_id": "req_a170a7df61e94ef293c1dc6f76693750",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663791818826,
+      "modified": 1663870256079,
       "created": 1663587327100,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "refresh",
@@ -650,7 +650,7 @@
     {
       "_id": "req_2e0a89dd2f454dd5a6f1ef171427aedb",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663791861895,
+      "modified": 1664158223363,
       "created": 1662402795446,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "reset_password",
@@ -685,7 +685,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1663814339438,
+      "modified": 1664246000426,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -693,7 +693,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"accessCode\": \"1004\"\n}"
+        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"accessCode\": \"1001\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -978,7 +978,7 @@
     {
       "_id": "req_899c0535c6974fe58a248141689dbcb2",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1663247845379,
+      "modified": 1664223407348,
       "created": 1657540575211,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -1012,9 +1012,56 @@
       "_type": "request"
     },
     {
+      "_id": "req_2cd2465cc9934a8b8102a23e36327b47",
+      "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "modified": 1664245806968,
+      "created": 1664200173403,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "configure",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"oldPassword\": \"a\",\n\t\"newPassword\": \"Sssssss1sssss\",\n\t\"confirmNewPassword\": \"Sssssss1sssss\",\n\t\"baseDuration\": \"60\",\n\t\"weeklySchedule\": [\n\t\t{\n\t\t\t\"dayOfTheWeek\": \"1\",\n\t\t\t\"startTime\": \"16:00\",\n\t\t\t\"endTime\": \"17:00\",\n\t\t\t\"locks\": [\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"10:00\",\n\t\t\t\t\t\"endTime\": \"11:00\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"12:00\",\n\t\t\t\t\t\"endTime\": \"13:00\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_2d4fc5be0b214cb183eddeb08b990aba"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1664200173403,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1657542043558,
+      "created": 1657542043558,
+      "name": "professional",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1657341392945.5,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_01e11becfa8c41ddba88e610f2100753",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663791330091,
+      "modified": 1664199382837,
       "created": 1663762643418,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "top_bar",
@@ -1038,21 +1085,9 @@
       "_type": "request"
     },
     {
-      "_id": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1657542043558,
-      "created": 1657542043558,
-      "name": "professional",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1657341392945.5,
-      "_type": "request_group"
-    },
-    {
       "_id": "req_69cdbb3ace8447c5b517b355004773d7",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663591600001,
+      "modified": 1664045814107,
       "created": 1663591474893,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update profile",
@@ -1060,7 +1095,7 @@
       "method": "PUT",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"Marcos\",\n\t\"specialization\": \"Pediatria\"\n}"
+        "text": "{\n\t\"name\": \"Marcos\",\n\t\"address\": {\n\t\t\"id\": \"725b5c82-48d9-4d3f-9558-88978c264c13\",\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -1087,7 +1122,7 @@
     {
       "_id": "req_ca5f62e5c64f4fe3a56e50eb73bf02fc",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663554923846,
+      "modified": 1664041811778,
       "created": 1662989732760,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update",
@@ -1149,7 +1184,7 @@
     {
       "_id": "req_4e9764580ac44c4caed640bb954c6f4c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663538272537,
+      "modified": 1664045811457,
       "created": 1663461736577,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "profile",
@@ -1175,7 +1210,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663763759812,
+      "modified": 1664198937152,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -1183,7 +1218,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional2\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.professional2\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"\",\n\t\"name\": \"Marcos\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -1211,7 +1246,7 @@
     {
       "_id": "req_4b0aa19c250f454bb12fdb8594f14c2c",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663258602748,
+      "modified": 1664245829412,
       "created": 1657542043564,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -1329,7 +1364,7 @@
     {
       "_id": "req_803168cfaab9400a95969ce92480fb14",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1663465122548,
+      "modified": 1664044516784,
       "created": 1657151453642,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -1365,7 +1400,7 @@
     {
       "_id": "req_5643627aaf7e4f35b36f0bf4faad73f7",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1663465124034,
+      "modified": 1664041185873,
       "created": 1663447410466,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "profile",
@@ -1418,7 +1453,7 @@
     {
       "_id": "req_355e0702f3c449aa9973c5457b984dc6",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1662845062054,
+      "modified": 1664246006054,
       "created": 1657142214249,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -1454,7 +1489,7 @@
     {
       "_id": "req_23f154644d6b40af99f7dbd0356f7202",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1663591365644,
+      "modified": 1664196726225,
       "created": 1663590591187,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update profile",
@@ -1501,7 +1536,7 @@
     {
       "_id": "req_3000a9a22d154db59b9ecc78fc5965b2",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1663552635733,
+      "modified": 1664196725837,
       "created": 1663461640781,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "profile",
@@ -1527,7 +1562,7 @@
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1661982965248,
+      "modified": 1664133476171,
       "created": 1657664385365,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1640,7 +1675,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1661982953068,
+      "modified": 1664141075150,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1648,7 +1683,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"PSIS\",\n\t\"email\": \"psis@email.com\"\n}"
+        "text": "{\n\t\"name\": \"PSIS\",\n\t\"email\": \"psis1@email.com\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -1736,13 +1771,13 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1663814188213,
+      "modified": 1664246129425,
       "created": 1654723872664,
       "name": "dev",
       "data": {
         "base_url": "http://localhost:3333/api",
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
-        "clinicId": "{% response 'body', 'req_698f458fffe74931b121812d0d0f19c2', 'b64::JC5jb250ZW50Lmlk::46b', 'never', 60 %}"
+        "clinicId": "b1ca58cf-04fc-4f53-b8a3-38946657ce4e"
       },
       "dataPropertyOrder": {
         "&": [
@@ -1759,13 +1794,13 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1663552645278,
+      "modified": 1664246133200,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
         "base_url": "https://psis-api.herokuapp.com/api",
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
-        "clinicId": "{% response 'body', 'req_698f458fffe74931b121812d0d0f19c2', 'b64::JC5jb250ZW50Lmlk::46b', 'never', 60 %}"
+        "clinicId": "b1ca58cf-04fc-4f53-b8a3-38946657ce4e"
       },
       "dataPropertyOrder": {
         "&": [
