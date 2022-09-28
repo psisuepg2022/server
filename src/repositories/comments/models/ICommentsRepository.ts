@@ -12,11 +12,7 @@ interface ICommentsRepository {
     patientId: string,
     [take, skip]: [number, number]
   ): PrismaPromise<AppointmentModel[]>;
-  count(
-    professionalId: string,
-    patientId: string,
-    [take, skip]: [number, number]
-  ): PrismaPromise<number>;
+  count(professionalId: string, patientId: string): PrismaPromise<number>;
 }
 
 export { ICommentsRepository };

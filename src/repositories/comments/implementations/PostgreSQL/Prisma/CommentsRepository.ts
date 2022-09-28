@@ -43,8 +43,7 @@ class CommentsRepository implements ICommentsRepository {
 
   public count = (
     professionalId: string,
-    patientId: string,
-    [take, skip]: [number, number]
+    patientId: string
   ): PrismaPromise<number> =>
     this.prisma.appointment.count({
       where: {
@@ -52,8 +51,6 @@ class CommentsRepository implements ICommentsRepository {
         patientId,
         status: AppointmentStatus.COMPLETED,
       },
-      take,
-      skip,
       orderBy: { updatedAt: "desc" },
     });
 }

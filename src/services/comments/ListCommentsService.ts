@@ -47,7 +47,7 @@ class ListCommentsService {
     const takeSkip = pagination({ page, size });
 
     const [totalItems, items] = await transaction([
-      this.commentsRepository.count(professionalId, patientId, takeSkip),
+      this.commentsRepository.count(professionalId, patientId),
       this.commentsRepository.get(professionalId, patientId, takeSkip),
     ]);
 
