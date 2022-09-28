@@ -26,8 +26,8 @@ routes.post(
   controller.create,
   databaseDisconnectMiddleware
 );
-routes.get(
-  "/:patient_id",
+routes.post(
+  "/search/:patient_id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),

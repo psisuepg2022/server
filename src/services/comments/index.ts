@@ -1,4 +1,4 @@
 import { CreateCommentService } from "./CreateCommentService";
-import { ListCommentsService } from "./ListCommentsService";
+import { SearchCommentsWithFiltersService } from "./SearchCommentsWithFiltersService";
 
-export { ListCommentsService, CreateCommentService };
+export { SearchCommentsWithFiltersService, CreateCommentService };

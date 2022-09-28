@@ -7,12 +7,13 @@ import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
 import { IPaginationOptions, IPaginationResponse } from "@infra/http";
 import { ListCommentsRequestModel } from "@models/dto/comments/ListCommentsRequestModel";
+import { SearchCommentsRequestModel } from "@models/dto/comments/SearchCommentsRequestModel";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { ICommentsRepository } from "@repositories/comments";
 
 @injectable()
-class ListCommentsService {
+class SearchCommentsWithFiltersService {
   constructor(
     @inject("UniqueIdentifierProvider")
     private uniqueIdentifierProvider: IUniqueIdentifierProvider,
@@ -24,7 +25,7 @@ class ListCommentsService {
 
   public async execute(
     { patientId, professionalId }: ListCommentsRequestModel,
-    { page, size }: IPaginationOptions
+    { page, size }: IPaginationOptions<SearchCommentsRequestModel>
   ): Promise<IPaginationResponse<ListCommentsResponseModel>> {
     if (stringIsNullOrEmpty(patientId))
       throw new AppError(
@@ -72,4 +73,4 @@ class ListCommentsService {
   }
 }
 
-export { ListCommentsService };
+export { SearchCommentsWithFiltersService };

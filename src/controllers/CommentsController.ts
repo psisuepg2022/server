@@ -4,7 +4,10 @@ import { container } from "tsyringe";
 
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { CreateCommentResponseModel } from "@models/dto/comments/CreateCommentResponseModel";
-import { CreateCommentService, ListCommentsService } from "@services/comments";
+import {
+  CreateCommentService,
+  SearchCommentsWithFiltersService,
+} from "@services/comments";
 
 class CommentsController {
   public async create(
@@ -45,7 +48,9 @@ class CommentsController {
     const { id: professionalId } = req.user;
     const { patient_id: patientId } = req.params;
 
-    const service = container.resolve(ListCommentsService);
+    const { appointmentDate } = req.body;
+
+    const service = container.resolve(SearchCommentsWithFiltersService);
 
     const result = await service.execute(
       {
@@ -55,6 +60,7 @@ class CommentsController {
       {
         page,
         size,
+        filters: appointmentDate,
       }
     );
 
