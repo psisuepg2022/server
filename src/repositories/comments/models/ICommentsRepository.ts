@@ -1,3 +1,4 @@
+import { AppointmentModel } from "@models/domain/AppointmentModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface ICommentsRepository {
@@ -10,9 +11,7 @@ interface ICommentsRepository {
     professionalId: string,
     patientId: string,
     [take, skip]: [number, number]
-  ): PrismaPromise<
-    { createdAt: Date; updatedAt: Date; comments: string | null }[]
-  >;
+  ): PrismaPromise<AppointmentModel[]>;
   count(
     professionalId: string,
     patientId: string,

@@ -53,8 +53,16 @@ class ListCommentsService {
 
     return {
       items: items.map(
-        ({ comments, createdAt, updatedAt }): ListCommentsResponseModel => ({
+        ({
+          id,
+          appointmentDate,
+          comments,
+          createdAt,
+          updatedAt,
+        }): ListCommentsResponseModel => ({
+          id,
           text: comments,
+          appointmentDate: appointmentDate.toISOString(),
           completedAt: this.maskProvider.date(updatedAt),
           scheduledAt: this.maskProvider.date(createdAt),
         })

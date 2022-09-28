@@ -1,5 +1,6 @@
 import { prismaClient } from "@infra/database/client";
 import { AppointmentStatus } from "@infra/domains";
+import { AppointmentModel } from "@models/domain/AppointmentModel";
 import { PrismaPromise } from "@prisma/client";
 import { ICommentsRepository } from "@repositories/comments/models/ICommentsRepository";
 
@@ -21,9 +22,7 @@ class CommentsRepository implements ICommentsRepository {
     professionalId: string,
     patientId: string,
     [take, skip]: [number, number]
-  ): PrismaPromise<
-    { createdAt: Date; updatedAt: Date; comments: string | null }[]
-  > =>
+  ): PrismaPromise<AppointmentModel[]> =>
     this.prisma.appointment.findMany({
       where: {
         professionalId,
@@ -34,11 +33,13 @@ class CommentsRepository implements ICommentsRepository {
       skip,
       orderBy: { updatedAt: "desc" },
       select: {
+        id: true,
+        appointmentDate: true,
         comments: true,
         createdAt: true,
         updatedAt: true,
       },
-    });
+    }) as PrismaPromise<AppointmentModel[]>;
 
   public count = (
     professionalId: string,
