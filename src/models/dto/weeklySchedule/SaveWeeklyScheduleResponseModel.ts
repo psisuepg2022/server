@@ -4,6 +4,7 @@ type SaveWeeklyScheduleResponseModel = {
   id: string;
   startTime: string;
   endTime: string;
+  dayOfTheWeek: string;
   locks: WeeklyScheduleLockModel[];
 };
 

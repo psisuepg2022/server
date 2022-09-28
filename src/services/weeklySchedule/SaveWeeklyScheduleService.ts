@@ -187,6 +187,10 @@ class SaveWeeklyScheduleService {
       startTime: this.maskProvider.time(
         new Date(weeklyScheduleUpdated.startTime)
       ),
+      dayOfTheWeek: getEnumDescription(
+        "DAYS_OF_THE_WEEK",
+        DaysOfTheWeek[hasSchedule.dayOfTheWeek]
+      ),
       locks: insertedLocks.map(
         (item: WeeklyScheduleLockModel): WeeklyScheduleLockModel => ({
           id: item.id,
