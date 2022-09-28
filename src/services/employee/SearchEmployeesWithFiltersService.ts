@@ -42,11 +42,13 @@ class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService<
   protected convertObject = ({
     person,
     userName,
+    accessCode,
   }: Partial<
     EmployeeModel & { person: PersonModel & { address: AddressModel } }
   >): ListEmployeesResponseModel =>
     ({
       userName,
+      accessCode,
       ...this.covertBase(person || {}),
     } as ListEmployeesResponseModel);
 }
