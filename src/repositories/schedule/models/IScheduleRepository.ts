@@ -66,12 +66,6 @@ interface IScheduleRepository {
     endDate: Date
   ): PrismaPromise<ScheduleLockModel[]>;
   deleteScheduleLock(id: string): PrismaPromise<ScheduleLockModel>;
-  hasWeeklyScheduleConflictingWithScheduleLock(
-    professionalId: string,
-    startTime: Date,
-    endTime: Date,
-    dayOfTheWeek: number
-  ): PrismaPromise<{ id: string; dayOfTheWeek: number } | null>;
 }
 
 export { IScheduleRepository };

@@ -37,7 +37,10 @@ class ScheduleRepository implements IScheduleRepository {
             WeeklyScheduleLocks: {
               some: {
                 OR: [
-                  { startTime, endTime },
+                  {
+                    startTime: { lte: startTime },
+                    endTime: { gte: endTime },
+                  },
                   {
                     startTime: {
                       lt: endTime,
@@ -271,51 +274,6 @@ class ScheduleRepository implements IScheduleRepository {
             dayOfTheWeek: true,
           },
         },
-      },
-    });
-
-  public hasWeeklyScheduleConflictingWithScheduleLock = (
-    professionalId: string,
-    startTime: Date,
-    endTime: Date,
-    dayOfTheWeek: number
-  ): PrismaPromise<{ id: string; dayOfTheWeek: number } | null> =>
-    this.prisma.weeklySchedule.findFirst({
-      where: {
-        professionalId,
-        dayOfTheWeek,
-        OR: [
-          { startTime, endTime },
-          {
-            startTime: { gt: startTime, lt: endTime },
-          },
-          {
-            endTime: { gt: startTime, lt: endTime },
-          },
-          {
-            WeeklyScheduleLocks: {
-              some: {
-                weeklySchedule: {
-                  professionalId,
-                  dayOfTheWeek,
-                },
-                OR: [
-                  { startTime, endTime },
-                  {
-                    startTime: { gt: startTime, lt: endTime },
-                  },
-                  {
-                    endTime: { gt: startTime, lt: endTime },
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      },
-      select: {
-        id: true,
-        dayOfTheWeek: true,
       },
     });
 }

@@ -131,22 +131,22 @@ class CreateScheduleLockService {
         ])
       );
 
-    const [hasWeeklySchedule] = await transaction([
-      this.scheduleRepository.hasWeeklyScheduleConflictingWithScheduleLock(
+    const [hasTimeWithoutLock] = await transaction([
+      this.scheduleRepository.hasTimeWithoutLock(
         professionalId,
+        this.dateProvider.getWeekDay(dateConverted),
         startTimeConverted,
-        endTimeConverted,
-        this.dateProvider.getWeekDay(dateConverted)
+        endTimeConverted
       ),
     ]);
 
-    if (hasWeeklySchedule)
+    if (!hasTimeWithoutLock)
       throw new AppError(
         "BAD_REQUEST",
         i18n.__mf("ErrorScheduleLockHasWeeklyScheduleLock", [
           getEnumDescription(
             "DAYS_OF_THE_WEEK",
-            DaysOfTheWeek[hasWeeklySchedule.dayOfTheWeek as number]
+            DaysOfTheWeek[this.dateProvider.getWeekDay(dateConverted)]
           ),
         ])
       );
@@ -184,8 +184,6 @@ class CreateScheduleLockService {
         ]
       ),
     ]);
-
-    console.log(hasAppointment);
 
     if (hasAppointment)
       throw new AppError(
