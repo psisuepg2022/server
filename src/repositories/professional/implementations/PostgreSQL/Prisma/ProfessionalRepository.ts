@@ -216,6 +216,7 @@ class ProfessionalRepository implements IProfessionalRepository {
         },
       },
       select: {
+        userName: true,
         professional: {
           select: {
             profession: true,

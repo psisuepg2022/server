@@ -16,8 +16,10 @@ import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 class GetUserProfileService<
   T extends GetUserProfileResponseModel = GetUserProfileResponseModel,
   K extends {
+    userName: string;
     person: Partial<PersonModel> & { address: AddressModel };
   } = {
+    userName: string;
     person: Partial<PersonModel> & { address: AddressModel };
   }
 > {
@@ -54,8 +56,10 @@ class GetUserProfileService<
   };
 
   protected covertBase = ({
+    userName,
     person,
   }: {
+    userName: string;
     person: Partial<PersonModel> & { address: AddressModel };
   }): GetUserProfileResponseModel => ({
     id: person.id || "",
@@ -64,6 +68,7 @@ class GetUserProfileService<
     email: person.email || "",
     birthDate: this.maskProvider.date(person.birthDate as Date),
     contactNumber: this.maskProvider.contactNumber(person.contactNumber || ""),
+    userName,
     address: {
       id: person.address.id,
       city: person.address.city,

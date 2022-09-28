@@ -14,6 +14,7 @@ import { GetUserProfileService } from "@services/user";
 class GetProfessionalProfileService extends GetUserProfileService<
   GetProfessionalProfileResponseModel,
   {
+    userName: string;
     person: Partial<PersonModel> & { address: AddressModel };
     professional: Partial<ProfessionalModel>;
   }
@@ -39,6 +40,7 @@ class GetProfessionalProfileService extends GetUserProfileService<
     this.professionalRepository.getProfile(clinicId, userId, domainClass);
 
   protected convertObject = (obj: {
+    userName: string;
     person: Partial<PersonModel> & { address: AddressModel };
     professional: Partial<ProfessionalModel>;
   }): GetProfessionalProfileResponseModel =>

@@ -178,6 +178,7 @@ class UserRepository implements IUserRepository {
         },
       },
       select: {
+        userName: true,
         person: {
           select: {
             id: true,

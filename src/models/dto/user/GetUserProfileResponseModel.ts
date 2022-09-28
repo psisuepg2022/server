@@ -8,6 +8,7 @@ type GetUserProfileResponseModel = {
   birthDate: string;
   address: AddressModel;
   contactNumber?: string;
+  userName: string;
 };
 
 export { GetUserProfileResponseModel };

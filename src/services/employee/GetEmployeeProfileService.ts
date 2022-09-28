@@ -31,6 +31,7 @@ class GetEmployeeProfileService extends GetUserProfileService {
   ): any => this.userRepository.getProfile(clinicId, userId, domainClass);
 
   protected convertObject = (obj: {
+    userName: string;
     person: Partial<PersonModel> & { address: AddressModel };
   }): GetUserProfileResponseModel =>
     ({ ...this.covertBase(obj) } as GetUserProfileResponseModel);
