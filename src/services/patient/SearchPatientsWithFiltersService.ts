@@ -15,14 +15,17 @@ import { IPersonRepository } from "@repositories/person";
 import { SearchPeopleWithFiltersService } from "@services/person";
 
 @injectable()
-class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService<
+class SearchPatientsWithFiltersService<
+  T extends SearchPersonRequestModel = SearchPersonRequestModel
+> extends SearchPeopleWithFiltersService<
   ListPatientsResponseModel,
   Partial<
     PersonModel & {
       patient: PatientModel & { liable: any & { person: PersonModel } };
       address: AddressModel;
     }
-  >
+  >,
+  T
 > {
   constructor(
     @inject("PersonRepository")
@@ -32,7 +35,7 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService<
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("PatientRepository")
-    private patientRepository: IPatientRepository
+    protected patientRepository: IPatientRepository
   ) {
     super(personRepository, maskProvider, validatorsProvider);
   }
@@ -42,7 +45,7 @@ class SearchPatientsWithFiltersService extends SearchPeopleWithFiltersService<
   protected getOperation = (
     clinicId: string,
     pagination: [number, number],
-    filters: SearchPersonRequestModel | null
+    filters: T | null
   ): any =>
     this.patientRepository.get(clinicId, pagination, this.getFilters(filters));
 

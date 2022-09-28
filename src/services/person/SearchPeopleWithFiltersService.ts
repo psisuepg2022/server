@@ -26,7 +26,8 @@ class SearchPeopleWithFiltersService<
       patient: PatientModel & { liable: any & { person: PersonModel } };
       address: AddressModel;
     }
-  >
+  >,
+  P extends SearchPersonRequestModel = SearchPersonRequestModel
 > {
   constructor(
     protected personRepository: IPersonRepository,
@@ -44,13 +45,28 @@ class SearchPeopleWithFiltersService<
   protected getOperation = (
     _: string,
     [__, ___]: [number, number],
-    ____: SearchPersonRequestModel | null
+    ____: P | null
   ): PrismaPromise<K[]> => {
     throw new AppError(
       "INTERNAL_SERVER_ERROR",
       i18n.__("ErrorWithoutHandling")
     );
   };
+
+  protected countOperation = (
+    clinicId: string,
+    filters: P | null
+  ): PrismaPromise<number> =>
+    this.personRepository.count(
+      clinicId,
+      this.getDomainClass(),
+      filters
+        ? {
+            ...filters,
+            CPF: this.maskProvider.remove(filters.CPF || ""),
+          }
+        : null
+    );
 
   protected convertObject = (_: K): T => {
     throw new AppError(
@@ -59,9 +75,7 @@ class SearchPeopleWithFiltersService<
     );
   };
 
-  protected getFilters = (
-    filters: SearchPersonRequestModel | null
-  ): SearchPersonRequestModel | null =>
+  protected getFilters = (filters: P | null): P | null =>
     filters
       ? {
           ...filters,
@@ -94,24 +108,13 @@ class SearchPeopleWithFiltersService<
 
   public async execute(
     clinicId: string,
-    { page, size, filters }: IPaginationOptions<SearchPersonRequestModel>
+    { page, size, filters }: IPaginationOptions<P>
   ): Promise<IPaginationResponse<T>> {
-    if (filters?.CPF && !this.validatorsProvider.cpf(filters?.CPF))
+    if (filters?.CPF && !this.validatorsProvider.cpf(filters?.CPF || ""))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFInvalid"));
 
-    const countOperation = this.personRepository.count(
-      clinicId,
-      this.getDomainClass(),
-      filters
-        ? {
-            ...filters,
-            CPF: this.maskProvider.remove(filters.CPF || ""),
-          }
-        : null
-    );
-
     const [totalItems, items] = await transaction([
-      countOperation,
+      this.countOperation(clinicId, this.getFilters(filters || null)),
       this.getOperation(
         clinicId,
         pagination({ page, size }),

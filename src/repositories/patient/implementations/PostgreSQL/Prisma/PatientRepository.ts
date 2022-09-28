@@ -4,6 +4,7 @@ import { AddressModel } from "@models/domain/AddressModel";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
+import { SearchProfessionalPatientsRequestModel } from "@models/dto/professional/SearchProfessionalPatientsRequestModel";
 import { PrismaPromise } from "@prisma/client";
 import { IPatientRepository } from "@repositories/patient/models/IPatientRepository";
 import { clause2searchPeopleWithFilters } from "@repositories/person";
@@ -248,6 +249,95 @@ class PatientRepository implements IPatientRepository {
           liable: { person: Partial<PersonModel> };
         }[]
     >;
+
+  public getByProfessional = (
+    clinicId: string,
+    [take, skip]: [number, number],
+    filters: SearchProfessionalPatientsRequestModel | null
+  ): PrismaPromise<
+    Partial<
+      PersonModel & {
+        patient: PatientModel & { liable: any & { person: PersonModel } };
+        address: AddressModel;
+      }
+    >[]
+  > =>
+    this.prisma.person.findMany({
+      where: {
+        clinicId,
+        domainClass: UserDomainClasses.PATIENT,
+        active: true,
+        AND: clause2searchPeopleWithFilters(filters),
+        patient: {
+          Appointment: { some: { professionalId: filters?.professionalId } },
+        },
+      },
+      select: {
+        birthDate: true,
+        contactNumber: true,
+        CPF: true,
+        email: true,
+        name: true,
+        id: true,
+        address: {
+          select: {
+            id: true,
+            city: true,
+            district: true,
+            publicArea: true,
+            state: true,
+            zipCode: true,
+          },
+        },
+        patient: {
+          select: {
+            gender: true,
+            maritalStatus: true,
+            liable: {
+              select: {
+                person: {
+                  select: {
+                    birthDate: true,
+                    contactNumber: true,
+                    CPF: true,
+                    email: true,
+                    name: true,
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: { name: "asc" },
+      take,
+      skip,
+    }) as PrismaPromise<
+      Partial<
+        PersonModel & {
+          patient: PatientModel & { liable: any & { person: PersonModel } };
+          address: AddressModel;
+        }
+      >[]
+    >;
+
+  public countByProfessional = (
+    clinicId: string,
+    domainClass: string,
+    filters: SearchProfessionalPatientsRequestModel | null
+  ): PrismaPromise<number> =>
+    this.prisma.person.count({
+      where: {
+        clinicId,
+        domainClass: UserDomainClasses.PATIENT,
+        active: true,
+        AND: clause2searchPeopleWithFilters(filters),
+        patient: {
+          Appointment: { some: { professionalId: filters?.professionalId } },
+        },
+      },
+    });
 }
 
 export { PatientRepository };

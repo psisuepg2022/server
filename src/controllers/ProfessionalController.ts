@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { GetProfessionalsToScheduleTapBarResponseModel } from "@models/dto/professional/GetProfessionalsToScheduleTapBarResponseModel";
 import { ListProfessionalsResponseModel } from "@models/dto/professional/ListProfessionalsResponseModel";
@@ -14,6 +15,7 @@ import {
   CreateProfessionalService,
   GetProfessionalProfileService,
   GetProfessionalsToScheduleTopBarService,
+  SearchProfessionalPatientsWithFiltersService,
   SearchProfessionalsWithFiltersService,
   SoftProfessionalDeleteService,
   UpdateProfessionalService,
@@ -273,6 +275,43 @@ class ProfessionalController {
 
     res.status(HttpStatus.OK).json({
       success: true,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
+  }
+
+  public async myPatients(
+    req: Request,
+    res: Response<
+      IResponseMessage<IPaginationResponse<ListPatientsResponseModel>>
+    >,
+    next: NextFunction
+  ): Promise<void> {
+    const { page, size } = req.query;
+    const { id: clinicId } = req.clinic;
+    const { id: professionalId } = req.user;
+
+    const { name, CPF, email } = req.body;
+
+    const service = container.resolve(
+      SearchProfessionalPatientsWithFiltersService
+    );
+
+    const result = await service.execute(clinicId, {
+      page,
+      size,
+      filters: {
+        CPF,
+        email,
+        name,
+        professionalId,
+      },
+    });
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
       message: i18n.__("SuccessGeneric"),
     });
 

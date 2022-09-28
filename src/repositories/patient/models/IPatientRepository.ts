@@ -2,6 +2,7 @@ import { AddressModel } from "@models/domain/AddressModel";
 import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
+import { SearchProfessionalPatientsRequestModel } from "@models/dto/professional/SearchProfessionalPatientsRequestModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IPatientRepository {
@@ -21,6 +22,23 @@ interface IPatientRepository {
       }
     >[]
   >;
+  getByProfessional(
+    clinicId: string,
+    [take, skip]: [number, number],
+    filters: SearchProfessionalPatientsRequestModel | null
+  ): PrismaPromise<
+    Partial<
+      PersonModel & {
+        patient: PatientModel & { liable: any & { person: PersonModel } };
+        address: AddressModel;
+      }
+    >[]
+  >;
+  countByProfessional(
+    clinicId: string,
+    domainClass: string,
+    filters: SearchProfessionalPatientsRequestModel | null
+  ): PrismaPromise<number>;
   count(clinicId: string): PrismaPromise<number>;
   getToUpdate(
     clinicId: string,

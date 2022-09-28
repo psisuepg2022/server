@@ -81,5 +81,14 @@ routes.post(
   controller.configure,
   databaseDisconnectMiddleware
 );
+routes.post(
+  "/my_patients",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.myPatients,
+  databaseDisconnectMiddleware
+);
 
 export { routes };
