@@ -60,7 +60,7 @@ class CommentsController {
       {
         page,
         size,
-        filters: appointmentDate,
+        filters: { appointmentDate },
       }
     );
 

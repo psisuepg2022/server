@@ -21,13 +21,18 @@ class CommentsRepository implements ICommentsRepository {
   public get = (
     professionalId: string,
     patientId: string,
-    [take, skip]: [number, number]
+    [take, skip]: [number, number],
+    interval: [Date | null, Date | null]
   ): PrismaPromise<AppointmentModel[]> =>
     this.prisma.appointment.findMany({
       where: {
         professionalId,
         patientId,
         status: AppointmentStatus.COMPLETED,
+        appointmentDate: {
+          gte: interval[0] || undefined,
+          lte: interval[1] || undefined,
+        },
       },
       take,
       skip,
@@ -43,13 +48,18 @@ class CommentsRepository implements ICommentsRepository {
 
   public count = (
     professionalId: string,
-    patientId: string
+    patientId: string,
+    interval: [Date | null, Date | null]
   ): PrismaPromise<number> =>
     this.prisma.appointment.count({
       where: {
         professionalId,
         patientId,
         status: AppointmentStatus.COMPLETED,
+        appointmentDate: {
+          gte: interval[0] || undefined,
+          lte: interval[1] || undefined,
+        },
       },
       orderBy: { updatedAt: "desc" },
     });
