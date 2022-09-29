@@ -8,6 +8,7 @@ import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/List
 import { SaveWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/SaveWeeklyScheduleResponseModel";
 import {
   DeleteWeeklyScheduleLockService,
+  DisableWeeklyScheduleDayService,
   ListWeeklyScheduleService,
   SaveWeeklyScheduleService,
 } from "@services/weeklySchedule";
@@ -58,29 +59,47 @@ class WeeklyScheduleController {
 
   public async save(
     req: Request,
-    res: Response<IResponseMessage<SaveWeeklyScheduleResponseModel>>,
+    res: Response<IResponseMessage<SaveWeeklyScheduleResponseModel | boolean>>,
     next: NextFunction
   ): Promise<void> {
-    const { id, startTime, endTime, locks } = req.body;
+    const { id, startTime, endTime, locks, disableDay } = req.body;
 
     const { id: clinicId } = req.clinic;
     const { id: professionalId } = req.user;
 
-    const service = container.resolve(SaveWeeklyScheduleService);
+    const result = await (async (): Promise<
+      SaveWeeklyScheduleResponseModel | boolean
+    > => {
+      if (disableDay && (disableDay === "true" || disableDay === true)) {
+        const service = container.resolve(DisableWeeklyScheduleDayService);
 
-    const result = await service.execute({
-      id,
-      clinicId,
-      professionalId,
-      startTime,
-      endTime,
-      locks: locks?.map(
-        (item: any): CreateWeeklyScheduleLockRequestModel => ({
-          endTime: item.endTime,
-          startTime: item.startTime,
-        })
-      ),
-    });
+        const _result = await service.execute({
+          clinicId,
+          professionalId,
+          id,
+        });
+
+        return _result;
+      }
+
+      const service = container.resolve(SaveWeeklyScheduleService);
+
+      const _result = await service.execute({
+        id,
+        clinicId,
+        professionalId,
+        startTime,
+        endTime,
+        locks: locks?.map(
+          (item: any): CreateWeeklyScheduleLockRequestModel => ({
+            endTime: item.endTime,
+            startTime: item.startTime,
+          })
+        ),
+      });
+
+      return _result;
+    })();
 
     res.status(HttpStatus.OK).json({
       success: true,
