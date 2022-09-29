@@ -222,6 +222,31 @@ class AppointmentRepository implements IAppointmentRepository {
         id: true,
       },
     }) as PrismaPromise<Partial<AppointmentModel>>;
+
+  public hasUncompletedAppointmentsByDayOfTheWeek = (
+    professionalId: string,
+    dayOfTheWeek: number,
+    today: Date,
+    startTime: Date | null,
+    endTime: Date | null
+  ): PrismaPromise<Partial<AppointmentModel>[]> =>
+    this.prisma.$queryRaw<Partial<AppointmentModel>[]>`
+    SELECT 
+      "public"."appointment"."id" 
+    FROM "public"."appointment"
+    INNER JOIN "public"."professional" ON ("public"."appointment"."professional_id") = ("public"."professional"."id") 
+    WHERE 
+      "public"."appointment"."professional_id" = ${professionalId}
+      AND "public"."appointment"."appointment_date" > ${today}
+      AND ((extract(DOW FROM "public"."appointment"."appointment_date"::TIMESTAMP)) + 1) = ${dayOfTheWeek}
+      AND (
+        (${startTime}::TIMESTAMP IS NULL AND ${endTime}::TIMESTAMP IS NULL) OR
+        "public"."appointment"."appointment_date"::TIME < ${startTime}::TIME
+        OR "public"."appointment"."appointment_date"::TIME > ${endTime}::TIME
+        OR "public"."appointment"."appointment_date"::TIME + ("public"."professional"."base_duration" * interval '1 minute') > ${endTime}
+      )
+    LIMIT 1 OFFSET 0
+    `;
 }
 
 export { AppointmentRepository };

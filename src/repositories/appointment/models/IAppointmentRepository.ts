@@ -50,6 +50,13 @@ interface IAppointmentRepository {
     id: string,
     date: Date
   ): PrismaPromise<{ patient: { person: Partial<PersonModel> } }[]>;
+  hasUncompletedAppointmentsByDayOfTheWeek(
+    professionalId: string,
+    dayOfTheWeek: number,
+    today: Date,
+    startTime: Date | null,
+    endTime: Date | null
+  ): PrismaPromise<Partial<AppointmentModel>[]>;
   deleteAllUncompletedAppointments(
     entity: "patient" | "professional",
     id: string,

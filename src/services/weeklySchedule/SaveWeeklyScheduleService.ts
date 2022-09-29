@@ -16,6 +16,7 @@ import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAppointmentRepository } from "@repositories/appointment";
 import { IProfessionalRepository } from "@repositories/professional";
 import { IScheduleRepository } from "@repositories/schedule";
 
@@ -33,7 +34,9 @@ class SaveWeeklyScheduleService {
     @inject("MaskProvider")
     private maskProvider: IMaskProvider,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("AppointmentRepository")
+    private appointmentRepository: IAppointmentRepository
   ) {}
 
   private validateInterval = (start: string, end: string, index = -1): void => {
@@ -115,6 +118,30 @@ class SaveWeeklyScheduleService {
     if (!hasSchedule)
       throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
 
+    const startTimeConverted = this.dateProvider.time2date(startTime);
+    const endTimeConverted = this.dateProvider.time2date(endTime);
+
+    const [hasFutureAppointments] = await transaction([
+      this.appointmentRepository.hasUncompletedAppointmentsByDayOfTheWeek(
+        professionalId,
+        hasSchedule.dayOfTheWeek,
+        this.dateProvider.now(),
+        startTimeConverted,
+        endTimeConverted
+      ),
+    ]);
+
+    if (hasFutureAppointments.length > 0)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorWeeklyScheduleUncompletedAppointments", [
+          getEnumDescription(
+            "DAYS_OF_THE_WEEK",
+            DaysOfTheWeek[hasSchedule.dayOfTheWeek]
+          ),
+        ])
+      );
+
     const createLocksOperations: PrismaPromise<WeeklyScheduleLockModel>[] = [];
 
     if (locks && Array.isArray(locks) && locks.length > 0)
@@ -175,8 +202,8 @@ class SaveWeeklyScheduleService {
     const [weeklyScheduleUpdated, ...insertedLocks] = await transaction([
       this.scheduleRepository.updateSchedule({
         id,
-        endTime: this.dateProvider.time2date(endTime),
-        startTime: this.dateProvider.time2date(startTime),
+        endTime: endTimeConverted,
+        startTime: startTimeConverted,
       } as WeeklyScheduleModel),
       ...createLocksOperations,
     ]);
