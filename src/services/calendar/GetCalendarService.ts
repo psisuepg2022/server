@@ -158,29 +158,45 @@ class GetCalendarService {
         })
       ),
       weeklySchedule: returnWeeklySchedule
-        ? weeklySchedule.map(
-            ({
-              WeeklyScheduleLocks: locks,
-              ...item
-            }: WeeklyScheduleModel & {
-              WeeklyScheduleLocks: WeeklyScheduleLockModel[];
-            }): WeeklyScheduleOnCalendarModel => ({
-              id: item.id,
-              endTime: this.maskProvider.time(item.endTime as Date),
-              startTime: this.maskProvider.time(item.startTime as Date),
-              dayOfTheWeek: item.dayOfTheWeek,
-              locks: locks.map(
-                (
-                  lock: WeeklyScheduleLockModel
-                ): WeeklyScheduleLockOnCalendarModel => ({
-                  id: lock.id,
-                  endTime: this.maskProvider.time(lock.endTime as Date),
-                  startTime: this.maskProvider.time(lock.startTime as Date),
-                  resource: "LOCK",
-                })
-              ),
+        ? Array.from({ length: 7 })
+            .fill({})
+            .map((_, index: number): WeeklyScheduleOnCalendarModel => {
+              const hasScheduleIndex = weeklySchedule.findIndex(
+                ({ dayOfTheWeek }: WeeklyScheduleModel) =>
+                  dayOfTheWeek === index + 1
+              );
+
+              if (
+                hasScheduleIndex >= 0 &&
+                hasScheduleIndex < weeklySchedule.length
+              )
+                return {
+                  id: weeklySchedule[hasScheduleIndex].id,
+                  endTime: this.maskProvider.time(
+                    weeklySchedule[hasScheduleIndex].endTime as Date
+                  ),
+                  startTime: this.maskProvider.time(
+                    weeklySchedule[hasScheduleIndex].startTime as Date
+                  ),
+                  dayOfTheWeek: weeklySchedule[hasScheduleIndex].dayOfTheWeek,
+                  locks: weeklySchedule[
+                    hasScheduleIndex
+                  ].WeeklyScheduleLocks.map(
+                    (
+                      lock: WeeklyScheduleLockModel
+                    ): WeeklyScheduleLockOnCalendarModel => ({
+                      id: lock.id,
+                      endTime: this.maskProvider.time(lock.endTime as Date),
+                      startTime: this.maskProvider.time(lock.startTime as Date),
+                      resource: "LOCK",
+                    })
+                  ),
+                };
+
+              return {
+                dayOfTheWeek: index + 1,
+              } as WeeklyScheduleOnCalendarModel;
             })
-          )
         : undefined,
       scheduleLocks: scheduleLocks.map(
         (item: ScheduleLockModel): ScheduleLockOnCalendarModel => ({

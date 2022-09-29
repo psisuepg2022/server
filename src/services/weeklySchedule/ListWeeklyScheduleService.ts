@@ -62,28 +62,42 @@ class ListWeeklyScheduleService {
       this.scheduleRepository.getWeeklySchedule(professionalId),
     ]);
 
-    return schedule.map(
-      (
-        item: WeeklyScheduleModel & {
-          WeeklyScheduleLocks: WeeklyScheduleLockModel[];
-        }
-      ): ListWeeklyScheduleResponseModel => ({
-        id: item.id,
-        dayOfTheWeek: getEnumDescription(
-          "DAYS_OF_THE_WEEK",
-          DaysOfTheWeek[item.dayOfTheWeek as number]
-        ),
-        startTime: this.maskProvider.time(new Date(item.startTime)),
-        endTime: this.maskProvider.time(new Date(item.endTime)),
-        locks: item.WeeklyScheduleLocks.map(
-          (lock: WeeklyScheduleLockModel): WeeklyScheduleLockModel => ({
-            ...lock,
-            startTime: this.maskProvider.time(new Date(lock.startTime)),
-            endTime: this.maskProvider.time(new Date(lock.endTime)),
-          })
-        ),
-      })
-    );
+    return Array.from({ length: 7 })
+      .fill({})
+      .map((_, index: number): ListWeeklyScheduleResponseModel => {
+        const hasScheduleIndex = schedule.findIndex(
+          ({ dayOfTheWeek }: WeeklyScheduleModel) => dayOfTheWeek === index + 1
+        );
+
+        if (hasScheduleIndex >= 0 && hasScheduleIndex < schedule.length)
+          return {
+            id: schedule[hasScheduleIndex].id,
+            dayOfTheWeek: getEnumDescription(
+              "DAYS_OF_THE_WEEK",
+              DaysOfTheWeek[schedule[hasScheduleIndex].dayOfTheWeek as number]
+            ),
+            startTime: this.maskProvider.time(
+              new Date(schedule[hasScheduleIndex].startTime)
+            ),
+            endTime: this.maskProvider.time(
+              new Date(schedule[hasScheduleIndex].endTime)
+            ),
+            locks: schedule[hasScheduleIndex].WeeklyScheduleLocks.map(
+              (lock: WeeklyScheduleLockModel): WeeklyScheduleLockModel => ({
+                ...lock,
+                startTime: this.maskProvider.time(new Date(lock.startTime)),
+                endTime: this.maskProvider.time(new Date(lock.endTime)),
+              })
+            ),
+          };
+
+        return {
+          dayOfTheWeek: getEnumDescription(
+            "DAYS_OF_THE_WEEK",
+            DaysOfTheWeek[index + 1]
+          ),
+        } as ListWeeklyScheduleResponseModel;
+      });
   }
 }
 
