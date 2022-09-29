@@ -62,7 +62,8 @@ class WeeklyScheduleController {
     res: Response<IResponseMessage<SaveWeeklyScheduleResponseModel | boolean>>,
     next: NextFunction
   ): Promise<void> {
-    const { id, startTime, endTime, locks, disableDay } = req.body;
+    const { id, startTime, endTime, locks, disableDay, dayOfTheWeek } =
+      req.body;
 
     const { id: clinicId } = req.clinic;
     const { id: professionalId } = req.user;
@@ -90,6 +91,7 @@ class WeeklyScheduleController {
         professionalId,
         startTime,
         endTime,
+        dayOfTheWeek,
         locks: locks?.map(
           (item: any): CreateWeeklyScheduleLockRequestModel => ({
             endTime: item.endTime,

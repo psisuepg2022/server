@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
+import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
@@ -76,30 +77,49 @@ class SaveWeeklyScheduleService {
       );
   };
 
+  protected getObjectId = (id?: string): string =>
+    id && !stringIsNullOrEmpty(id) && this.uniqueIdentifierProvider.isValid(id)
+      ? id
+      : this.uniqueIdentifierProvider.generate();
+
   public async execute({
-    id,
+    id: idReceived,
     professionalId,
     endTime,
     startTime,
     locks,
     clinicId,
+    dayOfTheWeek,
   }: SaveWeeklyScheduleRequestModel): Promise<SaveWeeklyScheduleResponseModel> {
-    if (stringIsNullOrEmpty(id))
-      throw new AppError(
-        "BAD_REQUEST",
-        i18n.__("ErrorWeeklyScheduleIDRequired")
-      );
+    const id = this.getObjectId(idReceived);
 
     if (stringIsNullOrEmpty(professionalId))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorProfessionalRequired"));
 
-    if (
-      !this.uniqueIdentifierProvider.isValid(id) ||
-      !this.uniqueIdentifierProvider.isValid(professionalId)
-    )
+    if (!this.uniqueIdentifierProvider.isValid(professionalId))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUUIDInvalid"));
 
     this.validateInterval(startTime, endTime);
+
+    if (stringIsNullOrEmpty(dayOfTheWeek))
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorWeekScheduleDayOfTheWeekRequired")
+      );
+
+    const dayOfTheWeekConverted = toNumber({
+      value: dayOfTheWeek,
+      error: new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorWeekScheduleDayOfTheWeekInvalid")
+      ),
+    });
+
+    if (!(dayOfTheWeekConverted in DaysOfTheWeek))
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorWeekScheduleDayOfTheWeekInvalid")
+      );
 
     const [hasProfessional] = await transaction([
       this.professionalRepository.getBaseDuration(clinicId, professionalId),
@@ -111,12 +131,28 @@ class SaveWeeklyScheduleService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
-    const [hasSchedule] = await transaction([
-      this.scheduleRepository.hasWeeklySchedule(id, professionalId),
+    const [hasDayOfTheWeekDuplicated] = await transaction([
+      this.scheduleRepository.hasDayOfTheWeekDuplicated(
+        id,
+        professionalId,
+        dayOfTheWeekConverted
+      ),
     ]);
 
-    if (!hasSchedule)
-      throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
+    if (hasDayOfTheWeekDuplicated)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorWeeklyScheduleDayOfTheWeekDuplicated")
+      );
+
+    if (idReceived) {
+      const [hasSchedule] = await transaction([
+        this.scheduleRepository.hasWeeklySchedule(id, professionalId),
+      ]);
+
+      if (!hasSchedule)
+        throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
+    }
 
     const startTimeConverted = this.dateProvider.time2date(startTime);
     const endTimeConverted = this.dateProvider.time2date(endTime);
@@ -124,7 +160,7 @@ class SaveWeeklyScheduleService {
     const [hasFutureAppointments] = await transaction([
       this.appointmentRepository.hasUncompletedAppointmentsByDayOfTheWeek(
         professionalId,
-        hasSchedule.dayOfTheWeek,
+        dayOfTheWeekConverted,
         this.dateProvider.now(),
         startTimeConverted,
         endTimeConverted
@@ -137,7 +173,7 @@ class SaveWeeklyScheduleService {
         i18n.__mf("ErrorWeeklyScheduleUncompletedAppointments", [
           getEnumDescription(
             "DAYS_OF_THE_WEEK",
-            DaysOfTheWeek[hasSchedule.dayOfTheWeek]
+            DaysOfTheWeek[dayOfTheWeekConverted]
           ),
         ])
       );
@@ -200,10 +236,11 @@ class SaveWeeklyScheduleService {
       );
 
     const [weeklyScheduleUpdated, ...insertedLocks] = await transaction([
-      this.scheduleRepository.updateSchedule({
+      this.scheduleRepository.saveWeeklyScheduleItem(professionalId, {
         id,
         endTime: endTimeConverted,
         startTime: startTimeConverted,
+        dayOfTheWeek: dayOfTheWeekConverted,
       } as WeeklyScheduleModel),
       ...createLocksOperations,
     ]);
@@ -216,7 +253,7 @@ class SaveWeeklyScheduleService {
       ),
       dayOfTheWeek: getEnumDescription(
         "DAYS_OF_THE_WEEK",
-        DaysOfTheWeek[hasSchedule.dayOfTheWeek]
+        DaysOfTheWeek[dayOfTheWeekConverted]
       ),
       locks: insertedLocks.map(
         (item: WeeklyScheduleLockModel): WeeklyScheduleLockModel => ({

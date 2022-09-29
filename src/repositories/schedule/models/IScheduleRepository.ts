@@ -36,9 +36,6 @@ interface IScheduleRepository {
     id: string,
     professionalId: string
   ): PrismaPromise<WeeklyScheduleModel | null>;
-  updateSchedule(
-    weeklySchedule: WeeklyScheduleModel
-  ): PrismaPromise<WeeklyScheduleModel>;
   deleteLock(id: string): PrismaPromise<WeeklyScheduleLockModel>;
   deleteAllsLocksByWeeklySchedule(weeklyScheduleId: string): PrismaPromise<any>;
   hasConflictingWeeklyScheduleLock(
@@ -68,6 +65,11 @@ interface IScheduleRepository {
   ): PrismaPromise<ScheduleLockModel[]>;
   deleteScheduleLock(id: string): PrismaPromise<ScheduleLockModel>;
   deleteWeeklySchedule(id: string): PrismaPromise<WeeklyScheduleModel>;
+  hasDayOfTheWeekDuplicated(
+    id: string,
+    professionalId: string,
+    dayOfTheWeek: number
+  ): PrismaPromise<{ id: string } | null>;
 }
 
 export { IScheduleRepository };

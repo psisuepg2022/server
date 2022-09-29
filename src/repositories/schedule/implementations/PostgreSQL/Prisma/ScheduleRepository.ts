@@ -132,13 +132,18 @@ class ScheduleRepository implements IScheduleRepository {
     professionalId: string,
     { dayOfTheWeek, endTime, id, startTime }: WeeklyScheduleModel
   ): PrismaPromise<WeeklyScheduleModel> =>
-    this.prisma.weeklySchedule.create({
-      data: {
+    this.prisma.weeklySchedule.upsert({
+      where: { id },
+      create: {
         id,
         dayOfTheWeek,
         endTime,
         startTime,
         professionalId,
+      },
+      update: {
+        startTime,
+        endTime,
       },
     });
 
@@ -178,19 +183,6 @@ class ScheduleRepository implements IScheduleRepository {
       where: {
         id,
         professionalId,
-      },
-    });
-
-  public updateSchedule = ({
-    id,
-    endTime,
-    startTime,
-  }: WeeklyScheduleModel): PrismaPromise<WeeklyScheduleModel> =>
-    this.prisma.weeklySchedule.update({
-      where: { id },
-      data: {
-        startTime,
-        endTime,
       },
     });
 
@@ -291,6 +283,20 @@ class ScheduleRepository implements IScheduleRepository {
   ): PrismaPromise<WeeklyScheduleModel> =>
     this.prisma.weeklySchedule.delete({
       where: { id },
+    });
+
+  public hasDayOfTheWeekDuplicated = (
+    id: string,
+    professionalId: string,
+    dayOfTheWeek: number
+  ): PrismaPromise<{ id: string } | null> =>
+    this.prisma.weeklySchedule.findFirst({
+      where: {
+        professionalId,
+        dayOfTheWeek,
+        id: { not: id },
+      },
+      select: { id: true },
     });
 }
 export { ScheduleRepository };
