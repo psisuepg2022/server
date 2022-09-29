@@ -276,5 +276,21 @@ class ScheduleRepository implements IScheduleRepository {
         },
       },
     });
+
+  public deleteAllsLocksByWeeklySchedule = (
+    weeklyScheduleId: string
+  ): PrismaPromise<any> =>
+    this.prisma.weeklyScheduleLock.deleteMany({
+      where: {
+        weeklyScheduleId,
+      },
+    });
+
+  public deleteWeeklySchedule = (
+    id: string
+  ): PrismaPromise<WeeklyScheduleModel> =>
+    this.prisma.weeklySchedule.delete({
+      where: { id },
+    });
 }
 export { ScheduleRepository };
