@@ -229,6 +229,41 @@ class SaveWeeklyScheduleService {
                 i18n.__("ErrorWeeklyScheduleLockIntervalOutOfBaseDuration")
               );
 
+            const hasConflicting = locks.filter((_item) => {
+              const _startLockConverted = this.dateProvider.time2date(
+                _item.startTime
+              );
+              const _endLockConverted = this.dateProvider.time2date(
+                _item.endTime
+              );
+
+              if (
+                this.dateProvider.equals(_startLockConverted, startDate) &&
+                this.dateProvider.equals(_endLockConverted, endDate)
+              )
+                return _item;
+
+              if (
+                this.dateProvider.isBefore(startDate, _endLockConverted) &&
+                this.dateProvider.isAfter(startDate, _startLockConverted)
+              )
+                return _item;
+
+              if (
+                this.dateProvider.isBefore(endDate, _endLockConverted) &&
+                this.dateProvider.isAfter(endDate, _startLockConverted)
+              )
+                return _item;
+
+              return null;
+            });
+
+            if (hasConflicting.length > 1)
+              throw new AppError(
+                "BAD_REQUEST",
+                i18n.__mf("ErrorWeeklyScheduleLockDuplicated", [index + 1])
+              );
+
             const [hasLock] = await transaction([
               this.scheduleRepository.hasConflictingWeeklyScheduleLock(
                 id,
