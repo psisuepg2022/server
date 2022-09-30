@@ -131,6 +131,24 @@ class SaveWeeklyScheduleService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
+    const startTimeConverted = this.dateProvider.time2date(startTime);
+    const endTimeConverted = this.dateProvider.time2date(endTime);
+
+    if (
+      (this.dateProvider.differenceInMillis(
+        endTimeConverted,
+        startTimeConverted
+      ) /
+        this.dateProvider.minuteToMilli(hasProfessional.baseDuration)) %
+      2
+    )
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorWeeklyScheduleIntervalOutOfBaseDuration", [
+          hasProfessional.baseDuration,
+        ])
+      );
+
     const [hasDayOfTheWeekDuplicated] = await transaction([
       this.scheduleRepository.hasDayOfTheWeekDuplicated(
         id,
@@ -153,9 +171,6 @@ class SaveWeeklyScheduleService {
       if (!hasSchedule)
         throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
     }
-
-    const startTimeConverted = this.dateProvider.time2date(startTime);
-    const endTimeConverted = this.dateProvider.time2date(endTime);
 
     const [hasFutureAppointments] = await transaction([
       this.appointmentRepository.hasUncompletedAppointmentsByDayOfTheWeek(
