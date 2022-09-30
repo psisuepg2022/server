@@ -226,7 +226,24 @@ class SaveWeeklyScheduleService {
             )
               throw new AppError(
                 "BAD_REQUEST",
-                i18n.__("ErrorWeeklyScheduleLockIntervalOutOfBaseDuration")
+                i18n.__mf("ErrorWeeklyScheduleLockIntervalOutOfBaseDuration", [
+                  index + 1,
+                ])
+              );
+
+            if (
+              this.dateProvider.isBefore(startDate, startTimeConverted) ||
+              this.dateProvider.isAfter(endDate, endTimeConverted)
+            )
+              throw new AppError(
+                "BAD_REQUEST",
+                i18n.__mf("ErrorWeeklyScheduleLocksOutOfWeeklyInterval", [
+                  index + 1,
+                  getEnumDescription(
+                    "DAYS_OF_THE_WEEK",
+                    DaysOfTheWeek[dayOfTheWeekConverted]
+                  ),
+                ])
               );
 
             const hasConflicting = locks.filter((_item) => {
