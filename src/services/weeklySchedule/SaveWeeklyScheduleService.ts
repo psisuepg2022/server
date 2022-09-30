@@ -134,6 +134,12 @@ class SaveWeeklyScheduleService {
     const startTimeConverted = this.dateProvider.time2date(startTime);
     const endTimeConverted = this.dateProvider.time2date(endTime);
 
+    if (startTime === endTime)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorWeeklyScheduleSameTimes")
+      );
+
     if (
       (this.dateProvider.differenceInMillis(
         endTimeConverted,
@@ -206,6 +212,12 @@ class SaveWeeklyScheduleService {
 
             const startDate = this.dateProvider.time2date(item.startTime);
             const endDate = this.dateProvider.time2date(item.endTime);
+
+            if (item.startTime === item.endTime)
+              throw new AppError(
+                "BAD_REQUEST",
+                i18n.__mf("ErrorWeeklyScheduleLockSameTimes", [index + 1])
+              );
 
             if (
               (this.dateProvider.differenceInMillis(endDate, startDate) /
