@@ -153,6 +153,7 @@
   "ErrorUserIsBlocked": "Não foi possível autenticar o usuário pois este está bloqueado. Por favor, entre em contato com um administrador.",
   "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe.",
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
+  "ErrorUserNameWithWhiteSpace": "O nome de usuário não pode conter espaços em branco.",
   "ErrorValueOutOfAppointmentStatusDomain": "A situação informada não é reconhecida. Por favor, informe uma situação válida.",
   "ErrorValueOutOfGenderDomain": "A informação do Sexo não é reconhecida.",
   "ErrorValueOutOfMaritalStatusDomain": "A informação do estado civil não é reconhecida.",

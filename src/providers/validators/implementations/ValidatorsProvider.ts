@@ -20,6 +20,8 @@ class ValidatorsProvider implements IValidatorsProvider {
 
   contactNumber = (contactNumber: string): boolean =>
     /^(?:\()[0-9]{2}(?:\))\s?[0-9]{4,5}(?:-)[0-9]{4}$/.test(contactNumber);
+
+  userName = (str: string): boolean => /\s/g.test(str);
 }
 
 export { ValidatorsProvider };

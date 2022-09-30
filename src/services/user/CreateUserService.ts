@@ -92,6 +92,9 @@ class CreateUserService extends CreatePersonService {
     if (stringIsNullOrEmpty(userName))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameRequired"));
 
+    if (this.validatorsProvider.userName(userName))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameWithWhiteSpace"));
+
     const [hasUserName] = await transaction([
       this.userRepository.hasUserName(id, userName),
     ]);
