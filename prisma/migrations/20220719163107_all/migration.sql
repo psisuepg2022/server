@@ -167,9 +167,6 @@ CREATE UNIQUE INDEX "usuario_nome_usuario_key" ON "usuario"("nome_usuario");
 CREATE UNIQUE INDEX "papel_usuario_nome_key" ON "papel_usuario"("nome");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "permissoes_nome_key" ON "permissoes"("nome");
-
--- CreateIndex
 CREATE UNIQUE INDEX "paciente_id_key" ON "paciente"("id");
 
 -- CreateIndex

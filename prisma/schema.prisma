@@ -86,7 +86,7 @@ model Role {
 
 model Permission {
   id   Int    @id @default(autoincrement())
-  name String @unique @map("nome") @db.VarChar(36)
+  name String @map("nome") @db.VarChar(36)
 
   roleId Int  @map("id_papel_usuario")
   role   Role @relation(fields: [roleId], references: [id])
