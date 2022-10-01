@@ -17,7 +17,7 @@ class CreateClinicService {
     private uniqueIdentifierProvider: IUniqueIdentifierProvider,
     @inject("ClinicRepository")
     private clinicRepository: IClinicRepository,
-    @inject("ValidatosProvider")
+    @inject("ValidatorsProvider")
     private validatorsProvider: IValidatorsProvider
   ) {}
 
