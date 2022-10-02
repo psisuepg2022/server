@@ -40,6 +40,7 @@
   "ErrorBaseCreateOperationFailed": "Não foi possível realizar a operação. Por favor, entre em contato com um administrador.",
   "ErrorBaseDurationInvalid": "A duração base das consultas informada é inválida.",
   "ErrorBaseDurationRequired": "É necessário informar a duração base das consultas.",
+  "ErrorBaseDurationTooLarge": "A duração base das consultas não pode ultrapassar 24 horas.",
   "ErrorBirthDateInvalid": "A data de nascimento informada é inválida.",
   "ErrorBirthDateRequired": "É necessário informar a data de nascimento para cadastro.",
   "ErrorCPFAlreadyExists": "O CPF informado já está cadastrado.",

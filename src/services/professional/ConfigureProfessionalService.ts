@@ -151,6 +151,9 @@ class ConfigureProfessionalService {
       error: new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationInvalid")),
     });
 
+    if (baseDurationConverted / 60 > 24)
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationTooLarge"));
+
     if (stringIsNullOrEmpty(oldPassword))
       throw new AppError(
         "BAD_REQUEST",
