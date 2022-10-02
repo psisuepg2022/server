@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
+import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import { GetProfessionalProfileResponseModel } from "@models/dto/professional/GetProfessionalProfileResponseModel";
 import { GetProfessionalsToScheduleTapBarResponseModel } from "@models/dto/professional/GetProfessionalsToScheduleTapBarResponseModel";
@@ -248,7 +249,7 @@ class ProfessionalController {
 
   public async configure(
     req: Request,
-    res: Response<IResponseMessage>,
+    res: Response<IResponseMessage<LoginResponseModel>>,
     next: NextFunction
   ): Promise<void> {
     const { id: userId } = req.user;
@@ -263,7 +264,7 @@ class ProfessionalController {
 
     const service = container.resolve(ConfigureProfessionalService);
 
-    await service.execute({
+    const result = await service.execute({
       clinicId,
       userId,
       oldPassword,
@@ -275,6 +276,7 @@ class ProfessionalController {
 
     res.status(HttpStatus.OK).json({
       success: true,
+      content: result,
       message: i18n.__("SuccessGeneric"),
     });
 

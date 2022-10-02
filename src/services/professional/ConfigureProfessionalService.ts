@@ -1,25 +1,33 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { RolesKeys } from "@common/RolesKeys";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
+import { getUserType2External } from "@helpers/getUserType2External";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
 import { transaction } from "@infra/database/transaction";
 import { DaysOfTheWeek } from "@infra/domains";
 import { WeeklyScheduleLockModel } from "@models/domain/WeeklyScheduleLockModel";
 import { WeeklyScheduleModel } from "@models/domain/WeeklyScheduleModel";
+import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
 import { ConfigureProfessionalRequestModel } from "@models/dto/professional/ConfigureProfessionalRequestModel";
 import { ConfigureWeeklyScheduleLocksRequestModel } from "@models/dto/weeklySchedule/ConfigureWeeklyScheduleRequestModel";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
+import { AuthTokenPayloadModel } from "@models/utils/AuthTokenPayloadModel";
+import { PermissionModel } from "@models/utils/PermissionModel";
 import { PrismaPromise } from "@prisma/client";
+import { IAuthTokenProvider } from "@providers/authToken";
 import { IDateProvider } from "@providers/date";
 import { IHashProvider } from "@providers/hash";
 import { IPasswordProvider } from "@providers/password";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IValidatorsProvider } from "@providers/validators";
+import { IAuthenticationRepository } from "@repositories/authentication";
 import { IProfessionalRepository } from "@repositories/professional";
 import { IScheduleRepository } from "@repositories/schedule";
+import { IUserRepository } from "@repositories/user";
 
 @injectable()
 class ConfigureProfessionalService {
@@ -37,7 +45,13 @@ class ConfigureProfessionalService {
     @inject("HashProvider")
     private hashProvider: IHashProvider,
     @inject("ScheduleRepository")
-    private scheduleRepository: IScheduleRepository
+    private scheduleRepository: IScheduleRepository,
+    @inject("AuthTokenProvider")
+    private authTokenProvider: IAuthTokenProvider,
+    @inject("UserRepository")
+    private userRepository: IUserRepository,
+    @inject("AuthenticationRepository")
+    private authenticationRepository: IAuthenticationRepository
   ) {}
 
   private validateInterval = (
@@ -133,7 +147,7 @@ class ConfigureProfessionalService {
     newPassword,
     oldPassword,
     weeklySchedule,
-  }: ConfigureProfessionalRequestModel): Promise<void> {
+  }: ConfigureProfessionalRequestModel): Promise<LoginResponseModel> {
     if (stringIsNullOrEmpty(userId))
       throw new AppError(
         "BAD_REQUEST",
@@ -409,10 +423,45 @@ class ConfigureProfessionalService {
         i18n.__("ErrorResetPasswdOldPasswordInvalid")
       );
 
-    await transaction([
+    const [hasRole] = await transaction([
+      this.authenticationRepository.getRoleByName(RolesKeys.PROFESSIONAL),
+    ]);
+
+    if (!hasRole)
+      throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorRoleNotFound"));
+
+    const [professionalUpdated] = await transaction([
+      this.userRepository.updateRole(userId, hasRole.id),
       ...createWeeklyScheduleOperations,
       ...createLocksOperations,
     ]);
+
+    const accessToken = this.authTokenProvider.generate({
+      id: professionalUpdated.id,
+      baseDuration: professionalUpdated.professional?.baseDuration,
+      clinic: {
+        id: professionalUpdated.person.clinic.id,
+        name: professionalUpdated.person.clinic.name,
+        email: professionalUpdated.person.clinic.email,
+      },
+      permissions: [
+        ...professionalUpdated.role.permissions?.map(
+          ({ name }: Partial<PermissionModel>): string => name || "ERROR"
+        ),
+        getUserType2External(professionalUpdated.role.name),
+      ],
+      type: "access_token",
+    } as AuthTokenPayloadModel);
+
+    const refreshToken = this.authTokenProvider.generate({
+      id: professionalUpdated.id,
+      type: "refresh_token",
+    } as AuthTokenPayloadModel);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
 

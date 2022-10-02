@@ -115,6 +115,60 @@ class UserRepository implements IUserRepository {
       | null
     >;
 
+  public updateRole = (
+    id: string,
+    roleId: number
+  ): PrismaPromise<
+    | UserModel & {
+        person: PersonModel & { clinic: ClinicModel };
+        role: { name: string; permissions: Partial<PermissionModel>[] };
+        professional?: Partial<ProfessionalModel>;
+      }
+  > =>
+    this.prisma.user.update({
+      where: { id },
+      data: { roleId },
+      select: {
+        password: true,
+        blocked: true,
+        loginAttempts: true,
+        accessCode: true,
+        userName: true,
+        id: true,
+        role: {
+          select: {
+            name: true,
+            permissions: { select: { name: true } },
+          },
+        },
+        person: {
+          select: {
+            name: true,
+            email: true,
+            domainClass: true,
+            clinic: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+        professional: {
+          select: {
+            baseDuration: true,
+          },
+        },
+      },
+    }) as unknown as PrismaPromise<
+      | UserModel & {
+          person: PersonModel & { clinic: ClinicModel };
+          role: { name: string; permissions: Partial<PermissionModel>[] };
+          professional?: Partial<ProfessionalModel>;
+        }
+    >;
+
   public verifyRole = (
     userId: string,
     role: string
