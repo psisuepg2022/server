@@ -159,6 +159,7 @@
   "ErrorValueOutOfGenderDomain": "A informação do Sexo não é reconhecida.",
   "ErrorValueOutOfMaritalStatusDomain": "A informação do estado civil não é reconhecida.",
   "ErrorVarcharLengthExceeded": "A informação de {0} excedeu o limite de {1} caracteres.",
+  "ErrorVarcharMaxLength": "O atributo {0} não pode ter mais do que {1} caracteres.",
   "ErrorWeekScheduleDayOfTheWeekInvalid": "O dia da semana informado não é válido.",
   "ErrorWeekScheduleDayOfTheWeekRequired": "É necessário informar o dia da semana para atualizar a agenda.",
   "ErrorWeeklyScheduleDayOfTheWeekDuplicated": "Não é possível inserir mais de um horário para o mesmo dia da semana.",
