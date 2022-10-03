@@ -2,10 +2,12 @@ import { RolesKeys } from "@common/RolesKeys";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { prismaClient } from "@infra/database/client";
 import { AddressModel } from "@models/domain/AddressModel";
+import { ClinicModel } from "@models/domain/ClinicModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ProfessionalModel } from "@models/domain/ProfessionalModel";
 import { UserModel } from "@models/domain/UserModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
+import { PermissionModel } from "@models/utils/PermissionModel";
 import { PrismaPromise } from "@prisma/client";
 import { clause2searchPeopleWithFilters } from "@repositories/person";
 import { IProfessionalRepository } from "@repositories/professional/models/IProfessionalRepository";
@@ -327,6 +329,61 @@ class ProfessionalRepository implements IProfessionalRepository {
         password: true,
       },
     }) as PrismaPromise<{ id: string; password: string } | null>;
+
+  public configure = (
+    id: string,
+    roleId: number,
+    baseDuration: number
+  ): PrismaPromise<
+    | UserModel & {
+        person: PersonModel & { clinic: ClinicModel };
+        role: { name: string; permissions: Partial<PermissionModel>[] };
+        professional?: Partial<ProfessionalModel>;
+      }
+  > =>
+    this.prisma.user.update({
+      where: { id },
+      data: { roleId, professional: { update: { baseDuration } } },
+      select: {
+        password: true,
+        blocked: true,
+        loginAttempts: true,
+        accessCode: true,
+        userName: true,
+        id: true,
+        role: {
+          select: {
+            name: true,
+            permissions: { select: { name: true } },
+          },
+        },
+        person: {
+          select: {
+            name: true,
+            email: true,
+            domainClass: true,
+            clinic: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+        professional: {
+          select: {
+            baseDuration: true,
+          },
+        },
+      },
+    }) as unknown as PrismaPromise<
+      | UserModel & {
+          person: PersonModel & { clinic: ClinicModel };
+          role: { name: string; permissions: Partial<PermissionModel>[] };
+          professional?: Partial<ProfessionalModel>;
+        }
+    >;
 }
 
 export { ProfessionalRepository };

@@ -27,7 +27,6 @@ import { IValidatorsProvider } from "@providers/validators";
 import { IAuthenticationRepository } from "@repositories/authentication";
 import { IProfessionalRepository } from "@repositories/professional";
 import { IScheduleRepository } from "@repositories/schedule";
-import { IUserRepository } from "@repositories/user";
 
 @injectable()
 class ConfigureProfessionalService {
@@ -48,8 +47,6 @@ class ConfigureProfessionalService {
     private scheduleRepository: IScheduleRepository,
     @inject("AuthTokenProvider")
     private authTokenProvider: IAuthTokenProvider,
-    @inject("UserRepository")
-    private userRepository: IUserRepository,
     @inject("AuthenticationRepository")
     private authenticationRepository: IAuthenticationRepository
   ) {}
@@ -431,7 +428,11 @@ class ConfigureProfessionalService {
       throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorRoleNotFound"));
 
     const [professionalUpdated] = await transaction([
-      this.userRepository.updateRole(userId, hasRole.id),
+      this.professionalRepository.configure(
+        userId,
+        hasRole.id,
+        baseDurationConverted
+      ),
       ...createWeeklyScheduleOperations,
       ...createLocksOperations,
     ]);

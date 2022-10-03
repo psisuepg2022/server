@@ -54,16 +54,6 @@ interface IUserRepository {
       })
     | null
   >;
-  updateRole(
-    id: string,
-    roleId: number
-  ): PrismaPromise<
-    | UserModel & {
-        person: PersonModel & { clinic: ClinicModel };
-        role: { name: string; permissions: Partial<PermissionModel>[] };
-        professional?: Partial<ProfessionalModel>;
-      }
-  >;
 }
 
 export { IUserRepository };
