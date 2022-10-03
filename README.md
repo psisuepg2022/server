@@ -66,14 +66,13 @@ Projeto realizado para disciplina Projeto de Software
 
 ```
     curl --request POST \
-    --url http://localhost:<PORT>/api/owner/<SUPPORT_ID> \
+    --url http://localhost:<PORT>/api/owner/<SUPPORT_ID>/<CLINIC_ID> \
     --header 'Content-Type: application/json' \
     --data '{
     "userName": "",
     "password": "",
     "name": "",
     "CPF": "ddd.ddd.ddd-dd",
-    "birthDate": "yyyy-MM-dd",
-    "clinicId": "ID DA CLÍNICA CRIADA ANTERIORMENTE"
+    "birthDate": "yyyy-MM-dd"
     }'
 ```
