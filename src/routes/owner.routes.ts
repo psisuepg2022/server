@@ -27,9 +27,10 @@ routes.get(
   databaseDisconnectMiddleware
 );
 routes.post(
-  "/:support",
+  "/:support/:clinic_id",
   logMiddleware,
   isSupportMiddleware,
+  validateClinicID.execute(true, false, "clinic_id"),
   controller.create,
   databaseDisconnectMiddleware
 );

@@ -28,8 +28,9 @@ class OwnerController {
       birthDate,
       contactNumber,
       address,
-      clinicId,
     } = req.body;
+
+    const { clinic_id: clinicId } = req.params;
 
     const service = container.resolve(CreateOwnerService);
 
