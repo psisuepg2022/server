@@ -238,7 +238,7 @@ class CreatePersonService {
 
         if (
           !this.validatorsProvider.length(
-            address.zipCode,
+            _zipCodeConverted,
             VarcharMaxLength.ADDRESS_ZIP_CODE
           )
         )
