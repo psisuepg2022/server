@@ -279,6 +279,14 @@ class ConfigureProfessionalService {
           const endTimeConverted = this.dateProvider.time2date(endTime);
           const startTimeConverted = this.dateProvider.time2date(startTime);
 
+          if (this.dateProvider.equals(startTimeConverted, endTimeConverted))
+            throw new AppError(
+              "BAD_REQUEST",
+              i18n.__mf("ErrorConfigureProfessionalSameWeeklyDates", [
+                descriptionDayOfTheWeek,
+              ])
+            );
+
           this.validateIntervalOutOfBounds(
             startTimeConverted,
             endTimeConverted,
@@ -310,6 +318,38 @@ class ConfigureProfessionalService {
                 const lockEndTimeConverted = this.dateProvider.time2date(
                   lock.endTime
                 );
+
+                if (
+                  this.dateProvider.equals(
+                    lockStartTimeConverted,
+                    lockEndTimeConverted
+                  )
+                )
+                  throw new AppError(
+                    "BAD_REQUEST",
+                    i18n.__mf("ErrorConfigureProfessionalSameWeeklyLockDates", [
+                      indexLocks + 1,
+                      descriptionDayOfTheWeek,
+                    ])
+                  );
+
+                if (
+                  this.dateProvider.isBefore(
+                    lockStartTimeConverted,
+                    startTimeConverted
+                  ) ||
+                  this.dateProvider.isAfter(
+                    lockEndTimeConverted,
+                    endTimeConverted
+                  )
+                )
+                  throw new AppError(
+                    "BAD_REQUEST",
+                    i18n.__mf("ErrorWeeklyScheduleLocksOutOfWeeklyInterval", [
+                      indexLocks + 1,
+                      descriptionDayOfTheWeek,
+                    ])
+                  );
 
                 this.validateIntervalOutOfBounds(
                   lockStartTimeConverted,
