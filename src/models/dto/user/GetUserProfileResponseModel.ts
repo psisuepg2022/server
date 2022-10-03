@@ -6,7 +6,7 @@ type GetUserProfileResponseModel = {
   email?: string;
   CPF: string;
   birthDate: string;
-  address: AddressModel;
+  address?: AddressModel;
   contactNumber?: string;
   userName: string;
 };

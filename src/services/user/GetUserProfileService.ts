@@ -69,14 +69,16 @@ class GetUserProfileService<
     birthDate: this.maskProvider.date(person.birthDate as Date),
     contactNumber: this.maskProvider.contactNumber(person.contactNumber || ""),
     userName,
-    address: {
-      id: person.address.id,
-      city: person.address.city,
-      publicArea: person.address.publicArea,
-      state: person.address.state,
-      district: person.address.district,
-      zipCode: this.maskProvider.zipCode(person.address.zipCode),
-    },
+    address: person.address
+      ? {
+          id: person.address.id,
+          city: person.address.city,
+          publicArea: person.address.publicArea,
+          state: person.address.state,
+          district: person.address.district,
+          zipCode: this.maskProvider.zipCode(person.address.zipCode),
+        }
+      : undefined,
   });
 
   public async execute({
