@@ -225,9 +225,16 @@ class ConfigureProfessionalService {
             endTime,
             dayOfTheWeek,
             locks,
+            disableDay,
           }: ConfigureWeeklyScheduleLocksRequestModel,
           indexWeeklySchedule: number
         ): void => {
+          if (
+            disableDay !== undefined &&
+            (disableDay === "true" || disableDay === true)
+          )
+            return;
+
           if (
             weeklySchedule.filter((item) => item.dayOfTheWeek === dayOfTheWeek)
               .length !== 1
