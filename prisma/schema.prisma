@@ -11,26 +11,26 @@ datasource db {
 model Clinic {
   id    String @id @db.Uuid
   email String @unique @db.VarChar(100)
-  name  String @db.VarChar(100)
-  code  Int    @default(autoincrement())
+  name  String @map("nome") @db.VarChar(100)
+  code  Int    @default(autoincrement()) @map("codigo_base")
 
   people Person[]
 
-  @@map("clinic")
+  @@map("clinica")
 }
 
 model Person {
   id            String   @id @db.Uuid
   email         String?  @unique @db.VarChar(100)
-  name          String   @db.VarChar(100)
-  domainClass   String   @map("domain_class") @db.VarChar(32)
+  name          String   @map("nome") @db.VarChar(100)
+  domainClass   String   @map("classe_dominio") @db.VarChar(32)
   CPF           String?  @unique @map("cpf") @db.VarChar(11)
-  birthDate     DateTime @map("birth_date") @db.Date
-  contactNumber String?  @map("contact_number") @db.VarChar(11)
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp()
+  birthDate     DateTime @map("data_nascimento") @db.Date
+  contactNumber String?  @map("telefone") @db.VarChar(11)
+  active        Boolean  @default(true) @map("ativo")
+  createdAt     DateTime @default(now()) @map("data_criacao") @db.Timestamp()
 
-  clinicId String @map("clinic_id") @db.Uuid
+  clinicId String @map("id_clinica") @db.Uuid
   clinic   Clinic @relation(fields: [clinicId], references: [id])
 
   address Address?
@@ -38,65 +38,65 @@ model Person {
   patient Patient?
   liables Liable[]
 
-  @@map("person")
+  @@map("pessoa")
 }
 
 model Address {
   id         String  @id @db.Uuid
-  city       String  @db.VarChar(100)
-  district   String? @db.VarChar(100)
-  state      String  @db.VarChar(100)
-  publicArea String  @map("public_area") @db.VarChar(255)
-  zipCode    String  @map("zip_code") @db.VarChar(8)
+  city       String  @map("cidade") @db.VarChar(100)
+  district   String? @map("bairro") @db.VarChar(100)
+  state      String  @map("estado") @db.VarChar(100)
+  publicArea String  @map("logradouro") @db.VarChar(255)
+  zipCode    String  @map("CEP") @db.VarChar(8)
 
-  personId String @unique @map("person_id") @db.Uuid
+  personId String @unique @map("id_pessoa") @db.Uuid
   person   Person @relation(fields: [personId], references: [id])
 
-  @@map("address")
+  @@map("endereco")
 }
 
 model User {
-  userName      String  @unique @map("user_name") @db.VarChar(100)
-  blocked       Boolean @default(false)
-  loginAttempts Int     @default(0) @map("login_attempts")
-  password      String  @db.VarChar(255)
-  accessCode    Int     @default(autoincrement()) @map("access_code")
+  userName      String  @unique @map("nome_usuario") @db.VarChar(100)
+  blocked       Boolean @default(false) @map("bloqueado")
+  loginAttempts Int     @default(0) @map("tentativas")
+  password      String  @map("senha") @db.VarChar(255)
+  accessCode    Int     @default(autoincrement()) @map("codigo_acesso")
 
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
 
-  roleId Int  @map("role_id")
+  roleId Int  @map("id_papel_usuario")
   role   Role @relation(fields: [roleId], references: [id])
 
   professional Professional?
   Appointment  Appointment[]
 
-  @@map("user")
+  @@map("usuario")
 }
 
 model Role {
-  id   Int    @id @default(autoincrement())
-  name String @unique @db.VarChar(36)
+  id    Int    @id @default(autoincrement())
+  name  String @unique @map("nome") @db.VarChar(36)
+  users User[]
 
-  users       User[]
   permissions Permission[]
 
-  @@map("role")
+  @@map("papel_usuario")
 }
 
 model Permission {
   id   Int    @id @default(autoincrement())
-  name String @db.VarChar(36)
+  name String @map("nome") @db.VarChar(36)
 
-  roleId Int  @map("role_id")
+  roleId Int  @map("id_papel_usuario")
   role   Role @relation(fields: [roleId], references: [id])
 
-  @@map("permission")
+  @@map("permissoes")
 }
 
 model Patient {
-  gender        Int @db.SmallInt
-  maritalStatus Int @map("marital_status") @db.SmallInt
+  gender        Int @map("genero") @db.SmallInt
+  maritalStatus Int @map("estado_civil") @db.SmallInt
 
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
@@ -104,14 +104,14 @@ model Patient {
   liable      Liable?
   Appointment Appointment[]
 
-  @@map("patient")
+  @@map("paciente")
 }
 
 model Professional {
-  profession     String  @db.VarChar(255)
-  specialization String? @db.VarChar(255)
-  baseDuration   Int     @default(60) @map("base_duration") @db.Integer
-  registry       String  @db.VarChar(255)
+  profession     String  @map("profissao") @db.VarChar(255)
+  specialization String? @map("especializacao") @db.VarChar(255)
+  baseDuration   Int     @default(60) @map("duracao_base") @db.Integer
+  registry       String  @map("registro") @db.VarChar(255)
 
   id   String @id @unique @db.Uuid
   user User   @relation(fields: [id], references: [id])
@@ -120,72 +120,72 @@ model Professional {
   ScheduleLock   ScheduleLock[]
   Appointment    Appointment[]
 
-  @@map("professional")
+  @@map("profissional")
 }
 
 model Liable {
-  personId String @map("person_id") @db.Uuid
+  personId String @map("id_pessoa") @db.Uuid
   person   Person @relation(fields: [personId], references: [id])
 
-  patientId String  @id @map("patient_id") @db.Uuid
+  patientId String  @id @map("id_paciente") @db.Uuid
   patient   Patient @relation(fields: [patientId], references: [id])
 
-  @@map("liable")
+  @@map("responsavel")
 }
 
 model WeeklySchedule {
   id           String   @id @db.Uuid
-  startTime    DateTime @map("start_time") @db.Time()
-  endTime      DateTime @map("end_time") @db.Time()
-  dayOfTheWeek Int      @map("day_of_the_week") @db.SmallInt
+  startTime    DateTime @map("horario_inicio") @db.Time()
+  endTime      DateTime @map("horario_fim") @db.Time()
+  dayOfTheWeek Int      @map("dia_semana") @db.SmallInt
 
-  professionalId String       @map("professional_id") @db.Uuid
+  professionalId String       @map("id_profissional") @db.Uuid
   professional   Professional @relation(fields: [professionalId], references: [id])
 
   WeeklyScheduleLocks WeeklyScheduleLock[]
 
-  @@map("weekly_schedule")
+  @@map("agenda_semanal")
 }
 
 model WeeklyScheduleLock {
   id        String   @id @db.Uuid
-  startTime DateTime @map("start_time") @db.Time()
-  endTime   DateTime @map("end_time") @db.Time()
+  startTime DateTime @map("horario_inicio") @db.Time()
+  endTime   DateTime @map("horario_fim") @db.Time()
 
-  weeklyScheduleId String         @map("weekly_schedule_id") @db.Uuid
+  weeklyScheduleId String         @map("id_agenda_semanal") @db.Uuid
   weeklySchedule   WeeklySchedule @relation(fields: [weeklyScheduleId], references: [id])
 
-  @@map("weekly_schedule_lock")
+  @@map("restricoes_agenda_semanal")
 }
 
 model ScheduleLock {
   id        String   @id @db.Uuid
-  startTime DateTime @map("start_time") @db.Time()
-  endTime   DateTime @map("end_time") @db.Time()
-  date      DateTime @db.Date
+  startTime DateTime @map("horario_inicio") @db.Time()
+  endTime   DateTime @map("horario_fim") @db.Time()
+  date      DateTime @map("data") @db.Date
 
-  professionalId String       @map("professional_id") @db.Uuid
+  professionalId String       @map("id_profissional") @db.Uuid
   professional   Professional @relation(fields: [professionalId], references: [id])
 
-  @@map("schedule_lock")
+  @@map("restricoes_horario")
 }
 
 model Appointment {
   id              String   @id @db.Uuid
-  status          Int      @db.SmallInt
-  appointmentDate DateTime @map("appointment_date") @db.Timestamp()
-  updatedAt       DateTime @map("updated_at") @db.Timestamp()
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamp()
-  comments        String?  @db.Text
+  status          Int      @map("situacao") @db.SmallInt
+  appointmentDate DateTime @map("data_agendamento") @db.Timestamp()
+  updatedAt       DateTime @map("data_ultima_atualizacao") @db.Timestamp()
+  createdAt       DateTime @default(now()) @map("data_criacao") @db.Timestamp()
+  comments        String?  @map("observacoes") @db.Text
 
-  patientId String  @map("patient_id") @db.Uuid
+  patientId String  @map("id_paciente") @db.Uuid
   patient   Patient @relation(fields: [patientId], references: [id])
 
-  professionalId String       @map("professional_id") @db.Uuid
+  professionalId String       @map("id_profissional") @db.Uuid
   professional   Professional @relation(fields: [professionalId], references: [id])
 
-  employeeId String @map("employee_id") @db.Uuid
+  employeeId String @map("id_funcionario") @db.Uuid
   employee   User   @relation(fields: [employeeId], references: [id])
 
-  @@map("appointment")
+  @@map("consulta")
 }
