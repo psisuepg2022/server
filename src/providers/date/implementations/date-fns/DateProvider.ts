@@ -66,6 +66,16 @@ class DateProvider implements IDateProvider {
   addMinutes = (date: Date, hours: number): Date => addMinutes(date, hours);
 
   equals = (start: Date, end: Date): boolean => isEqual(start, end);
+
+  intervalConflicting = (
+    left: { start: Date; end: Date },
+    rigth: { start: Date; end: Date }
+  ): boolean =>
+    (this.equals(rigth.start, left.start) &&
+      this.equals(rigth.end, left.end)) ||
+    (this.isBefore(left.start, rigth.end) &&
+      this.isAfter(left.start, rigth.start)) ||
+    (this.isBefore(left.end, rigth.end) && this.isAfter(left.end, rigth.start));
 }
 
 export { DateProvider };
