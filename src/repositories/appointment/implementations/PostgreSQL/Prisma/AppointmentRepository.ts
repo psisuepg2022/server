@@ -232,18 +232,18 @@ class AppointmentRepository implements IAppointmentRepository {
   ): PrismaPromise<Partial<AppointmentModel>[]> =>
     this.prisma.$queryRaw<Partial<AppointmentModel>[]>`
     SELECT 
-      "public"."appointment"."id" 
-    FROM "public"."appointment"
-    INNER JOIN "public"."professional" ON ("public"."appointment"."professional_id") = ("public"."professional"."id") 
+      "public"."consulta"."id" 
+    FROM "public"."consulta"
+    INNER JOIN "public"."profissional" ON ("public"."consulta"."id_profissional") = ("public"."profissional"."id") 
     WHERE 
-      "public"."appointment"."professional_id" = ${professionalId}
-      AND "public"."appointment"."appointment_date" > ${today}
-      AND ((extract(DOW FROM "public"."appointment"."appointment_date"::TIMESTAMP)) + 1) = ${dayOfTheWeek}
+      "public"."consulta"."id_profissional" = ${professionalId}
+      AND "public"."consulta"."data_agendamento" > ${today}
+      AND ((extract(DOW FROM "public"."consulta"."data_agendamento"::TIMESTAMP)) + 1) = ${dayOfTheWeek}
       AND (
         (${startTime}::TIMESTAMP IS NULL AND ${endTime}::TIMESTAMP IS NULL) OR
-        "public"."appointment"."appointment_date"::TIME < ${startTime}::TIME
-        OR "public"."appointment"."appointment_date"::TIME > ${endTime}::TIME
-        OR "public"."appointment"."appointment_date"::TIME + ("public"."professional"."base_duration" * interval '1 minute') > ${endTime}
+        "public"."consulta"."data_agendamento"::TIME < ${startTime}::TIME
+        OR "public"."consulta"."data_agendamento"::TIME > ${endTime}::TIME
+        OR "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${endTime}
       )
     LIMIT 1 OFFSET 0
     `;
