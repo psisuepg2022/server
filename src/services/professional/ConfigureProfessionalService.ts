@@ -389,37 +389,12 @@ class ConfigureProfessionalService {
                   );
 
                   if (
-                    this.dateProvider.equals(
-                      _startLockConverted,
-                      lockStartTimeConverted
-                    ) &&
-                    this.dateProvider.equals(
-                      _endLockConverted,
-                      lockEndTimeConverted
-                    )
-                  )
-                    return item;
-
-                  if (
-                    this.dateProvider.isBefore(
-                      lockStartTimeConverted,
-                      _endLockConverted
-                    ) &&
-                    this.dateProvider.isAfter(
-                      lockStartTimeConverted,
-                      _startLockConverted
-                    )
-                  )
-                    return item;
-
-                  if (
-                    this.dateProvider.isBefore(
-                      lockEndTimeConverted,
-                      _endLockConverted
-                    ) &&
-                    this.dateProvider.isAfter(
-                      lockEndTimeConverted,
-                      _startLockConverted
+                    this.dateProvider.intervalConflicting(
+                      {
+                        start: lockStartTimeConverted,
+                        end: lockEndTimeConverted,
+                      },
+                      { start: _startLockConverted, end: _endLockConverted }
                     )
                   )
                     return item;

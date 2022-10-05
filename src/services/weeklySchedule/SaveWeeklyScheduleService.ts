@@ -255,20 +255,16 @@ class SaveWeeklyScheduleService {
               );
 
               if (
-                this.dateProvider.equals(_startLockConverted, startDate) &&
-                this.dateProvider.equals(_endLockConverted, endDate)
-              )
-                return _item;
-
-              if (
-                this.dateProvider.isBefore(startDate, _endLockConverted) &&
-                this.dateProvider.isAfter(startDate, _startLockConverted)
-              )
-                return _item;
-
-              if (
-                this.dateProvider.isBefore(endDate, _endLockConverted) &&
-                this.dateProvider.isAfter(endDate, _startLockConverted)
+                this.dateProvider.intervalConflicting(
+                  {
+                    start: startDate,
+                    end: endDate,
+                  },
+                  {
+                    start: _startLockConverted,
+                    end: _endLockConverted,
+                  }
+                )
               )
                 return _item;
 

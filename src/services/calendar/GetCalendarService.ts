@@ -168,37 +168,15 @@ class GetCalendarService {
                   );
 
                   if (
-                    this.dateProvider.equals(
-                      startTimeConverted,
-                      _lockStartTimeConverted
-                    ) &&
-                    this.dateProvider.equals(
-                      endTimeConverted,
-                      _lockEndTimeConverted
-                    )
-                  )
-                    return _lock;
-
-                  if (
-                    this.dateProvider.isBefore(
-                      _lockStartTimeConverted,
-                      endTimeConverted
-                    ) &&
-                    this.dateProvider.isAfter(
-                      _lockStartTimeConverted,
-                      startTimeConverted
-                    )
-                  )
-                    return _lock;
-
-                  if (
-                    this.dateProvider.isBefore(
-                      _lockEndTimeConverted,
-                      endTimeConverted
-                    ) &&
-                    this.dateProvider.isAfter(
-                      _lockEndTimeConverted,
-                      startTimeConverted
+                    this.dateProvider.intervalConflicting(
+                      {
+                        start: _lockStartTimeConverted,
+                        end: _lockEndTimeConverted,
+                      },
+                      {
+                        start: startTimeConverted,
+                        end: endTimeConverted,
+                      }
                     )
                   )
                     return _lock;
