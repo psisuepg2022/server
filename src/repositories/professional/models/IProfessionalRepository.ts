@@ -65,7 +65,8 @@ interface IProfessionalRepository {
   configure(
     id: string,
     roleId: number,
-    baseDuration: number
+    baseDuration: number,
+    password: string
   ): PrismaPromise<
     | UserModel & {
         person: PersonModel & { clinic: ClinicModel };

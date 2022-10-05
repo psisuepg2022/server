@@ -333,7 +333,8 @@ class ProfessionalRepository implements IProfessionalRepository {
   public configure = (
     id: string,
     roleId: number,
-    baseDuration: number
+    baseDuration: number,
+    password: string
   ): PrismaPromise<
     | UserModel & {
         person: PersonModel & { clinic: ClinicModel };
@@ -343,7 +344,7 @@ class ProfessionalRepository implements IProfessionalRepository {
   > =>
     this.prisma.user.update({
       where: { id },
-      data: { roleId, professional: { update: { baseDuration } } },
+      data: { roleId, professional: { update: { baseDuration } }, password },
       select: {
         password: true,
         blocked: true,

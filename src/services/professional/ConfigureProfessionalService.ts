@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 
 import { RolesKeys } from "@common/RolesKeys";
 import { AppError } from "@handlers/error/AppError";
+import { env } from "@helpers/env";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { getUserType2External } from "@helpers/getUserType2External";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
@@ -486,11 +487,20 @@ class ConfigureProfessionalService {
     if (!hasRole)
       throw new AppError("INTERNAL_SERVER_ERROR", i18n.__("ErrorRoleNotFound"));
 
+    const salt = toNumber({
+      value: env("PASSWORD_HASH_SALT"),
+      error: new AppError(
+        "INTERNAL_SERVER_ERROR",
+        i18n.__("ErrorMissingEnvVar")
+      ),
+    });
+
     const [professionalUpdated] = await transaction([
       this.professionalRepository.configure(
         userId,
         hasRole.id,
-        baseDurationConverted
+        baseDurationConverted,
+        await this.hashProvider.hash(newPassword, salt)
       ),
       ...createWeeklyScheduleOperations,
       ...createLocksOperations,
