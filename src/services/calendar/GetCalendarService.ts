@@ -17,7 +17,6 @@ import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarRespon
 import { ScheduleLockOnCalendarModel } from "@models/dto/calendar/ScheduleLockOnCalendarModel";
 import { WeeklyScheduleLockOnCalendarModel } from "@models/dto/calendar/WeeklyScheduleLockOnCalendarModel";
 import { WeeklyScheduleOnCalendarModel } from "@models/dto/calendar/WeeklyScheduleOnCalendarModel";
-import { PrismaPromise } from "@prisma/client";
 import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
@@ -112,27 +111,166 @@ class GetCalendarService {
         i18n.__mf("ErrorUserIDNotFound", ["profissional"])
       );
 
-    const [appointments, scheduleLocks, weeklySchedule] = await transaction(
-      ((): PrismaPromise<any>[] => {
-        const list: PrismaPromise<any>[] = [
-          this.appointmentRepository.get(
-            professionalId,
-            startDateConverted,
-            endDateConverted
-          ),
-          this.scheduleRepository.getScheduleLockByInterval(
-            professionalId,
-            startDateConverted,
-            endDateConverted
-          ),
-        ];
+    const [appointments, scheduleLocks, weeklySchedule] = await transaction([
+      this.appointmentRepository.get(
+        professionalId,
+        startDateConverted,
+        endDateConverted
+      ),
+      this.scheduleRepository.getScheduleLockByInterval(
+        professionalId,
+        startDateConverted,
+        endDateConverted
+      ),
+      this.scheduleRepository.getWeeklySchedule(professionalId),
+    ]);
 
-        if (returnWeeklySchedule)
-          list.push(this.scheduleRepository.getWeeklySchedule(professionalId));
+    const scheduleLocksConverted: ScheduleLockOnCalendarModel[] =
+      scheduleLocks.map(
+        (item: ScheduleLockModel): ScheduleLockOnCalendarModel => {
+          const startTimeConverted = this.dateProvider.time2date(
+            new Date(item.startTime).toISOString().split("T")[1].split(":00")[0]
+          );
+          const endTimeConverted = this.dateProvider.time2date(
+            new Date(item.endTime).toISOString().split("T")[1].split(":00")[0]
+          );
 
-        return list;
-      })()
-    );
+          const [_dayOfTheWeekSchedule] = weeklySchedule.filter(
+            ({
+              dayOfTheWeek,
+            }: WeeklyScheduleModel & {
+              WeeklyScheduleLocks: WeeklyScheduleLockModel[];
+            }) =>
+              dayOfTheWeek ===
+                this.dateProvider.getWeekDay(
+                  this.dateProvider.getUTCDate(
+                    item.date.toISOString().split("T")[0],
+                    "12:00"
+                  )
+                ) && dayOfTheWeek
+          );
+
+          if (_dayOfTheWeekSchedule) {
+            const conflicting =
+              _dayOfTheWeekSchedule.WeeklyScheduleLocks.filter(
+                (_lock: WeeklyScheduleLockModel) => {
+                  const _lockStartTimeConverted = this.dateProvider.time2date(
+                    (_lock.startTime as Date)
+                      .toISOString()
+                      .split("T")[1]
+                      .split(":00")[0]
+                  );
+                  const _lockEndTimeConverted = this.dateProvider.time2date(
+                    (_lock.endTime as Date)
+                      .toISOString()
+                      .split("T")[1]
+                      .split(":00")[0]
+                  );
+
+                  if (
+                    this.dateProvider.equals(
+                      startTimeConverted,
+                      _lockStartTimeConverted
+                    ) &&
+                    this.dateProvider.equals(
+                      endTimeConverted,
+                      _lockEndTimeConverted
+                    )
+                  )
+                    return _lock;
+
+                  if (
+                    this.dateProvider.isBefore(
+                      _lockStartTimeConverted,
+                      endTimeConverted
+                    ) &&
+                    this.dateProvider.isAfter(
+                      _lockStartTimeConverted,
+                      startTimeConverted
+                    )
+                  )
+                    return _lock;
+
+                  if (
+                    this.dateProvider.isBefore(
+                      _lockEndTimeConverted,
+                      endTimeConverted
+                    ) &&
+                    this.dateProvider.isAfter(
+                      _lockEndTimeConverted,
+                      startTimeConverted
+                    )
+                  )
+                    return _lock;
+
+                  return null;
+                }
+              );
+
+            const _return = (conflicting as WeeklyScheduleLockModel[]).reduce<{
+              startTime: Date;
+              endTime: Date;
+            }>(
+              (
+                acc: { startTime: Date; endTime: Date },
+                _lock: WeeklyScheduleLockModel
+              ): { startTime: Date; endTime: Date } => {
+                if (
+                  this.dateProvider.isBefore(
+                    item.startTime as Date,
+                    _lock.endTime as Date
+                  ) &&
+                  this.dateProvider.isAfter(
+                    item.startTime as Date,
+                    _lock.startTime as Date
+                  )
+                )
+                  return {
+                    endTime: acc.endTime as Date,
+                    startTime: _lock.endTime as Date,
+                  };
+
+                if (
+                  this.dateProvider.isBefore(
+                    item.endTime as Date,
+                    _lock.endTime as Date
+                  ) &&
+                  this.dateProvider.isAfter(
+                    item.endTime as Date,
+                    _lock.startTime as Date
+                  )
+                )
+                  return {
+                    endTime: _lock.startTime as Date,
+                    startTime: acc.startTime as Date,
+                  };
+
+                return acc;
+              },
+              {
+                startTime: item.startTime as Date,
+                endTime: item.endTime as Date,
+              }
+            );
+
+            return {
+              id: item.id,
+              resource: "LOCK",
+              date: this.maskProvider.date(item.date),
+              endTime: this.maskProvider.time(_return.endTime),
+              startTime: this.maskProvider.time(_return.startTime),
+            };
+          }
+
+          return {
+            id: item.id,
+            resource: "LOCK",
+            date: this.maskProvider.date(item.date),
+            endTime: this.maskProvider.time(item.endTime as Date),
+            startTime: this.maskProvider.time(item.startTime as Date),
+          };
+        }
+      );
 
     return {
       appointments: appointments.map(
@@ -198,15 +336,7 @@ class GetCalendarService {
               } as WeeklyScheduleOnCalendarModel;
             })
         : undefined,
-      scheduleLocks: scheduleLocks.map(
-        (item: ScheduleLockModel): ScheduleLockOnCalendarModel => ({
-          date: this.maskProvider.date(item.date),
-          endTime: this.maskProvider.time(item.endTime as Date),
-          id: item.id,
-          startTime: this.maskProvider.time(item.startTime as Date),
-          resource: "LOCK",
-        })
-      ),
+      scheduleLocks: scheduleLocksConverted,
     };
   }
 }
