@@ -162,6 +162,12 @@ class ConfigureProfessionalService {
       error: new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationInvalid")),
     });
 
+    if (baseDurationConverted <= 0)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorBaseDurationLessThanOrEqualZero")
+      );
+
     if (baseDurationConverted / 60 > 24)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationTooLarge"));
 
@@ -187,6 +193,12 @@ class ConfigureProfessionalService {
       throw new AppError(
         "BAD_REQUEST",
         i18n.__("ErrorResetPasswdNewPasswordAndConfirmAreNotEqual")
+      );
+
+    if (newPassword === oldPassword)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__("ErrorConfigureProfessionalSamePasswords")
       );
 
     if (this.passwordProvider.outOfBounds(newPassword))
