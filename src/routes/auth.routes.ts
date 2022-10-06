@@ -3,7 +3,6 @@ import { container } from "tsyringe";
 
 import { RolesKeys } from "@common/RolesKeys";
 import { AuthController } from "@controllers/AuthController";
-import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -17,20 +16,14 @@ const ensureAuthenticated = container.resolve(
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
-routes.post("/", logMiddleware, controller.login, databaseDisconnectMiddleware);
-routes.post(
-  "/refresh",
-  logMiddleware,
-  controller.refreshToken,
-  databaseDisconnectMiddleware
-);
+routes.post("/", logMiddleware, controller.login);
+routes.post("/refresh", logMiddleware, controller.refreshToken);
 routes.post(
   "/reset_password",
   logMiddleware,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
-  controller.resetPassword,
-  databaseDisconnectMiddleware
+  controller.resetPassword
 );
 routes.post(
   "/adm_reset_password/:user_id",
@@ -38,8 +31,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.resetAnotherUserPassword,
-  databaseDisconnectMiddleware
+  controller.resetAnotherUserPassword
 );
 
 export { routes };

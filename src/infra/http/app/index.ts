@@ -9,6 +9,7 @@ import path from "path";
 
 import { RoutesPrefix } from "@common/RoutesPrefix";
 import { env } from "@helpers/env";
+import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import {
   errorHandlerMiddleware,
   internationalizationMiddleware,
@@ -34,6 +35,7 @@ app.use(
   express.static(path.join(__dirname, "..", "..", "..", "..", "logs"))
 );
 app.use(errorHandlerMiddleware);
+app.use(databaseDisconnectMiddleware);
 
 process.on("SIGTERM", () => {
   process.exit();

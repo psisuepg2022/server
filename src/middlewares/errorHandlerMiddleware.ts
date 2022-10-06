@@ -11,8 +11,8 @@ const errorHandlerMiddleware = async (
   err: Error,
   _: Request,
   res: Response<IResponseMessage>,
-  __: NextFunction
-): Promise<Response> => {
+  next: NextFunction
+): Promise<void> => {
   logger.error(getErrorStackTrace(err));
 
   const [statusCode, message] = ((): [number, string] => {
@@ -24,10 +24,12 @@ const errorHandlerMiddleware = async (
     return [HttpStatus.INTERNAL_SERVER_ERROR, i18n.__("ErrorGenericUnknown")];
   })();
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     message,
     success: false,
   });
+
+  return next();
 };
 
 export { errorHandlerMiddleware };

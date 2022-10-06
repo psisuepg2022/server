@@ -3,7 +3,6 @@ import { container } from "tsyringe";
 
 import { RolesKeys } from "@common/RolesKeys";
 import { OwnerController } from "@controllers/OwnerController";
-import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { isSupportMiddleware } from "@middlewares/isSupportMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
@@ -23,16 +22,14 @@ routes.get(
   logMiddleware,
   isSupportMiddleware,
   validateClinicID.execute(false, false, "clinic_id"),
-  controller.read,
-  databaseDisconnectMiddleware
+  controller.read
 );
 routes.post(
   "/:support/:clinic_id",
   logMiddleware,
   isSupportMiddleware,
   validateClinicID.execute(true, false, "clinic_id"),
-  controller.create,
-  databaseDisconnectMiddleware
+  controller.create
 );
 routes.get(
   "/profile",
@@ -40,8 +37,7 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.getProfile,
-  databaseDisconnectMiddleware
+  controller.getProfile
 );
 routes.put(
   "/",
@@ -49,8 +45,7 @@ routes.put(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.OWNER),
-  controller.updateProfile,
-  databaseDisconnectMiddleware
+  controller.updateProfile
 );
 
 export { routes };

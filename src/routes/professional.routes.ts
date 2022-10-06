@@ -4,7 +4,6 @@ import { container } from "tsyringe";
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { ProfessionalController } from "@controllers/ProfessionalController";
-import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -24,8 +23,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PROFESSIONAL),
-  controller.read,
-  databaseDisconnectMiddleware
+  controller.read
 );
 routes.post(
   "/",
@@ -33,8 +31,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PROFESSIONAL),
-  controller.create,
-  databaseDisconnectMiddleware
+  controller.create
 );
 routes.delete(
   "/:id",
@@ -42,8 +39,7 @@ routes.delete(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.delete,
-  databaseDisconnectMiddleware
+  controller.delete
 );
 routes.get(
   "/profile",
@@ -51,8 +47,7 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.getProfile,
-  databaseDisconnectMiddleware
+  controller.getProfile
 );
 routes.put(
   "/",
@@ -60,8 +55,7 @@ routes.put(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.updateProfile,
-  databaseDisconnectMiddleware
+  controller.updateProfile
 );
 routes.get(
   "/top_bar",
@@ -69,8 +63,7 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
-  controller.getProfessionalsToScheduleTopBar,
-  databaseDisconnectMiddleware
+  controller.getProfessionalsToScheduleTopBar
 );
 routes.post(
   "/configure",
@@ -78,8 +71,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL_UNCONFIGURED),
-  controller.configure,
-  databaseDisconnectMiddleware
+  controller.configure
 );
 routes.post(
   "/my_patients",
@@ -87,8 +79,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.myPatients,
-  databaseDisconnectMiddleware
+  controller.myPatients
 );
 
 export { routes };

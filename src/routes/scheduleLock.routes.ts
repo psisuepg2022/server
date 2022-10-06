@@ -4,7 +4,6 @@ import { container } from "tsyringe";
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { ScheduleLockController } from "@controllers/ScheduleLockController";
-import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
 import { logMiddleware } from "@middlewares/logMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -24,8 +23,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.save,
-  databaseDisconnectMiddleware
+  controller.save
 );
 routes.post(
   "/:professional_id",
@@ -33,24 +31,21 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_SCHEDULE_LOCK),
-  controller.saveByProfessional,
-  databaseDisconnectMiddleware
+  controller.saveByProfessional
 );
 routes.delete(
   "/:id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.delete,
-  databaseDisconnectMiddleware
+  controller.delete
 );
 routes.delete(
   "/:professional_id/:id",
   logMiddleware,
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.DELETE_SCHEDULE_LOCK),
-  controller.deleteByProfessional,
-  databaseDisconnectMiddleware
+  controller.deleteByProfessional
 );
 
 export { routes };
