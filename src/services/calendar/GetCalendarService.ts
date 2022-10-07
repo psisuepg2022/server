@@ -188,11 +188,23 @@ class GetCalendarService {
             const _return = (conflicting as WeeklyScheduleLockModel[]).reduce<{
               startTime: Date;
               endTime: Date;
-            }>(
+            } | null>(
               (
-                acc: { startTime: Date; endTime: Date },
+                acc: { startTime: Date; endTime: Date } | null,
                 _lock: WeeklyScheduleLockModel
-              ): { startTime: Date; endTime: Date } => {
+              ): { startTime: Date; endTime: Date } | null => {
+                if (
+                  this.dateProvider.isAfter(
+                    _lock.endTime as Date,
+                    item.endTime as Date
+                  ) &&
+                  this.dateProvider.isBefore(
+                    _lock.startTime as Date,
+                    item.startTime as Date
+                  )
+                )
+                  return null;
+
                 if (
                   this.dateProvider.isBefore(
                     item.startTime as Date,
@@ -204,7 +216,7 @@ class GetCalendarService {
                   )
                 )
                   return {
-                    endTime: acc.endTime as Date,
+                    endTime: acc?.endTime as Date,
                     startTime: _lock.endTime as Date,
                   };
 
@@ -220,7 +232,7 @@ class GetCalendarService {
                 )
                   return {
                     endTime: _lock.startTime as Date,
-                    startTime: acc.startTime as Date,
+                    startTime: acc?.startTime as Date,
                   };
 
                 return acc;
@@ -230,6 +242,8 @@ class GetCalendarService {
                 endTime: item.endTime as Date,
               }
             );
+
+            if (!_return) return null;
 
             if (this.dateProvider.equals(_return.startTime, _return.endTime))
               return null;
