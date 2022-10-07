@@ -142,7 +142,7 @@
   "ErrorStateRequired": "É necessário informar o Estado para registro do endereço.",
   "ErrorTokenExpired": "As credenciais de autenticação expiraram. Por favor, realize a autenticação novamente.",
   "ErrorTokenGeneric": "Não foi possível realizar a autenticação do usuário. Por favor, entre em contato com o administrador.",
-  "ErrorTokenInvalid": "As credencias de autenticação são inválidas. Por favor, tente realizar a autenticação antes de acessar a este conteúdo.",
+  "ErrorTokenInvalid": "As credenciais de autenticação são inválidas. Por favor, tente realizar a autenticação antes de acessar a este conteúdo.",
   "ErrorTokenRequired": "Para acessar este recurso, é necessário informar as credenciais de autenticação.",
   "ErrorUUIDInvalid": "O identificador único informado é inválido.",
   "ErrorUnauthorizedUserForThisResource": "O usuário não possui autorização para acessar este recurso.",
