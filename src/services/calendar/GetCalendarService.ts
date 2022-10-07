@@ -125,9 +125,9 @@ class GetCalendarService {
       this.scheduleRepository.getWeeklySchedule(professionalId),
     ]);
 
-    const scheduleLocksConverted: ScheduleLockOnCalendarModel[] =
+    const scheduleLocksConverted: (ScheduleLockOnCalendarModel | null)[] =
       scheduleLocks.map(
-        (item: ScheduleLockModel): ScheduleLockOnCalendarModel => {
+        (item: ScheduleLockModel): ScheduleLockOnCalendarModel | null => {
           const startTimeConverted = this.dateProvider.time2date(
             new Date(item.startTime).toISOString().split("T")[1].split(":00")[0]
           );
@@ -170,12 +170,12 @@ class GetCalendarService {
                   if (
                     this.dateProvider.intervalConflicting(
                       {
-                        start: _lockStartTimeConverted,
-                        end: _lockEndTimeConverted,
-                      },
-                      {
                         start: startTimeConverted,
                         end: endTimeConverted,
+                      },
+                      {
+                        start: _lockStartTimeConverted,
+                        end: _lockEndTimeConverted,
                       }
                     )
                   )
@@ -230,6 +230,9 @@ class GetCalendarService {
                 endTime: item.endTime as Date,
               }
             );
+
+            if (this.dateProvider.equals(_return.startTime, _return.endTime))
+              return null;
 
             return {
               id: item.id,
@@ -314,7 +317,9 @@ class GetCalendarService {
               } as WeeklyScheduleOnCalendarModel;
             })
         : undefined,
-      scheduleLocks: scheduleLocksConverted,
+      scheduleLocks: scheduleLocksConverted.filter(
+        (item) => item !== null && item
+      ) as ScheduleLockOnCalendarModel[],
     };
   }
 }

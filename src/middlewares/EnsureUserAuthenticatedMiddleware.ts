@@ -17,7 +17,7 @@ class EnsureUserAuthenticatedMiddleware {
       const tokenHeader = req.headers.authorization;
 
       if (!tokenHeader)
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
           message: i18n.__("ErrorTokenRequired"),
         });
@@ -26,14 +26,14 @@ class EnsureUserAuthenticatedMiddleware {
       const [scheme, token] = parts;
 
       if (parts.length !== 2 || !/^Bearer$/i.test(scheme))
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
           message: i18n.__("ErrorTokenInvalid"),
         });
 
       const payload = this.authTokenProvider.decode(token);
       if (!payload)
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
           message: i18n.__("ErrorTokenInvalid"),
         });
@@ -45,13 +45,13 @@ class EnsureUserAuthenticatedMiddleware {
         });
 
       if (payload.type === "refresh_token")
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
           message: i18n.__("ErrorTokenInvalid"),
         });
 
       if (!this.authTokenProvider.verify(token))
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
           message: i18n.__("ErrorTokenInvalid"),
         });
