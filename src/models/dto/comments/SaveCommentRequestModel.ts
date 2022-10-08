@@ -1,8 +1,8 @@
-type CreateCommentRequestModel = {
+type SaveCommentRequestModel = {
   text: string | null;
   appointmentId: string;
   professionalId: string;
   blankComments: boolean;
 };
 
-export { CreateCommentRequestModel };
+export { SaveCommentRequestModel };

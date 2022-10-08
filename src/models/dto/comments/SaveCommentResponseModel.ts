@@ -1,8 +1,8 @@
-type CreateCommentResponseModel = {
+type SaveCommentResponseModel = {
   text: string;
   appointmentId: string;
   updatedAt: string;
   status: string;
 };
 
-export { CreateCommentResponseModel };
+export { SaveCommentResponseModel };

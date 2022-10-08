@@ -22,7 +22,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.create
+  controller.save
 );
 routes.post(
   "/search/:patient_id",

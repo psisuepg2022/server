@@ -3,23 +3,23 @@ import i18n from "i18n";
 import { container } from "tsyringe";
 
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
-import { CreateCommentResponseModel } from "@models/dto/comments/CreateCommentResponseModel";
+import { SaveCommentResponseModel } from "@models/dto/comments/SaveCommentResponseModel";
 import {
-  CreateCommentService,
+  SaveCommentService,
   SearchCommentsWithFiltersService,
 } from "@services/comments";
 
 class CommentsController {
-  public async create(
+  public async save(
     req: Request,
-    res: Response<IResponseMessage<CreateCommentResponseModel>>,
+    res: Response<IResponseMessage<SaveCommentResponseModel>>,
     next: NextFunction
   ): Promise<void> {
     const { id: professionalId } = req.user;
     const { id: appointmentId } = req.params;
     const { text, blankComments } = req.body;
 
-    const service = container.resolve(CreateCommentService);
+    const service = container.resolve(SaveCommentService);
 
     const result = await service.execute({
       appointmentId,

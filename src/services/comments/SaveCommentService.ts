@@ -6,15 +6,15 @@ import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
 import { AppointmentStatus } from "@infra/domains";
-import { CreateCommentRequestModel } from "@models/dto/comments/CreateCommentRequestModel";
-import { CreateCommentResponseModel } from "@models/dto/comments/CreateCommentResponseModel";
+import { SaveCommentRequestModel } from "@models/dto/comments/SaveCommentRequestModel";
+import { SaveCommentResponseModel } from "@models/dto/comments/SaveCommentResponseModel";
 import { IDateProvider } from "@providers/date";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IAppointmentRepository } from "@repositories/appointment";
 import { ICommentsRepository } from "@repositories/comments";
 
 @injectable()
-class CreateCommentService {
+class SaveCommentService {
   constructor(
     @inject("UniqueIdentifierProvider")
     private uniqueIdentifierProvider: IUniqueIdentifierProvider,
@@ -31,7 +31,7 @@ class CreateCommentService {
     professionalId,
     text,
     blankComments,
-  }: CreateCommentRequestModel): Promise<CreateCommentResponseModel> {
+  }: SaveCommentRequestModel): Promise<SaveCommentResponseModel> {
     if (stringIsNullOrEmpty(appointmentId))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorAppointmentIdRequired"));
 
@@ -70,7 +70,7 @@ class CreateCommentService {
 
     const updatedAt = this.dateProvider.now();
 
-    const [createdComment, updatedStatus] = await transaction([
+    const [savedComment, updatedStatus] = await transaction([
       this.commentsRepository.save(
         appointmentId,
         blankComments ? null : text,
@@ -84,9 +84,9 @@ class CreateCommentService {
     ]);
 
     return {
-      appointmentId: createdComment.id,
-      text: createdComment.comments || "",
-      updatedAt: createdComment.updatedAt.toISOString(),
+      appointmentId: savedComment.id,
+      text: savedComment.comments || "",
+      updatedAt: savedComment.updatedAt.toISOString(),
       status: getEnumDescription(
         "APPOINTMENT_STATUS",
         AppointmentStatus[updatedStatus.status as number]
@@ -95,4 +95,4 @@ class CreateCommentService {
   }
 }
 
-export { CreateCommentService };
+export { SaveCommentService };

@@ -1,4 +1,4 @@
-import { CreateCommentService } from "./CreateCommentService";
+import { SaveCommentService } from "./SaveCommentService";
 import { SearchCommentsWithFiltersService } from "./SearchCommentsWithFiltersService";
 
-export { SearchCommentsWithFiltersService, CreateCommentService };
+export { SearchCommentsWithFiltersService, SaveCommentService };
