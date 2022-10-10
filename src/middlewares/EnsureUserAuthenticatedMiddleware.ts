@@ -1,7 +1,6 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
-import { AppError } from "@handlers/error/AppError";
 import { HttpStatus, IMiddleware } from "@infra/http";
 import { IAuthTokenProvider } from "@providers/authToken";
 
@@ -60,12 +59,10 @@ class EnsureUserAuthenticatedMiddleware {
       Object.assign(req, { clinic: { id: payload.clinic.id } });
 
       return next();
-    } catch (error) {
-      if (error instanceof AppError) throw error;
-
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+    } catch (_) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
         success: false,
-        message: i18n.__("ErrorTokenGeneric"),
+        message: i18n.__("ErrorTokenInvalid"),
       });
     }
   };
