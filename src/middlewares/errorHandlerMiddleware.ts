@@ -15,17 +15,27 @@ const errorHandlerMiddleware = async (
 ): Promise<void> => {
   logger.error(getErrorStackTrace(err));
 
-  const [statusCode, message] = ((): [number, string] => {
-    if (err instanceof AppError) return [err.statusCode, err.message];
+  const [statusCode, message, content] = ((): [
+    number,
+    string,
+    Record<string, unknown> | undefined
+  ] => {
+    if (err instanceof AppError)
+      return [err.statusCode, err.message, err.content];
 
     const isDbError = databaseErrorHandling(err);
-    if (isDbError) return isDbError;
+    if (isDbError) return [...isDbError, undefined];
 
-    return [HttpStatus.INTERNAL_SERVER_ERROR, i18n.__("ErrorGenericUnknown")];
+    return [
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      i18n.__("ErrorGenericUnknown"),
+      undefined,
+    ];
   })();
 
   res.status(statusCode).json({
     message,
+    content,
     success: false,
   });
 
