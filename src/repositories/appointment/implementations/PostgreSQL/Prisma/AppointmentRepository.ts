@@ -251,8 +251,8 @@ class AppointmentRepository implements IAppointmentRepository {
         OR "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${endTime}
         OR (
           ${type === "lock"} AND (
-            "public"."consulta"."data_agendamento"::TIME > ${startTime}::TIME 
-            AND "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') < ${endTime}
+            "public"."consulta"."data_agendamento"::TIME >= ${startTime}::TIME 
+            AND "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') <= ${endTime}
           )
         )
       )
