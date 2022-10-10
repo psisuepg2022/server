@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import i18n from "i18n";
 import { container } from "tsyringe";
 
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { HttpStatus, IResponseMessage } from "@infra/http";
 import { CreateWeeklyScheduleLockRequestModel } from "@models/dto/weeklySchedule/CreateWeeklyScheduleLockRequestModel";
 import { ListWeeklyScheduleResponseModel } from "@models/dto/weeklySchedule/ListWeeklyScheduleResponseModel";
@@ -72,6 +73,8 @@ class WeeklyScheduleController {
       SaveWeeklyScheduleResponseModel | boolean
     > => {
       if (disableDay && (disableDay === "true" || disableDay === true)) {
+        if (stringIsNullOrEmpty(id)) return true;
+
         const service = container.resolve(DisableWeeklyScheduleDayService);
 
         const _result = await service.execute({
