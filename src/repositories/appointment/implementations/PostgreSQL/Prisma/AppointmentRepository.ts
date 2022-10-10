@@ -228,6 +228,7 @@ class AppointmentRepository implements IAppointmentRepository {
     }) as PrismaPromise<Partial<AppointmentModel>>;
 
   public hasUncompletedAppointmentsByDayOfTheWeek = (
+    type: "weekly" | "lock",
     professionalId: string,
     dayOfTheWeek: number,
     today: Date,
@@ -248,6 +249,12 @@ class AppointmentRepository implements IAppointmentRepository {
         "public"."consulta"."data_agendamento"::TIME < ${startTime}::TIME
         OR "public"."consulta"."data_agendamento"::TIME > ${endTime}::TIME
         OR "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${endTime}
+        OR (
+          ${type === "lock"} AND (
+            "public"."consulta"."data_agendamento"::TIME > ${startTime}::TIME 
+            AND "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') < ${endTime}
+          )
+        )
       )
     LIMIT 1 OFFSET 0
     `;

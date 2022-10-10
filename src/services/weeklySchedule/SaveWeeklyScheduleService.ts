@@ -77,6 +77,27 @@ class SaveWeeklyScheduleService {
       );
   };
 
+  private hasFutureAppointments = async (
+    type: "weekly" | "lock",
+    professionalId: string,
+    dayOfTheWeekConverted: number,
+    start: Date | null,
+    end: Date | null
+  ): Promise<boolean> => {
+    const [_hasFutureAppointments] = await transaction([
+      this.appointmentRepository.hasUncompletedAppointmentsByDayOfTheWeek(
+        type,
+        professionalId,
+        dayOfTheWeekConverted,
+        this.dateProvider.now(),
+        start,
+        end
+      ),
+    ]);
+
+    return _hasFutureAppointments.length > 0;
+  };
+
   protected getObjectId = (id?: string): string =>
     id && !stringIsNullOrEmpty(id) && this.uniqueIdentifierProvider.isValid(id)
       ? id
@@ -178,17 +199,15 @@ class SaveWeeklyScheduleService {
         throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
     }
 
-    const [hasFutureAppointments] = await transaction([
-      this.appointmentRepository.hasUncompletedAppointmentsByDayOfTheWeek(
+    if (
+      await this.hasFutureAppointments(
+        "weekly",
         professionalId,
         dayOfTheWeekConverted,
-        this.dateProvider.now(),
         startTimeConverted,
         endTimeConverted
-      ),
-    ]);
-
-    if (hasFutureAppointments.length > 0)
+      )
+    )
       throw new AppError(
         "BAD_REQUEST",
         i18n.__mf("ErrorWeeklyScheduleUncompletedAppointments", [
@@ -296,6 +315,26 @@ class SaveWeeklyScheduleService {
                   ),
                   this.maskProvider.time(new Date(hasLock.startTime)),
                   this.maskProvider.time(new Date(hasLock.endTime)),
+                ])
+              );
+
+            if (
+              await this.hasFutureAppointments(
+                "lock",
+                professionalId,
+                dayOfTheWeekConverted,
+                startDate,
+                endDate
+              )
+            )
+              throw new AppError(
+                "BAD_REQUEST",
+                i18n.__mf("ErrorWeeklyScheduleLockUncompletedAppointments", [
+                  index + 1,
+                  getEnumDescription(
+                    "DAYS_OF_THE_WEEK",
+                    DaysOfTheWeek[dayOfTheWeekConverted]
+                  ),
                 ])
               );
 

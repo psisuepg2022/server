@@ -184,6 +184,7 @@
   "ErrorWeeklyScheduleLockSameTimes": "Não é possível cadastrar o {0}º bloqueio pois os valores de início e término são iguais.",
   "ErrorWeeklyScheduleLockStartTimeInvalid": "O horário de início do {0}º intervalo para a agenda deste dia da semana é inválido.",
   "ErrorWeeklyScheduleLockStartTimeRequired": "É necessário informar o horário de início do {0}º intervalo para a agenda deste dia da semana.",
+  "ErrorWeeklyScheduleLockUncompletedAppointments": "Não é possível cadastra o {0}º bloqueio pois existem consultas pendentes em datas futuras para {1}.",
   "ErrorWeeklyScheduleLocksOutOfWeeklyInterval": "Não é possível cadastrar o {0}º bloqueio pois está fora da agenda de {1}.",
   "ErrorWeeklyScheduleNotFound": "O horário semanal informado não foi encontrado.",
   "ErrorWeeklyScheduleRequired": "É necessário informar o dia da agenda semanal.",

@@ -67,6 +67,7 @@ class DisableWeeklyScheduleDayService {
 
     const [hasFutureAppointments] = await transaction([
       this.appointmentRepository.hasUncompletedAppointmentsByDayOfTheWeek(
+        "weekly",
         professionalId,
         hasSchedule.dayOfTheWeek,
         this.dateProvider.now(),

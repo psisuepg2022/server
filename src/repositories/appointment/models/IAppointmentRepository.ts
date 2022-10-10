@@ -51,6 +51,7 @@ interface IAppointmentRepository {
     date: Date
   ): PrismaPromise<{ patient: { person: Partial<PersonModel> } }[]>;
   hasUncompletedAppointmentsByDayOfTheWeek(
+    type: "weekly" | "lock",
     professionalId: string,
     dayOfTheWeek: number,
     today: Date,
