@@ -2,4 +2,4 @@
 
 sudo docker exec -it "$DEV_CONTAINER" \
 psql -U postgres "$DEV_DB_NAME" \
--c "SELECT p.name as permission, r.name as role FROM permission p INNER JOIN role r ON p.role_id = r.id;"
+-c "SELECT p.nome as permissao, r.nome as papel_usuario FROM permissoes p INNER JOIN papel_usuario r ON p.id_papel_usuario = r.id;"
