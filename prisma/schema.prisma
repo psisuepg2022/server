@@ -21,7 +21,7 @@ model Clinic {
 
 model Person {
   id            String   @id @db.Uuid
-  email         String?  @unique @db.VarChar(100)
+  email         String?  @db.VarChar(100)
   name          String   @map("nome") @db.VarChar(100)
   domainClass   String   @map("classe_dominio") @db.VarChar(32)
   CPF           String?  @unique @map("cpf") @db.VarChar(11)
@@ -56,11 +56,10 @@ model Address {
 }
 
 model User {
-  userName      String  @unique @map("nome_usuario") @db.VarChar(100)
+  userName      String  @map("nome_usuario") @db.VarChar(100)
   blocked       Boolean @default(false) @map("bloqueado")
   loginAttempts Int     @default(0) @map("tentativas")
   password      String  @map("senha") @db.VarChar(255)
-  accessCode    Int     @default(autoincrement()) @map("codigo_acesso")
 
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
