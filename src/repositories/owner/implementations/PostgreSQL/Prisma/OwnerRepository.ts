@@ -11,10 +11,13 @@ class OwnerRepository implements IOwnerRepository {
   public get = (
     clinicId: string,
     [take, skip]: [number, number]
-  ): PrismaPromise<Partial<OwnerModel & { person: PersonModel }>[]> =>
+  ): PrismaPromise<
+    Partial<
+      OwnerModel & { person: PersonModel & { clinic: { code: number } } }
+    >[]
+  > =>
     this.prisma.user.findMany({
       select: {
-        accessCode: true,
         id: true,
         userName: true,
         person: {
@@ -24,6 +27,7 @@ class OwnerRepository implements IOwnerRepository {
             contactNumber: true,
             email: true,
             name: true,
+            clinic: { select: { code: true } },
           },
         },
       },
@@ -37,7 +41,11 @@ class OwnerRepository implements IOwnerRepository {
       orderBy: { person: { name: "asc" } },
       take,
       skip,
-    }) as PrismaPromise<Partial<OwnerModel & { person: PersonModel }>[]>;
+    }) as PrismaPromise<
+      Partial<
+        OwnerModel & { person: PersonModel & { clinic: { code: number } } }
+      >[]
+    >;
 }
 
 export { OwnerRepository };

@@ -83,7 +83,9 @@ class UpdateProfessionalService extends CreateProfessionalService {
     profession,
     registry,
     specialization,
-  }: CreateProfessionalRequestModel): Promise<Partial<ProfessionalModel>> {
+  }: CreateProfessionalRequestModel): Promise<
+    Partial<ProfessionalModel> & { accessCode: number }
+  > {
     if (!id || stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",

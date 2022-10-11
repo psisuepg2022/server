@@ -39,12 +39,11 @@ class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService<
 
   protected convertObject = ({
     userName,
-    accessCode,
     person,
   }: Partial<OwnerModel & { person: PersonModel }>): ListOwnersResponseModel =>
     ({
       userName,
-      accessCode,
+      accessCode: person?.clinic?.code,
       ...this.covertBase(person || {}),
     } as ListOwnersResponseModel);
 }

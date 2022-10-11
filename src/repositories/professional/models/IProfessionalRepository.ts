@@ -19,7 +19,10 @@ interface IProfessionalRepository {
   ): PrismaPromise<
     Partial<
       UserModel & {
-        person: PersonModel & { address: AddressModel };
+        person: PersonModel & {
+          address: AddressModel;
+          clinic: { code: number };
+        };
         professional: ProfessionalModel;
       }
     >[]

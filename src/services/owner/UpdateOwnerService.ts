@@ -70,7 +70,9 @@ class UpdateOwnerService extends CreateOwnerService {
     email,
     clinicId,
     clinic,
-  }: UpdateOwnerRequestModel): Promise<Partial<EmployeeModel>> {
+  }: UpdateOwnerRequestModel): Promise<
+    Partial<EmployeeModel> & { accessCode: number }
+  > {
     if (!id || stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",

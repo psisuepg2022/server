@@ -88,7 +88,7 @@ class CreateProfessionalService extends CreateUserService {
     }: CreateProfessionalRequestModel,
     createSchedule = false,
     savePassword = true
-  ): Promise<Partial<ProfessionalModel>> {
+  ): Promise<Partial<ProfessionalModel> & { accessCode: number }> {
     const id = this.getObjectId(idReceived);
 
     if (stringIsNullOrEmpty(profession))
@@ -120,7 +120,12 @@ class CreateProfessionalService extends CreateUserService {
       specialization,
     } as ProfessionalModel);
 
-    const [person, user, professional, addressSaved] = await transaction(
+    const [
+      person,
+      { person: accessCode, ...user },
+      professional,
+      addressSaved,
+    ] = await transaction(
       ((): PrismaPromise<any>[] => {
         const list = [
           this.getCreatePersonOperation(),
@@ -148,6 +153,7 @@ class CreateProfessionalService extends CreateUserService {
       ...user,
       ...person,
       ...professional,
+      accessCode: accessCode.clinic.code,
       address: addressSaved
         ? {
             ...addressSaved,
@@ -160,7 +166,7 @@ class CreateProfessionalService extends CreateUserService {
       contactNumber: person.contactNumber
         ? this.maskProvider.contactNumber(person.contactNumber)
         : undefined,
-    } as Partial<ProfessionalModel>;
+    };
   }
 
   private getWeeklyScheduleOperations = (

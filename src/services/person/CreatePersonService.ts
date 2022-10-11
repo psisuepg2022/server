@@ -140,7 +140,7 @@ class CreatePersonService {
         );
 
       const [hasEmail] = await transaction([
-        this.personRepository.hasEmail(id, email),
+        this.personRepository.hasEmail(clinicId, id, email),
       ]);
 
       if (hasEmail)

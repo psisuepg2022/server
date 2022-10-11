@@ -14,7 +14,9 @@ class UserRepository implements IUserRepository {
   public save = (
     roleId: number,
     { password, userName, id }: UserModel
-  ): PrismaPromise<Partial<UserModel>> =>
+  ): PrismaPromise<
+    Partial<UserModel> & { person: { clinic: { code: number } } }
+  > =>
     this.prisma.user.upsert({
       where: { id },
       create: {
@@ -25,11 +27,13 @@ class UserRepository implements IUserRepository {
       },
       update: { userName },
       select: {
-        accessCode: true,
         id: true,
         userName: true,
+        person: { select: { clinic: { select: { code: true } } } },
       },
-    }) as PrismaPromise<Partial<UserModel>>;
+    }) as PrismaPromise<
+      Partial<UserModel> & { person: { clinic: { code: number } } }
+    >;
 
   public updateLoginControlProps = (
     userId: string,
@@ -50,6 +54,7 @@ class UserRepository implements IUserRepository {
     });
 
   public hasUserName = (
+    clinicId: string,
     id: string,
     userName: string
   ): PrismaPromise<UserModel | null> =>
@@ -57,6 +62,7 @@ class UserRepository implements IUserRepository {
       where: {
         userName,
         id: { not: id },
+        person: { clinicId },
       },
     }) as PrismaPromise<UserModel | null>;
 
@@ -72,12 +78,14 @@ class UserRepository implements IUserRepository {
     | null
   > =>
     this.prisma.user.findFirst({
-      where: { userName, accessCode, person: { active: true } },
+      where: {
+        userName,
+        person: { active: true, clinic: { code: accessCode } },
+      },
       select: {
         password: true,
         blocked: true,
         loginAttempts: true,
-        accessCode: true,
         userName: true,
         id: true,
         role: {

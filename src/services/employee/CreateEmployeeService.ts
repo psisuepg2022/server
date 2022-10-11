@@ -69,7 +69,7 @@ class CreateEmployeeService extends CreateUserService {
       clinicId,
     }: CreateEmployeeRequestModel,
     savePassword = true
-  ): Promise<Partial<EmployeeModel>> {
+  ): Promise<Partial<EmployeeModel> & { accessCode: number }> {
     const id = this.getObjectId(idReceived);
 
     await super.createUserOperation(
@@ -89,20 +89,25 @@ class CreateEmployeeService extends CreateUserService {
       savePassword
     );
 
-    const [person, user, addressSaved] = await transaction(
-      ((): PrismaPromise<any>[] =>
-        address
-          ? [
-              this.getCreatePersonOperation(),
-              this.getCreateUserOperation(),
-              this.getAddressOperation(),
-            ]
-          : [this.getCreatePersonOperation(), this.getCreateUserOperation()])()
-    );
+    const [person, { person: accessCode, ...user }, addressSaved] =
+      await transaction(
+        ((): PrismaPromise<any>[] =>
+          address
+            ? [
+                this.getCreatePersonOperation(),
+                this.getCreateUserOperation(),
+                this.getAddressOperation(),
+              ]
+            : [
+                this.getCreatePersonOperation(),
+                this.getCreateUserOperation(),
+              ])()
+      );
 
     return {
       ...user,
       ...person,
+      accessCode: accessCode.clinic.code,
       address: addressSaved
         ? {
             ...addressSaved,
@@ -115,7 +120,7 @@ class CreateEmployeeService extends CreateUserService {
       contactNumber: person.contactNumber
         ? this.maskProvider.contactNumber(person.contactNumber)
         : undefined,
-    } as Partial<EmployeeModel>;
+    };
   }
 }
 

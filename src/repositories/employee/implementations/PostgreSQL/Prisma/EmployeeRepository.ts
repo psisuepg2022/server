@@ -17,12 +17,16 @@ class EmployeeRepository implements IEmployeeRepository {
     filters: SearchPersonRequestModel | null
   ): PrismaPromise<
     Partial<
-      EmployeeModel & { person: PersonModel & { address: AddressModel } }
+      EmployeeModel & {
+        person: PersonModel & {
+          address: AddressModel;
+          clinic: { code: number };
+        };
+      }
     >[]
   > =>
     this.prisma.user.findMany({
       select: {
-        accessCode: true,
         id: true,
         userName: true,
         person: {
@@ -43,6 +47,7 @@ class EmployeeRepository implements IEmployeeRepository {
                 zipCode: true,
               },
             },
+            clinic: { select: { code: true } },
           },
         },
       },
@@ -59,7 +64,12 @@ class EmployeeRepository implements IEmployeeRepository {
       skip,
     }) as PrismaPromise<
       Partial<
-        EmployeeModel & { person: PersonModel & { address: AddressModel } }
+        EmployeeModel & {
+          person: PersonModel & {
+            address: AddressModel;
+            clinic: { code: number };
+          };
+        }
       >[]
     >;
 }

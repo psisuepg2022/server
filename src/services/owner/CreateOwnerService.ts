@@ -71,7 +71,7 @@ class CreateOwnerService extends CreateUserService {
     }: CreateOwnerRequestModel,
     savePassword = true,
     clinic?: CreateClinicRequestModel
-  ): Promise<Partial<OwnerModel>> {
+  ): Promise<Partial<OwnerModel> & { accessCode: number }> {
     const id = this.getObjectId(idReceived);
 
     await super.createUserOperation(
@@ -91,27 +91,28 @@ class CreateOwnerService extends CreateUserService {
       savePassword
     );
 
-    const [person, user, ...optional] = await transaction(
-      ((): PrismaPromise<any>[] => {
-        const operations = [
-          this.getCreatePersonOperation(),
-          this.getCreateUserOperation(),
-        ];
+    const [person, { person: accessCode, ...user }, ...optional] =
+      await transaction(
+        ((): PrismaPromise<any>[] => {
+          const operations = [
+            this.getCreatePersonOperation(),
+            this.getCreateUserOperation(),
+          ];
 
-        if (address) operations.push(this.getAddressOperation());
+          if (address) operations.push(this.getAddressOperation());
 
-        if (clinic)
-          operations.push(
-            this.clinicRepository.save({
-              id: clinicId,
-              email: clinic.email,
-              name: clinic.name,
-            })
-          );
+          if (clinic)
+            operations.push(
+              this.clinicRepository.save({
+                id: clinicId,
+                email: clinic.email,
+                name: clinic.name,
+              })
+            );
 
-        return operations;
-      })()
-    );
+          return operations;
+        })()
+      );
 
     const [addressIndex, clinicIndex] = ((): [number, number] => [
       address ? 0 : -1,
@@ -121,6 +122,7 @@ class CreateOwnerService extends CreateUserService {
     return {
       ...user,
       ...person,
+      accessCode: accessCode.clinic.code,
       address:
         addressIndex !== -1
           ? {
@@ -141,7 +143,7 @@ class CreateOwnerService extends CreateUserService {
       contactNumber: person.contactNumber
         ? this.maskProvider.contactNumber(person.contactNumber)
         : undefined,
-    } as Partial<OwnerModel>;
+    };
   }
 }
 

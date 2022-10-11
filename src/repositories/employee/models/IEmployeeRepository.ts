@@ -11,7 +11,12 @@ interface IEmployeeRepository {
     filters: SearchPersonRequestModel | null
   ): PrismaPromise<
     Partial<
-      EmployeeModel & { person: PersonModel & { address: AddressModel } }
+      EmployeeModel & {
+        person: PersonModel & {
+          address: AddressModel;
+          clinic: { code: number };
+        };
+      }
     >[]
   >;
 }

@@ -8,7 +8,6 @@ type UserModel = PersonModel & {
   blocked: boolean;
   loginAttempts: number;
   password: string;
-  accessCode: number;
   role: RoleModel;
 };
 

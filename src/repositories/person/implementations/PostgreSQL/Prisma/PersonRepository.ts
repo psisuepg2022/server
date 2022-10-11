@@ -43,12 +43,14 @@ class PersonRepository implements IPersonRepository {
     }) as PrismaPromise<Partial<PersonModel>>;
 
   public hasEmail = (
+    clinicId: string,
     id: string,
     email: string
   ): PrismaPromise<PersonModel | null> =>
     this.prisma.person.findFirst({
       where: {
         email,
+        clinicId,
         id: { not: id },
       },
     }) as PrismaPromise<PersonModel | null>;

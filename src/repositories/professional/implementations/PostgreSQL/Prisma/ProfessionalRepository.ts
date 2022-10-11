@@ -70,7 +70,10 @@ class ProfessionalRepository implements IProfessionalRepository {
   ): PrismaPromise<
     Partial<
       UserModel & {
-        person: PersonModel & { address: AddressModel };
+        person: PersonModel & {
+          address: AddressModel;
+          clinic: { code: number };
+        };
         professional: ProfessionalModel;
       }
     >[]
@@ -79,7 +82,6 @@ class ProfessionalRepository implements IProfessionalRepository {
       select: {
         id: true,
         userName: true,
-        accessCode: true,
         person: {
           select: {
             id: true,
@@ -98,6 +100,7 @@ class ProfessionalRepository implements IProfessionalRepository {
                 zipCode: true,
               },
             },
+            clinic: { select: { code: true } },
           },
         },
         professional: {
@@ -123,7 +126,10 @@ class ProfessionalRepository implements IProfessionalRepository {
     }) as PrismaPromise<
       Partial<
         UserModel & {
-          person: PersonModel & { address: AddressModel };
+          person: PersonModel & {
+            address: AddressModel;
+            clinic: { code: number };
+          };
           professional: ProfessionalModel;
         }
       >[]
@@ -349,7 +355,6 @@ class ProfessionalRepository implements IProfessionalRepository {
         password: true,
         blocked: true,
         loginAttempts: true,
-        accessCode: true,
         userName: true,
         id: true,
         role: {

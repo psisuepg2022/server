@@ -51,7 +51,6 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
 
   protected convertObject = ({
     userName,
-    accessCode,
     person,
     professional,
   }: Partial<
@@ -62,7 +61,7 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
   >): ListProfessionalsResponseModel =>
     ({
       userName,
-      accessCode,
+      accessCode: person?.clinic?.code,
       baseDuration: professional?.baseDuration,
       profession: professional?.profession,
       registry: professional?.registry,

@@ -69,7 +69,9 @@ class UpdateEmployeeService extends CreateEmployeeService {
     contactNumber,
     email,
     clinicId,
-  }: CreateEmployeeRequestModel): Promise<Partial<EmployeeModel>> {
+  }: CreateEmployeeRequestModel): Promise<
+    Partial<EmployeeModel> & { accessCode: number }
+  > {
     if (!id || stringIsNullOrEmpty(id))
       throw new AppError(
         "BAD_REQUEST",

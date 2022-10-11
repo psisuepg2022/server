@@ -96,7 +96,7 @@ class CreateUserService extends CreatePersonService {
       throw new AppError("BAD_REQUEST", i18n.__("ErrorUserNameWithWhiteSpace"));
 
     const [hasUserName] = await transaction([
-      this.userRepository.hasUserName(id, userName),
+      this.userRepository.hasUserName(clinicId, id, userName),
     ]);
 
     if (hasUserName)

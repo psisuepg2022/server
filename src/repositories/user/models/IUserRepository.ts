@@ -7,7 +7,11 @@ import { PermissionModel } from "@models/utils/PermissionModel";
 import { PrismaPromise } from "@prisma/client";
 
 interface IUserRepository {
-  hasUserName(id: string, userName: string): PrismaPromise<UserModel | null>;
+  hasUserName(
+    clinicId: string,
+    id: string,
+    userName: string
+  ): PrismaPromise<UserModel | null>;
   hasActivatedUser(
     userName: string,
     accessCode: number
@@ -19,7 +23,12 @@ interface IUserRepository {
       })
     | null
   >;
-  save(roleId: number, user: UserModel): PrismaPromise<Partial<UserModel>>;
+  save(
+    roleId: number,
+    user: UserModel
+  ): PrismaPromise<
+    Partial<UserModel> & { person: { clinic: { code: number } } }
+  >;
   updateLoginControlProps(
     userId: string,
     attempts: number,
