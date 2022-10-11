@@ -245,14 +245,30 @@ class AppointmentRepository implements IAppointmentRepository {
       AND "public"."consulta"."data_agendamento" > ${today}
       AND ((extract(DOW FROM "public"."consulta"."data_agendamento"::TIMESTAMP)) + 1) = ${dayOfTheWeek}
       AND (
-        (${startTime}::TIMESTAMP IS NULL AND ${endTime}::TIMESTAMP IS NULL) OR
-        "public"."consulta"."data_agendamento"::TIME < ${startTime}::TIME
-        OR "public"."consulta"."data_agendamento"::TIME > ${endTime}::TIME
-        OR "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${endTime}
+        (${startTime}::TIMESTAMP IS NULL AND ${endTime}::TIMESTAMP IS NULL) 
+        OR (
+          ${type === "weekly"} AND (
+            "public"."consulta"."data_agendamento"::TIME < ${startTime}::TIME
+            OR "public"."consulta"."data_agendamento"::TIME > ${endTime}::TIME
+            OR "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${endTime}
+          )
+        )
         OR (
           ${type === "lock"} AND (
-            "public"."consulta"."data_agendamento"::TIME >= ${startTime}::TIME 
-            AND "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') <= ${endTime}
+            (
+              "public"."consulta"."data_agendamento"::TIME = ${startTime}::TIME 
+              AND "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') = ${endTime}
+            )
+            OR
+            (
+              "public"."consulta"."data_agendamento"::TIME > ${startTime}::TIME 
+              AND "public"."consulta"."data_agendamento"::TIME < ${endTime}
+            )
+            OR 
+            (
+              "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${startTime}::TIME 
+              AND "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') < ${endTime}
+            )
           )
         )
       )
