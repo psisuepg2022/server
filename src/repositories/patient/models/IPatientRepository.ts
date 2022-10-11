@@ -50,10 +50,15 @@ interface IPatientRepository {
       })
     | null
   >;
-  countToAutocomplete(clinicId: string, name: string): PrismaPromise<number>;
+  countToAutocomplete(
+    clinicId: string,
+    name: string,
+    professionalId: string | null
+  ): PrismaPromise<number>;
   getToAutocomplete(
     clinicId: string,
-    name: string
+    name: string,
+    professionalId: string | null
   ): PrismaPromise<
     Partial<PatientModel> &
       {

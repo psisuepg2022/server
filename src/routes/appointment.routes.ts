@@ -57,6 +57,14 @@ routes.post(
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.autocompletePatient
 );
+routes.post(
+  "/autocomplete_patient_by_the_professional",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(),
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.autocompletePatientByTheProfessional
+);
 routes.patch(
   "/status/:id",
   logMiddleware,

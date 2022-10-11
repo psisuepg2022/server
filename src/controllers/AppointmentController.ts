@@ -151,6 +151,36 @@ class AppointmentController {
     const result = await service.execute({
       name,
       clinicId,
+      professionalId: null,
+    });
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
+  }
+
+  public async autocompletePatientByTheProfessional(
+    req: Request,
+    res: Response<
+      IResponseMessage<IPaginationResponse<AutocompletePatientResponseModel>>
+    >,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: clinicId } = req.clinic;
+    const { id: professionalId } = req.user;
+
+    const { name } = req.body;
+
+    const service = container.resolve(AutocompletePatientService);
+
+    const result = await service.execute({
+      name,
+      clinicId,
+      professionalId,
     });
 
     res.status(HttpStatus.OK).json({

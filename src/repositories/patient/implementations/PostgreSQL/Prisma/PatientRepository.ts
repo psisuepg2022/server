@@ -173,7 +173,8 @@ class PatientRepository implements IPatientRepository {
 
   public countToAutocomplete = (
     clinicId: string,
-    name: string
+    name: string,
+    professionalId: string | null
   ): PrismaPromise<number> =>
     this.prisma.patient.count({
       where: {
@@ -183,8 +184,14 @@ class PatientRepository implements IPatientRepository {
           domainClass: UserDomainClasses.PATIENT,
           name: {
             contains: name,
+            mode: "insensitive",
           },
         },
+        Appointment: professionalId
+          ? {
+              some: { professionalId },
+            }
+          : {},
       },
       orderBy: {
         person: {
@@ -195,7 +202,8 @@ class PatientRepository implements IPatientRepository {
 
   public getToAutocomplete = (
     clinicId: string,
-    name: string
+    name: string,
+    professionalId: string | null
   ): PrismaPromise<
     Partial<PatientModel> &
       {
@@ -214,6 +222,11 @@ class PatientRepository implements IPatientRepository {
             mode: "insensitive",
           },
         },
+        Appointment: professionalId
+          ? {
+              some: { professionalId },
+            }
+          : {},
       },
       select: {
         person: {

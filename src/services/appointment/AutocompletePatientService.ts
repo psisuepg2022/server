@@ -22,6 +22,7 @@ class AutocompletePatientService {
   async execute({
     clinicId,
     name,
+    professionalId,
   }: AutocompletePatientRequestModel): Promise<
     IPaginationResponse<AutocompletePatientResponseModel>
   > {
@@ -32,8 +33,12 @@ class AutocompletePatientService {
       );
 
     const [count, patients] = await transaction([
-      this.patientRepository.countToAutocomplete(clinicId, name),
-      this.patientRepository.getToAutocomplete(clinicId, name),
+      this.patientRepository.countToAutocomplete(
+        clinicId,
+        name,
+        professionalId
+      ),
+      this.patientRepository.getToAutocomplete(clinicId, name, professionalId),
     ]);
 
     return {
