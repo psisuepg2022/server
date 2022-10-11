@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { SearchProfessionalPatientsRequestModel } from "@models/dto/professional/SearchProfessionalPatientsRequestModel";
 import { PrismaPromise } from "@prisma/client";
+import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IValidatorsProvider } from "@providers/validators";
 import { IPatientRepository } from "@repositories/patient";
@@ -18,13 +19,16 @@ class SearchProfessionalPatientsWithFiltersService extends SearchPatientsWithFil
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("PatientRepository")
-    patientRepository: IPatientRepository
+    patientRepository: IPatientRepository,
+    @inject("DateProvider")
+    dateProvider: IDateProvider
   ) {
     super(
       personRepository,
       maskProvider,
       validatorsProvider,
-      patientRepository
+      patientRepository,
+      dateProvider
     );
   }
 

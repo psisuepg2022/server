@@ -6,6 +6,7 @@ import ptBR, {
   startOfWeek,
   endOfWeek,
   differenceInDays,
+  differenceInCalendarYears,
   addMinutes,
   isEqual,
 } from "date-fns";
@@ -47,6 +48,9 @@ class DateProvider implements IDateProvider {
 
   differenceInDays = (left: Date, rigth: Date): number =>
     differenceInDays(left, rigth);
+
+  differenceInYears = (left: Date, rigth: Date): number =>
+    differenceInCalendarYears(left, rigth);
 
   getCurrentWeek = (): [Date, Date] => [
     zonedTimeToUtc(

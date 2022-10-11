@@ -10,6 +10,7 @@ interface IDateProvider {
   getWeekDay(date: Date): number;
   getCurrentWeek(): [Date, Date];
   differenceInDays(left: Date, rigth: Date): number;
+  differenceInYears(left: Date, rigth: Date): number;
   addMinutes(date: Date, hours: number): Date;
   equals(start: Date, end: Date): boolean;
   intervalConflicting(

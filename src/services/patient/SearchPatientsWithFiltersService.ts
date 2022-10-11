@@ -8,6 +8,7 @@ import { PatientModel } from "@models/domain/PatientModel";
 import { PersonModel } from "@models/domain/PersonModel";
 import { ListPatientsResponseModel } from "@models/dto/patient/ListPatientsResponseModel";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
+import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IValidatorsProvider } from "@providers/validators";
 import { IPatientRepository } from "@repositories/patient";
@@ -35,7 +36,9 @@ class SearchPatientsWithFiltersService<
     @inject("ValidatorsProvider")
     validatorsProvider: IValidatorsProvider,
     @inject("PatientRepository")
-    protected patientRepository: IPatientRepository
+    protected patientRepository: IPatientRepository,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {
     super(personRepository, maskProvider, validatorsProvider);
   }
@@ -69,6 +72,10 @@ class SearchPatientsWithFiltersService<
       maritalStatus: getEnumDescription(
         "MARITAL_STATUS",
         MaritalStatusDomain[item.patient?.maritalStatus as number]
+      ),
+      age: this.dateProvider.differenceInYears(
+        this.dateProvider.now(),
+        item.birthDate as Date
       ),
       liable: item.patient?.liable?.person
         ? {
