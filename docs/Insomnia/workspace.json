@@ -1,13 +1,13 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-10-03T12:32:23.111Z",
+  "__export_date": "2022-10-11T20:02:27.446Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
     {
       "_id": "req_2a8931043cfe4d7aa5f73148fd9f9aac",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "modified": 1664402035012,
+      "modified": 1665513690589,
       "created": 1662824569199,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/9d8095a3-6d92-410f-a424-c3c7dd6d57dc?page=2&size=1",
       "name": "search",
@@ -64,7 +64,7 @@
     {
       "_id": "req_3e7acdb8c7a94d2a809fc45014fc118d",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "modified": 1664336123164,
+      "modified": 1665513690221,
       "created": 1662560106123,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/12ccf4ad-e646-4259-865b-b5c5244463f3",
       "name": "save",
@@ -99,7 +99,7 @@
     {
       "_id": "req_35890d19f5904844a50ce38dcebafa77",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663940503847,
+      "modified": 1665096291240,
       "created": 1662467185449,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/b077ff31-eaa6-4d70-9133-0913678d98c4",
       "name": "status",
@@ -146,7 +146,7 @@
     {
       "_id": "req_35dc8b234ae44af58e88e4c122616cf2",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663214928712,
+      "modified": 1665517835737,
       "created": 1662052890946,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "autocomplete_patient",
@@ -154,7 +154,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"m\"\n}"
+        "text": "{\n\t\"name\": \"s\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -179,17 +179,52 @@
       "_type": "request"
     },
     {
+      "_id": "req_98d8676fd19b4f38bd798bd10f384d13",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1665517973597,
+      "created": 1665517938119,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "autocomplete_patient_by_the_professional",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"s\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_69cf4b7e62e2452180c0f792a3590f8b"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1661967533852.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_68ff8e537e5948e9b86ff93b81b60741",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1664487394796,
+      "modified": 1665178602055,
       "created": 1661882176759,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}?weekly=true",
       "name": "calendar",
       "description": "",
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"startDate\": \"\",\n\t\"endDate\": \"2022-10-07\"\n}"
+        "text": "{\n\t\"startDate\": \"\",\n\t\"endDate\": \"2022-10-17\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -216,7 +251,7 @@
     {
       "_id": "req_818c98e1468c42e39422f27fbb0dc56a",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1664487393289,
+      "modified": 1664831469156,
       "created": 1661888766274,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/calendar/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "calendar by professional",
@@ -277,7 +312,7 @@
     {
       "_id": "req_01d6a83bff304a92bd3333d98b39be18",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1664487392690,
+      "modified": 1665513567329,
       "created": 1660223915857,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -285,7 +320,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-10-03\",\n\t\"startTime\": \"10:00\",\n\t\"endTime\": \"11:00\",\n\t\"professionalId\": \"77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f\",\n\t\"patientId\": \"9d8095a3-6d92-410f-a424-c3c7dd6d57dc\"\n}"
+        "text": "{\n\t\"date\": \"2022-10-06\",\n\t\"startTime\": \"11:00\",\n\t\"endTime\": \"12:00\",\n\t\"professionalId\": \"b33f25c7-c1f1-4c39-ac9c-b113e4ae4f33\",\n\t\"patientId\": \"37491db7-304e-46c4-b193-907a0b936cbb\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -311,9 +346,45 @@
       "_type": "request"
     },
     {
+      "_id": "req_ed6e051ac60b4d40bc05e30969e48708",
+      "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
+      "modified": 1665516122081,
+      "created": 1665513576708,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "by_the_professional",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"date\": \"2022-10-17\",\n\t\"startTime\": \"11:00\",\n\t\"endTime\": \"12:00\",\n\t\"patientId\": \"5793c70a-6b12-4493-93d4-33f6553c1638\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_33ebee0596444281b2cd6045fb8a91b1"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "prefix": "Bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1660186248942.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_f5e5e203657645dba7887ef335fa8f6b",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1664468191455,
+      "modified": 1665179956361,
       "created": 1660148582028,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -321,7 +392,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"date\": \"2022-09-30\",\n\t\"startTime\": \"06:00\",\n\t\"endTime\": \"07:00\"\n}"
+        "text": "{\n\t\"date\": \"2022-10-12\",\n\t\"startTime\": \"16:30\",\n\t\"endTime\": \"17:30\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -361,7 +432,7 @@
     {
       "_id": "req_56726a3c9892404e8a215ba84e05437b",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1663941035519,
+      "modified": 1665003970885,
       "created": 1660149314823,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "save by professional",
@@ -397,9 +468,9 @@
     {
       "_id": "req_e4b9557d050647fa9c8f0f690695c401",
       "parentId": "fld_412af8bd14474287b0a965accf64f434",
-      "modified": 1664049184983,
+      "modified": 1665178598470,
       "created": 1660149368962,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/171d6446-5fc2-42d4-adda-bf9a90c26b53",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/0dc6651a-f232-4bd8-a9c2-4f91bbcda945",
       "name": "delete",
       "description": "",
       "method": "DELETE",
@@ -451,7 +522,7 @@
     {
       "_id": "req_4ba536b111eb44c78083be3a383d04b3",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1664564451927,
+      "modified": 1665434433694,
       "created": 1659389449397,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "save",
@@ -459,7 +530,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"id\": \"64989873-a5c1-426d-91fb-44d207ae878f\",\n\t\"startTime\": \"08:00\",\n\t\"endTime\": \"10:00\",\n\t\"dayOfTheWeek\": \"1\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"07:30\",\n\t\t\t\"endTime\": \"08:30\"\n\t\t}\n\t]\n}"
+        "text": "{\n\t\"id\": \"f0ffe0e2-68ec-4353-9ff8-437648cdbf6e\",\n\t\"startTime\": \"08:00\",\n\t\"endTime\": \"17:00\",\n\t\"dayOfTheWeek\": \"3\",\n\t\"locks\": [\n\t\t{\n\t\t\t\"startTime\": \"18:00\",\n\t\t\t\"endTime\": \"17:00\"\n\t\t}\n\t]\n}"
       },
       "parameters": [],
       "headers": [
@@ -499,7 +570,7 @@
     {
       "_id": "req_0ea2819059aa47b08b98d4a0010ab68b",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1664505667999,
+      "modified": 1665516039462,
       "created": 1659355375486,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "read",
@@ -526,7 +597,7 @@
     {
       "_id": "req_c53be768a45a4cc8ab4bdbbb041d5207",
       "parentId": "fld_5c55d4220431420eafc89c964d94ae83",
-      "modified": 1664048660190,
+      "modified": 1664831466394,
       "created": 1659355950316,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
       "name": "read by professional",
@@ -694,7 +765,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1664799517576,
+      "modified": 1665518436046,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -702,7 +773,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional3\",\n\t\"password\": \"UserProfessional123\",\n\t\"accessCode\": \"1005\"\n}"
+        "text": "{\n\t\"userName\": \"renato.ruppel\",\n\t\"password\": \"RenatoRuppel123\",\n\t\"accessCode\": \"1002\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -726,7 +797,7 @@
     {
       "_id": "req_a30541e8667a44249bc0c96557da37f5",
       "parentId": "fld_2b0a3304aaec4f2d80f98fa4a2f8527f",
-      "modified": 1660169576720,
+      "modified": 1664919298252,
       "created": 1658441033577,
       "url": "https://gerador.app/api/cpf/generate",
       "name": "generate CPF",
@@ -816,7 +887,7 @@
     {
       "_id": "req_4304794bd0e749deb243cc984ec53d31",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1664731567652,
+      "modified": 1665434000514,
       "created": 1657540606624,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -824,7 +895,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"email\": \"marcos1@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": \"1\",\n\t\"maritalStatus\": \"2\",\n\t\"liableRequired\": false,\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}\t"
+        "text": "{\n\t\"email\": \"marcos1@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2045-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"gender\": \"1\",\n\t\"maritalStatus\": \"2\",\n\t\"liableRequired\": false,\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}\t"
       },
       "parameters": [],
       "headers": [
@@ -1023,7 +1094,7 @@
     {
       "_id": "req_d7cd495ef5824fa6b7ff2b6125bb76e1",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1664370751325,
+      "modified": 1665513736393,
       "created": 1664333695221,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}?page=0&size=10",
       "name": "my_patients",
@@ -1070,7 +1141,7 @@
     {
       "_id": "req_2cd2465cc9934a8b8102a23e36327b47",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1664799546476,
+      "modified": 1665247639403,
       "created": 1664200173403,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "configure",
@@ -1078,7 +1149,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"oldPassword\": \"UserProfessional123\",\n\t\"newPassword\": \"UserProfessional123\",\n\t\"confirmNewPassword\": \"UserProfessional123\",\n\t\"baseDuration\": \"45\",\n\t\"weeklySchedule\": [\n\t\t{\n\t\t\t\"dayOfTheWeek\": \"1\",\n\t\t\t\"startTime\": \"08:00\",\n\t\t\t\"endTime\": \"17:00\",\n\t\t\t\"locks\": [\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"12:00\",\n\t\t\t\t\t\"endTime\": \"12:45\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
+        "text": "{\n\t\"oldPassword\": \"ThiagoTex123\",\n\t\"newPassword\": \"ThiagoTex1234\",\n\t\"confirmNewPassword\": \"ThiagoTex1234\",\n\t\"baseDuration\": \"60\",\n\t\"weeklySchedule\": [\n\t\t{\n\t\t\t\"disableDay\": \"false\",\n\t\t\t\"dayOfTheWeek\": \"1\",\n\t\t\t\"startTime\": \"08:00\",\n\t\t\t\"endTime\": \"17:00\",\n\t\t\t\"locks\": [\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"12:00\",\n\t\t\t\t\t\"endTime\": \"13:00\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"startTime\": \"11:30\",\n\t\t\t\t\t\"endTime\": \"12:30\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
       },
       "parameters": [],
       "headers": [
@@ -1254,7 +1325,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1664799510707,
+      "modified": 1665003483630,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -1262,7 +1333,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.professional3\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"\",\n\t\"name\": \"Marcos\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.professional\",\n\t\"password\": \"UserProfessional123\",\n\t\"email\": \"\",\n\t\"name\": \"Marcos\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"profession\": \"Psicólogo\",\n\t\"registry\": \"PR/10910\",\n\t\"specialization\": \"Pediatria\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -1606,7 +1677,7 @@
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1664800322324,
+      "modified": 1665434534116,
       "created": 1657664385365,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}/{{ _.clinicId }}",
       "name": "create",
@@ -1614,7 +1685,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"email\": \"owner@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2000-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"00000-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"email\": \"owner111@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2022-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"84030-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -1719,7 +1790,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1664797743940,
+      "modified": 1665513431223,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1727,7 +1798,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"PSIS\",\n\t\"email\": \"psis1@email.com\"\n}"
+        "text": "{\n\t\"name\": \"PSIS\",\n\t\"email\": \"psis@email.com\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -1815,13 +1886,13 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1664246129425,
+      "modified": 1665177194391,
       "created": 1654723872664,
       "name": "dev",
       "data": {
         "base_url": "http://localhost:3333/api",
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
-        "clinicId": "b1ca58cf-04fc-4f53-b8a3-38946657ce4e"
+        "clinicId": "dd0d1242-0ddd-4ec9-9e58-85629342909f"
       },
       "dataPropertyOrder": {
         "&": [
