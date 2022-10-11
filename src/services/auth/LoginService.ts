@@ -43,7 +43,7 @@ class LoginService {
 
     const accessCodeConverted = toNumber({
       value: accessCode,
-      error: new AppError("BAD_REQUEST", i18n.__("ErrorAccessCodeInvalid")),
+      error: new AppError("BAD_REQUEST", i18n.__("ErrorLoginUserUnauthorized")),
     });
 
     const [hasUser] = await transaction([
