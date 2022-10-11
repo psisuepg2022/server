@@ -36,6 +36,7 @@
   "ErrorAppointmentIntervalInvalid": "O intervalo da consulta é inválido.",
   "ErrorAppointmentIntervalOutOfBaseDuration": "O intervalo informado está fora do tempo de duração das consultas do profissional.",
   "ErrorAppointmentPastDate": "Não é possível realizar um agendamento para uma data que já passou.",
+  "ErrorAppointmentPatientWithoutAppointmentsWithTheProfessional": "O profissional não pode marcar consultas para uma pessoa que não é seu paciente.",
   "ErrorAppointmentStartTimeInvalid": "O horário de início informado para realizar o agendamento é inválido.",
   "ErrorAppointmentStartTimeRequired": "É necessário informar o horário de início para realizar um agendamento.",
   "ErrorAutocompletePatientNameRequired": "É necessário informar o nome para recuperar o paciente.",

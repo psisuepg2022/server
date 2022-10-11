@@ -1,5 +1,8 @@
+import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { AppError } from "@handlers/error/AppError";
+import { transaction } from "@infra/database/transaction";
 import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
@@ -42,6 +45,25 @@ class CreateAppointmentsByTheProfessional extends CreateAppointmentService {
       appointmentRepository
     );
   }
+
+  protected validatePatient = async (
+    _: string,
+    patientId: string,
+    professionalId: string
+  ): Promise<void> => {
+    const [hasPatient] = await transaction([
+      this.professionalRepository.hasPatientWithPastAppointments(
+        professionalId,
+        patientId
+      ),
+    ]);
+
+    if (!hasPatient)
+      throw new AppError(
+        "NOT_FOUND",
+        i18n.__("ErrorAppointmentPatientWithoutAppointmentsWithTheProfessional")
+      );
+  };
 }
 
 export { CreateAppointmentsByTheProfessional };

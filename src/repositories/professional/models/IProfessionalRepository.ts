@@ -74,6 +74,10 @@ interface IProfessionalRepository {
         professional?: Partial<ProfessionalModel>;
       }
   >;
+  hasPatientWithPastAppointments(
+    professionalId: string,
+    patientId: string
+  ): PrismaPromise<{ id: string } | null>;
 }
 
 export { IProfessionalRepository };

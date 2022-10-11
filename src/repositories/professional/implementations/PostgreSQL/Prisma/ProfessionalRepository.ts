@@ -385,6 +385,18 @@ class ProfessionalRepository implements IProfessionalRepository {
           professional?: Partial<ProfessionalModel>;
         }
     >;
+
+  public hasPatientWithPastAppointments = (
+    professionalId: string,
+    patientId: string
+  ): PrismaPromise<{ id: string } | null> =>
+    this.prisma.appointment.findFirst({
+      where: {
+        professionalId,
+        patientId,
+      },
+      select: { id: true },
+    });
 }
 
 export { ProfessionalRepository };

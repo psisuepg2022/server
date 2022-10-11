@@ -27,7 +27,7 @@ class CreateAppointmentService {
     @inject("ValidatorsProvider")
     private validatorsProvider: IValidatorsProvider,
     @inject("ProfessionalRepository")
-    private professionalRepository: IProfessionalRepository,
+    protected professionalRepository: IProfessionalRepository,
     @inject("PersonRepository")
     private personRepository: IPersonRepository,
     @inject("MaskProvider")
@@ -39,6 +39,26 @@ class CreateAppointmentService {
     @inject("AppointmentRepository")
     private appointmentRepository: IAppointmentRepository
   ) {}
+
+  protected validatePatient = async (
+    clinicId: string,
+    patientId: string,
+    _: string
+  ): Promise<void> => {
+    const [hasPatient] = await transaction([
+      this.personRepository.findActivated(
+        clinicId,
+        patientId,
+        UserDomainClasses.PATIENT
+      ),
+    ]);
+
+    if (!hasPatient)
+      throw new AppError(
+        "NOT_FOUND",
+        i18n.__mf("ErrorUserIDNotFound", ["paciente"])
+      );
+  };
 
   public async execute({
     professionalId,
@@ -124,19 +144,7 @@ class CreateAppointmentService {
         i18n.__("ErrorAppointmentIntervalInvalid")
       );
 
-    const [hasPatient] = await transaction([
-      this.personRepository.findActivated(
-        clinicId,
-        patientId,
-        UserDomainClasses.PATIENT
-      ),
-    ]);
-
-    if (!hasPatient)
-      throw new AppError(
-        "NOT_FOUND",
-        i18n.__mf("ErrorUserIDNotFound", ["paciente"])
-      );
+    await this.validatePatient(clinicId, patientId, professionalId);
 
     const [hasProfessional] = await transaction([
       this.professionalRepository.getBaseDuration(clinicId, professionalId),
