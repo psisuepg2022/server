@@ -1,7 +1,7 @@
 enum MaritalStatusDomain {
   MARRIED = 1,
-  SINGLE = 2,
-  DIVORCED = 3,
+  DIVORCED = 2,
+  SINGLE = 3,
   WIDOWED = 4,
 }
 
