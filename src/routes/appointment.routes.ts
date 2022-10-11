@@ -26,6 +26,14 @@ routes.post(
   controller.save
 );
 routes.post(
+  "/by_the_professional",
+  logMiddleware,
+  ensureAuthenticated.execute,
+  validateClinicID.execute(true),
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.byTheProfessional
+);
+routes.post(
   "/calendar",
   logMiddleware,
   ensureAuthenticated.execute,

@@ -1,4 +1,5 @@
 import { AutocompletePatientService } from "./AutocompletePatientService";
+import { CreateAppointmentsByTheProfessional } from "./CreateAppointmentsByTheProfessional";
 import { CreateAppointmentService } from "./CreateAppointmentService";
 import { GetAppointmentService } from "./GetAppointmentService";
 import { UpdateStatusService } from "./UpdateStatusService";
@@ -8,4 +9,5 @@ export {
   UpdateStatusService,
   AutocompletePatientService,
   CreateAppointmentService,
+  CreateAppointmentsByTheProfessional,
 };

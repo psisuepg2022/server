@@ -10,6 +10,7 @@ import { AppointmentOnCalendarModel } from "@models/dto/calendar/AppointmentOnCa
 import { GetCalendarResponseModel } from "@models/dto/calendar/GetCalendarResponseModel";
 import {
   AutocompletePatientService,
+  CreateAppointmentsByTheProfessional,
   CreateAppointmentService,
   GetAppointmentService,
   UpdateStatusService,
@@ -32,6 +33,36 @@ class AppointmentController {
       clinicId,
       date,
       employeeId,
+      endTime,
+      patientId,
+      professionalId,
+      startTime,
+    });
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
+  }
+
+  public async byTheProfessional(
+    req: Request,
+    res: Response<IResponseMessage<CreateAppointmentResponseModel>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: clinicId } = req.clinic;
+    const { date, startTime, endTime, patientId } = req.body;
+    const { id: professionalId } = req.user;
+
+    const service = container.resolve(CreateAppointmentsByTheProfessional);
+
+    const result = await service.execute({
+      clinicId,
+      date,
+      employeeId: professionalId,
       endTime,
       patientId,
       professionalId,
