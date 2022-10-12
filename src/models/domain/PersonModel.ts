@@ -1,7 +1,3 @@
-import { Clinic } from "@prisma/client";
-
-import { AddressModel } from "./AddressModel";
-
 type PersonModel = {
   id: string;
   email: string | null;
@@ -9,9 +5,8 @@ type PersonModel = {
   domainClass: string;
   CPF: string | null;
   birthDate: Date;
+  active: boolean;
   contactNumber: string | null;
-  clinic?: Clinic;
-  address?: AddressModel;
 };
 
 export { PersonModel };

@@ -282,7 +282,7 @@ class CreatePersonService {
       id,
       name,
       domainClass,
-    });
+    } as PersonModel);
   }
 }
 

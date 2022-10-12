@@ -18,7 +18,7 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
   ListProfessionalsResponseModel,
   Partial<
     UserModel & {
-      person: PersonModel & { address: AddressModel };
+      person: PersonModel & { clinic: { code: number }; address: AddressModel };
       professional: ProfessionalModel;
     }
   >
@@ -55,7 +55,7 @@ class SearchProfessionalsWithFiltersService extends SearchPeopleWithFiltersServi
     professional,
   }: Partial<
     UserModel & {
-      person: PersonModel & { address: AddressModel };
+      person: PersonModel & { clinic: { code: number }; address: AddressModel };
       professional: ProfessionalModel;
     }
   >): ListProfessionalsResponseModel =>

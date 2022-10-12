@@ -14,7 +14,7 @@ import { SearchPeopleWithFiltersService } from "@services/person";
 @injectable()
 class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService<
   ListOwnersResponseModel,
-  Partial<OwnerModel & { person: PersonModel }>
+  Partial<OwnerModel & { person: PersonModel & { clinic: { code: number } } }>
 > {
   constructor(
     @inject("PersonRepository")
@@ -40,7 +40,9 @@ class SearchOwnersWithFiltersService extends SearchPeopleWithFiltersService<
   protected convertObject = ({
     userName,
     person,
-  }: Partial<OwnerModel & { person: PersonModel }>): ListOwnersResponseModel =>
+  }: Partial<
+    OwnerModel & { person: PersonModel & { clinic: { code: number } } }
+  >): ListOwnersResponseModel =>
     ({
       userName,
       accessCode: person?.clinic?.code,

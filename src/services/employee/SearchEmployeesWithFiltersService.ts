@@ -15,7 +15,11 @@ import { SearchPeopleWithFiltersService } from "@services/person";
 @injectable()
 class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService<
   ListEmployeesResponseModel,
-  Partial<EmployeeModel & { person: PersonModel & { address: AddressModel } }>
+  Partial<
+    EmployeeModel & {
+      person: PersonModel & { address: AddressModel; clinic: { code: number } };
+    }
+  >
 > {
   constructor(
     @inject("PersonRepository")
@@ -43,7 +47,9 @@ class SearchEmployeesWithFiltersService extends SearchPeopleWithFiltersService<
     person,
     userName,
   }: Partial<
-    EmployeeModel & { person: PersonModel & { address: AddressModel } }
+    EmployeeModel & {
+      person: PersonModel & { clinic: { code: number }; address: AddressModel };
+    }
   >): ListEmployeesResponseModel =>
     ({
       userName,
