@@ -483,6 +483,7 @@ class ConfigureProfessionalService {
 
     const accessToken = this.authTokenProvider.generate({
       id: professionalUpdated.id,
+      name: professionalUpdated?.person.name,
       baseDuration: professionalUpdated.professional?.baseDuration,
       clinic: {
         id: professionalUpdated.person.clinic.id,
