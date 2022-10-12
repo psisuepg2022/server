@@ -9,6 +9,7 @@ import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IAppointmentRepository } from "@repositories/appointment";
+import { IPatientRepository } from "@repositories/patient";
 import { IPersonRepository } from "@repositories/person";
 import { SoftPersonDeleteService } from "@services/person";
 
@@ -24,7 +25,9 @@ class SoftProfessionalDeleteService extends SoftPersonDeleteService {
     @inject("DateProvider")
     private dateProvider: IDateProvider,
     @inject("MaskProvider")
-    private maskProvider: IMaskProvider
+    private maskProvider: IMaskProvider,
+    @inject("PatientRepository")
+    private patientRepository: IPatientRepository
   ) {
     super("profissional", uniqueIdentifierProvider, personRepository);
   }
@@ -37,13 +40,31 @@ class SoftProfessionalDeleteService extends SoftPersonDeleteService {
   ): Promise<SoftProfessionalDeleteResponseModel> {
     await super.createOperation(clinicId, id);
 
-    const [appointmentsToRemoval] = await transaction([
-      this.appointmentRepository.getAllUncompletedAppointments(
-        "professional",
+    const [hasPatients] = await transaction([
+      this.appointmentRepository.hasUncompletedAppointmentsByProfessional(
         id,
         this.dateProvider.now()
       ),
     ]);
+
+    const patientsToCall = await (async (): Promise<Partial<PersonModel>[]> => {
+      if (!hasPatients || hasPatients.length === 0) return [];
+
+      const [_patientsToCall] = await transaction([
+        this.patientRepository.getByIdList(
+          clinicId,
+          hasPatients.map(({ patientId }) => patientId)
+        ),
+      ]);
+
+      return _patientsToCall.map(
+        ({ contactNumber, name, email }): Partial<PersonModel> => ({
+          name,
+          email,
+          contactNumber: this.maskProvider.contactNumber(contactNumber || ""),
+        })
+      );
+    })();
 
     const [_, appointmentsDeleted] = await transaction([
       this.getOperation(),
@@ -59,17 +80,7 @@ class SoftProfessionalDeleteService extends SoftPersonDeleteService {
         "profissional",
         `${(appointmentsDeleted as { count: number }).count}`,
       ]),
-      patientsToCall: appointmentsToRemoval.map(
-        ({
-          patient: {
-            person: { contactNumber, name, email },
-          },
-        }): Partial<PersonModel> => ({
-          name,
-          email,
-          contactNumber: this.maskProvider.contactNumber(contactNumber || ""),
-        })
-      ),
+      patientsToCall,
     };
   }
 }

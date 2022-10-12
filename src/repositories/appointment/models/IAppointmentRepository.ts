@@ -45,11 +45,10 @@ interface IAppointmentRepository {
     id: string,
     professionalId: string
   ): PrismaPromise<Partial<AppointmentModel> | null>;
-  getAllUncompletedAppointments(
-    entity: "patient" | "professional",
-    id: string,
+  hasUncompletedAppointmentsByProfessional(
+    professionalId: string,
     date: Date
-  ): PrismaPromise<{ patient: { person: Partial<PersonModel> } }[]>;
+  ): PrismaPromise<{ patientId: string }[] | null>;
   hasUncompletedAppointmentsByDayOfTheWeek(
     type: "weekly" | "lock",
     professionalId: string,

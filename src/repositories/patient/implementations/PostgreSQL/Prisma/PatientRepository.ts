@@ -351,6 +351,22 @@ class PatientRepository implements IPatientRepository {
         },
       },
     });
+
+  public getByIdList = (
+    clinicId: string,
+    idList: string[]
+  ): PrismaPromise<Partial<PersonModel>[]> =>
+    this.prisma.person.findMany({
+      where: {
+        clinicId,
+        id: { in: idList },
+      },
+      select: {
+        name: true,
+        contactNumber: true,
+        email: true,
+      },
+    }) as PrismaPromise<Partial<PersonModel>[]>;
 }
 
 export { PatientRepository };

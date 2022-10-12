@@ -66,6 +66,10 @@ interface IPatientRepository {
         liable: { person: Partial<PersonModel> };
       }[]
   >;
+  getByIdList(
+    clinicId: string,
+    idList: string[]
+  ): PrismaPromise<Partial<PersonModel>[]>;
 }
 
 export { IPatientRepository };
