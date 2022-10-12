@@ -24,7 +24,7 @@ model Person {
   email         String?  @db.VarChar(100)
   name          String   @map("nome") @db.VarChar(100)
   domainClass   String   @map("classe_dominio") @db.VarChar(32)
-  CPF           String?  @unique @map("cpf") @db.VarChar(11)
+  CPF           String?  @map("cpf") @db.VarChar(11)
   birthDate     DateTime @map("data_nascimento") @db.Date
   contactNumber String?  @map("telefone") @db.VarChar(11)
   active        Boolean  @default(true) @map("ativo")
