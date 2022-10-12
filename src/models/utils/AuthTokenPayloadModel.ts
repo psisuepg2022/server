@@ -6,6 +6,7 @@ type AuthTokenPayloadModel = {
     id: string;
     name: string;
     email: string;
+    code: number;
   };
   type: "access_token" | "refresh_token";
   iat: number;

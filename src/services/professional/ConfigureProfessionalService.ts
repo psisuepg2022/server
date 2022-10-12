@@ -485,11 +485,7 @@ class ConfigureProfessionalService {
       id: professionalUpdated.id,
       name: professionalUpdated?.person.name,
       baseDuration: professionalUpdated.professional?.baseDuration,
-      clinic: {
-        id: professionalUpdated.person.clinic.id,
-        name: professionalUpdated.person.clinic.name,
-        email: professionalUpdated.person.clinic.email,
-      },
+      clinic: professionalUpdated.person.clinic,
       permissions: [
         ...professionalUpdated.role.permissions?.map(
           ({ name }: Partial<PermissionModel>): string => name || "ERROR"

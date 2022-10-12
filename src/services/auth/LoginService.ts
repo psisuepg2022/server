@@ -108,11 +108,7 @@ class LoginService {
       id: hasUser.id,
       baseDuration,
       name: hasUser.person.name,
-      clinic: {
-        id: hasUser.person.clinic.id,
-        name: hasUser.person.clinic.name,
-        email: hasUser.person.clinic.email,
-      },
+      clinic: hasUser.person.clinic,
       permissions: [
         ...hasUser.role.permissions?.map(
           ({ name }: Partial<PermissionModel>): string => name || "ERROR"

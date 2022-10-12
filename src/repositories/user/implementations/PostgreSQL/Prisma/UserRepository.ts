@@ -104,6 +104,7 @@ class UserRepository implements IUserRepository {
                 id: true,
                 name: true,
                 email: true,
+                code: true,
               },
             },
           },
