@@ -94,7 +94,12 @@ class CreatePersonService {
         );
 
       const [hasCPF] = await transaction([
-        this.personRepository.hasCPF(id, this.maskProvider.remove(CPF)),
+        this.personRepository.hasCPF(
+          clinicId,
+          domainClass,
+          id,
+          this.maskProvider.remove(CPF)
+        ),
       ]);
 
       if (hasCPF)

@@ -56,13 +56,20 @@ class PersonRepository implements IPersonRepository {
     }) as PrismaPromise<PersonModel | null>;
 
   public hasCPF = (
+    clinicId: string,
+    domainClass: string,
     id: string,
     CPF: string
   ): PrismaPromise<PersonModel | null> =>
     this.prisma.person.findFirst({
       where: {
         CPF,
+        clinicId,
         id: { not: id },
+        domainClass:
+          domainClass === UserDomainClasses.PATIENT
+            ? {}
+            : { in: [domainClass, UserDomainClasses.PATIENT] },
       },
     }) as PrismaPromise<PersonModel | null>;
 

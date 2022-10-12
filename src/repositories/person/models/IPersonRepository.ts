@@ -8,7 +8,12 @@ interface IPersonRepository {
     id: string,
     email: string
   ): PrismaPromise<PersonModel | null>;
-  hasCPF(id: string, cpf: string): PrismaPromise<PersonModel | null>;
+  hasCPF(
+    clinicId: string,
+    domainClass: string,
+    id: string,
+    CPF: string
+  ): PrismaPromise<PersonModel | null>;
   save(
     clinicId: string,
     person: PersonModel
