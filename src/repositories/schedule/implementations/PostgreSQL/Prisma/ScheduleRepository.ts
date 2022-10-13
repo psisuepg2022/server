@@ -298,5 +298,28 @@ class ScheduleRepository implements IScheduleRepository {
       },
       select: { id: true },
     });
+
+  public hasWeeklyScheduleOutOfRange = (
+    professionalId: string,
+    dayOfTheWeek: number,
+    startTime: Date,
+    endTime: Date
+  ): PrismaPromise<{ id: string; startTime: Date; endTime: Date } | null> =>
+    this.prisma.weeklyScheduleLock.findFirst({
+      where: {
+        weeklySchedule: { professionalId, dayOfTheWeek },
+        NOT: [
+          {
+            startTime: { gte: startTime },
+            endTime: { lte: endTime },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        startTime: true,
+        endTime: true,
+      },
+    });
 }
 export { ScheduleRepository };

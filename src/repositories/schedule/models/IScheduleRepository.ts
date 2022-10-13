@@ -70,6 +70,12 @@ interface IScheduleRepository {
     professionalId: string,
     dayOfTheWeek: number
   ): PrismaPromise<{ id: string } | null>;
+  hasWeeklyScheduleOutOfRange(
+    professionalId: string,
+    dayOfTheWeek: number,
+    startTime: Date,
+    endTime: Date
+  ): PrismaPromise<{ id: string; startTime: Date; endTime: Date } | null>;
 }
 
 export { IScheduleRepository };

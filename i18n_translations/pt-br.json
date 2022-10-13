@@ -182,6 +182,7 @@
   "ErrorWeeklyScheduleLockIntervalOutOfBaseDuration": "A duração do {0}º novo intervalo está fora da duração base informada.",
   "ErrorWeeklyScheduleLockInvalidInterval": "O horário do {0}º novo intervalo está inválido, o início deve ser anterior ao término.",
   "ErrorWeeklyScheduleLockNotFound": "Nenhum intervalo foi encontrado para os parâmetros enviados.",
+  "ErrorWeeklyScheduleLockOutOfRange": "Não é possível realizar a operação na agenda pois existe um bloqueio conflitando: {0} às {1}.",
   "ErrorWeeklyScheduleLockRequired": "É necessário informar o intevalo da agenda semanal.",
   "ErrorWeeklyScheduleLockSameTimes": "Não é possível cadastrar o {0}º novo bloqueio pois os valores de início e término são iguais.",
   "ErrorWeeklyScheduleLockStartTimeInvalid": "O horário de início do {0}º novo intervalo para a agenda deste dia da semana é inválido.",

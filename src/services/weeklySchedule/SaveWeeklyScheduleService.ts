@@ -199,6 +199,24 @@ class SaveWeeklyScheduleService {
         throw new AppError("NOT_FOUND", i18n.__("ErrorWeeklyScheduleNotFound"));
     }
 
+    const [hasWeeklyLockOutOfRange] = await transaction([
+      this.scheduleRepository.hasWeeklyScheduleOutOfRange(
+        professionalId,
+        dayOfTheWeekConverted,
+        startTimeConverted,
+        endTimeConverted
+      ),
+    ]);
+
+    if (hasWeeklyLockOutOfRange)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorWeeklyScheduleLockOutOfRange", [
+          this.maskProvider.time(hasWeeklyLockOutOfRange.startTime),
+          this.maskProvider.time(hasWeeklyLockOutOfRange.endTime),
+        ])
+      );
+
     if (
       await this.hasFutureAppointments(
         "weekly",
