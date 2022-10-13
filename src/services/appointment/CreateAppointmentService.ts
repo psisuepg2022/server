@@ -225,6 +225,8 @@ class CreateAppointmentService {
         ])
       );
 
+    const now = this.dateProvider.now();
+
     const [saved] = await transaction([
       this.appointmentRepository.saveAppointment(
         professionalId,
@@ -234,7 +236,8 @@ class CreateAppointmentService {
           appointmentDate,
           id: this.uniqueIdentifierProvider.generate(),
           status: AppointmentStatus.SCHEDULED,
-          updatedAt: this.dateProvider.now(),
+          updatedAt: now,
+          createdAt: now,
         } as AppointmentModel
       ),
     ]);
