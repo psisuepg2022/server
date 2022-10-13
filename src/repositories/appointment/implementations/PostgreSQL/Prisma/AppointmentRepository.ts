@@ -261,6 +261,46 @@ class AppointmentRepository implements IAppointmentRepository {
       )
     LIMIT 1 OFFSET 0
     `;
+
+  public findTodayAppointmentsOutOfRange = (
+    professionalId: string,
+    dayOfTheWeek: number,
+    startTime: Date,
+    endTime: Date,
+    todayStart: Date,
+    todayEnd: Date
+  ): PrismaPromise<
+    {
+      id: string;
+      name: string;
+      appointmentDate: string;
+    }[]
+  > =>
+    this.prisma.$queryRaw`
+      SELECT 
+        "public"."consulta"."id" AS "id", 
+        "public"."consulta"."data_agendamento" AS "appointmentDate", 
+        "public"."pessoa"."nome" AS "name"
+      FROM "public"."consulta"
+      INNER JOIN "public"."profissional" ON ("public"."consulta"."id_profissional") = ("public"."profissional"."id") 
+      INNER JOIN "public"."pessoa" ON ("public"."consulta"."id_paciente") = ("public"."pessoa"."id")
+      WHERE (
+        "public"."consulta"."id_profissional" = ${professionalId}
+        AND ((extract(DOW FROM "public"."consulta"."data_agendamento"::TIMESTAMP)) + 1) = ${dayOfTheWeek}
+        AND "public"."consulta"."data_agendamento" >= ${todayStart}::TIMESTAMP
+        AND "public"."consulta"."data_agendamento" <= ${todayEnd}::TIMESTAMP
+        AND (
+          "public"."consulta"."data_agendamento" < ${startTime}::TIMESTAMP
+          OR "public"."consulta"."data_agendamento"::TIME + ("public"."profissional"."duracao_base" * interval '1 minute') > ${endTime}::TIME
+        )
+      )
+      LIMIT 1 OFFSET 0` as PrismaPromise<
+      {
+        id: string;
+        name: string;
+        appointmentDate: string;
+      }[]
+    >;
 }
 
 export { AppointmentRepository };

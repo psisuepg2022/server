@@ -218,6 +218,30 @@ class SaveWeeklyScheduleService {
         ])
       );
 
+    const now = this.dateProvider.now().toISOString().split("T")[0];
+
+    const [hasTodayAppointmentsOutOfRange] = await transaction([
+      this.appointmentRepository.findTodayAppointmentsOutOfRange(
+        professionalId,
+        dayOfTheWeekConverted,
+        this.dateProvider.getUTCDate(now, startTime),
+        this.dateProvider.getUTCDate(now, endTime),
+        this.dateProvider.getUTCDate(now, "00:00"),
+        this.dateProvider.getUTCDate(now, "23:59")
+      ),
+    ]);
+
+    if (hasTodayAppointmentsOutOfRange.length > 0)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorAppointmentHasTodayAppointmentsOutOfRange", [
+          this.maskProvider.time(
+            new Date(hasTodayAppointmentsOutOfRange[0].appointmentDate)
+          ),
+          hasTodayAppointmentsOutOfRange[0].name,
+        ])
+      );
+
     const createLocksOperations: PrismaPromise<WeeklyScheduleLockModel>[] = [];
 
     if (locks && Array.isArray(locks) && locks.length > 0)

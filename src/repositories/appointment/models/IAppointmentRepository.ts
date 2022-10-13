@@ -67,6 +67,20 @@ interface IAppointmentRepository {
     appointmentId: string
   ): PrismaPromise<AppointmentModel | null>;
   deleteById(id: string): PrismaPromise<Partial<AppointmentModel>>;
+  findTodayAppointmentsOutOfRange(
+    professionalId: string,
+    dayOfTheWeek: number,
+    startTime: Date,
+    endTime: Date,
+    todayStart: Date,
+    todayEnd: Date
+  ): PrismaPromise<
+    {
+      id: string;
+      name: string;
+      appointmentDate: string;
+    }[]
+  >;
 }
 
 export { IAppointmentRepository };

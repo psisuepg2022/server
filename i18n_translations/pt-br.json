@@ -31,6 +31,7 @@
   "ErrorAppointmentDontHaveTimeWithoutLock": "O profissional não poderá atender no horário da consulta informado.",
   "ErrorAppointmentEndTimeInvalid": "O horário de término informado para realizar o agendamento é inválido.",
   "ErrorAppointmentEndTimeRequired": "É necessário informar o horário de término para realizar um agendamento.",
+  "ErrorAppointmentHasTodayAppointmentsOutOfRange": "Não é possível alterar a agenda pois existe uma consulta às {0} para o paciente {1} que está fora do intervalo desejado. Por favor, tente realizar esta operação amanhã.",
   "ErrorAppointmentIdNotFound": "Não foi possível encontrar a consulta com o identificador informado.",
   "ErrorAppointmentIdRequired": "É necessário informar o identificador da consulta para realizar a operação.",
   "ErrorAppointmentIntervalInvalid": "O intervalo da consulta é inválido.",
