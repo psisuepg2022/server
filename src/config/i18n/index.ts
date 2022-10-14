@@ -2,6 +2,7 @@ import i18n from "i18n";
 import path from "path";
 
 import { AppError } from "@handlers/error/AppError";
+import { logger } from "@infra/log";
 import { Languages } from "@infra/utils";
 
 i18n.configure({
@@ -26,7 +27,7 @@ i18n.configure({
       }
     })();
 
-    console.log(`Missing key: ${value} for ${locale} language`);
+    logger.error(`Missing key: ${value} for ${locale} language`);
 
     throw new AppError("INTERNAL_SERVER_ERROR", message);
   },
