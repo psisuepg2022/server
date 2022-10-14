@@ -97,6 +97,19 @@ class CreateProfessionalService extends CreateUserService {
     if (stringIsNullOrEmpty(registry))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorRegistryRequired"));
 
+    const [hasRegistry] = await transaction([
+      this.professionalRepository.hasRegistry(clinicId, id, registry),
+    ]);
+
+    if (hasRegistry)
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorRegistryAlreadyExists", [
+          hasRegistry.name,
+          hasRegistry.active ? "" : " (Inativo)",
+        ])
+      );
+
     await super.createUserOperation(
       {
         birthDate,

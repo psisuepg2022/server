@@ -81,6 +81,11 @@ interface IProfessionalRepository {
     professionalId: string,
     patientId: string
   ): PrismaPromise<{ id: string } | null>;
+  hasRegistry(
+    clinicId: string,
+    professionalId: string,
+    registry: string
+  ): PrismaPromise<{ id: string; name: string; active: boolean } | null>;
 }
 
 export { IProfessionalRepository };

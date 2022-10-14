@@ -403,6 +403,24 @@ class ProfessionalRepository implements IProfessionalRepository {
       },
       select: { id: true },
     });
+
+  public hasRegistry = (
+    clinicId: string,
+    professionalId: string,
+    registry: string
+  ): PrismaPromise<{ id: string; name: string; active: boolean } | null> =>
+    this.prisma.person.findFirst({
+      where: {
+        clinicId,
+        id: { not: professionalId },
+        user: { professional: { registry } },
+      },
+      select: {
+        id: true,
+        name: true,
+        active: true,
+      },
+    });
 }
 
 export { ProfessionalRepository };

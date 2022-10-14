@@ -116,6 +116,7 @@
   "ErrorRefreshTokenExpired": "A chave de atualização da autenticação expirou. Por favor, realize login novamente.",
   "ErrorRefreshTokenRequired": "É necessário informar a chave de atualização para manter a autenticação.",
   "ErrorRefreshUserNotFound": "A chave de atualização não pertence a um usuário válido.",
+  "ErrorRegistryAlreadyExists": "O registro profissional informado já existe, e pertence a {0}{1}.",
   "ErrorRegistryRequired": "É necessário informar o registro.",
   "ErrorResetPasswdConfirmNewPasswordRequired": "É necessário informar a confirmação da nova senha.",
   "ErrorResetPasswdNewPasswordAndConfirmAreNotEqual": "A nova senha é diferente da confirmação.",
