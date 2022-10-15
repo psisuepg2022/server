@@ -52,6 +52,11 @@ class CreatePatientService extends CreatePersonService {
     );
   }
 
+  protected handlingHasCpf = (domainConflicting: string): void => {
+    if (/^(?:Object\.Person\.User)/.test(domainConflicting))
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorUserCannotBePatient"));
+  };
+
   public async execute(
     {
       id: idReceived,
@@ -72,9 +77,6 @@ class CreatePatientService extends CreatePersonService {
 
     if (stringIsNullOrEmpty(gender))
       throw new AppError("BAD_REQUEST", i18n.__("ErrorGenderRequired"));
-
-    if (stringIsNullOrEmpty(maritalStatus))
-      throw new AppError("BAD_REQUEST", i18n.__("ErrorMaritalStatusRequired"));
 
     const genderConverted = toNumber({
       value: gender,

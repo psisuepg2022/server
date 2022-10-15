@@ -54,6 +54,9 @@ class CreatePersonService {
       ? id
       : this.uniqueIdentifierProvider.generate();
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected handlingHasCpf = (_: string): void => {};
+
   protected async createPersonOperation(
     {
       CPF,
@@ -102,8 +105,10 @@ class CreatePersonService {
         ),
       ]);
 
-      if (hasCPF)
+      if (hasCPF) {
+        this.handlingHasCpf(hasCPF.domainClass);
         throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFAlreadyExists"));
+      }
 
       return _CPFConverted;
     })();

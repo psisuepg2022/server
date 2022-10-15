@@ -73,6 +73,11 @@ class CreateUserService extends CreatePersonService {
     }
   };
 
+  protected handlingHasCpf = (domainConflicting: string): void => {
+    if (domainConflicting === UserDomainClasses.PATIENT)
+      throw new AppError("BAD_REQUEST", i18n.__("ErrorPatientCannotBeUser"));
+  };
+
   protected async createUserOperation(
     {
       CPF,
