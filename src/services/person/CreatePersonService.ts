@@ -72,7 +72,10 @@ class CreatePersonService {
     CPFRequired = true
   ): Promise<void> {
     const CPFConverted = await (async (): Promise<string | null> => {
-      if (!CPFRequired) return null;
+      if (!CPFRequired)
+        return !stringIsNullOrEmpty(CPF) && this.validatorsProvider.cpf(CPF)
+          ? this.maskProvider.remove(CPF)
+          : null;
 
       if (stringIsNullOrEmpty(CPF))
         throw new AppError("BAD_REQUEST", i18n.__("ErrorCPFIsRequired"));

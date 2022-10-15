@@ -132,7 +132,7 @@ class UpdatePatientService extends CreatePatientService {
         clinicId,
         contactNumber,
         email,
-        CPF: CPF || hasPatient.person.CPF || "",
+        CPF: CPF || "",
         birthDate: `${
           birthDate || hasPatient.person.birthDate?.toISOString().split("T")[0]
         }`,
