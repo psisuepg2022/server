@@ -163,8 +163,12 @@ class CreatePersonService {
         );
     }
 
-    const contactNumberConverted = ((): string | null => {
-      if (!contactNumber) return null;
+    const contactNumberConverted = ((): string => {
+      if (stringIsNullOrEmpty(contactNumber))
+        throw new AppError(
+          "BAD_REQUEST",
+          i18n.__("ErrorContactNumberRequired")
+        );
 
       if (!this.validatorsProvider.contactNumber(contactNumber))
         throw new AppError("BAD_REQUEST", i18n.__("ErrorContactNumberInvalid"));

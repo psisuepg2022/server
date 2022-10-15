@@ -5,7 +5,7 @@ type CreatePersonRequestModel = {
   email: string | null;
   name: string;
   CPF: string;
-  contactNumber?: string;
+  contactNumber: string;
   birthDate: string;
   clinicId: string;
   address?: CreateAddressRequestModel;

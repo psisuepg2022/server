@@ -81,6 +81,7 @@
   "ErrorConfigureProfessionalWeeklyStartTimeInvalid": "O horário de início de {0} é inválido.",
   "ErrorConfigureProfessionalWeeklyStartTimeRequired": "É necessário informar o início do horário de {0}.",
   "ErrorContactNumberInvalid": "O número para contato informado é inválido.",
+  "ErrorContactNumberRequired": "É necessário informar o telefone para contato.",
   "ErrorCreateCommentAppointmentNotFound": "Não foi encontrada nenhuma consulta sem anotações com os dados informados.",
   "ErrorCreateCommentTextRequired": "É necessário informar o conteúdo das anotações para concluir a operação.",
   "ErrorDistrictRequired": "É necessário informar o Estado para registro do endereço.",

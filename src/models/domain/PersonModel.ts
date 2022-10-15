@@ -6,7 +6,7 @@ type PersonModel = {
   CPF: string | null;
   birthDate: Date;
   active: boolean;
-  contactNumber: string | null;
+  contactNumber: string;
 };
 
 export { PersonModel };
