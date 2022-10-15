@@ -4,9 +4,7 @@ import { PrismaPromise } from "@prisma/client";
 
 interface ILiableRepository {
   save(patientId: string, liableId: string): PrismaPromise<any>;
-  hasLiablePersonSaved(
-    id: string
-  ): PrismaPromise<(any & { person: PersonModel }) | null>;
+  hasLiablePersonSaved(id: string): PrismaPromise<PersonModel | null>;
   hasByPatient(patientId: string): PrismaPromise<any | null>;
   unlink(patientId: string): PrismaPromise<any>;
   get(

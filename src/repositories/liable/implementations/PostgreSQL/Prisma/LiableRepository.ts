@@ -24,22 +24,18 @@ class LiableRepository implements ILiableRepository {
 
   public hasLiablePersonSaved = (
     id: string
-  ): PrismaPromise<(any & { person: PersonModel }) | null> =>
-    this.prisma.liable.findFirst({
-      where: { personId: id },
+  ): PrismaPromise<PersonModel | null> =>
+    this.prisma.person.findFirst({
+      where: { id, active: true, domainClass: UserDomainClasses.LIABLE },
       select: {
-        person: {
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            CPF: true,
-            birthDate: true,
-            contactNumber: true,
-          },
-        },
+        id: true,
+        email: true,
+        name: true,
+        CPF: true,
+        birthDate: true,
+        contactNumber: true,
       },
-    }) as PrismaPromise<(any & { person: PersonModel }) | null>;
+    }) as PrismaPromise<PersonModel | null>;
 
   public get = (
     clinicId: string,

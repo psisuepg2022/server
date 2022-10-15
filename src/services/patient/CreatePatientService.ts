@@ -111,19 +111,17 @@ class CreatePatientService extends CreatePersonService {
             throw new AppError("NOT_FOUND", i18n.__("ErrorLiableNotFound"));
 
           return {
-            CPF: liableReceived.CPF || _hasLiable.person.CPF,
+            CPF: liableReceived.CPF || _hasLiable.CPF || "",
             birthDate:
               liableReceived.birthDate ||
-              this.maskProvider.date(_hasLiable.person.birthDate || new Date()),
-            name: liableReceived.name || _hasLiable.person.name,
+              this.maskProvider.date(_hasLiable.birthDate || new Date()),
+            name: liableReceived.name || _hasLiable.name,
             contactNumber:
               liableReceived.contactNumber ||
-              this.maskProvider.contactNumber(
-                _hasLiable.person.contactNumber || ""
-              ),
-            email: liableReceived.email || _hasLiable.person.email,
+              this.maskProvider.contactNumber(_hasLiable.contactNumber || ""),
+            email: liableReceived.email || _hasLiable.email,
             clinicId,
-            id: _hasLiable.person.id,
+            id: _hasLiable.id,
           };
         }
 
