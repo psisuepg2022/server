@@ -26,7 +26,7 @@ model Person {
   domainClass   String   @map("classe_dominio") @db.VarChar(32)
   CPF           String?  @map("cpf") @db.VarChar(11)
   birthDate     DateTime @map("data_nascimento") @db.Date
-  contactNumber String?  @map("telefone") @db.VarChar(11)
+  contactNumber String   @map("telefone") @db.VarChar(11)
   active        Boolean  @default(true) @map("ativo")
   createdAt     DateTime @default(now()) @map("data_criacao") @db.Timestamp()
 
