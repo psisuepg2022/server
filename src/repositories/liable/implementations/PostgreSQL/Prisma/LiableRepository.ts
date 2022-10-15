@@ -45,31 +45,25 @@ class LiableRepository implements ILiableRepository {
     clinicId: string,
     [take, skip]: [number, number],
     filters: SearchPersonRequestModel | null
-  ): PrismaPromise<(any & { person: Partial<PersonModel> })[]> =>
-    this.prisma.liable.findMany({
+  ): PrismaPromise<Partial<PersonModel>[]> =>
+    this.prisma.person.findMany({
       where: {
-        person: {
-          clinicId,
-          domainClass: UserDomainClasses.LIABLE,
-          active: true,
-          AND: clause2searchPeopleWithFilters(filters),
-        },
+        clinicId,
+        domainClass: UserDomainClasses.LIABLE,
+        active: true,
+        AND: clause2searchPeopleWithFilters(filters),
       },
       select: {
-        person: {
-          select: {
-            birthDate: true,
-            contactNumber: true,
-            CPF: true,
-            email: true,
-            name: true,
-            id: true,
-          },
-        },
+        birthDate: true,
+        contactNumber: true,
+        CPF: true,
+        email: true,
+        name: true,
+        id: true,
       },
       take,
       skip,
-    }) as PrismaPromise<(any & { person: Partial<PersonModel> })[]>;
+    }) as PrismaPromise<Partial<PersonModel>[]>;
 
   public hasByPatient = (patientId: string): PrismaPromise<any | null> =>
     this.prisma.liable.findFirst({

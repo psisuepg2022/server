@@ -13,7 +13,7 @@ import { SearchPeopleWithFiltersService } from "@services/person";
 @injectable()
 class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService<
   ListPeopleResponseModel,
-  any & { person: Partial<PersonModel> }
+  Partial<PersonModel>
 > {
   constructor(
     @inject("PersonRepository")
@@ -37,9 +37,9 @@ class SearchLiablesWithFiltersService extends SearchPeopleWithFiltersService<
   ): any =>
     this.liableRepository.get(clinicId, pagination, this.getFilters(filters));
 
-  protected convertObject = ({
-    person,
-  }: any & { person: Partial<PersonModel> }): ListPeopleResponseModel =>
+  protected convertObject = (
+    person: Partial<PersonModel>
+  ): ListPeopleResponseModel =>
     ({
       ...this.covertBase(person),
     } as ListPeopleResponseModel);

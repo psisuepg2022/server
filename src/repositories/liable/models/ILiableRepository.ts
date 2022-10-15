@@ -13,7 +13,7 @@ interface ILiableRepository {
     clinicId: string,
     [take, skip]: [number, number],
     filters: SearchPersonRequestModel | null
-  ): PrismaPromise<(any & { person: Partial<PersonModel> })[]>;
+  ): PrismaPromise<Partial<PersonModel>[]>;
 }
 
 export { ILiableRepository };
