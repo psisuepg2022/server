@@ -1,3 +1,4 @@
+import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { SearchPersonRequestModel } from "@models/dto/person/SearchPersonRequestModel";
 
 const clause2searchPeopleWithFilters = (
@@ -9,28 +10,30 @@ const clause2searchPeopleWithFilters = (
       mode: "insensitive",
     },
   },
-  {
-    OR: [
-      { email: null },
-      {
+  stringIsNullOrEmpty(filters?.email || "")
+    ? undefined
+    : {
         email: {
           contains: filters?.email || "%",
           mode: "insensitive",
         },
       },
-    ],
-  },
-  {
-    OR: [
-      { CPF: null },
-      {
-        CPF: {
-          contains: filters?.CPF || "%",
-          mode: "default",
-        },
+  stringIsNullOrEmpty(filters?.CPF || "")
+    ? undefined
+    : {
+        OR: [
+          { CPF: filters?.CPF },
+          {
+            patient: {
+              liable: {
+                person: {
+                  CPF: filters?.CPF,
+                },
+              },
+            },
+          },
+        ],
       },
-    ],
-  },
 ];
 
 export { clause2searchPeopleWithFilters };
