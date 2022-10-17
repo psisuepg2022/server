@@ -10,6 +10,7 @@
     "lint": "eslint . --ext js,ts",
     "message:insert": "./scripts/messages/exec.sh",
     "db:reset": "dotenv -e .env.development -- ./scripts/db/reset_database.sh",
+    "db:recreate": "dotenv -e .env.development -- ./scripts/db/re-create_database.sh",
     "db:permissions": "dotenv -e .env.development -- ./scripts/db/read_permissions.sh",
     "db:backup:dev": "dotenv -e .env.development -- ./scripts/db/backup_database.sh",
     "db:backup:homolog": "dotenv -e .env.test -- ./scripts/db/backup_database.sh",
