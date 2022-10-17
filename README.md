@@ -30,7 +30,7 @@ Projeto realizado para disciplina Projeto de Software
 ```
 
 * Criar o arquivo **.env.development** na raíz da API
-* Copiar as variáveis de ambiente o arquivo **.env.example**
+* Copiar as variáveis de ambiente do arquivo **.env.example**
 * Completar as variáveis com os valores locais desejados (para o local **não** é necessário informar **SHADOW_DATABASE_URL**)
 * Formato da ***connection string*** do banco
 
@@ -73,6 +73,7 @@ Projeto realizado para disciplina Projeto de Software
     "password": "",
     "name": "",
     "CPF": "ddd.ddd.ddd-dd",
-    "birthDate": "yyyy-MM-dd"
+    "birthDate": "yyyy-MM-dd",
+    "contactNumber": "(dd) ddddd-dddd"
     }'
 ```
