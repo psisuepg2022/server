@@ -68,18 +68,12 @@ class SaveCommentService {
         i18n.__("ErrorCreateCommentAppointmentNotFound")
       );
 
-    const updatedAt = this.dateProvider.now();
-
     const [savedComment, updatedStatus] = await transaction([
-      this.commentsRepository.save(
-        appointmentId,
-        blankComments ? null : text,
-        updatedAt
-      ),
+      this.commentsRepository.save(appointmentId, blankComments ? null : text),
       this.appointmentRepository.updateStatus(
         appointmentId,
         AppointmentStatus.COMPLETED,
-        updatedAt
+        this.dateProvider.now()
       ),
     ]);
 

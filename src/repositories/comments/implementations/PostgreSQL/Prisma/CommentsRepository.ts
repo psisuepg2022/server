@@ -9,12 +9,11 @@ class CommentsRepository implements ICommentsRepository {
 
   public save = (
     id: string,
-    text: string | null,
-    updatedAt: Date
+    text: string | null
   ): PrismaPromise<{ id: string; comments: string | null; updatedAt: Date }> =>
     this.prisma.appointment.update({
       where: { id },
-      data: { updatedAt, comments: text },
+      data: { comments: text },
       select: { id: true, comments: true, updatedAt: true },
     });
 
