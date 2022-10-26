@@ -81,6 +81,10 @@ interface IAppointmentRepository {
       appointmentDate: string;
     }[]
   >;
+  getByDate(
+    professionalId: string,
+    date: Date
+  ): PrismaPromise<Partial<AppointmentModel> | null>;
 }
 
 export { IAppointmentRepository };

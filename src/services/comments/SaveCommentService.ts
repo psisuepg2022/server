@@ -68,14 +68,22 @@ class SaveCommentService {
         i18n.__("ErrorCreateCommentAppointmentNotFound")
       );
 
-    const [savedComment, updatedStatus] = await transaction([
-      this.commentsRepository.save(appointmentId, blankComments ? null : text),
-      this.appointmentRepository.updateStatus(
-        appointmentId,
-        AppointmentStatus.COMPLETED,
-        this.dateProvider.now()
-      ),
-    ]);
+    const [savedComment, updatedStatus, hasAppointmentOnTheNextWeek] =
+      await transaction([
+        this.commentsRepository.save(
+          appointmentId,
+          blankComments ? null : text
+        ),
+        this.appointmentRepository.updateStatus(
+          appointmentId,
+          AppointmentStatus.COMPLETED,
+          this.dateProvider.now()
+        ),
+        this.appointmentRepository.getByDate(
+          professionalId,
+          this.dateProvider.addDays(hasAppointment.appointmentDate as Date, 7)
+        ),
+      ]);
 
     return {
       appointmentId: savedComment.id,
@@ -85,6 +93,7 @@ class SaveCommentService {
         "APPOINTMENT_STATUS",
         AppointmentStatus[updatedStatus.status as number]
       ),
+      hasSameTimeToNextWeek: !hasAppointmentOnTheNextWeek,
     };
   }
 }

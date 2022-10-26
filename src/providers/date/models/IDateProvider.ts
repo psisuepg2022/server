@@ -12,6 +12,7 @@ interface IDateProvider {
   differenceInDays(left: Date, rigth: Date): number;
   differenceInYears(left: Date, rigth: Date): number;
   addMinutes(date: Date, hours: number): Date;
+  addDays(date: Date, amount: number): Date;
   equals(start: Date, end: Date): boolean;
   intervalConflicting(
     left: { start: Date; end: Date },

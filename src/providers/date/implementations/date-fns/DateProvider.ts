@@ -9,6 +9,7 @@ import ptBR, {
   differenceInCalendarYears,
   addMinutes,
   isEqual,
+  addDays,
 } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
@@ -68,6 +69,8 @@ class DateProvider implements IDateProvider {
   ];
 
   addMinutes = (date: Date, hours: number): Date => addMinutes(date, hours);
+
+  addDays = (date: Date, amount: number): Date => addDays(date, amount);
 
   equals = (start: Date, end: Date): boolean => isEqual(start, end);
 

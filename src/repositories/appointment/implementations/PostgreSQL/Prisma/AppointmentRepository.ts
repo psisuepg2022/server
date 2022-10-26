@@ -159,7 +159,7 @@ class AppointmentRepository implements IAppointmentRepository {
           ],
         },
       },
-      select: { id: true },
+      select: { id: true, appointmentDate: true },
     });
 
   public hasUncompletedAppointmentsByProfessional = (
@@ -214,6 +214,18 @@ class AppointmentRepository implements IAppointmentRepository {
         id: true,
       },
     }) as PrismaPromise<Partial<AppointmentModel>>;
+
+  public getByDate = (
+    professionalId: string,
+    date: Date
+  ): PrismaPromise<Partial<AppointmentModel> | null> =>
+    this.prisma.appointment.findFirst({
+      where: {
+        professionalId,
+        appointmentDate: date,
+      },
+      select: { id: true },
+    }) as PrismaPromise<Partial<AppointmentModel> | null>;
 
   public hasUncompletedAppointmentsByDayOfTheWeek = (
     type: "weekly" | "lock",
