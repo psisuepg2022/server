@@ -81,6 +81,17 @@ class LoginService {
         ),
       ]);
 
+      if (
+        (userUpdated.loginAttempts as number) >= max * 0.7 &&
+        (userUpdated.loginAttempts as number) !== max
+      )
+        throw new AppError(
+          "UNAUTHORIZED",
+          i18n.__mf("ErrorLoginUserUnauthorizedAndWillBeBlockedInFewAttempts", [
+            max - (userUpdated.loginAttempts as number),
+          ])
+        );
+
       if (userUpdated.blocked)
         throw new AppError(
           "UNAUTHORIZED",

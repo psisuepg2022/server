@@ -100,6 +100,7 @@
   "ErrorInternal": "Ocorreu um erro interno no servidor.",
   "ErrorLiableNotFound": "Não foi possível encontrar o responsável informado.",
   "ErrorLoginUserUnauthorized": "Não foi possível autenticar o usuário com as credenciais informadas.",
+  "ErrorLoginUserUnauthorizedAndWillBeBlockedInFewAttempts": "Não foi possível autenticar o usuário com as credencias informadas. Sua conta será bloqueada em: {0} tentativa(s).",
   "ErrorLoginUserWillBeBlocked": "Não foi possível realizar o login. Devido à excessivas tentativas, sua conta será bloqueada. Para recuperá-la, entre em contato com um administrador.",
   "ErrorMaritalStatusInvalid": "A informação do estado civil é inválida.",
   "ErrorMaritalStatusRequired": "É necessário informar o estado civil.",
