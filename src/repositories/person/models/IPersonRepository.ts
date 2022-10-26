@@ -6,7 +6,8 @@ interface IPersonRepository {
   hasEmail(
     clinicId: string,
     id: string,
-    email: string
+    email: string,
+    domainClass: string
   ): PrismaPromise<PersonModel | null>;
   hasCPF(
     clinicId: string,
