@@ -163,7 +163,7 @@
   "ErrorUserIDNotFound": "Não foi possível encontrar o {0} com o identificador informado.",
   "ErrorUserIDRequired": "É necessário informar a identificação do {0}.",
   "ErrorUserIsBlocked": "Não foi possível autenticar o usuário pois este está bloqueado. Por favor, entre em contato com um administrador.",
-  "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe.",
+  "ErrorUserNameAlreadyExists": "O nome de usuário informado já existe nesta clínica.",
   "ErrorUserNameRequired": "É necessário informar o nome de usuário.",
   "ErrorUserNameWithWhiteSpace": "O nome de usuário não pode conter espaços em branco.",
   "ErrorValueOutOfAppointmentStatusDomain": "A situação informada não é reconhecida. Por favor, informe uma situação válida.",
