@@ -11,10 +11,12 @@ const pagination = ({
 }: Partial<IPaginationOptions>): [number, number] => {
   const take = ((): number => {
     if (size) {
-      const converted = toNumber({
-        value: size,
-        error: new AppError("BAD_REQUEST", i18n.__("ErrorQueryTypecasting")),
-      });
+      const converted = Math.abs(
+        toNumber({
+          value: size,
+          error: new AppError("BAD_REQUEST", i18n.__("ErrorQueryTypecasting")),
+        })
+      );
 
       return converted > ConstantsKeys.MAX_PAGE_SIZE
         ? ConstantsKeys.MAX_PAGE_SIZE
@@ -30,7 +32,8 @@ const pagination = ({
         value: page,
         error: new AppError("BAD_REQUEST", i18n.__("ErrorQueryTypecasting")),
       });
-      return converted * take;
+
+      return Math.abs(converted) * take;
     }
 
     return 0;
