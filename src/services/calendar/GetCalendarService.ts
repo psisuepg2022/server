@@ -1,6 +1,7 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { ConstantsKeys } from "@common/ConstantsKeys";
 import { AppError } from "@handlers/error/AppError";
 import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
@@ -94,11 +95,13 @@ class GetCalendarService {
 
     if (
       this.dateProvider.differenceInDays(endDateConverted, startDateConverted) >
-      42
+      ConstantsKeys.MAX_DAYS_ON_GET_CALENDAR
     )
       throw new AppError(
         "BAD_REQUEST",
-        i18n.__mf("ErrorCalendarSearchIntervalTooLarge", ["30"])
+        i18n.__mf("ErrorCalendarSearchIntervalTooLarge", [
+          ConstantsKeys.MAX_DAYS_ON_GET_CALENDAR,
+        ])
       );
 
     const [hasProfessional] = await transaction([
