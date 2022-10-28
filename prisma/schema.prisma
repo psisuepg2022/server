@@ -56,10 +56,11 @@ model Address {
 }
 
 model User {
-  userName      String  @map("nome_usuario") @db.VarChar(100)
-  blocked       Boolean @default(false) @map("bloqueado")
-  loginAttempts Int     @default(0) @map("tentativas")
-  password      String  @map("senha") @db.VarChar(255)
+  userName            String    @map("nome_usuario") @db.VarChar(100)
+  blocked             Boolean   @default(false) @map("bloqueado")
+  loginAttempts       Int       @default(0) @map("tentativas")
+  lastFailedLoginDate DateTime? @map("data_ultimo_login_errado") @db.Timestamp()
+  password            String    @map("senha") @db.VarChar(255)
 
   id     String @id @unique @db.Uuid
   person Person @relation(fields: [id], references: [id])
