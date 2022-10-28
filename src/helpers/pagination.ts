@@ -1,8 +1,8 @@
+import { ConstantsKeys } from "@common/ConstantsKeys";
 import { i18n } from "@config/i18n";
 import { AppError } from "@handlers/error/AppError";
 import { IPaginationOptions } from "@infra/http";
 
-import { env } from "./env";
 import { toNumber } from "./toNumber";
 
 const pagination = ({
@@ -16,26 +16,12 @@ const pagination = ({
         error: new AppError("BAD_REQUEST", i18n.__("ErrorQueryTypecasting")),
       });
 
-      const maxPageSize = toNumber({
-        value: env("MAX_PAGE_SIZE"),
-        error: new AppError(
-          "INTERNAL_SERVER_ERROR",
-          i18n.__("ErrorMissingEnvVar")
-        ),
-      });
-
-      return converted > maxPageSize ? maxPageSize : converted;
+      return converted > ConstantsKeys.MAX_PAGE_SIZE
+        ? ConstantsKeys.MAX_PAGE_SIZE
+        : converted;
     }
 
-    const sizeDefault = toNumber({
-      value: env("PAGE_SIZE_DEFAULT"),
-      error: new AppError(
-        "INTERNAL_SERVER_ERROR",
-        i18n.__("ErrorEnvPageSizeDefault")
-      ),
-    });
-
-    return sizeDefault;
+    return ConstantsKeys.PAGE_SIZE_DEFAULT;
   })();
 
   const skip = ((): number => {

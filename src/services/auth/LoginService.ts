@@ -1,9 +1,9 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { ConstantsKeys } from "@common/ConstantsKeys";
 import { UserDomainClasses } from "@common/UserDomainClasses";
 import { AppError } from "@handlers/error/AppError";
-import { env } from "@helpers/env";
 import { getUserType2External } from "@helpers/getUserType2External";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { toNumber } from "@helpers/toNumber";
@@ -57,38 +57,25 @@ class LoginService {
       throw new AppError("UNAUTHORIZED", i18n.__("ErrorUserIsBlocked"));
 
     if (!(await this.hashProvider.compare(password, hasUser.password))) {
-      const maxLoginAttempts = env("MAX_LOGIN_ATTEMPTS");
-
-      if (stringIsNullOrEmpty(maxLoginAttempts || ""))
-        throw new AppError(
-          "INTERNAL_SERVER_ERROR",
-          i18n.__("ErrorEnvMaxLoginAttempts")
-        );
-
-      const max = toNumber({
-        value: maxLoginAttempts,
-        error: new AppError(
-          "INTERNAL_SERVER_ERROR",
-          i18n.__("ErrorEnvMaxLoginAttempts")
-        ),
-      });
-
       const [userUpdated] = await transaction([
         this.userRepository.updateLoginControlProps(
           hasUser.id,
           hasUser.loginAttempts + 1,
-          hasUser.loginAttempts + 1 === max
+          hasUser.loginAttempts + 1 === ConstantsKeys.MAX_LOGIN_ATTEMPTS
         ),
       ]);
 
       if (
-        (userUpdated.loginAttempts as number) >= max * 0.7 &&
-        (userUpdated.loginAttempts as number) !== max
+        (userUpdated.loginAttempts as number) >=
+          ConstantsKeys.MAX_LOGIN_ATTEMPTS * 0.7 &&
+        (userUpdated.loginAttempts as number) !==
+          ConstantsKeys.MAX_LOGIN_ATTEMPTS
       )
         throw new AppError(
           "UNAUTHORIZED",
           i18n.__mf("ErrorLoginUserUnauthorizedAndWillBeBlockedInFewAttempts", [
-            max - (userUpdated.loginAttempts as number),
+            ConstantsKeys.MAX_LOGIN_ATTEMPTS -
+              (userUpdated.loginAttempts as number),
           ])
         );
 

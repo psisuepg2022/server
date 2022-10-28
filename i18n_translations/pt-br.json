@@ -88,8 +88,6 @@
   "ErrorEmailInvalid": "O e-mail informado é inválido.",
   "ErrorEmailIsRequired": "É necessário informar o e-mail para cadastro.",
   "ErrorEnvJwtSecretKey": "Ocorreu um erro ao recuperar as informações para autenticação. Por favor, entre em contato com um administrador.",
-  "ErrorEnvMaxLoginAttempts": "Não foi possível recuperar as informações para controle do login. Por favor, entre em contato com um administrador.",
-  "ErrorEnvPageSizeDefault": "Ocorreu um erro ao recuperar as informações para realizar a busca paginada. Por favor, entre em contato com um administrador.",
   "ErrorEnvSupportId": "Não foi possível recuperar as informações necessárias. Por favor, entre em contato com um administrador.",
   "ErrorFutureBirthDate": "A data de nascimento não pode ser futura.",
   "ErrorGenderInvalid": "A informação do gênero é inválida.",
