@@ -4,6 +4,7 @@ type UserModel = PersonModel & {
   userName: string;
   blocked: boolean;
   loginAttempts: number;
+  lastFailedLoginDate: Date | null;
   password: string;
 };
 

@@ -13,6 +13,7 @@ import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
 import { AuthTokenPayloadModel } from "@models/utils/AuthTokenPayloadModel";
 import { PermissionModel } from "@models/utils/PermissionModel";
 import { IAuthTokenProvider } from "@providers/authToken";
+import { IDateProvider } from "@providers/date";
 import { IHashProvider } from "@providers/hash";
 import { IUserRepository } from "@repositories/user";
 
@@ -24,7 +25,9 @@ class LoginService {
     @inject("HashProvider")
     private hashProvider: IHashProvider,
     @inject("AuthTokenProvider")
-    private authTokenProvider: IAuthTokenProvider
+    private authTokenProvider: IAuthTokenProvider,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {}
 
   public async execute({
@@ -56,12 +59,27 @@ class LoginService {
     if (hasUser.blocked)
       throw new AppError("UNAUTHORIZED", i18n.__("ErrorUserIsBlocked"));
 
+    const now = this.dateProvider.now();
+
     if (!(await this.hashProvider.compare(password, hasUser.password))) {
+      const attempts =
+        !hasUser.lastFailedLoginDate ||
+        this.dateProvider.isBefore(
+          now,
+          this.dateProvider.addMinutes(
+            hasUser.lastFailedLoginDate,
+            ConstantsKeys.MINUTES_TO_RESET_FAILED_LOGIN_ATTEMPTS
+          )
+        )
+          ? hasUser.loginAttempts + 1
+          : 1;
+
       const [userUpdated] = await transaction([
         this.userRepository.updateLoginControlProps(
           hasUser.id,
-          hasUser.loginAttempts + 1,
-          hasUser.loginAttempts + 1 === ConstantsKeys.MAX_LOGIN_ATTEMPTS
+          attempts,
+          attempts === ConstantsKeys.MAX_LOGIN_ATTEMPTS,
+          now
         ),
       ]);
 
@@ -89,7 +107,7 @@ class LoginService {
     }
 
     await transaction([
-      this.userRepository.updateLoginControlProps(hasUser.id, 0, false),
+      this.userRepository.updateLoginControlProps(hasUser.id, 0, false, null),
     ]);
 
     const baseDuration = ((): number | undefined => {

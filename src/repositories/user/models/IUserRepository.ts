@@ -32,7 +32,8 @@ interface IUserRepository {
   updateLoginControlProps(
     userId: string,
     attempts: number,
-    blocked: boolean
+    blocked: boolean,
+    loginFailedDate: Date | null
   ): PrismaPromise<Partial<UserModel>>;
   verifyRole(
     userId: string,

@@ -38,13 +38,15 @@ class UserRepository implements IUserRepository {
   public updateLoginControlProps = (
     userId: string,
     attempts: number,
-    blocked: boolean
+    blocked: boolean,
+    loginFailedDate: Date | null
   ): PrismaPromise<Partial<UserModel>> =>
     this.prisma.user.update({
       where: { id: userId },
       data: {
         blocked,
         loginAttempts: attempts,
+        lastFailedLoginDate: loginFailedDate,
       },
       select: {
         blocked: true,
@@ -85,6 +87,7 @@ class UserRepository implements IUserRepository {
       select: {
         password: true,
         blocked: true,
+        lastFailedLoginDate: true,
         loginAttempts: true,
         userName: true,
         id: true,
@@ -165,7 +168,12 @@ class UserRepository implements IUserRepository {
   ): PrismaPromise<Partial<UserModel>> =>
     this.prisma.user.update({
       where: { id: userId },
-      data: { password, loginAttempts: 0, blocked: false },
+      data: {
+        password,
+        loginAttempts: 0,
+        blocked: false,
+        lastFailedLoginDate: null,
+      },
       select: { id: true, password: true },
     });
 
