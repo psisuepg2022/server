@@ -9,8 +9,8 @@ import path from "path";
 
 import { RoutesPrefix } from "@common/RoutesPrefix";
 import { env } from "@helpers/env";
-import { databaseDisconnectMiddleware } from "@middlewares/databaseDisconnectMiddleware";
 import {
+  databaseDisconnectMiddleware,
   errorHandlerMiddleware,
   internationalizationMiddleware,
   isSupportMiddleware,
