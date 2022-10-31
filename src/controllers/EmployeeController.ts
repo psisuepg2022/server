@@ -132,7 +132,7 @@ class EmployeeController {
     const { page, size } = req.query;
     const { id: clinicId } = req.clinic;
 
-    const { name, CPF, email } = req.body;
+    const { name, CPF, email, composed } = req.body;
 
     const servicelistEmployeesService = container.resolve(
       SearchEmployeesWithFiltersService
@@ -145,6 +145,7 @@ class EmployeeController {
         name,
         CPF,
         email,
+        composed,
       },
     });
 

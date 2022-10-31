@@ -79,6 +79,10 @@ class SearchPeopleWithFiltersService<
     filters
       ? {
           ...filters,
+          composed:
+            filters.composed && this.validatorsProvider.cpf(filters.composed)
+              ? this.maskProvider.remove(filters.composed)
+              : filters.composed,
           CPF: this.maskProvider.remove(filters.CPF || ""),
         }
       : null;

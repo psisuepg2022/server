@@ -151,7 +151,7 @@ class ProfessionalController {
     const { page, size } = req.query;
     const { id: clinicId } = req.clinic;
 
-    const { name, CPF, email } = req.body;
+    const { name, CPF, email, composed } = req.body;
 
     const service = container.resolve(SearchProfessionalsWithFiltersService);
 
@@ -162,6 +162,7 @@ class ProfessionalController {
         name,
         CPF,
         email,
+        composed,
       },
     });
 
