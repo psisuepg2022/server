@@ -146,7 +146,9 @@ class AppointmentRepository implements IAppointmentRepository {
   public findToUpdateComment = (
     id: string,
     professionalId: string
-  ): PrismaPromise<Partial<AppointmentModel> | null> =>
+  ): PrismaPromise<Partial<
+    AppointmentModel & { professional: { baseDuration: number } }
+  > | null> =>
     this.prisma.appointment.findFirst({
       where: {
         id,
@@ -159,7 +161,11 @@ class AppointmentRepository implements IAppointmentRepository {
           ],
         },
       },
-      select: { id: true, appointmentDate: true },
+      select: {
+        id: true,
+        appointmentDate: true,
+        professional: { select: { baseDuration: true } },
+      },
     });
 
   public hasUncompletedAppointmentsByProfessional = (
@@ -215,14 +221,82 @@ class AppointmentRepository implements IAppointmentRepository {
       },
     }) as PrismaPromise<Partial<AppointmentModel>>;
 
-  public getByDate = (
+  public hasAppointmentOrDontHaveTimeOnWeeklySchedule = (
     professionalId: string,
-    date: Date
+    dayOfTheWeek: number,
+    startDate: Date,
+    endDate: Date
   ): PrismaPromise<Partial<AppointmentModel> | null> =>
     this.prisma.appointment.findFirst({
       where: {
         professionalId,
-        appointmentDate: date,
+        OR: [
+          { appointmentDate: startDate },
+          {
+            professional: {
+              ScheduleLock: {
+                some: {
+                  date: startDate,
+                  OR: [
+                    {
+                      startTime: { lte: startDate },
+                      endTime: { gte: endDate },
+                    },
+                    {
+                      startTime: {
+                        lt: endDate,
+                        gt: startDate,
+                      },
+                    },
+                    {
+                      endTime: {
+                        lt: endDate,
+                        gt: startDate,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          {
+            professional: {
+              WeeklySchedule: {
+                none: {
+                  dayOfTheWeek,
+                  startTime: { lte: startDate },
+                  endTime: { gte: endDate },
+                  NOT: [
+                    {
+                      WeeklyScheduleLocks: {
+                        some: {
+                          OR: [
+                            {
+                              startTime: { lte: startDate },
+                              endTime: { gte: endDate },
+                            },
+                            {
+                              startTime: {
+                                lt: endDate,
+                                gt: startDate,
+                              },
+                            },
+                            {
+                              endTime: {
+                                lt: endDate,
+                                gt: startDate,
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        ],
       },
       select: { id: true },
     }) as PrismaPromise<Partial<AppointmentModel> | null>;

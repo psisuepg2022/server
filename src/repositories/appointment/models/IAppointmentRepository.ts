@@ -44,7 +44,9 @@ interface IAppointmentRepository {
   findToUpdateComment(
     id: string,
     professionalId: string
-  ): PrismaPromise<Partial<AppointmentModel> | null>;
+  ): PrismaPromise<Partial<
+    AppointmentModel & { professional: { baseDuration: number } }
+  > | null>;
   hasUncompletedAppointmentsByProfessional(
     professionalId: string,
     date: Date
@@ -81,9 +83,11 @@ interface IAppointmentRepository {
       appointmentDate: string;
     }[]
   >;
-  getByDate(
+  hasAppointmentOrDontHaveTimeOnWeeklySchedule(
     professionalId: string,
-    date: Date
+    dayOfTheWeek: number,
+    startDate: Date,
+    endDate: Date
   ): PrismaPromise<Partial<AppointmentModel> | null>;
 }
 

@@ -68,6 +68,11 @@ class SaveCommentService {
         i18n.__("ErrorCreateCommentAppointmentNotFound")
       );
 
+    const nextWeekDate = this.dateProvider.addDays(
+      hasAppointment.appointmentDate as Date,
+      7
+    );
+
     const [savedComment, updatedStatus, hasAppointmentOnTheNextWeek] =
       await transaction([
         this.commentsRepository.save(
@@ -79,9 +84,14 @@ class SaveCommentService {
           AppointmentStatus.COMPLETED,
           this.dateProvider.now()
         ),
-        this.appointmentRepository.getByDate(
+        this.appointmentRepository.hasAppointmentOrDontHaveTimeOnWeeklySchedule(
           professionalId,
-          this.dateProvider.addDays(hasAppointment.appointmentDate as Date, 7)
+          this.dateProvider.getWeekDay(nextWeekDate),
+          nextWeekDate,
+          this.dateProvider.addMinutes(
+            nextWeekDate,
+            hasAppointment.professional?.baseDuration as number
+          )
         ),
       ]);
 
