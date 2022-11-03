@@ -8,6 +8,8 @@ class ConstantsKeys {
   public static readonly MAX_DAYS_ON_GET_CALENDAR = 42;
 
   public static readonly MINUTES_TO_RESET_FAILED_LOGIN_ATTEMPTS = 60;
+
+  public static readonly BASE_DURATION_STEP = 5;
 }
 
 export { ConstantsKeys };

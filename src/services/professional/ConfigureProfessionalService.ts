@@ -1,6 +1,7 @@
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
+import { ConstantsKeys } from "@common/ConstantsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { AppError } from "@handlers/error/AppError";
 import { env } from "@helpers/env";
@@ -171,6 +172,23 @@ class ConfigureProfessionalService {
 
     if (baseDurationConverted / 60 > 24)
       throw new AppError("BAD_REQUEST", i18n.__("ErrorBaseDurationTooLarge"));
+
+    const baseDurationMod =
+      baseDurationConverted % ConstantsKeys.BASE_DURATION_STEP;
+
+    if (baseDurationMod !== 0) {
+      const _min = baseDurationConverted - baseDurationMod;
+      const _max = _min + ConstantsKeys.BASE_DURATION_STEP;
+
+      throw new AppError(
+        "BAD_REQUEST",
+        i18n.__mf("ErrorBaseDurationOutOfStep", [
+          ConstantsKeys.BASE_DURATION_STEP,
+          _min,
+          _max,
+        ])
+      );
+    }
 
     if (stringIsNullOrEmpty(oldPassword))
       throw new AppError(
