@@ -147,7 +147,10 @@ class AppointmentRepository implements IAppointmentRepository {
     id: string,
     professionalId: string
   ): PrismaPromise<Partial<
-    AppointmentModel & { professional: { baseDuration: number } }
+    AppointmentModel & {
+      professional: { baseDuration: number };
+      patient: { id: string };
+    }
   > | null> =>
     this.prisma.appointment.findFirst({
       where: {
@@ -165,6 +168,7 @@ class AppointmentRepository implements IAppointmentRepository {
         id: true,
         appointmentDate: true,
         professional: { select: { baseDuration: true } },
+        patient: { select: { id: true } },
       },
     });
 

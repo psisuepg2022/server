@@ -45,7 +45,10 @@ interface IAppointmentRepository {
     id: string,
     professionalId: string
   ): PrismaPromise<Partial<
-    AppointmentModel & { professional: { baseDuration: number } }
+    AppointmentModel & {
+      professional: { baseDuration: number };
+      patient: { id: string };
+    }
   > | null>;
   hasUncompletedAppointmentsByProfessional(
     professionalId: string,

@@ -3,7 +3,12 @@ type SaveCommentResponseModel = {
   appointmentId: string;
   updatedAt: string;
   status: string;
-  hasSameTimeToNextWeek: boolean;
+  hasSameTimeToNextWeek: {
+    patientId: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+  } | null;
 };
 
 export { SaveCommentResponseModel };

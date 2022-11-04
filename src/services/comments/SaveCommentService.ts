@@ -9,6 +9,7 @@ import { AppointmentStatus } from "@infra/domains";
 import { SaveCommentRequestModel } from "@models/dto/comments/SaveCommentRequestModel";
 import { SaveCommentResponseModel } from "@models/dto/comments/SaveCommentResponseModel";
 import { IDateProvider } from "@providers/date";
+import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IAppointmentRepository } from "@repositories/appointment";
 import { ICommentsRepository } from "@repositories/comments";
@@ -23,7 +24,9 @@ class SaveCommentService {
     @inject("CommentsRepository")
     private commentsRepository: ICommentsRepository,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("MaskProvider")
+    private maskProvider: IMaskProvider
   ) {}
 
   public async execute({
@@ -68,9 +71,14 @@ class SaveCommentService {
         i18n.__("ErrorCreateCommentAppointmentNotFound")
       );
 
-    const nextWeekDate = this.dateProvider.addDays(
+    const nextWeekStartDate = this.dateProvider.addDays(
       hasAppointment.appointmentDate as Date,
       7
+    );
+
+    const nextWeekEndDate = this.dateProvider.addMinutes(
+      nextWeekStartDate,
+      hasAppointment.professional?.baseDuration as number
     );
 
     const [savedComment, updatedStatus, hasAppointmentOnTheNextWeek] =
@@ -86,12 +94,9 @@ class SaveCommentService {
         ),
         this.appointmentRepository.hasAppointmentOrDontHaveTimeOnWeeklySchedule(
           professionalId,
-          this.dateProvider.getWeekDay(nextWeekDate),
-          nextWeekDate,
-          this.dateProvider.addMinutes(
-            nextWeekDate,
-            hasAppointment.professional?.baseDuration as number
-          )
+          this.dateProvider.getWeekDay(nextWeekStartDate),
+          nextWeekStartDate,
+          nextWeekEndDate
         ),
       ]);
 
@@ -103,7 +108,14 @@ class SaveCommentService {
         "APPOINTMENT_STATUS",
         AppointmentStatus[updatedStatus.status as number]
       ),
-      hasSameTimeToNextWeek: !hasAppointmentOnTheNextWeek,
+      hasSameTimeToNextWeek: hasAppointmentOnTheNextWeek
+        ? null
+        : {
+            patientId: hasAppointment.patient?.id || "",
+            date: this.maskProvider.date(nextWeekStartDate),
+            endTime: this.maskProvider.time(nextWeekEndDate),
+            startTime: this.maskProvider.time(nextWeekStartDate),
+          },
     };
   }
 }
