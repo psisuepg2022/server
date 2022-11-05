@@ -14,6 +14,7 @@ import {
   errorHandlerMiddleware,
   internationalizationMiddleware,
   isSupportMiddleware,
+  LogMiddleware,
 } from "@middlewares/index";
 import { routes } from "@routes/index";
 
@@ -35,6 +36,7 @@ app.use(
   express.static(path.join(__dirname, "..", "..", "..", "..", "logs"))
 );
 app.use(errorHandlerMiddleware);
+app.use(new LogMiddleware().routeEnd);
 app.use(databaseDisconnectMiddleware);
 
 process.on("SIGTERM", () => {

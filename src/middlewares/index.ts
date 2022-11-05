@@ -3,13 +3,13 @@ import { EnsureUserAuthenticatedMiddleware } from "./EnsureUserAuthenticatedMidd
 import { errorHandlerMiddleware } from "./errorHandlerMiddleware";
 import { internationalizationMiddleware } from "./internationalizationMiddleware";
 import { isSupportMiddleware } from "./isSupportMiddleware";
-import { logMiddleware } from "./logMiddleware";
+import { LogMiddleware } from "./LogMiddleware";
 import { RBACMiddleware } from "./RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "./ValidateClinicIDMiddleware";
 
 export {
   databaseDisconnectMiddleware,
-  logMiddleware,
+  LogMiddleware,
   ValidateClinicIDMiddleware,
   RBACMiddleware,
   EnsureUserAuthenticatedMiddleware,

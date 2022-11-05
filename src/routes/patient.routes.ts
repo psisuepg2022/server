@@ -4,13 +4,14 @@ import { container } from "tsyringe";
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { PatientController } from "@controllers/PatientController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
-import { logMiddleware } from "@middlewares/logMiddleware";
+import { LogMiddleware } from "@middlewares/LogMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
 const routes = Router();
 const controller = new PatientController();
 const RBAC = container.resolve(RBACMiddleware);
+const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
@@ -18,7 +19,7 @@ const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
 routes.post(
   "/search",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
@@ -26,7 +27,7 @@ routes.post(
 );
 routes.post(
   "/search_liable",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_LIABLE),
@@ -34,7 +35,7 @@ routes.post(
 );
 routes.post(
   "/",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
@@ -42,7 +43,7 @@ routes.post(
 );
 routes.delete(
   "/:id",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.DELETE_PATIENT),

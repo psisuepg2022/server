@@ -5,7 +5,7 @@ import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { EmployeeController } from "@controllers/EmployeeController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
-import { logMiddleware } from "@middlewares/logMiddleware";
+import { LogMiddleware } from "@middlewares/LogMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
 
@@ -13,13 +13,14 @@ const routes = Router();
 const controller = new EmployeeController();
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 const RBAC = container.resolve(RBACMiddleware);
+const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 
 routes.post(
   "/search",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_EMPLOYEE),
@@ -27,7 +28,7 @@ routes.post(
 );
 routes.post(
   "/",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_EMPLOYEE),
@@ -35,7 +36,7 @@ routes.post(
 );
 routes.delete(
   "/:id",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
@@ -43,7 +44,7 @@ routes.delete(
 );
 routes.get(
   "/profile",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
@@ -51,7 +52,7 @@ routes.get(
 );
 routes.put(
   "/",
-  logMiddleware,
+  logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
