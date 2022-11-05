@@ -21,6 +21,12 @@ class LogMiddleware {
 
     return next();
   };
+
+  public userAuthenticated: IMiddleware = async ({ user, clinic }, _, next) => {
+    logger.info(`User Authenticated: ${user.id} (Clinic: ${clinic.id})`);
+
+    return next();
+  };
 }
 
 export { LogMiddleware };

@@ -22,6 +22,7 @@ routes.post(
   logMiddleware.routeStart,
   ensureAuthenticated.execute,
   validateClinicID.execute(),
+  logMiddleware.userAuthenticated,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.save
 );
