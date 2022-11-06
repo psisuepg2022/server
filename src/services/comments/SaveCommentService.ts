@@ -6,6 +6,7 @@ import { getEnumDescription } from "@helpers/getEnumDescription";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
 import { AppointmentStatus } from "@infra/domains";
+import { logger } from "@infra/log";
 import { SaveCommentRequestModel } from "@models/dto/comments/SaveCommentRequestModel";
 import { SaveCommentResponseModel } from "@models/dto/comments/SaveCommentResponseModel";
 import { IDateProvider } from "@providers/date";
@@ -99,6 +100,10 @@ class SaveCommentService {
           nextWeekEndDate
         ),
       ]);
+
+    logger.info("====== COMMENT UPSERT ======");
+    logger.info(`OLD: ${hasAppointment.comments}`);
+    logger.info(`NEW: ${text}`);
 
     return {
       appointmentId: savedComment.id,
