@@ -147,7 +147,7 @@ class UpdateProfessionalService extends CreateProfessionalService {
         profession: profession || hasProfessional.profession || "",
         registry: registry || hasProfessional.registry || "",
         userName: userName || hasProfessional.user.userName || "",
-        specialization: specialization || hasProfessional.specialization,
+        specialization: specialization || "",
         password: "null",
       },
       false,

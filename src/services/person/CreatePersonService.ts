@@ -286,6 +286,7 @@ class CreatePersonService {
 
       this.addressOperation = this.addressRepository.save(id, {
         ...address,
+        district: address.district || null,
         id: this.getObjectId(address.id),
         zipCode: zipCodeConverted,
       });

@@ -115,7 +115,7 @@ class SearchCommentsWithFiltersService {
           updatedAt,
         }): ListCommentsResponseModel => ({
           id,
-          text: comments,
+          text: comments || undefined,
           appointmentDate: appointmentDate.toISOString(),
           completedAt: this.maskProvider.date(updatedAt),
           scheduledAt: this.maskProvider.date(createdAt),

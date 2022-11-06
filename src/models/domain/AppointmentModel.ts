@@ -4,7 +4,7 @@ type AppointmentModel = {
   id: string;
   updatedAt: Date;
   createdAt: Date;
-  comments?: string;
+  comments: string | null;
   appointmentDate: Date;
   status: AppointmentStatus;
 };
