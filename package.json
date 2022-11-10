@@ -16,6 +16,7 @@
     "db:backup:homolog": "dotenv -e .env.test -- ./scripts/db/backup_database.sh",
     "db:restore:dev": "dotenv -e .env.development -- ./scripts/db/restore_database.sh",
     "db:restore:homolog": "dotenv -e .env.test -- ./scripts/db/restore_database.sh",
+    "deploy:update": "dotenv -e .env.test -- ./scripts/deploy/update-server.sh",
     "prisma:migrate:dev": "dotenv -e .env.development -- yarn prisma migrate dev",
     "prisma:migrate:homolog": "dotenv -e .env.test -- yarn prisma migrate deploy",
     "prisma:studio:dev": "dotenv -e .env.development -- yarn prisma studio --port 3001",
