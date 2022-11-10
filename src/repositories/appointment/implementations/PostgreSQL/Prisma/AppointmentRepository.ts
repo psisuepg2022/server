@@ -66,7 +66,7 @@ class AppointmentRepository implements IAppointmentRepository {
       },
     }) as PrismaPromise<AppointmentModel>;
 
-  get = (
+  public get = (
     professionalId: string,
     startDate: Date,
     endDate: Date
@@ -89,7 +89,7 @@ class AppointmentRepository implements IAppointmentRepository {
         patient: {
           select: {
             person: {
-              select: { name: true },
+              select: { name: true, contactNumber: true },
             },
           },
         },
@@ -136,7 +136,7 @@ class AppointmentRepository implements IAppointmentRepository {
         patient: {
           select: {
             person: {
-              select: { name: true },
+              select: { name: true, contactNumber: true },
             },
           },
         },

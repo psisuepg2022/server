@@ -290,6 +290,9 @@ class GetCalendarService {
           ),
           startDate: item.appointmentDate?.toISOString() || "",
           title: item.patient.person.name || "",
+          contactNumber: this.maskProvider.contactNumber(
+            item.patient.person.contactNumber || ""
+          ),
           updatedAt: item.updatedAt?.toISOString() || "",
         })
       ),

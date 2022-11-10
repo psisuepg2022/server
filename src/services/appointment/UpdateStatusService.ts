@@ -10,6 +10,7 @@ import { AppointmentStatus } from "@infra/domains";
 import { UpdateStatusRequestModel } from "@models/dto/appointment/UpdateStatusRequestModel";
 import { AppointmentOnCalendarModel } from "@models/dto/calendar/AppointmentOnCalendarModel";
 import { IDateProvider } from "@providers/date";
+import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
 import { IAppointmentRepository } from "@repositories/appointment";
 
@@ -21,7 +22,9 @@ class UpdateStatusService {
     @inject("AppointmentRepository")
     private appointmentRepository: IAppointmentRepository,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("MaskProvider")
+    private maskProvider: IMaskProvider
   ) {}
 
   public async execute({
@@ -145,6 +148,9 @@ class UpdateStatusService {
       ),
       startDate: updated.appointmentDate?.toISOString() || "",
       title: updated.patient.person.name || "",
+      contactNumber: this.maskProvider.contactNumber(
+        updated.patient.person.contactNumber || ""
+      ),
       updatedAt: updated.updatedAt?.toISOString() || "",
     };
   }
