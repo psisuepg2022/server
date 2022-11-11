@@ -295,7 +295,7 @@ class ProfessionalController {
     const { id: clinicId } = req.clinic;
     const { id: professionalId } = req.user;
 
-    const { name, CPF, email } = req.body;
+    const { name, CPF, email, composed } = req.body;
 
     const service = container.resolve(
       SearchProfessionalPatientsWithFiltersService
@@ -309,6 +309,7 @@ class ProfessionalController {
         email,
         name,
         professionalId,
+        composed,
       },
     });
 
