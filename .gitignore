@@ -9,3 +9,5 @@ dist
 node_modules
 backup/db/*.sql
 logs/*.log
+
+*.pem
