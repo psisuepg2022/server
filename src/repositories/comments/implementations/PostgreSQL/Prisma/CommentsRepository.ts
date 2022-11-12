@@ -39,7 +39,6 @@ class CommentsRepository implements ICommentsRepository {
       select: {
         id: true,
         appointmentDate: true,
-        comments: true,
         createdAt: true,
         updatedAt: true,
       },

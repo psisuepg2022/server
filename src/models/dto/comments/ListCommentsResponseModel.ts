@@ -3,5 +3,4 @@ type ListCommentsResponseModel = {
   appointmentDate: string;
   scheduledAt: string;
   completedAt: string;
-  text?: string;
 };
