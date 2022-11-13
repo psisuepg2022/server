@@ -35,6 +35,10 @@ app.use(
   isSupportMiddleware,
   express.static(path.join(__dirname, "..", "..", "..", "..", "logs"))
 );
+app.use(
+  "/assets/:suport",
+  express.static(path.join(__dirname, "..", "..", "..", "..", "assets"))
+);
 app.use(errorHandlerMiddleware);
 app.use(new LogMiddleware().routeEnd);
 app.use(databaseDisconnectMiddleware);
