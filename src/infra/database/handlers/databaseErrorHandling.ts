@@ -73,9 +73,10 @@ const databaseErrorHandling = (err: unknown): [number, string] | null => {
 
       return null;
     }
+
+    logger.error(`Database error without handling: ${err}`);
   }
 
-  logger.error(`Database error without handling: ${err}`);
   return null;
 };
 
