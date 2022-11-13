@@ -92,6 +92,19 @@ interface IAppointmentRepository {
     startDate: Date,
     endDate: Date
   ): PrismaPromise<Partial<AppointmentModel> | null>;
+  getToPdf(
+    appointmentId: string,
+    professionalId: string
+  ): PrismaPromise<
+    | (Partial<AppointmentModel> & {
+        patient: { person: { name: string } };
+        professional: {
+          baseDuration: number;
+          user: { person: { name: string; clinic: { name: string } } };
+        };
+      })
+    | null
+  >;
 }
 
 export { IAppointmentRepository };

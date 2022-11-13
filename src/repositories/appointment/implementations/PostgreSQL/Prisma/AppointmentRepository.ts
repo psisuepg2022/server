@@ -306,6 +306,43 @@ class AppointmentRepository implements IAppointmentRepository {
       select: { id: true },
     }) as PrismaPromise<Partial<AppointmentModel> | null>;
 
+  public getToPdf = (
+    appointmentId: string,
+    professionalId: string
+  ): PrismaPromise<
+    | (Partial<AppointmentModel> & {
+        patient: { person: { name: string } };
+        professional: {
+          baseDuration: number;
+          user: { person: { name: string; clinic: { name: string } } };
+        };
+      })
+    | null
+  > =>
+    this.prisma.appointment.findFirst({
+      where: { id: appointmentId, professionalId },
+      select: {
+        id: true,
+        appointmentDate: true,
+        comments: true,
+        patient: {
+          select: { person: { select: { name: true } } },
+        },
+        professional: {
+          select: {
+            baseDuration: true,
+            user: {
+              select: {
+                person: {
+                  select: { name: true, clinic: { select: { name: true } } },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
   public hasUncompletedAppointmentsByDayOfTheWeek = (
     type: "weekly" | "lock",
     professionalId: string,
