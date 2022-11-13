@@ -4,7 +4,8 @@ type keys =
   | "SUPPORT_ID"
   | "LIST_ALLOWED_ORIGINS"
   | "JWT_SECRET_KEY"
-  | "JWT_SECRET_KEY_REFRESH";
+  | "JWT_SECRET_KEY_REFRESH"
+  | "BASE_URL";
 
 const env = (key: keys): string | undefined => {
   if (!key) return undefined;
