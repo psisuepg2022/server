@@ -5,6 +5,7 @@ import { DateProvider, IDateProvider } from "@providers/date";
 import { HashProvider, IHashProvider } from "@providers/hash";
 import { IMaskProvider, MaskProvider } from "@providers/mask";
 import { IPasswordProvider, PasswordProvider } from "@providers/password";
+import { IPDFProvider, PDFProvider } from "@providers/PDFProvider";
 import {
   IUniqueIdentifierProvider,
   UniqueIdentifierProvider,
@@ -36,3 +37,5 @@ container.registerSingleton<IAuthTokenProvider>(
 );
 
 container.registerSingleton<IDateProvider>("DateProvider", DateProvider);
+
+container.registerSingleton<IPDFProvider>("PDFProvider", PDFProvider);
