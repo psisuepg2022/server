@@ -1,4 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPDFProvider {}
+import { CreatePDFBufferOptionsModel } from "./CreatePDFBufferOptionsModel";
+
+interface IPDFProvider {
+  compile<T>(template: string, options: T): Promise<string>;
+  getPDFBuffer(
+    html: string,
+    options: CreatePDFBufferOptionsModel
+  ): Promise<Buffer>;
+}
 
 export { IPDFProvider };
