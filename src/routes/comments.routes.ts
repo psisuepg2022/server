@@ -33,5 +33,12 @@ routes.post(
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.read
 );
+routes.get(
+  "/pdf/:appointment_id",
+  logMiddleware.routeStart,
+  ensureAuthenticated.execute,
+  RBAC.is(RolesKeys.PROFESSIONAL),
+  controller.getPdf
+);
 
 export { routes };
