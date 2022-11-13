@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
 import { SaveCommentResponseModel } from "@models/dto/comments/SaveCommentResponseModel";
 import {
+  GetPdfOfCommentsService,
   SaveCommentService,
   SearchCommentsWithFiltersService,
 } from "@services/comments";
@@ -63,6 +64,27 @@ class CommentsController {
         filters: { appointmentDate },
       }
     );
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
+  }
+
+  public async getPdf(
+    req: Request,
+    res: Response<IResponseMessage<Buffer>>,
+    next: NextFunction
+  ): Promise<void> {
+    const { id: professionalId } = req.user;
+    const { appointment_id: appointmentId } = req.params;
+
+    const service = container.resolve(GetPdfOfCommentsService);
+
+    const result = await service.execute({ appointmentId, professionalId });
 
     res.status(HttpStatus.OK).json({
       success: true,
