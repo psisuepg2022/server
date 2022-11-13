@@ -76,7 +76,7 @@ class CommentsController {
 
   public async getPdf(
     req: Request,
-    res: Response<IResponseMessage<Buffer>>,
+    res: Response<Buffer>,
     next: NextFunction
   ): Promise<void> {
     const { id: professionalId } = req.user;
@@ -86,11 +86,9 @@ class CommentsController {
 
     const result = await service.execute({ appointmentId, professionalId });
 
-    res.status(HttpStatus.OK).json({
-      success: true,
-      content: result,
-      message: i18n.__("SuccessGeneric"),
-    });
+    res.set({ "Content-Type": "application/pdf" });
+
+    res.status(HttpStatus.OK).send(result);
 
     return next();
   }
