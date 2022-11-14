@@ -60,7 +60,7 @@ class GetPdfOfCommentsService {
 
     const html =
       await this.pdfProvider.compile<GetPdfOfCommentsObjectToCompileModel>(
-        "comments.ejs",
+        "comments/content.ejs",
         {
           clinic: hasAppointment.professional.user.person.clinic.name,
           imageUrl: `${env("BASE_URL")}/assets/${env("SUPPORT_ID")}/logo.png`,
@@ -90,6 +90,15 @@ class GetPdfOfCommentsService {
         right: "10mm",
         bottom: "15mm",
         left: "10mm",
+      },
+      footer: {
+        height: "4mm",
+        contents: {
+          default: await this.pdfProvider.compile<{ content: string }>(
+            "comments/footer.ejs",
+            { content: `Página {{page}} de {{pages}}` }
+          ),
+        },
       },
     });
   }
