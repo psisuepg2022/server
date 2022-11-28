@@ -1,5 +1,5 @@
-import { CreateOptions } from "html-pdf";
+import { PDFOptions } from "puppeteer";
 
-type CreatePDFBufferOptionsModel = CreateOptions;
+type CreatePDFBufferOptionsModel = PDFOptions;
 
 export { CreatePDFBufferOptionsModel };

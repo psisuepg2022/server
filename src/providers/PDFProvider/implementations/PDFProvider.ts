@@ -1,6 +1,6 @@
 import ejs, { Data } from "ejs";
-import pdf from "html-pdf";
 import path from "path";
+import { launch } from "puppeteer";
 
 import { CreatePDFBufferOptionsModel } from "../models/CreatePDFBufferOptionsModel";
 import { IPDFProvider } from "../models/IPDFProvider";
@@ -12,16 +12,23 @@ class PDFProvider implements IPDFProvider {
       options as Data
     );
 
-  getPDFBuffer = (
+  getPDFBuffer = async (
     html: string,
     options: CreatePDFBufferOptionsModel
-  ): Promise<Buffer> =>
-    new Promise((resolve, reject) => {
-      pdf.create(html, options).toBuffer((err, buffer) => {
-        if (err !== null) reject(err);
-        else resolve(buffer);
-      });
-    });
+  ): Promise<Buffer> => {
+    const browser = await launch({ headless: true });
+    const page = await browser.newPage();
+    page.setDefaultTimeout(30000);
+
+    await page.setContent(html, { waitUntil: "domcontentloaded" });
+    await page.emulateMediaType("screen");
+
+    const pdf = await page.pdf(options);
+
+    await browser.close();
+
+    return pdf;
+  };
 }
 
 export { PDFProvider };

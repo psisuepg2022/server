@@ -1,8 +1,8 @@
+import fs from "fs";
 import i18n from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@handlers/error/AppError";
-import { env } from "@helpers/env";
 import { normalizeHTML } from "@helpers/normalizeHTML";
 import { stringIsNullOrEmpty } from "@helpers/stringIsNullOrEmpty";
 import { transaction } from "@infra/database/transaction";
@@ -58,15 +58,16 @@ class GetPdfOfCommentsService {
         i18n.__("ErrorUpdateStatusAppointmentNotFound")
       );
 
-    const html =
+    const header =
       await this.pdfProvider.compile<GetPdfOfCommentsObjectToCompileModel>(
-        "comments/content.ejs",
+        "comments/header.ejs",
         {
           clinic: hasAppointment.professional.user.person.clinic.name,
-          imageUrl: `${env("BASE_URL")}/assets/${env("SUPPORT_ID")}/logo.png`,
+          image: fs
+            .readFileSync(`${__dirname}/../../../assets/logo.png`)
+            .toString("base64"),
           patient: hasAppointment.patient.person.name,
           professional: hasAppointment.professional.user.person.name,
-          content: normalizeHTML(hasAppointment.comments || ""),
           appointment: {
             date: this.maskProvider.date(
               hasAppointment.appointmentDate as Date
@@ -84,23 +85,19 @@ class GetPdfOfCommentsService {
         }
       );
 
-    return this.pdfProvider.getPDFBuffer(html, {
-      border: {
-        top: "15mm",
-        right: "10mm",
-        bottom: "15mm",
-        left: "10mm",
-      },
-      footer: {
-        height: "4mm",
-        contents: {
-          default: await this.pdfProvider.compile<{ content: string }>(
-            "comments/footer.ejs",
-            { content: `Página {{page}} de {{pages}}` }
-          ),
-        },
-      },
-    });
+    const footer = await this.pdfProvider.compile("comments/footer.ejs", {});
+
+    return this.pdfProvider.getPDFBuffer(
+      normalizeHTML(hasAppointment.comments || ""),
+      {
+        margin: { top: "50px", right: "50px", bottom: "50px", left: "50px" },
+        printBackground: true,
+        format: "A4",
+        displayHeaderFooter: true,
+        headerTemplate: header,
+        footerTemplate: footer,
+      }
+    );
   }
 }
 
