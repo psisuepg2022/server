@@ -168,6 +168,7 @@ class AppointmentRepository implements IAppointmentRepository {
         id: true,
         appointmentDate: true,
         comments: true,
+        status: true,
         professional: { select: { baseDuration: true } },
         patient: { select: { id: true } },
       },

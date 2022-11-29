@@ -9,6 +9,7 @@ import { AppointmentStatus } from "@infra/domains";
 import { logger } from "@infra/log";
 import { SaveCommentRequestModel } from "@models/dto/comments/SaveCommentRequestModel";
 import { SaveCommentResponseModel } from "@models/dto/comments/SaveCommentResponseModel";
+import { PrismaPromise } from "@prisma/client";
 import { IDateProvider } from "@providers/date";
 import { IMaskProvider } from "@providers/mask";
 import { IUniqueIdentifierProvider } from "@providers/uniqueIdentifier";
@@ -82,24 +83,37 @@ class SaveCommentService {
       hasAppointment.professional?.baseDuration as number
     );
 
-    const [savedComment, updatedStatus, hasAppointmentOnTheNextWeek] =
-      await transaction([
-        this.commentsRepository.save(
-          appointmentId,
-          blankComments ? null : text
-        ),
-        this.appointmentRepository.updateStatus(
-          appointmentId,
-          AppointmentStatus.COMPLETED,
-          this.dateProvider.now()
-        ),
-        this.appointmentRepository.hasAppointmentOrDontHaveTimeOnWeeklySchedule(
-          professionalId,
-          this.dateProvider.getWeekDay(nextWeekStartDate),
-          nextWeekStartDate,
-          nextWeekEndDate
-        ),
-      ]);
+    const updateStatus = hasAppointment.status === AppointmentStatus.CONFIRMED;
+
+    const [savedComment, hasAppointmentOnTheNextWeek, updatedStatus] =
+      await transaction(
+        ((): PrismaPromise<any>[] => {
+          const list = [
+            this.commentsRepository.save(
+              appointmentId,
+              blankComments ? null : text
+            ),
+
+            this.appointmentRepository.hasAppointmentOrDontHaveTimeOnWeeklySchedule(
+              professionalId,
+              this.dateProvider.getWeekDay(nextWeekStartDate),
+              nextWeekStartDate,
+              nextWeekEndDate
+            ),
+          ];
+
+          if (updateStatus)
+            list.push(
+              this.appointmentRepository.updateStatus(
+                appointmentId,
+                AppointmentStatus.COMPLETED,
+                this.dateProvider.now()
+              )
+            );
+
+          return list;
+        })()
+      );
 
     logger.info("====== COMMENT UPSERT ======");
     logger.info(`OLD: ${hasAppointment.comments}`);
@@ -111,7 +125,9 @@ class SaveCommentService {
       updatedAt: savedComment.updatedAt.toISOString(),
       status: getEnumDescription(
         "APPOINTMENT_STATUS",
-        AppointmentStatus[updatedStatus.status as number]
+        updateStatus
+          ? AppointmentStatus[updatedStatus.status as number]
+          : AppointmentStatus[hasAppointment.status as number]
       ),
       hasSameTimeToNextWeek: hasAppointmentOnTheNextWeek
         ? null
