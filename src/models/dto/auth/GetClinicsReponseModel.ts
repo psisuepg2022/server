@@ -1,6 +1,6 @@
 type GetClinicsReponseModel = {
   name: string;
-  code: string;
+  code: number;
 };
 
 export { GetClinicsReponseModel };

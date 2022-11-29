@@ -28,6 +28,15 @@ class ClinicRepository implements IClinicRepository {
       skip,
     });
 
+  public get2login = (): PrismaPromise<{ code: number; name: string }[]> =>
+    this.prisma.clinic.findMany({
+      select: {
+        code: true,
+        name: true,
+      },
+      orderBy: { name: "asc" },
+    });
+
   public hasEmail = (
     clinicId: string,
     email: string
