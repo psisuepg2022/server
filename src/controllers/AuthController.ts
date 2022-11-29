@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import i18n from "i18n";
 import { container } from "tsyringe";
 
-import { HttpStatus, IResponseMessage } from "@infra/http";
+import { HttpStatus, IPaginationResponse, IResponseMessage } from "@infra/http";
+import { GetClinicsReponseModel } from "@models/dto/auth/GetClinicsReponseModel";
 import { LoginResponseModel } from "@models/dto/auth/LoginResponseModel";
 import {
+  GetClinicsService,
   LoginService,
   ResetAnotherUserPasswordService,
   ResetPasswordService,
@@ -46,6 +48,26 @@ class AuthController {
     const service = container.resolve(RefreshTokenService);
 
     const result = await service.execute(refreshToken);
+
+    res.status(HttpStatus.OK).json({
+      success: true,
+      content: result,
+      message: i18n.__("SuccessGeneric"),
+    });
+
+    return next();
+  }
+
+  public async getClinics(
+    req: Request,
+    res: Response<
+      IResponseMessage<IPaginationResponse<GetClinicsReponseModel>>
+    >,
+    next: NextFunction
+  ): Promise<void> {
+    const service = container.resolve(GetClinicsService);
+
+    const result = await service.execute();
 
     res.status(HttpStatus.OK).json({
       success: true,

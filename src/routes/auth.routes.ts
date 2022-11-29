@@ -17,6 +17,7 @@ const ensureAuthenticated = container.resolve(
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
 
+routes.get("/clinics", logMiddleware.routeStart, controller.getClinics);
 routes.post("/", logMiddleware.routeStart, controller.login);
 routes.post("/refresh", logMiddleware.routeStart, controller.refreshToken);
 routes.post(
