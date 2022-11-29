@@ -1,9 +1,57 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-10-11T20:02:27.446Z",
+  "__export_date": "2022-11-29T14:23:05.284Z",
   "__export_source": "insomnia.desktop.app:v2022.5.0",
   "resources": [
+    {
+      "_id": "req_32eed6f94e4d407bac4f3e78fbf53834",
+      "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
+      "modified": 1669731187033,
+      "created": 1668375475475,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}/22c0bb8d-e484-4a52-9649-3b654080df60",
+      "name": "pdf",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_ef641b93a66c4363b3be54a21f0c69ca', 'b64::JC5jb250ZW50LmFjY2Vzc1Rva2Vu::46b', 'never', 60 %}"
+      },
+      "metaSortKey": -1668375475475,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_93bab30dcf194860807e46bd62d7f72e",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1662560104937,
+      "created": 1662560104937,
+      "name": "comments",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1662560104937,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "parentId": null,
+      "modified": 1654723859605,
+      "created": 1654723859605,
+      "name": "psis",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
     {
       "_id": "req_2a8931043cfe4d7aa5f73148fd9f9aac",
       "parentId": "fld_93bab30dcf194860807e46bd62d7f72e",
@@ -38,28 +86,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_93bab30dcf194860807e46bd62d7f72e",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1662560104937,
-      "created": 1662560104937,
-      "name": "comments",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1662560104937,
-      "_type": "request_group"
-    },
-    {
-      "_id": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "parentId": null,
-      "modified": 1654723859605,
-      "created": 1654723859605,
-      "name": "psis",
-      "description": "",
-      "scope": "collection",
-      "_type": "workspace"
     },
     {
       "_id": "req_3e7acdb8c7a94d2a809fc45014fc118d",
@@ -286,7 +312,7 @@
     {
       "_id": "req_0b1bbf3ef0fd45b887aca0eb402d431f",
       "parentId": "fld_ed03149af33b4b76bfb236c5b83c3f74",
-      "modified": 1663816517991,
+      "modified": 1665518623618,
       "created": 1663807427569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/630c67f2-9350-4651-af0f-e1ef4fe8f226",
       "name": "get by id",
@@ -649,6 +675,41 @@
       "_type": "request"
     },
     {
+      "_id": "req_01adf17c989f4e96aed6f4780100b043",
+      "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "modified": 1669731436164,
+      "created": 1669731413878,
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "name": "clinics",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1669731413878,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
+      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
+      "modified": 1658670473389,
+      "created": 1658670029899,
+      "name": "auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1658670029899,
+      "_type": "request_group"
+    },
+    {
       "_id": "req_12f1c402da4c4e348438aedc29282442",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
       "modified": 1664200219363,
@@ -682,18 +743,6 @@
       "settingRebuildPath": true,
       "settingFollowRedirects": "global",
       "_type": "request"
-    },
-    {
-      "_id": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "parentId": "wrk_700300a833a043ee8eb00c7d2e83872f",
-      "modified": 1658670473389,
-      "created": 1658670029899,
-      "name": "auth",
-      "description": "",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1658670029899,
-      "_type": "request_group"
     },
     {
       "_id": "req_a170a7df61e94ef293c1dc6f76693750",
@@ -765,7 +814,7 @@
     {
       "_id": "req_ef641b93a66c4363b3be54a21f0c69ca",
       "parentId": "fld_a2bef7c499714406a670e8a67b5e1a0a",
-      "modified": 1665518436046,
+      "modified": 1668375547210,
       "created": 1658670036513,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "login",
@@ -773,7 +822,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"renato.ruppel\",\n\t\"password\": \"RenatoRuppel123\",\n\t\"accessCode\": \"1002\"\n}"
+        "text": "{\n\t\"userName\": \"alexandre.borba\",\n\t\"password\": \"SenhaPadrao123\",\n\t\"accessCode\": \"1000\"\n}"
       },
       "parameters": [],
       "headers": [
@@ -839,7 +888,7 @@
     {
       "_id": "req_e9f3b58eb420491597c88eae2487b465",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1664335738565,
+      "modified": 1665529034119,
       "created": 1659823934456,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search_liable",
@@ -1058,7 +1107,7 @@
     {
       "_id": "req_899c0535c6974fe58a248141689dbcb2",
       "parentId": "fld_694a36f697ac4155a5828ad8252e6b10",
-      "modified": 1664335736039,
+      "modified": 1665518789494,
       "created": 1657540575211,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
       "name": "search",
@@ -1094,7 +1143,7 @@
     {
       "_id": "req_d7cd495ef5824fa6b7ff2b6125bb76e1",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1665513736393,
+      "modified": 1665519681627,
       "created": 1664333695221,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}?page=0&size=10",
       "name": "my_patients",
@@ -1272,9 +1321,9 @@
     {
       "_id": "req_8dda96d8a325491392bda28d83b56850",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1663717398468,
+      "modified": 1665699416630,
       "created": 1659651213689,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/77cf0c50-06a7-4e1e-9ca7-1d1e8e00735f",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/673cba23-15f4-403a-b3d5-1f9e7be0bd5d",
       "name": "delete",
       "description": "",
       "method": "DELETE",
@@ -1325,7 +1374,7 @@
     {
       "_id": "req_7d01dde558c047c3bf6bc8d3c7eb50ed",
       "parentId": "fld_a8ed63ec97554a879d3731e943c26ee7",
-      "modified": 1665003483630,
+      "modified": 1665526738918,
       "created": 1657542043569,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "create",
@@ -1568,9 +1617,9 @@
     {
       "_id": "req_355e0702f3c449aa9973c5457b984dc6",
       "parentId": "fld_a8bde367d58d470d99959c29472f6b61",
-      "modified": 1664325121801,
+      "modified": 1668117026146,
       "created": 1657142214249,
-      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}",
+      "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{% request 'name', '', 0 %}?size=1",
       "name": "search",
       "description": "",
       "method": "POST",
@@ -1604,7 +1653,7 @@
     {
       "_id": "req_23f154644d6b40af99f7dbd0356f7202",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1664316369606,
+      "modified": 1668375470608,
       "created": 1663590591187,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}",
       "name": "update profile",
@@ -1677,7 +1726,7 @@
     {
       "_id": "req_7ac3e81643da420eb7ba0c858a5262b9",
       "parentId": "fld_659ce58b8e244e9a9038a5f18d139870",
-      "modified": 1665434534116,
+      "modified": 1668373418335,
       "created": 1657664385365,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}/{{ _.clinicId }}",
       "name": "create",
@@ -1685,7 +1734,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"email\": \"owner111@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2022-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"84030-000\"\n\t}\n}"
+        "text": "{\n\t\"userName\": \"user.owner\",\n\t\"password\": \"UserOwner123\",\n\t\"email\": \"owner@gmail.com\",\n\t\"name\": \"Marcos Krul\",\n\t\"CPF\": \"{% response 'body', 'req_a30541e8667a44249bc0c96557da37f5', 'b64::JC5udW1iZXJfZm9ybWF0dGVk::46b', 'never', 60 %}\",\n\t\"birthDate\": \"2022-06-02\",\n\t\"contactNumber\": \"(47) 99090-9090\",\n\t\"address\": {\n\t\t\"city\": \"Ponta Grossa\",\n\t\t\"district\": \"Uvaranas\",\n\t\t\"publicArea\": \"Avenida General Carlos Cavalcanti\",\n\t\t\"state\": \"PR\",\n\t\t\"zipCode\": \"84030-000\"\n\t}\n}"
       },
       "parameters": [],
       "headers": [
@@ -1790,7 +1839,7 @@
     {
       "_id": "req_698f458fffe74931b121812d0d0f19c2",
       "parentId": "fld_0dc673719865456391af9cfa854dbedf",
-      "modified": 1665513431223,
+      "modified": 1668117031146,
       "created": 1656965740153,
       "url": "{{ _.base_url }}/{% request 'folder', '', 0 %}/{{ _.support }}",
       "name": "create",
@@ -1886,13 +1935,13 @@
     {
       "_id": "env_bf434227e85e4802946f974da7327772",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1665177194391,
+      "modified": 1668117053039,
       "created": 1654723872664,
       "name": "dev",
       "data": {
         "base_url": "http://localhost:3333/api",
         "support": "e1cab50c402d99685c069ab7e997ca657e78a518",
-        "clinicId": "dd0d1242-0ddd-4ec9-9e58-85629342909f"
+        "clinicId": "f19058bf-0a48-4eb3-ab37-f64d64e18aee"
       },
       "dataPropertyOrder": {
         "&": [
@@ -1909,7 +1958,7 @@
     {
       "_id": "env_cd2af759256b4b209d7b6527817ff98f",
       "parentId": "env_221a7fa111ada18e40dfea03e4644ba670ce780f",
-      "modified": 1664246133200,
+      "modified": 1668117071843,
       "created": 1654723874269,
       "name": "homolog",
       "data": {
