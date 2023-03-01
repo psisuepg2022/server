@@ -3,11 +3,13 @@ import { container } from "tsyringe";
 
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { PatientController } from "@controllers/PatientController";
-import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
-import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
-import { LogMiddleware } from "@middlewares/LogMiddleware";
-import { RBACMiddleware } from "@middlewares/RBACMiddleware";
-import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
+import {
+  EnsureUserAuthenticatedMiddleware,
+  HandleUrlPatternMatchMiddleware,
+  LogMiddleware,
+  RBACMiddleware,
+  ValidateClinicIDMiddleware,
+} from "@middlewares/index";
 
 const routes = Router();
 const controller = new PatientController();

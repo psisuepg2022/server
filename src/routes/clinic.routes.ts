@@ -2,10 +2,12 @@ import { Router } from "express";
 import { container } from "tsyringe";
 
 import { ClinicController } from "@controllers/ClinicController";
-import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
-import { isSupportMiddleware } from "@middlewares/isSupportMiddleware";
-import { LogMiddleware } from "@middlewares/LogMiddleware";
-import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
+import {
+  HandleUrlPatternMatchMiddleware,
+  isSupportMiddleware,
+  LogMiddleware,
+  ValidateClinicIDMiddleware,
+} from "@middlewares/index";
 
 const routes = Router();
 const controller = new ClinicController();

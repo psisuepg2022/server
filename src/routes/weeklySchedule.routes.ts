@@ -4,10 +4,12 @@ import { container } from "tsyringe";
 import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { WeeklyScheduleController } from "@controllers/WeeklyScheduleController";
-import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
-import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
-import { LogMiddleware } from "@middlewares/LogMiddleware";
-import { RBACMiddleware } from "@middlewares/RBACMiddleware";
+import {
+  EnsureUserAuthenticatedMiddleware,
+  HandleUrlPatternMatchMiddleware,
+  LogMiddleware,
+  RBACMiddleware,
+} from "@middlewares/index";
 
 const routes = Router();
 const controller = new WeeklyScheduleController();

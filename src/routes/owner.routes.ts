@@ -3,12 +3,14 @@ import { container } from "tsyringe";
 
 import { RolesKeys } from "@common/RolesKeys";
 import { OwnerController } from "@controllers/OwnerController";
-import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
-import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
-import { isSupportMiddleware } from "@middlewares/isSupportMiddleware";
-import { LogMiddleware } from "@middlewares/LogMiddleware";
-import { RBACMiddleware } from "@middlewares/RBACMiddleware";
-import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
+import {
+  EnsureUserAuthenticatedMiddleware,
+  HandleUrlPatternMatchMiddleware,
+  isSupportMiddleware,
+  LogMiddleware,
+  RBACMiddleware,
+  ValidateClinicIDMiddleware,
+} from "@middlewares/index";
 
 const routes = Router();
 const controller = new OwnerController();
