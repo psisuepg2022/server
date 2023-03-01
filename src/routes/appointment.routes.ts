@@ -5,6 +5,7 @@ import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { AppointmentController } from "@controllers/AppointmentController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
 import { LogMiddleware } from "@middlewares/LogMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
@@ -17,6 +18,7 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
+const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/",
@@ -24,7 +26,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_APPOINTMENT),
-  controller.save
+  controller.save,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/by_the_professional",
@@ -32,7 +35,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.byTheProfessional
+  controller.byTheProfessional,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/calendar",
@@ -40,7 +44,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.getCalendar
+  controller.getCalendar,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/calendar/:professional_id",
@@ -48,7 +53,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
-  controller.getCalendarByProfessional
+  controller.getCalendarByProfessional,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/autocomplete_patient",
@@ -56,7 +62,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
-  controller.autocompletePatient
+  controller.autocompletePatient,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/autocomplete_patient_by_the_professional",
@@ -64,21 +71,24 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.autocompletePatientByTheProfessional
+  controller.autocompletePatientByTheProfessional,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.patch(
   "/status/:id",
   logMiddleware.routeStart,
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
-  controller.updateStatus
+  controller.updateStatus,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.get(
   "/:appointment_id",
   logMiddleware.routeStart,
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
-  controller.getById
+  controller.getById,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 
 export { routes };

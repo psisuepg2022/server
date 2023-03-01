@@ -5,6 +5,7 @@ import { PermissionsKeys } from "@common/PermissionsKeys";
 import { RolesKeys } from "@common/RolesKeys";
 import { EmployeeController } from "@controllers/EmployeeController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
 import { LogMiddleware } from "@middlewares/LogMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
 import { ValidateClinicIDMiddleware } from "@middlewares/ValidateClinicIDMiddleware";
@@ -17,6 +18,7 @@ const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
+const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/search",
@@ -24,7 +26,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_EMPLOYEE),
-  controller.read
+  controller.read,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/",
@@ -32,7 +35,8 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_EMPLOYEE),
-  controller.create
+  controller.create,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.delete(
   "/:id",
@@ -40,7 +44,8 @@ routes.delete(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.delete
+  controller.delete,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.get(
   "/profile",
@@ -48,7 +53,8 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
-  controller.getProfile
+  controller.getProfile,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.put(
   "/",
@@ -56,7 +62,8 @@ routes.put(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.EMPLOYEE),
-  controller.updateProfile
+  controller.updateProfile,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 
 export { routes };

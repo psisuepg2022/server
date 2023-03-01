@@ -7,5 +7,6 @@ declare namespace Express {
     clinic: {
       id: string;
     };
+    hasUrlPatternMatched: boolean | undefined;
   }
 }

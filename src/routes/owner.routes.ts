@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { RolesKeys } from "@common/RolesKeys";
 import { OwnerController } from "@controllers/OwnerController";
 import { EnsureUserAuthenticatedMiddleware } from "@middlewares/EnsureUserAuthenticatedMiddleware";
+import { HandleUrlPatternMatchMiddleware } from "@middlewares/HandleUrlPatternMatchMiddleware";
 import { isSupportMiddleware } from "@middlewares/isSupportMiddleware";
 import { LogMiddleware } from "@middlewares/LogMiddleware";
 import { RBACMiddleware } from "@middlewares/RBACMiddleware";
@@ -17,20 +18,23 @@ const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
+const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
 
 routes.get(
   "/:support/:clinic_id",
   logMiddleware.routeStart,
   isSupportMiddleware,
   validateClinicID.execute(false, false, "clinic_id"),
-  controller.read
+  controller.read,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.post(
   "/:support/:clinic_id",
   logMiddleware.routeStart,
   isSupportMiddleware,
   validateClinicID.execute(true, false, "clinic_id"),
-  controller.create
+  controller.create,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.get(
   "/profile",
@@ -38,7 +42,8 @@ routes.get(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
-  controller.getProfile
+  controller.getProfile,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 routes.put(
   "/",
@@ -46,7 +51,8 @@ routes.put(
   ensureAuthenticated.execute,
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.OWNER),
-  controller.updateProfile
+  controller.updateProfile,
+  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
 );
 
 export { routes };

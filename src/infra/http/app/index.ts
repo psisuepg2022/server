@@ -15,6 +15,7 @@ import {
   internationalizationMiddleware,
   isSupportMiddleware,
   LogMiddleware,
+  HandleUrlPatternMatchMiddleware,
 } from "@middlewares/index";
 import { routes } from "@routes/index";
 
@@ -35,6 +36,7 @@ app.use(
   isSupportMiddleware,
   express.static(path.join(__dirname, "..", "..", "..", "..", "logs"))
 );
+app.use("*", new HandleUrlPatternMatchMiddleware().verify);
 app.use(errorHandlerMiddleware);
 app.use(new LogMiddleware().routeEnd);
 app.use(databaseDisconnectMiddleware);
