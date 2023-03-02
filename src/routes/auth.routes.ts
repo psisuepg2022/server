@@ -19,25 +19,25 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.get(
   "/clinics",
   logMiddleware.routeStart,
   controller.getClinics,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/",
   logMiddleware.routeStart,
   controller.login,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/refresh",
   logMiddleware.routeStart,
   controller.refreshToken,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/reset_password",
@@ -45,7 +45,7 @@ routes.post(
   ensureAuthenticated.execute,
   validateClinicID.execute(),
   controller.resetPassword,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/adm_reset_password/:user_id",
@@ -54,7 +54,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
   controller.resetAnotherUserPassword,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

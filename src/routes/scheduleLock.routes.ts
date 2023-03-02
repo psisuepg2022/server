@@ -20,7 +20,7 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/",
@@ -29,7 +29,7 @@ routes.post(
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.save,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/:professional_id",
@@ -38,7 +38,7 @@ routes.post(
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_SCHEDULE_LOCK),
   controller.saveByProfessional,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.delete(
   "/:id",
@@ -46,7 +46,7 @@ routes.delete(
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.delete,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.delete(
   "/:professional_id/:id",
@@ -54,7 +54,7 @@ routes.delete(
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.DELETE_SCHEDULE_LOCK),
   controller.deleteByProfessional,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

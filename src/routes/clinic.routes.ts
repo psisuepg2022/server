@@ -13,21 +13,21 @@ const routes = Router();
 const controller = new ClinicController();
 const logMiddleware = new LogMiddleware();
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.get(
   "/:support",
   logMiddleware.routeStart,
   isSupportMiddleware,
   controller.read,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/:support",
   logMiddleware.routeStart,
   isSupportMiddleware,
   controller.create,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.delete(
   "/:support/:id",
@@ -35,7 +35,7 @@ routes.delete(
   isSupportMiddleware,
   validateClinicID.execute(true, false),
   controller.delete,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

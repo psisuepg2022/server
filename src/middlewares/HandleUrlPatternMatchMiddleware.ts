@@ -4,8 +4,8 @@ import { HttpStatus, IMiddleware } from "@infra/http";
 import { logger } from "@infra/log";
 
 class HandleUrlPatternMatchMiddleware {
-  public setHasUrlMatchedMiddleware =
-    (hasUrlPatternMatched: boolean): IMiddleware =>
+  public setHasUrlMatched =
+    (hasUrlPatternMatched = true): IMiddleware =>
     async (req, _, next) => {
       Object.assign(req, { hasUrlPatternMatched });
       return next();

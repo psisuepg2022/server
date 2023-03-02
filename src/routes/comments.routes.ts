@@ -19,7 +19,7 @@ const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/:id",
@@ -29,7 +29,7 @@ routes.post(
   logMiddleware.userAuthenticated,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.save,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/search/:patient_id",
@@ -37,7 +37,7 @@ routes.post(
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.read,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

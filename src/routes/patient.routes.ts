@@ -19,7 +19,7 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/search",
@@ -28,7 +28,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.read,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/search_liable",
@@ -37,7 +37,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_LIABLE),
   controller.readLiable,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/",
@@ -46,7 +46,7 @@ routes.post(
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PATIENT),
   controller.save,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.delete(
   "/:id",
@@ -55,7 +55,7 @@ routes.delete(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.DELETE_PATIENT),
   controller.delete,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

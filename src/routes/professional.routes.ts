@@ -20,7 +20,7 @@ const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/search",
@@ -29,7 +29,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PROFESSIONAL),
   controller.read,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/",
@@ -38,7 +38,7 @@ routes.post(
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_PROFESSIONAL),
   controller.create,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.delete(
   "/:id",
@@ -47,7 +47,7 @@ routes.delete(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
   controller.delete,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.get(
   "/profile",
@@ -56,7 +56,7 @@ routes.get(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.getProfile,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.put(
   "/",
@@ -65,7 +65,7 @@ routes.put(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.updateProfile,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.get(
   "/top_bar",
@@ -74,7 +74,7 @@ routes.get(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
   controller.getProfessionalsToScheduleTopBar,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/configure",
@@ -83,7 +83,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL_UNCONFIGURED),
   controller.configure,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/my_patients",
@@ -92,7 +92,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.myPatients,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

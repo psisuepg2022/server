@@ -18,7 +18,7 @@ const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.get(
   "/",
@@ -26,7 +26,7 @@ routes.get(
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.read,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.get(
   "/:professional_id",
@@ -34,7 +34,7 @@ routes.get(
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.READ_WEEKLY_SCHEDULE),
   controller.readByProfessionalId,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.delete(
   "/:schedule_id/:lock_id",
@@ -42,7 +42,7 @@ routes.delete(
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.deleteLock,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/",
@@ -50,7 +50,7 @@ routes.post(
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.save,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

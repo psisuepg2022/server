@@ -20,7 +20,7 @@ const logMiddleware = new LogMiddleware();
 const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.get(
   "/:support/:clinic_id",
@@ -28,7 +28,7 @@ routes.get(
   isSupportMiddleware,
   validateClinicID.execute(false, false, "clinic_id"),
   controller.read,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/:support/:clinic_id",
@@ -36,7 +36,7 @@ routes.post(
   isSupportMiddleware,
   validateClinicID.execute(true, false, "clinic_id"),
   controller.create,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.get(
   "/profile",
@@ -45,7 +45,7 @@ routes.get(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.OWNER),
   controller.getProfile,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.put(
   "/",
@@ -54,7 +54,7 @@ routes.put(
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.OWNER),
   controller.updateProfile,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };

@@ -20,7 +20,7 @@ const ensureAuthenticated = container.resolve(
   EnsureUserAuthenticatedMiddleware
 );
 const validateClinicID = container.resolve(ValidateClinicIDMiddleware);
-const handleUrlPatternMatch = new HandleUrlPatternMatchMiddleware();
+const handleUrlPatternMatchMiddleware = new HandleUrlPatternMatchMiddleware();
 
 routes.post(
   "/",
@@ -29,7 +29,7 @@ routes.post(
   validateClinicID.execute(true),
   RBAC.has(PermissionsKeys.CREATE_APPOINTMENT),
   controller.save,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/by_the_professional",
@@ -38,7 +38,7 @@ routes.post(
   validateClinicID.execute(true),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.byTheProfessional,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/calendar",
@@ -47,7 +47,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.getCalendar,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/calendar/:professional_id",
@@ -56,7 +56,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_APPOINTMENTS),
   controller.getCalendarByProfessional,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/autocomplete_patient",
@@ -65,7 +65,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.has(PermissionsKeys.READ_PATIENT),
   controller.autocompletePatient,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.post(
   "/autocomplete_patient_by_the_professional",
@@ -74,7 +74,7 @@ routes.post(
   validateClinicID.execute(),
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.autocompletePatientByTheProfessional,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.patch(
   "/status/:id",
@@ -82,7 +82,7 @@ routes.patch(
   ensureAuthenticated.execute,
   RBAC.has(PermissionsKeys.UPDATE_APPOINTMENTS),
   controller.updateStatus,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 routes.get(
   "/:appointment_id",
@@ -90,7 +90,7 @@ routes.get(
   ensureAuthenticated.execute,
   RBAC.is(RolesKeys.PROFESSIONAL),
   controller.getById,
-  handleUrlPatternMatch.setHasUrlMatchedMiddleware(true)
+  handleUrlPatternMatchMiddleware.setHasUrlMatched()
 );
 
 export { routes };
