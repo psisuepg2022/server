@@ -21,8 +21,9 @@ class HandleUrlPatternMatchMiddleware {
   ) => {
     if (hasUrlPatternMatched) return next();
 
-    logger.info(`
-    Access attempt to non-existent route: ${route} with ${method} method`);
+    logger.info(
+      `Access attempt to non-existent route: ${route} with ${method} method`
+    );
 
     res.status(HttpStatus.NOT_FOUND).json({
       message: i18n.__("ErrorRouteNotFound"),
