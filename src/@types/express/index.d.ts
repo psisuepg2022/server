@@ -8,5 +8,9 @@ declare namespace Express {
       id: string;
     };
     hasUrlPatternMatched: boolean | undefined;
+    runtime: {
+      start: number;
+      end: number;
+    };
   }
 }
