@@ -16,6 +16,7 @@ import {
   isSupportMiddleware,
   LogMiddleware,
   HandleUrlPatternMatchMiddleware,
+  SetRuntimeMiddleware,
 } from "@middlewares/index";
 import { routes } from "@routes/index";
 
@@ -24,6 +25,9 @@ const xss = require("xss-clean");
 
 const app = express();
 
+const setRuntimeMiddleware = new SetRuntimeMiddleware();
+
+app.use(setRuntimeMiddleware.start);
 app.use(helmet());
 app.use(cors({ origin: env("LIST_ALLOWED_ORIGINS")?.split(",") }));
 app.use(express.json({ limit: "10kb" }));
@@ -38,8 +42,9 @@ app.use(
 );
 app.use("*", new HandleUrlPatternMatchMiddleware().verify);
 app.use(errorHandlerMiddleware);
-app.use(new LogMiddleware().routeEnd);
 app.use(databaseDisconnectMiddleware);
+app.use(setRuntimeMiddleware.end);
+app.use(new LogMiddleware().routeEnd);
 
 process.on("SIGTERM", () => {
   process.exit();
