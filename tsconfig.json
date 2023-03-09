@@ -12,7 +12,7 @@
     
     "typeRoots": [
       "./node_modules/@types",
-      "./src/@types"
+      "./src/infra/@types"
     ],
     
     "strict": true,
@@ -28,16 +28,16 @@
       "@helpers/*": ["./src/helpers/*"],
       "@infra/*": ["./src/infra/*"],
       "@handlers/*": ["./src/handlers/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
-      "@config/*": ["./src/config/*"],
+      "@middlewares/*": ["./src/infra/http/middlewares/*"],
+      "@config/*": ["./src/infra/config/*"],
       "@providers/*": ["./src/providers/*"],
       "@models/*": ["./src/models/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@containers/*": ["./src/containers/*"],
+      "@routes/*": ["./src/infra/http/routes/*"],
+      "@containers/*": ["./src/infra/containers/*"],
       "@common/*": ["./src/common/*"],
-      "@controllers/*": ["./src/controllers/*"],
+      "@controllers/*": ["./src/infra/http/controllers/*"],
       "@services/*": ["./src/services/*"],
-      "@repositories/*": ["./src/repositories/*"]
+      "@repositories/*": ["./src/infra/database/repositories/*"]
     }
   }
 }
