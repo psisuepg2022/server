@@ -2,7 +2,7 @@ import path from "path";
 import { LoggerOptions, format } from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 
-const directory = path.join(__dirname, "..", "..", "..", "logs");
+const directory = path.join(__dirname, "..", "..", "..", "..", "logs");
 
 const options: LoggerOptions = {
   format: format.combine(
