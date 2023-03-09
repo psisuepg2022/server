@@ -36,6 +36,9 @@ const options: LoggerOptions = {
     new DailyRotateFile({
       filename: `${directory}/log_%DATE%.log`,
       datePattern: "HH",
+      format: format.combine(
+        format.timestamp({ format: getFormattedTimestamp })
+      ),
     }),
   ],
 };
